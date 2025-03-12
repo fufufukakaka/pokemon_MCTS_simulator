@@ -4,15 +4,11 @@ import time
 import warnings
 from copy import deepcopy
 
+from src.pokemon_battle_sim.damage import Damage
 from src.pokemon_battle_sim.pokemon import Pokemon
-from src.pokemon_battle_sim.utils import (
-    frac,
-    offset_hp_keys,
-    push,
-    round_half_down,
-    round_half_up,
-    zero_ratio,
-)
+from src.pokemon_battle_sim.utils import (frac, offset_hp_keys, push,
+                                          round_half_down, round_half_up,
+                                          zero_ratio)
 
 
 class Battle:

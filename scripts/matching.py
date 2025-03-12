@@ -6,27 +6,6 @@ from src.mcts.mcts_battle import MyMCTSBattle
 from src.pokemon_battle_sim.pokemon import Pokemon
 
 
-# Pokemon クラスの定義
-class BattlePokemon:
-    def __init__(
-        self,
-        name,
-        item=None,
-        nature=None,
-        ability=None,
-        Ttype=None,
-        moves=None,
-        effort=None,
-    ):
-        self.name = name
-        self.item = item
-        self.nature = nature
-        self.ability = ability
-        self.Ttype = Ttype
-        self.moves = moves or []
-        self.effort = effort or []
-
-
 # Trainer クラスの定義
 class Trainer:
     def __init__(self, name, rank, rating, pokemons):
@@ -43,6 +22,8 @@ class Trainer:
 
 # JSON ファイルからトレーナーデータを読み込む関数
 def load_trainers_from_json(filename):
+    Pokemon.init()
+
     trainers = []
     with open(filename, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -78,13 +59,6 @@ class Battle:
         self.turn = 0
         self.log = []
 
-    def simulate_turn(self):
-        # 実際の対戦ロジックに合わせ、各ターンのアクションをシミュレート
-        self.turn += 1
-        action = f"ターン {self.turn}: {random.choice(['攻撃', '防御', '回避'])}"
-        self.log.append(action)
-        print(action)
-
     def simulate_battle(self):
         Pokemon.init()
 
@@ -92,21 +66,17 @@ class Battle:
         team_a = self.trainer_a.choose_team()
         team_b = self.trainer_b.choose_team()
 
-        # ポケモンクラスにする
-        team_a = [BattlePokemon(**vars(pokemon)) for pokemon in team_a]
-        team_b = [BattlePokemon(**vars(pokemon)) for pokemon in team_b]
-
         battle = MyMCTSBattle()
         battle.selected[0] = team_a
         battle.selected[1] = team_b
 
         while battle.winner() is None:
             battle.proceed()
-            print(f"ターン {battle.turn}")
+            self.log.append(f"ターン {battle.turn}")
             for pl in [0, 1]:
-                print(f"Player {pl}: {battle.log[pl]}")
+                self.log.append(f"Player {pl}: {battle.log[pl]}")
 
-        print(f"勝者: Player {battle.winner()}")
+        self.log.append(f"勝者: Player {battle.winner()}")
         return self.trainer_a if battle.winner() == 0 else self.trainer_b
 
     def save_log(self):
