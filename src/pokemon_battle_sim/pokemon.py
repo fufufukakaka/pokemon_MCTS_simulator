@@ -1,192 +1,174 @@
 import json
 import warnings
-from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
-from typing import Dict, List
 
-from src.pokemon_battle_sim.utils import (
-    push,
-    to_hankaku,
-)
+from src.pokemon_battle_sim.utils import to_hankaku
 
 
-@dataclass
 class Pokemon:
     """
     ポケモンの個体を表現するクラス。ポケモンのデータ全般をクラス変数に持つ。
+
+    クラス変数 (抜粋)
+    ----------------------------------------
+    Pokemon.zukan: dict
+        key: ポケモン名。
+        value: タイプ、特性、種族値、ゲーム上の表示名、体重。
+        (例)
+        Pokemon.zukan['オーガポン(かまど)'] = {
+            'type': ['くさ', 'ほのお'],
+            'ability': ['かたやぶり'],
+            'base': [80, 120, 84, 60, 96, 110],
+            'display_name': 'オーガポン',
+            'weight': 39.8
+        }
+
+    Pokemon.zukan_name: dict
+        key: ゲーム上の表示名。
+        value: ポケモン名のリスト。
+        (例)
+        Pokemon.zukan_name['ウーラオス'] = ['ウーラオス(れんげき)', 'ウーラオス(いちげき)']
+
+    Pokemon.home: dict
+        key: ポケモン名。
+        value: ランクマッチの使用率データ。
+        (例)
+        Pokemon.home['カイリュー'] = {
+            'move': [['しんそく', 'じしん', 'りゅうのまい', 'はねやすめ', 'げきりん', 'スケイルショット', 'アンコール', 'アイアンヘッド', 'けたぐり', 'でんじは'],
+                    [78.7, 78.0, 42.5, 39.4, 30.8, 24.5, 23.3, 16.2, 10.0, 9.9]],
+            'ability': [['マルチスケイル', 'せいしんりょく'],
+                    [99.8, 0.2]],
+            'item': [['こだわりハチマキ', 'いかさまダイス', 'ゴツゴツメット', 'たべのこし', 'あつぞこブーツ', 'じゃくてんほけん', 'とつげきチョッキ', 'ラムのみ', 'シルクのスカーフ', 'おんみつマント'],
+                    [33.9, 21.5, 18.3, 8.0, 4.3, 3.4, 2.2, 1.9, 1.7, 1.6]],
+            'Ttype': [['ノーマル', 'じめん', 'はがね', 'ひこう', 'フェアリー', 'ほのお', 'でんき', 'みず', 'どく', 'ドラゴン'],
+                    [65.0, 11.3, 11.0, 4.7, 4.5, 1.2, 0.7, 0.6, 0.4, 0.2]]
+        }
+
+    Pokemon.nature_corrections: dict
+        key: 性格。
+        value: 性格補正値リスト。
+        (例)
+        Pokemon.nature_corrections['いじっぱり'] = [1.0, 1.1, 1.0, 0.9, 1.0, 1.0]
+
+    Pokemon.type_id = {
+        'ノーマル': 0, 'ほのお': 1, 'みず': 2, 'でんき': 3, 'くさ': 4, 'こおり': 5, 'かくとう': 6,
+        'どく': 7, 'じめん': 8, 'ひこう': 9, 'エスパー': 10, 'むし': 11, 'いわ': 12, 'ゴースト': 13,
+        'ドラゴン': 14, 'あく': 15, 'はがね': 16, 'フェアリー': 17, 'ステラ': 18
+    }
+
+    Pokemon.type_corrections: list
+        (例) どくタイプの技でくさおタイプに攻撃したときのタイプ補正値。
+        Pokemon.type_corrections[7][4] = 2.0
+
+    Pokemon.abilities: list[str]
+        全ての特性。
+
+    Pokemon.items: dict
+        key: アイテム名。
+        value: なげつける威力。
+
+    Pokemon.all_moves: dict
+        key: わざ名。
+        value: わざのタイプ、分類、威力、命中率、PP。
+        (例)
+        Pokemon.all_moves['しんそく'] = {
+            'type': 'ノーマル',
+            'class': 'phy',
+            'power': 80,
+            'hit': 100,
+            'pp': 8
+        }
+
+    Pokemon.combo_hit: dict
+        key: 連続技。
+        value: [最小ヒット数, 最大ヒット数]。
+
+    インスタンス変数 (抜粋)
+    ----------------------------------------
+    self.__name: str
+        ポケモン名。
+
+    self.__display_name: str
+        ゲーム上の表示名。
+
+    self.__types: list[str]
+        タイプ。
+
+    self.__weight: float
+        体重。
+
+    self.sex: int
+        性別。Pokemon.MALE or Pokemon.FEMALE or Pokemon.NONSEXUAL。
+
+    self.__level: int
+        レベル。
+
+    self.__nature: str
+        性格。
+
+    self.__org_ability: str
+        もとの特性。
+
+    self.ability: str
+        現在の特性。試合中に技や特性により変更される可能性がある。
+
+    self.item: str
+        所持しているアイテム。
+
+    self.lost_item: str
+        失ったアイテム。
+
+    self.Ttype: str
+        テラスタイプ。
+
+    self.terastal: bool
+        テラスタルしていればTrue。
+
+    self.__status: list[int]
+        ステータス。[H,A,B,C,D,S]。
+
+    self.__base: list[int]
+        種族値。[H,A,B,C,D,S]。
+
+    self.__indiv: list[int]
+        個体値。[H,A,B,C,D,S]。
+
+    self.__effort: list[int]
+        努力値。[H,A,B,C,D,S]。
+
+    self.__hp: int
+        残りHP。
+
+    self.__hp_ratio: float
+        残りHP割合。
+
+    self.sub_hp: int
+        みがわりの残りHP。
+
+    self.__moves: list[str]
+        わざ。最大10個。
+
+    self.last_pp_move: str
+        最後にPPを消費した技。
+
+    self.last_used_move: str
+        最後に出た技。
+
+    self.pp: list[int]
+        わざの残りPP。
+
+    self.rank: list[int]
+        能力ランク。[H,A,B,C,D,S,命中,回避]。
+
+    self.ailment: str
+        状態異常。
+
+    self.condition: dict
+        状態変化。
+
+    self.boost_index: int
+        クォークチャージ、こだいかっせい、ブーストエナジーにより上昇した能力番号。
     """
-
-    # Class variables
-    zukan: Dict[str, Dict] = field(default_factory=dict)
-    zukan_name: Dict[str, List[str]] = field(default_factory=dict)
-    form_diff: Dict[str, str] = field(default_factory=dict)
-    japanese_display_name: Dict[str, str] = field(default_factory=dict)
-    foreign_display_names: Dict[str, List[str]] = field(default_factory=dict)
-    home: Dict[str, Dict] = field(default_factory=dict)
-    type_file_code: Dict[str, str] = field(default_factory=dict)
-    template_file_code: Dict[str, str] = field(default_factory=dict)
-    nature_corrections: Dict[str, List[float]] = field(default_factory=dict)
-    type_id: Dict[str, int] = field(default_factory=dict)
-    type_corrections: List[List[float]] = field(default_factory=list)
-    abilities: List[str] = field(default_factory=list)
-    ability_category: Dict[str, List[str]] = field(default_factory=dict)
-    items: Dict[str, Dict[str, int]] = field(default_factory=dict)
-    item_buff_type: Dict[str, str] = field(default_factory=dict)
-    item_debuff_type: Dict[str, str] = field(default_factory=dict)
-    item_correction: Dict[str, float] = field(default_factory=dict)
-    consumable_items: List[str] = field(default_factory=list)
-    all_moves: Dict[str, Dict[str, int]] = field(default_factory=dict)
-    move_category: Dict[str, List[str]] = field(default_factory=dict)
-    move_value: Dict[str, Dict[str, float]] = field(default_factory=dict)
-    move_priority: Dict[str, int] = field(default_factory=dict)
-    combo_hit: Dict[str, List[int]] = field(default_factory=dict)
-    move_effect: Dict[str, Dict[str, int]] = field(default_factory=dict)
-    stone_weather: Dict[str, str] = field(
-        default_factory=lambda: {
-            "sunny": "あついいわ",
-            "rainy": "しめったいわ",
-            "snow": "つめたいいわ",
-            "sandstorm": "さらさらいわ",
-        }
-    )
-    plate_type: Dict[str, str] = field(
-        default_factory=lambda: {
-            "まっさらプレート": "ノーマル",
-            "ひのたまプレート": "ほのお",
-            "しずくプレート": "みず",
-            "みどりのプレート": "くさ",
-            "いかずちプレート": "でんき",
-            "つららのプレート": "こおり",
-            "こぶしのプレート": "かくとう",
-            "もうどくプレート": "どく",
-            "だいちのプレート": "じめん",
-            "あおぞらプレート": "ひこう",
-            "ふしぎのプレート": "エスパー",
-            "たまむしプレート": "むし",
-            "がんせきプレート": "いわ",
-            "もののけプレート": "ゴースト",
-            "りゅうのプレート": "ドラゴン",
-            "こわもてプレート": "あく",
-            "こうてつプレート": "はがね",
-            "せいれいプレート": "フェアリー",
-        }
-    )
-    ailments: tuple = ("PSN", "PAR", "BRN", "SLP", "FLZ")
-    weathers: tuple = ("sunny", "rainy", "snow", "sandstorm")
-    fields: tuple = ("elecfield", "glassfield", "psycofield", "mistfield")
-
-    # 性別
-    MALE: int = 1
-    FEMALE: int = -1
-    NONSEXUAL: int = 0
-
-    status_label: tuple = ("H", "A", "B", "C", "D", "S", "命中", "回避")
-    status_label_hiragana: List[str] = field(
-        default_factory=lambda: [
-            "HP",
-            "こうげき",
-            "ぼうぎょ",
-            "とくこう",
-            "とくぼう",
-            "すばやさ",
-            "めいちゅう",
-            "かいひ",
-        ]
-    )
-    status_label_kanji: List[str] = field(
-        default_factory=lambda: [
-            "HP",
-            "攻撃",
-            "防御",
-            "特攻",
-            "特防",
-            "素早さ",
-            "命中",
-            "回避",
-        ]
-    )
-    JPN: Dict[str, str] = field(
-        default_factory=lambda: {
-            "PSN": "どく",
-            "PAR": "まひ",
-            "BRN": "やけど",
-            "SLP": "ねむり",
-            "FLZ": "こおり",
-            "confusion": "こんらん",
-            "critical": "急所ランク",
-            "aquaring": "アクアリング",
-            "healblock": "かいふくふうじ",
-            "magnetrise": "でんじふゆう",
-            "noroi": "呪い",
-            "horobi": "ほろびのうた",
-            "yadorigi": "やどりぎのタネ",
-            "ame_mamire": "あめまみれ",
-            "encore": "アンコール",
-            "anti_air": "うちおとす",
-            "kanashibari": "かなしばり",
-            "shiozuke": "しおづけ",
-            "jigokuzuki": "じごくづき",
-            "charge": "じゅうでん",
-            "stock": "たくわえる",
-            "chohatsu": "ちょうはつ",
-            "change_block": "にげられない",
-            "nemuke": "ねむけ",
-            "neoharu": "ねをはる",
-            "bind": "バインド",
-            "meromero": "メロメロ",
-            "badpoison": "もうどく",
-            "sunny": "はれ",
-            "rainy": "あめ",
-            "snow": "ゆき",
-            "sandstorm": "すなあらし",
-            "elecfield": "エレキフィールド",
-            "glassfield": "グラスフィールド",
-            "psycofield": "サイコフィールド",
-            "mistfield": "ミストフィールド",
-            "gravity": "じゅうりょく",
-            "trickroom": "トリックルーム",
-            "reflector": "リフレクター",
-            "lightwall": "ひかりのかべ",
-            "oikaze": "おいかぜ",
-            "safeguard": "しんぴのまもり",
-            "whitemist": "しろいきり",
-            "makibishi": "まきびし",
-            "dokubishi": "どくびし",
-            "stealthrock": "ステルスロック",
-            "nebanet": "ねばねばネット",
-            "wish": "ねがいごと",
-        }
-    )
-
-    # Instance variables
-    __name: str = "ピカチュウ"
-    __display_name: str = ""
-    __types: List[str] = field(default_factory=list)
-    __weight: float = 0.0
-    sex: int = NONSEXUAL
-    __level: int = 50
-    __nature: str = "まじめ"
-    __org_ability: str = ""
-    ability: str = ""
-    item: str = ""
-    lost_item: str = ""
-    Ttype: str = ""
-    terastal: bool = False
-    __status: List[int] = field(default_factory=lambda: [0] * 6)
-    __base: List[int] = field(default_factory=lambda: [0] * 6)
-    __indiv: List[int] = field(default_factory=lambda: [31] * 6)
-    __effort: List[int] = field(default_factory=lambda: [0] * 6)
-    __hp: int = 0
-    __hp_ratio: float = 1.0
-    sub_hp: int = 0
-    __moves: List[str] = field(default_factory=list)
-    last_pp_move: str = ""
-    last_used_move: str = ""
-    pp: List[int] = field(default_factory=list)
-    rank: List[int] = field(default_factory=lambda: [0] * 8)
-    ailment: str = ""
-    condition: Dict[str, int] = field(default_factory=dict)
-    boost_index: int = 0
 
     zukan = {}
     zukan_name = {}
@@ -931,25 +913,21 @@ class Pokemon:
             season = max(12 * (y - 2022) + m - 11 - (d == 1), 1)
 
         # タイプ画像コードの読み込み
-        with open(
-            "src/pokemon_battle_sim/data/terastal/codelist.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/terastal/codelist.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.type_file_code[data[1]] = data[0]
             # print(Pokemon.type_file_code)
 
         # テンプレート画像コードの読み込み
-        with open(
-            "src/pokemon_battle_sim/data/template/codelist.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/template/codelist.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.template_file_code[data[0]] = data[1]
             # print(Pokemon.template_file_code)
 
         # 図鑑の読み込み
-        with open("src/pokemon_battle_sim/data/zukan.txt", encoding="utf-8") as fin:
+        with open("data/zukan.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = line.split()
@@ -999,9 +977,7 @@ class Pokemon:
             # print(Pokemon.form_diff)
 
         # 外国語名の読み込み
-        with open(
-            "src/pokemon_battle_sim/data/foreign_name.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/foreign_name.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = list(map(to_hankaku, line.split()))
@@ -1016,16 +992,14 @@ class Pokemon:
             # print(Pokemon.foreign_display_names)
 
         # 体重の読み込み
-        with open("src/pokemon_battle_sim/data/weight.txt", encoding="utf-8") as fin:
+        with open("data/weight.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = line.split()
                 Pokemon.zukan[to_hankaku(data[0])]["weight"] = float(data[1])
 
         # 特性の読み込み
-        with open(
-            "src/pokemon_battle_sim/data/ability_category.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/ability_category.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = list(map(to_hankaku, line.split()))
                 Pokemon.ability_category[data[0]] = data[1:]
@@ -1034,7 +1008,7 @@ class Pokemon:
                 # print(data[0]), print(Pokemon.ability_category[data[0]])
 
         # アイテムの読み込み
-        with open("src/pokemon_battle_sim/data/item.txt", encoding="utf-8") as fin:
+        with open("data/item.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = line.split()
@@ -1053,17 +1027,13 @@ class Pokemon:
             # print(Pokemon.item_correction)
 
         # 技の分類の読み込み
-        with open(
-            "src/pokemon_battle_sim/data/move_category.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/move_category.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = list(map(to_hankaku, line.split()))
                 Pokemon.move_category[data[0]] = data[1:]
                 # print(data[0]), print(Pokemon.move_category[data[0]])
 
-        with open(
-            "src/pokemon_battle_sim/data/move_value.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/move_value.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.move_value[data[0]] = {}
@@ -1074,7 +1044,7 @@ class Pokemon:
                 # print(data[0], Pokemon.move_value[data[0]])
 
         # 技の読み込み
-        with open("src/pokemon_battle_sim/data/move.txt", encoding="utf-8") as fin:
+        with open("data/move.txt", encoding="utf-8") as fin:
             eng = {"物理": "phy", "特殊": "spe"}
             next(fin)
             for line in fin:
@@ -1097,9 +1067,7 @@ class Pokemon:
                 Pokemon.all_moves[move]["power"] = 1
 
         # 技の優先度の読み込み
-        with open(
-            "src/pokemon_battle_sim/data/move_priority.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/move_priority.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 for move in data[1:]:
@@ -1107,9 +1075,7 @@ class Pokemon:
             # print(Pokemon.move_priority)
 
         # 技の追加効果の読み込み
-        with open(
-            "src/pokemon_battle_sim/data/move_effect.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/move_effect.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = line.split()
@@ -1121,23 +1087,24 @@ class Pokemon:
                 Pokemon.move_effect[move]["ailment"] = list(map(int, data[10:15]))
                 Pokemon.move_effect[move]["confusion"] = int(data[15])
                 Pokemon.move_effect[move]["flinch"] = float(data[16])
+            # print(Pokemon.move_effect)
 
         # 連続技の読み込み
-        with open(
-            "src/pokemon_battle_sim/data/combo_move.txt", encoding="utf-8"
-        ) as fin:
+        with open("data/combo_move.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.combo_hit[to_hankaku(data[0])] = [int(data[1]), int(data[2])]
+            # print(Pokemon.combo_hit)
 
         # 性格補正の読み込み
-        with open("src/pokemon_battle_sim/data/nature.txt", encoding="utf-8") as fin:
+        with open("data/nature.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.nature_corrections[data[0]] = list(map(float, data[1:7]))
+            # print(Pokemon.nature_corrections)
 
         # タイプ相性補正の読み込み
-        with open("src/pokemon_battle_sim/data/type.txt", encoding="utf-8") as fin:
+        with open("data/type.txt", encoding="utf-8") as fin:
             line = fin.readline()
             data = line.split()
             for i in range(len(data)):
@@ -1145,10 +1112,11 @@ class Pokemon:
             for line in fin:
                 data = line.split()
                 Pokemon.type_corrections.append(list(map(float, data)))
+            # print(Pokemon.type_id)
+            # print(Pokemon.type_corrections)
 
         # ランクマッチの統計データの読み込み
-        # filename = "src/battle_data/season" + str(season) + ".json"
-        filename = "src/battle_data/season22.json"
+        filename = "data/battle_data/season22.json"
         print(f"{filename}")
         with open(filename, encoding="utf-8") as fin:
             dict = json.load(fin)
@@ -1181,3 +1149,5 @@ class Pokemon:
                         [Pokemon.zukan[name]["type"][0]],
                         [100],
                     ]
+
+            # print(Pokemon.home.keys())
