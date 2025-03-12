@@ -5,16 +5,9 @@ import warnings
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 
-from src.pokemon_battle_sim.utils import (
-    average,
-    frac,
-    offset_hp_keys,
-    push,
-    round_half_down,
-    round_half_up,
-    to_hankaku,
-    zero_ratio,
-)
+from src.pokemon_battle_sim.utils import (average, frac, offset_hp_keys, push,
+                                          round_half_down, round_half_up,
+                                          to_hankaku, zero_ratio)
 
 
 class Pokemon:
@@ -925,21 +918,21 @@ class Pokemon:
             season = max(12 * (y - 2022) + m - 11 - (d == 1), 1)
 
         # タイプ画像コードの読み込み
-        with open("data/terastal/codelist.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/terastal/codelist.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.type_file_code[data[1]] = data[0]
             # print(Pokemon.type_file_code)
 
         # テンプレート画像コードの読み込み
-        with open("data/template/codelist.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/template/codelist.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.template_file_code[data[0]] = data[1]
             # print(Pokemon.template_file_code)
 
         # 図鑑の読み込み
-        with open("data/zukan.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/zukan.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = line.split()
@@ -989,7 +982,7 @@ class Pokemon:
             # print(Pokemon.form_diff)
 
         # 外国語名の読み込み
-        with open("data/foreign_name.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/foreign_name.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = list(map(to_hankaku, line.split()))
@@ -1004,14 +997,14 @@ class Pokemon:
             # print(Pokemon.foreign_display_names)
 
         # 体重の読み込み
-        with open("data/weight.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/weight.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = line.split()
                 Pokemon.zukan[to_hankaku(data[0])]["weight"] = float(data[1])
 
         # 特性の読み込み
-        with open("data/ability_category.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/ability_category.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = list(map(to_hankaku, line.split()))
                 Pokemon.ability_category[data[0]] = data[1:]
@@ -1020,7 +1013,7 @@ class Pokemon:
                 # print(data[0]), print(Pokemon.ability_category[data[0]])
 
         # アイテムの読み込み
-        with open("data/item.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/item.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = line.split()
@@ -1039,13 +1032,13 @@ class Pokemon:
             # print(Pokemon.item_correction)
 
         # 技の分類の読み込み
-        with open("data/move_category.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/move_category.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = list(map(to_hankaku, line.split()))
                 Pokemon.move_category[data[0]] = data[1:]
                 # print(data[0]), print(Pokemon.move_category[data[0]])
 
-        with open("data/move_value.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/move_value.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.move_value[data[0]] = {}
@@ -1056,7 +1049,7 @@ class Pokemon:
                 # print(data[0], Pokemon.move_value[data[0]])
 
         # 技の読み込み
-        with open("data/move.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/move.txt", encoding="utf-8") as fin:
             eng = {"物理": "phy", "特殊": "spe"}
             next(fin)
             for line in fin:
@@ -1079,7 +1072,7 @@ class Pokemon:
                 Pokemon.all_moves[move]["power"] = 1
 
         # 技の優先度の読み込み
-        with open("data/move_priority.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/move_priority.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 for move in data[1:]:
@@ -1087,7 +1080,7 @@ class Pokemon:
             # print(Pokemon.move_priority)
 
         # 技の追加効果の読み込み
-        with open("data/move_effect.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/move_effect.txt", encoding="utf-8") as fin:
             next(fin)
             for line in fin:
                 data = line.split()
@@ -1102,21 +1095,21 @@ class Pokemon:
             # print(Pokemon.move_effect)
 
         # 連続技の読み込み
-        with open("data/combo_move.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/combo_move.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.combo_hit[to_hankaku(data[0])] = [int(data[1]), int(data[2])]
             # print(Pokemon.combo_hit)
 
         # 性格補正の読み込み
-        with open("data/nature.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/nature.txt", encoding="utf-8") as fin:
             for line in fin:
                 data = line.split()
                 Pokemon.nature_corrections[data[0]] = list(map(float, data[1:7]))
             # print(Pokemon.nature_corrections)
 
         # タイプ相性補正の読み込み
-        with open("data/type.txt", encoding="utf-8") as fin:
+        with open("src/pokemon_battle_sim/data/type.txt", encoding="utf-8") as fin:
             line = fin.readline()
             data = line.split()
             for i in range(len(data)):
@@ -1128,7 +1121,8 @@ class Pokemon:
             # print(Pokemon.type_corrections)
 
         # ランクマッチの統計データの読み込み
-        filename = "battle_data/season" + str(season) + ".json"
+        # filename = "src/battle_data/season" + str(season) + ".json"
+        filename = "src/battle_data/season22.json"
         print(f"{filename}")
         with open(filename, encoding="utf-8") as fin:
             dict = json.load(fin)
