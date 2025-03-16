@@ -412,7 +412,11 @@ class Pokemon:
         }
 
         # 特性の処理
-        if self.ability == "さいせいりょく" and self.condition["healblock"] == 0:
+        if (
+            self.ability == "さいせいりょく"
+            and self.condition["healblock"] == 0
+            and self.hp > 0
+        ):
             self.hp = min(self.__status[0], self.hp + int(self.__status[0] / 3))
         elif self.ability == "しぜんかいふく":
             self.ailment = ""
