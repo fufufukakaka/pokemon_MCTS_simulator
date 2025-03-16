@@ -2405,7 +2405,7 @@ class Battle:
                     self.log[player].append(p1.ability)
             case "おもかげやどし":
                 ind = {"くさ": 5, "ほのお": 1, "みず": 4, "いわ": 2}
-                if self.add_rank(player, ind[p1.types[0]], +1):
+                if self.add_rank(player, ind[p1.types[1]], +1):
                     self.log[player].insert(-1, p1.ability)
             case "かぜのり":
                 if self.condition["oikaze"][0] and self.add_rank(player, 1, +1):
