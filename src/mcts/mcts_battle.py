@@ -232,6 +232,8 @@ class MyMCTSBattle(Battle):
     def change_command(self, player: int) -> int:
         """{player}の任意交代時に呼ばれる方策関数"""
 
+        # import pdb; pdb.set_trace()
+
         # 選択可能なコマンドの一覧を取得
         available_commands = self.available_commands(player, phase="change")
 

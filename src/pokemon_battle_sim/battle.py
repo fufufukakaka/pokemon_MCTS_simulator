@@ -1599,12 +1599,18 @@ class Battle:
                 commands = [Battle.STRUGGLE]
 
         # 交代
+        n_alive = 0
+        for p in self.selected[player]:
+            if p is not None:
+                if p.hp:
+                    n_alive += 1
+
         if phase == "change" or not self.is_caught(player):
             for idx in self.changeable_indexes(player):
                 commands.append(20 + idx)
 
         if not commands:
-            warnings.warn("No available commands")
+            warnings.warn(f"No available commands. Alive: {n_alive}")
 
         return commands
 
@@ -1617,6 +1623,7 @@ class Battle:
         landing=True,
     ) -> None:
         """場のポケモンを交代する"""
+        # print("hit change_pokemon")
 
         # 控えに戻す
         ability1 = None
@@ -2151,7 +2158,7 @@ class Battle:
                 self.set_ailment(player, "")
             case "キーのみ":
                 p1.condition["confusion"] = 0
-                self.log[player].append(f"こんらん解除")
+                self.log[player].append("こんらん解除")
             case "チイラのみ":
                 self.add_rank(player, 1, r_fruit)
             case "リュガのみ" | "アッキのみ":
