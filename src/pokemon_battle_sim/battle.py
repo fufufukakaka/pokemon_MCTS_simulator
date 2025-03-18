@@ -421,7 +421,8 @@ class Battle:
                         else:
                             break
 
-        if ability2 == "テラスシェル" and r and p2.hp == p2.status[0]:
+        # テラパゴスがまだテラスタルしていない + HP が満タンの場合
+        if p2.name == "テラパゴス(テラスタル)" and ability2 == "テラスシェル" and r and p2.hp == p2.status[0]:
             r = 0.5
             self.damage_log[player].append(f"{ability2} x{r:.1f}")
 
