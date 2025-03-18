@@ -2412,8 +2412,12 @@ class Battle:
                     self.log[player].append(p1.ability)
             case "おもかげやどし":
                 ind = {"くさ": 5, "ほのお": 1, "みず": 4, "いわ": 2}
-                if self.add_rank(player, ind[p1.types[1]], +1):
-                    self.log[player].insert(-1, p1.ability)
+                if len(p1.types) == 2:
+                    if self.add_rank(player, ind[p1.types[1]], +1):
+                        self.log[player].insert(-1, p1.ability)
+                elif len(p1.types) == 1:
+                    if self.add_rank(player, ind[p1.types[0]], +1):
+                        self.log[player].insert(-1, p1.ability)
             case "かぜのり":
                 if self.condition["oikaze"][0] and self.add_rank(player, 1, +1):
                     self.log[player].insert(-1, p1.ability)
@@ -3580,7 +3584,7 @@ class Battle:
                     p_obs.Ttype = self.pokemon[player].Ttype
                     p_obs.use_terastal()
 
-            ### ターン処理
+            # ターン処理
             self.protect = ""  # まもる系
             self.koraeru = False  # こらえる
             self.flinch = False  # ひるみ
