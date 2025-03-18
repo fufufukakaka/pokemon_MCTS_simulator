@@ -32,13 +32,6 @@ def load_trainers_from_json(filename):
         for td in data:
             raw_pokemons = []
             for p in td["pokemons"]:
-                # pokemon = Pokemon(p.get("name"))
-                # pokemon.item = p.get("item")
-                # pokemon.nature = p.get("nature")
-                # pokemon.ability = p.get("ability")
-                # pokemon.Ttype = p.get("Ttype")
-                # pokemon.moves = p.get("moves")
-                # pokemon.effort = p.get("effort")
                 raw_pokemons.append({
                     "name": p.get("name"),
                     "item": p.get("item"),
@@ -179,8 +172,8 @@ def main():
     # JSON ファイルからトレーナーデータを読み込む
     trainers = load_trainers_from_json("data/top_rankers/season_27.json")
 
-    # マッチングして対戦開始。全部で 20 回の対戦を行う
-    for _ in range(20):
+    # マッチングして対戦開始。全部で 100 回の対戦を行う
+    for _ in range(100):
         trainer_a, trainer_b = match_trainers(trainers)
         print(f"{trainer_a.name} vs {trainer_b.name} の対戦開始!")
 
