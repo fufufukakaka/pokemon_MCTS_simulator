@@ -101,10 +101,6 @@ class SimulatedBattle:
         battle.selected[1].append(team_b[1])
         battle.selected[1].append(team_b[2])
 
-        print([v.hp_ratio for v in battle.selected[0]])
-        print([v.hp_ratio for v in battle.selected[1]])
-        print(battle.log)
-
         while battle.winner() is None:
             battle.proceed()
 
@@ -113,8 +109,8 @@ class SimulatedBattle:
             for pl in [0, 1]:
                 self.log.append(f"Player {pl}: {battle.log[pl]}")
                 print(f"Player {pl}: {battle.log[pl]}")
-            print([v.hp_ratio for v in battle.selected[0]])
-            print([v.hp_ratio for v in battle.selected[1]])
+                print(f"Player {pl} pokemon HP list: {[v.hp_ratio for v in battle.selected[pl]]}")
+                print(f"Player {pl} field pokemon rank: {battle.pokemon[pl].rank}")
             print(battle.damage_log)
 
         self.log.append(f"勝者: Player {battle.winner()}")
@@ -180,7 +176,7 @@ def main():
         battle = SimulatedBattle(trainer_a, trainer_b)
         winner = battle.simulate_battle()
         print(f"勝者は {winner.name} です。")
-        battle.save_log()
+        # battle.save_log()
 
         # 対戦結果に応じた Elo レーティングの更新
         if winner == trainer_a:
