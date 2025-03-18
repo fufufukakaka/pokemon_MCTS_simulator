@@ -421,6 +421,13 @@ class Pokemon:
         elif self.ability == "しぜんかいふく":
             self.ailment = ""
 
+        # ふとうのけん, ふくつのたて はそのままにする
+        if self.ability == "ふとうのけん+":
+            return
+
+        if self.ability == "ふくつのたて+":
+            return
+
         if "ばけのかわ" not in self.ability:
             self.ability = self.__org_ability
 
