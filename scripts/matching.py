@@ -6,27 +6,10 @@ from src.database_handler import DatabaseHandler
 from src.mcts.mcts_battle import MyMCTSBattle
 from src.pokemon_battle_sim.pokemon import Pokemon
 
-
-# Trainer クラスの定義
-class Trainer:
-    def __init__(self, name, rank, rating, pokemons, raw_pokemons):
-        self.name = name
-        self.rank = rank
-        self.rating = rating
-        self.sim_rating = 1500
-        self.pokemons = pokemons  # 6体のポケモンリスト
-        self.raw_pokemons = raw_pokemons  # インスタンス化する前のポケモンリスト
-
-    def choose_team(self, team_size=3):
-        """6体からランダムに3体を選出"""
-        choiced_pokemons = random.sample(self.pokemons, team_size)
-        if len(choiced_pokemons) < team_size:
-            raise ValueError(f"選出ポケモンの数が足りません: {len(choiced_pokemons)}")
-        return choiced_pokemons
-
+from src.models import Trainer
 
 # JSON ファイルからトレーナーデータを読み込む関数
-def load_trainers_from_json(filename):
+def load_trainers_from_json(filename: str):
     trainers = []
     with open(filename, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -196,6 +179,9 @@ def main():
 
     database_handler = DatabaseHandler()
 
+    # トレーナーのレーティングを初期化
+    database_handler.create_rating_table(trainers)
+
     # マッチングして対戦開始。各プレイヤーごとに10回の対戦を行う
     for trainer_a in trainers:
         for _ in range(10):
@@ -227,7 +213,7 @@ def main():
                 f"更新後のレーティング: {trainer_a.name}: {trainer_a.sim_rating}, {trainer_b.name}: {trainer_b.sim_rating}"
             )
 
-            # DuckDB に対戦履歴とレーティングを保存する
+            # 対戦履歴とレーティングを保存する
             # 保存するとき、トレーナー名は 順位+名前 で保存する
             database_handler.insert_battle_history(
                 trainer_a_name=f"{trainer_a.rank}_{trainer_a.name}",
@@ -235,6 +221,14 @@ def main():
                 trainer_a_rating=trainer_a.sim_rating,
                 trainer_b_rating=trainer_b.sim_rating,
                 log_saved_time=saved_time,
+            )
+
+            # トレーナーのレーティングを更新する
+            database_handler.update_trainer_rating(
+                trainer_a.rank, trainer_a.sim_rating
+            )
+            database_handler.update_trainer_rating(
+                trainer_b.rank, trainer_b.sim_rating
             )
 
     # 全員の sim_rating と rating を表示

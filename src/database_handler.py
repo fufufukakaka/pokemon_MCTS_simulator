@@ -3,6 +3,8 @@ import os
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+from src.models import Trainer
+
 Base = declarative_base()
 
 POSTGRES_DB = os.getenv("POSTGRES_DB")
@@ -24,6 +26,14 @@ class BattleHistory(Base):
     trainer_a_rating = Column(Integer)
     trainer_b_rating = Column(Integer)
     log_saved_time = Column(String)
+
+
+class TrainerRating(Base):
+    __tablename__ = "trainer_rating"
+    id = Column(Integer, primary_key=True, index=True)
+    rank = Column(Integer)
+    name = Column(String)
+    sim_rating = Column(Integer)
 
 
 class DatabaseHandler:
@@ -54,4 +64,37 @@ class DatabaseHandler:
         )
         session.add(battle_history)
         session.commit()
+        session.close()
+
+    def create_rating_table(
+            self,
+            trainers: list[Trainer],
+            default_rating: int = 1500,
+    ):
+        """
+        truncate してから rank, name, rating(初期値 1500) を登録する
+        """
+        session = self.get_session()
+        session.query(TrainerRating).delete()
+        session.commit()
+
+        for trainer in trainers:
+            trainer_rating = TrainerRating(
+                rank=trainer.rank,
+                name=trainer.name,
+                sim_rating=default_rating,
+            )
+            session.add(trainer_rating)
+        session.commit()
+        session.close()
+
+    def update_trainer_rating(self, rank: int, rating: int):
+        """
+        rank に対応するトレーナーの rating を更新する
+        """
+        session = self.get_session()
+        trainer = session.query(TrainerRating).filter_by(rank=rank).first()
+        if trainer:
+            trainer.sim_rating = rating
+            session.commit()
         session.close()
