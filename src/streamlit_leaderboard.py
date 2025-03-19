@@ -3,10 +3,7 @@ import pandas as pd
 import altair as alt
 from datetime import datetime, timezone
 
-"""
-今回は簡略化のために database_handler をベタ書きする
-"""
-
+# 今回は簡略化のために database_handler をベタ書きする
 import os
 
 from sqlalchemy import Column, Integer, String, create_engine
