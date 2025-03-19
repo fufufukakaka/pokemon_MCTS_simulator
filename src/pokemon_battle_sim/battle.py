@@ -2409,7 +2409,7 @@ class Battle:
                     "マイペース",
                 ]:
                     self.log[player2].append(f"いかく無効 {p2.ability}")
-                elif self.add_rank(player2, 1, -1, by_enemy=True):
+                elif 'いかく' not in self.log[player] and self.add_rank(player2, 1, -1, by_enemy=True):
                     self.log[player].append(p1.ability)
             case "おもかげやどし":
                 ind = {"くさ": 5, "ほのお": 1, "みず": 4, "いわ": 2}
@@ -5042,18 +5042,17 @@ class Battle:
                                                 f"追加効果 {self.pokemon[player].item}奪取"
                                             )
                                     case "はたきおとす":
-                                        # 特殊アイテムは対象にならない
-                                        if item in [
-                                            "かまどのめん",
-                                            "いしずえのめん",
-                                            "いどのめん",
-                                            "くちたけん",
-                                            "くちたたて",
-                                            "だいはっきんだま"
-                                        ]:
-                                            return
-
                                         if self.pokemon[player2].item:
+                                            # 特殊アイテムは対象にならない
+                                            if self.pokemon[player2].item in [
+                                                "かまどのめん",
+                                                "いしずえのめん",
+                                                "いどのめん",
+                                                "くちたけん",
+                                                "くちたたて",
+                                                "だいはっきんだま"
+                                            ]:
+                                                return
                                             self.log[player].append(
                                                 f"追加効果 {self.pokemon[player2].item}消失"
                                             )
