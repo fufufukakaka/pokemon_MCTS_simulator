@@ -2,6 +2,7 @@ import datetime
 import json
 import random
 
+from src.database_handler import DatabaseHandler
 from src.mcts.mcts_battle import MyMCTSBattle
 from src.pokemon_battle_sim.pokemon import Pokemon
 
@@ -32,15 +33,17 @@ def load_trainers_from_json(filename):
         for td in data:
             raw_pokemons = []
             for p in td["pokemons"]:
-                raw_pokemons.append({
-                    "name": p.get("name"),
-                    "item": p.get("item"),
-                    "nature": p.get("nature"),
-                    "ability": p.get("ability"),
-                    "Ttype": p.get("Ttype"),
-                    "moves": p.get("moves"),
-                    "effort": p.get("effort"),
-                })
+                raw_pokemons.append(
+                    {
+                        "name": p.get("name"),
+                        "item": p.get("item"),
+                        "nature": p.get("nature"),
+                        "ability": p.get("ability"),
+                        "Ttype": p.get("Ttype"),
+                        "moves": p.get("moves"),
+                        "effort": p.get("effort"),
+                    }
+                )
             trainer = Trainer(
                 name=td.get("name"),
                 rank=td.get("rank"),
@@ -109,25 +112,47 @@ class SimulatedBattle:
             for pl in [0, 1]:
                 self.log.append(f"Player {pl}: {battle.log[pl]}")
                 print(f"Player {pl}: {battle.log[pl]}")
-                print(f"Player {pl} pokemon HP list: {[v.hp_ratio for v in battle.selected[pl]]}")
+                print(
+                    f"Player {pl} pokemon HP list: {[v.hp_ratio for v in battle.selected[pl]]}"
+                )
                 print(f"Player {pl} field pokemon rank: {battle.pokemon[pl].rank}")
+
+                # if (
+                #     battle.turn == 0
+                #     and sum([v.hp_ratio for v in battle.selected[pl]]) < 3
+                # ):
+                #     # 開始時に HP が満タンでないポケモンがいる場合の調査
+                #     import os
+
+                #     os.system(
+                #         "osascript -e 'display notification \"ポケモンシミュレータ_HP総量がリセットされていないケースを発見しました\"'"
+                #     )
+                #     import pdb
+
+                #     pdb.set_trace()
+
             print(battle.damage_log)
 
-        self.log.append(f"勝者: Player {battle.winner()}")
+        winner = battle.winner()
+        self.log.append(f"勝者: Player {winner}")
 
-        return self.trainer_a if battle.winner() == 0 else self.trainer_b
+        # トレーナーのポケモンをすべてリセット
+        self.trainer_a.pokemons = []
+        self.trainer_b.pokemons = []
+
+        return self.trainer_a if winner == 0 else self.trainer_b
 
     def save_log(self):
-        filename = (
-            f"logs/battle_log_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-        )
+        saved_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"logs/battle_log_{saved_time}.txt"
         with open(filename, "w", encoding="utf-8") as f:
             for entry in self.log:
                 f.write(entry + "\n")
         print(f"ログを {filename} に保存しました。")
+        return saved_time
 
 
-def match_trainers(trainers, threshold=50):
+def match_trainers(trainers, trainer_a=None, threshold=50):
     """
     trainers は Trainer クラスのインスタンスリスト（各インスタンスは sim_rating を rating 属性に持つ）
     threshold は対戦可能とみなすレーティング差の上限
@@ -136,7 +161,8 @@ def match_trainers(trainers, threshold=50):
         return None  # 対戦できるトレーナーがいない場合
 
     # 1人のトレーナーをランダムに選ぶ
-    trainer_a = random.choice(trainers)
+    if trainer_a is None:
+        trainer_a = random.choice(trainers)
 
     # trainer_a と rating 差が threshold 以内の候補リストを作成
     candidates = [
@@ -168,35 +194,48 @@ def main():
     # JSON ファイルからトレーナーデータを読み込む
     trainers = load_trainers_from_json("data/top_rankers/season_27.json")
 
-    # マッチングして対戦開始。全部で 100 回の対戦を行う
-    for _ in range(100):
-        trainer_a, trainer_b = match_trainers(trainers)
-        print(f"{trainer_a.name} vs {trainer_b.name} の対戦開始!")
+    database_handler = DatabaseHandler()
 
-        battle = SimulatedBattle(trainer_a, trainer_b)
-        winner = battle.simulate_battle()
-        print(f"勝者は {winner.name} です。")
-        # battle.save_log()
+    # マッチングして対戦開始。各プレイヤーごとに10回の対戦を行う
+    for trainer_a in trainers:
+        for _ in range(10):
+            trainer_a, trainer_b = match_trainers(trainers, trainer_a)
+            print(f"{trainer_a.name} vs {trainer_b.name} の対戦開始!")
 
-        # 対戦結果に応じた Elo レーティングの更新
-        if winner == trainer_a:
-            trainer_a.sim_rating = update_elo(
-                trainer_a.sim_rating, trainer_b.sim_rating, 1
-            )
-            trainer_b.sim_rating = update_elo(
-                trainer_b.sim_rating, trainer_a.sim_rating, 0
-            )
-        else:
-            trainer_a.sim_rating = update_elo(
-                trainer_a.sim_rating, trainer_b.sim_rating, 0
-            )
-            trainer_b.sim_rating = update_elo(
-                trainer_b.sim_rating, trainer_a.sim_rating, 1
+            battle = SimulatedBattle(trainer_a, trainer_b)
+            winner = battle.simulate_battle()
+            print(f"勝者は {winner.name} です。")
+            saved_time = battle.save_log()
+
+            # 対戦結果に応じた Elo レーティングの更新
+            if winner == trainer_a:
+                trainer_a.sim_rating = update_elo(
+                    trainer_a.sim_rating, trainer_b.sim_rating, 1
+                )
+                trainer_b.sim_rating = update_elo(
+                    trainer_b.sim_rating, trainer_a.sim_rating, 0
+                )
+            else:
+                trainer_a.sim_rating = update_elo(
+                    trainer_a.sim_rating, trainer_b.sim_rating, 0
+                )
+                trainer_b.sim_rating = update_elo(
+                    trainer_b.sim_rating, trainer_a.sim_rating, 1
+                )
+
+            print(
+                f"更新後のレーティング: {trainer_a.name}: {trainer_a.sim_rating}, {trainer_b.name}: {trainer_b.sim_rating}"
             )
 
-        print(
-            f"更新後のレーティング: {trainer_a.name}: {trainer_a.sim_rating}, {trainer_b.name}: {trainer_b.sim_rating}"
-        )
+            # DuckDB に対戦履歴とレーティングを保存する
+            # 保存するとき、トレーナー名は 順位+名前 で保存する
+            database_handler.insert_battle_history(
+                trainer_a_name=f"{trainer_a.rank}_{trainer_a.name}",
+                trainer_b_name=f"{trainer_b.rank}_{trainer_b.name}",
+                trainer_a_rating=trainer_a.sim_rating,
+                trainer_b_rating=trainer_b.sim_rating,
+                log_saved_time=saved_time,
+            )
 
     # 全員の sim_rating と rating を表示
     for trainer in trainers:
