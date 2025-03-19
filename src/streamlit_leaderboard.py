@@ -195,4 +195,3 @@ else:
 # Footer
 st.markdown("---")
 st.markdown("*Last updated: {}*".format(datetime.now().astimezone(pytz.timezone('Asia/Tokyo')).strftime("%Y-%m-%d %H:%M:%S")))
-st.markdown("*Last updated: {}*".format(datetime.now().astimezone(timezone('Asia/Tokyo')).strftime("%Y-%m-%d %H:%M:%S")))
