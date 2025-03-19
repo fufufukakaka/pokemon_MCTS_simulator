@@ -5042,6 +5042,17 @@ class Battle:
                                                 f"追加効果 {self.pokemon[player].item}奪取"
                                             )
                                     case "はたきおとす":
+                                        # 特殊アイテムは対象にならない
+                                        if item in [
+                                            "かまどのめん",
+                                            "いしずえのめん",
+                                            "いどのめん",
+                                            "くちたけん",
+                                            "くちたたて",
+                                            "だいはっきんだま"
+                                        ]:
+                                            return
+
                                         if self.pokemon[player2].item:
                                             self.log[player].append(
                                                 f"追加効果 {self.pokemon[player2].item}消失"
