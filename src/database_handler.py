@@ -137,3 +137,29 @@ class DatabaseHandler:
         battle_history = session.query(BattleHistory).all()
         session.close()
         return battle_history
+
+    def get_leaderboard_data(self) -> list[dict]:
+        """
+        トレーナーのレーティングをレーティングの高い順にソートして返す
+        レーダーボード表示に適したデータ構造で返す
+        """
+        session = self.get_session()
+        trainer_ratings = (
+            session.query(TrainerRating).order_by(TrainerRating.sim_rating.desc()).all()
+        )
+        leaderboard = []
+        position = 1
+
+        for trainer in trainer_ratings:
+            leaderboard.append(
+                {
+                    "position": position,
+                    "rank": trainer.rank,
+                    "name": trainer.name,
+                    "rating": trainer.sim_rating,
+                }
+            )
+            position += 1
+
+        session.close()
+        return leaderboard
