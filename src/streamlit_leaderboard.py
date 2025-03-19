@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-from datetime import datetime, timezone
+from datetime import datetime
+import pytz
 
 # 今回は簡略化のために database_handler をベタ書きする
 import os
@@ -193,5 +194,5 @@ else:
 
 # Footer
 st.markdown("---")
-# datetime is JST format
+st.markdown("*Last updated: {}*".format(datetime.now().astimezone(pytz.timezone('Asia/Tokyo')).strftime("%Y-%m-%d %H:%M:%S")))
 st.markdown("*Last updated: {}*".format(datetime.now().astimezone(timezone('Asia/Tokyo')).strftime("%Y-%m-%d %H:%M:%S")))
