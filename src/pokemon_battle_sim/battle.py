@@ -2412,6 +2412,7 @@ class Battle:
                 elif 'いかく' not in self.log[player] and self.add_rank(player2, 1, -1, by_enemy=True):
                     self.log[player].append(p1.ability)
             case "おもかげやどし":
+                p1.ability += "+"
                 ind = {"くさ": 5, "ほのお": 1, "みず": 4, "いわ": 2}
                 if len(p1.types) == 2:
                     if self.add_rank(player, ind[p1.types[1]], +1):

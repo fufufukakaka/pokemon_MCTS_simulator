@@ -428,6 +428,10 @@ class Pokemon:
         if self.ability == "ふくつのたて+":
             return
 
+        # おもかげやどしはリセット
+        if self.ability == "おもかげやどし+":
+            self.ability = "おもかげやどし"
+
         if "ばけのかわ" not in self.ability:
             self.ability = self.__org_ability
 
