@@ -3,7 +3,91 @@ import pandas as pd
 import altair as alt
 from datetime import datetime, timezone
 
-from src.database_handler import DatabaseHandler
+"""
+今回は簡略化のために database_handler をベタ書きする
+"""
+
+import os
+
+from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+Base = declarative_base()
+
+POSTGRES_DB = os.getenv("POSTGRES_DB")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+DATABASE_URL = (
+    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:"
+    f"{POSTGRES_PORT}/{POSTGRES_DB}"
+)
+
+
+class BattleHistory(Base):
+    __tablename__ = "battle_history"
+    id = Column(Integer, primary_key=True, index=True)
+    trainer_a_name = Column(String)
+    trainer_b_name = Column(String)
+    trainer_a_rating = Column(Integer)
+    trainer_b_rating = Column(Integer)
+    log_saved_time = Column(String)
+
+
+class TrainerRating(Base):
+    __tablename__ = "trainer_rating"
+    id = Column(Integer, primary_key=True, index=True)
+    rank = Column(Integer)
+    name = Column(String)
+    sim_rating = Column(Integer)
+
+
+class DatabaseHandler:
+    def __init__(self):
+        self.engine = create_engine(DATABASE_URL)
+        self.SessionLocal = sessionmaker(
+            autocommit=False, autoflush=False, bind=self.engine
+        )
+
+    def get_session(self):
+        return self.SessionLocal()
+
+    def load_battle_history(self) -> list[BattleHistory]:
+        """
+        対戦履歴をデータベースから取得する
+        """
+        session = self.get_session()
+        battle_history = session.query(BattleHistory).all()
+        session.close()
+        return battle_history
+
+    def get_leaderboard_data(self) -> list[dict]:
+        """
+        トレーナーのレーティングをレーティングの高い順にソートして返す
+        レーダーボード表示に適したデータ構造で返す
+        """
+        session = self.get_session()
+        trainer_ratings = (
+            session.query(TrainerRating).order_by(TrainerRating.sim_rating.desc()).all()
+        )
+        leaderboard = []
+        position = 1
+
+        for trainer in trainer_ratings:
+            leaderboard.append(
+                {
+                    "position": position,
+                    "rank": trainer.rank,
+                    "name": trainer.name,
+                    "rating": trainer.sim_rating,
+                }
+            )
+            position += 1
+
+        session.close()
+        return leaderboard
+
 
 # Set page configuration
 st.set_page_config(
