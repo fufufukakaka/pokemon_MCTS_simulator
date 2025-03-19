@@ -46,6 +46,15 @@ class DatabaseHandler:
     def get_session(self):
         return self.SessionLocal()
 
+    def initialize_battle_history(self):
+        """
+        対戦履歴テーブルを truncate する
+        """
+        session = self.get_session()
+        session.query(BattleHistory).delete()
+        session.commit()
+        session.close()
+
     def insert_battle_history(
         self,
         trainer_a_name: str,
@@ -67,9 +76,9 @@ class DatabaseHandler:
         session.close()
 
     def create_rating_table(
-            self,
-            trainers: list[Trainer],
-            default_rating: int = 1500,
+        self,
+        trainers: list[Trainer],
+        default_rating: int = 1500,
     ):
         """
         truncate してから rank, name, rating(初期値 1500) を登録する
@@ -98,3 +107,33 @@ class DatabaseHandler:
             trainer.sim_rating = rating
             session.commit()
         session.close()
+
+    def load_trainer_ratings(self) -> list[Trainer]:
+        """
+        トレーナーのレーティングをデータベースから取得する
+        """
+        session = self.get_session()
+        trainer_ratings = (
+            session.query(TrainerRating).order_by(TrainerRating.rank).all()
+        )
+        trainers = [
+            Trainer(
+                name=trainer.name,
+                rank=trainer.rank,
+                rating=trainer.sim_rating,
+                pokemons=[],
+                raw_pokemons=[],
+            )
+            for trainer in trainer_ratings
+        ]
+        session.close()
+        return trainers
+
+    def load_battle_history(self) -> list[BattleHistory]:
+        """
+        対戦履歴をデータベースから取得する
+        """
+        session = self.get_session()
+        battle_history = session.query(BattleHistory).all()
+        session.close()
+        return battle_history

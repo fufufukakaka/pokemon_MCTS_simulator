@@ -2,11 +2,14 @@ import datetime
 import json
 import random
 
+import click
+
 from src.database_handler import DatabaseHandler
+from src.models import Trainer
 from src.mcts.mcts_battle import MyMCTSBattle
+from src.notify_discord import send_discord_notification
 from src.pokemon_battle_sim.pokemon import Pokemon
 
-from src.models import Trainer
 
 # JSON ファイルからトレーナーデータを読み込む関数
 def load_trainers_from_json(filename: str):
@@ -135,7 +138,7 @@ class SimulatedBattle:
         return saved_time
 
 
-def match_trainers(trainers, trainer_a=None, threshold=50):
+def match_trainers(trainers, trainer_a=None, threshold=50, random_battle=False):
     """
     trainers は Trainer クラスのインスタンスリスト（各インスタンスは sim_rating を rating 属性に持つ）
     threshold は対戦可能とみなすレーティング差の上限
@@ -146,6 +149,11 @@ def match_trainers(trainers, trainer_a=None, threshold=50):
     # 1人のトレーナーをランダムに選ぶ
     if trainer_a is None:
         trainer_a = random.choice(trainers)
+
+    if random_battle:
+        # trainer_a を除いたトレーナーの中からランダムに trainer_b を選ぶ
+        trainer_b = random.choice([t for t in trainers if t != trainer_a])
+        return trainer_a, trainer_b
 
     # trainer_a と rating 差が threshold 以内の候補リストを作成
     candidates = [
@@ -173,63 +181,108 @@ def update_elo(rating_a, rating_b, result_a, K=32):
     return new_rating_a
 
 
-def main():
+def pokemon_battle(database_handler: DatabaseHandler, trainers: list[Trainer], trainer_a: Trainer, random_battle: bool = False):
+    trainer_a, trainer_b = match_trainers(trainers, trainer_a, random_battle=random_battle)
+    print(f"{trainer_a.name} vs {trainer_b.name} の対戦開始!")
+
+    battle = SimulatedBattle(trainer_a, trainer_b)
+    winner = battle.simulate_battle()
+    print(f"勝者は {winner.name} です。")
+    saved_time = battle.save_log()
+
+    # 対戦結果に応じた Elo レーティングの更新
+    if winner == trainer_a:
+        trainer_a.sim_rating = update_elo(
+            trainer_a.sim_rating, trainer_b.sim_rating, 1
+        )
+        trainer_b.sim_rating = update_elo(
+            trainer_b.sim_rating, trainer_a.sim_rating, 0
+        )
+    else:
+        trainer_a.sim_rating = update_elo(
+            trainer_a.sim_rating, trainer_b.sim_rating, 0
+        )
+        trainer_b.sim_rating = update_elo(
+            trainer_b.sim_rating, trainer_a.sim_rating, 1
+        )
+
+    print(
+        f"更新後のレーティング: {trainer_a.name}: {trainer_a.sim_rating}, {trainer_b.name}: {trainer_b.sim_rating}"
+    )
+
+    # 対戦履歴とレーティングを保存する
+    # 保存するとき、トレーナー名は 順位+名前 で保存する
+    database_handler.insert_battle_history(
+        trainer_a_name=f"{trainer_a.rank}_{trainer_a.name}",
+        trainer_b_name=f"{trainer_b.rank}_{trainer_b.name}",
+        trainer_a_rating=trainer_a.sim_rating,
+        trainer_b_rating=trainer_b.sim_rating,
+        log_saved_time=saved_time,
+    )
+
+    # トレーナーのレーティングを更新する
+    database_handler.update_trainer_rating(trainer_a.rank, trainer_a.sim_rating)
+    database_handler.update_trainer_rating(trainer_b.rank, trainer_b.sim_rating)
+
+
+@click.command()
+# 途中から再開するオプション
+@click.option(
+    "--resume",
+    is_flag=True,
+    help="Resume the simulation from the last saved state.",
+)
+def main(resume: bool):
+    max_battle_count = 10
+
     # JSON ファイルからトレーナーデータを読み込む
     trainers = load_trainers_from_json("data/top_rankers/season_27.json")
 
     database_handler = DatabaseHandler()
 
-    # トレーナーのレーティングを初期化
-    database_handler.create_rating_table(trainers)
+    if resume:
+        # トレーナーのレーティングをデータベースから取得する
+        trainer_ratings = database_handler.load_trainer_ratings()
+        for trainer in trainers:
+            for tr in trainer_ratings:
+                if trainer.rank == tr.rank:
+                    trainer.sim_rating = tr.sim_rating
+    else:
+        # トレーナーのレーティングを初期化
+        database_handler.create_rating_table(trainers)
+        # 対戦履歴を初期化
+        database_handler.initialize_battle_history()
+
+    # 対戦の履歴を取得する
+    battle_history = database_handler.load_battle_history()
+    # トレーナーごとの対戦回数をカウント
+    battle_count = {}
+    for bh in battle_history:
+        if bh.trainer_a_name not in battle_count:
+            battle_count[bh.trainer_a_name] = 0
+        battle_count[bh.trainer_a_name] += 1
 
     # マッチングして対戦開始。各プレイヤーごとに10回の対戦を行う
     for trainer_a in trainers:
-        for _ in range(10):
-            trainer_a, trainer_b = match_trainers(trainers, trainer_a)
-            print(f"{trainer_a.name} vs {trainer_b.name} の対戦開始!")
-
-            battle = SimulatedBattle(trainer_a, trainer_b)
-            winner = battle.simulate_battle()
-            print(f"勝者は {winner.name} です。")
-            saved_time = battle.save_log()
-
-            # 対戦結果に応じた Elo レーティングの更新
-            if winner == trainer_a:
-                trainer_a.sim_rating = update_elo(
-                    trainer_a.sim_rating, trainer_b.sim_rating, 1
-                )
-                trainer_b.sim_rating = update_elo(
-                    trainer_b.sim_rating, trainer_a.sim_rating, 0
-                )
-            else:
-                trainer_a.sim_rating = update_elo(
-                    trainer_a.sim_rating, trainer_b.sim_rating, 0
-                )
-                trainer_b.sim_rating = update_elo(
-                    trainer_b.sim_rating, trainer_a.sim_rating, 1
-                )
-
-            print(
-                f"更新後のレーティング: {trainer_a.name}: {trainer_a.sim_rating}, {trainer_b.name}: {trainer_b.sim_rating}"
+        # 対戦回数が10回以上のトレーナーはスキップ
+        battle_count_key = f"{trainer_a.rank}_{trainer_a.name}"
+        resumed_battle_count = battle_count.get(battle_count_key, 0)
+        if resumed_battle_count >= 10:
+            print(f"{battle_count_key} はすでに対戦済みです。")
+            continue
+        
+        # 対戦回数が10回未満のトレーナーは対戦を行う
+        for _ in range(max_battle_count - resumed_battle_count):
+            pokemon_battle(
+                database_handler=database_handler,
+                trainers=trainers,
+                trainer_a=trainer_a,
+                random_battle=True,
             )
 
-            # 対戦履歴とレーティングを保存する
-            # 保存するとき、トレーナー名は 順位+名前 で保存する
-            database_handler.insert_battle_history(
-                trainer_a_name=f"{trainer_a.rank}_{trainer_a.name}",
-                trainer_b_name=f"{trainer_b.rank}_{trainer_b.name}",
-                trainer_a_rating=trainer_a.sim_rating,
-                trainer_b_rating=trainer_b.sim_rating,
-                log_saved_time=saved_time,
-            )
-
-            # トレーナーのレーティングを更新する
-            database_handler.update_trainer_rating(
-                trainer_a.rank, trainer_a.sim_rating
-            )
-            database_handler.update_trainer_rating(
-                trainer_b.rank, trainer_b.sim_rating
-            )
+        send_discord_notification(
+            f"🔥{trainer_a.name} の対戦がすべて終了しました🎱"
+        )
 
     # 全員の sim_rating と rating を表示
     for trainer in trainers:
@@ -239,4 +292,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")
+        send_discord_notification("🔥ポケモンシミュレータでエラーが起きています🎱")
