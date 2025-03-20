@@ -3,6 +3,8 @@ import os
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+from src.models import Trainer
+
 Base = declarative_base()
 
 POSTGRES_DB = os.getenv("POSTGRES_DB")
@@ -26,6 +28,14 @@ class BattleHistory(Base):
     log_saved_time = Column(String)
 
 
+class TrainerRating(Base):
+    __tablename__ = "trainer_rating"
+    id = Column(Integer, primary_key=True, index=True)
+    rank = Column(Integer)
+    name = Column(String)
+    sim_rating = Column(Integer)
+
+
 class DatabaseHandler:
     def __init__(self):
         self.engine = create_engine(DATABASE_URL)
@@ -35,6 +45,15 @@ class DatabaseHandler:
 
     def get_session(self):
         return self.SessionLocal()
+
+    def initialize_battle_history(self):
+        """
+        対戦履歴テーブルを truncate する
+        """
+        session = self.get_session()
+        session.query(BattleHistory).delete()
+        session.commit()
+        session.close()
 
     def insert_battle_history(
         self,
@@ -55,3 +74,92 @@ class DatabaseHandler:
         session.add(battle_history)
         session.commit()
         session.close()
+
+    def create_rating_table(
+        self,
+        trainers: list[Trainer],
+        default_rating: int = 1500,
+    ):
+        """
+        truncate してから rank, name, rating(初期値 1500) を登録する
+        """
+        session = self.get_session()
+        session.query(TrainerRating).delete()
+        session.commit()
+
+        for trainer in trainers:
+            trainer_rating = TrainerRating(
+                rank=trainer.rank,
+                name=trainer.name,
+                sim_rating=default_rating,
+            )
+            session.add(trainer_rating)
+        session.commit()
+        session.close()
+
+    def update_trainer_rating(self, rank: int, rating: int):
+        """
+        rank に対応するトレーナーの rating を更新する
+        """
+        session = self.get_session()
+        trainer = session.query(TrainerRating).filter_by(rank=rank).first()
+        if trainer:
+            trainer.sim_rating = rating
+            session.commit()
+        session.close()
+
+    def load_trainer_ratings(self) -> list[Trainer]:
+        """
+        トレーナーのレーティングをデータベースから取得する
+        """
+        session = self.get_session()
+        trainer_ratings = (
+            session.query(TrainerRating).order_by(TrainerRating.rank).all()
+        )
+        trainers = [
+            Trainer(
+                name=trainer.name,
+                rank=trainer.rank,
+                rating=trainer.sim_rating,
+                pokemons=[],
+                raw_pokemons=[],
+            )
+            for trainer in trainer_ratings
+        ]
+        session.close()
+        return trainers
+
+    def load_battle_history(self) -> list[BattleHistory]:
+        """
+        対戦履歴をデータベースから取得する
+        """
+        session = self.get_session()
+        battle_history = session.query(BattleHistory).all()
+        session.close()
+        return battle_history
+
+    def get_leaderboard_data(self) -> list[dict]:
+        """
+        トレーナーのレーティングをレーティングの高い順にソートして返す
+        レーダーボード表示に適したデータ構造で返す
+        """
+        session = self.get_session()
+        trainer_ratings = (
+            session.query(TrainerRating).order_by(TrainerRating.sim_rating.desc()).all()
+        )
+        leaderboard = []
+        position = 1
+
+        for trainer in trainer_ratings:
+            leaderboard.append(
+                {
+                    "position": position,
+                    "rank": trainer.rank,
+                    "name": trainer.name,
+                    "rating": trainer.sim_rating,
+                }
+            )
+            position += 1
+
+        session.close()
+        return leaderboard
