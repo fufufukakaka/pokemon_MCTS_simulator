@@ -25,6 +25,7 @@ class BattleHistory(Base):
     trainer_b_name = Column(String)
     trainer_a_rating = Column(Integer)
     trainer_b_rating = Column(Integer)
+    winner_name = Column(String)
     log_saved_time = Column(String)
 
 
@@ -61,6 +62,7 @@ class DatabaseHandler:
         trainer_b_name: str,
         trainer_a_rating: int,
         trainer_b_rating: int,
+        winner_name: str,
         log_saved_time: str,
     ):
         session = self.get_session()
@@ -69,6 +71,7 @@ class DatabaseHandler:
             trainer_b_name=trainer_b_name,
             trainer_a_rating=trainer_a_rating,
             trainer_b_rating=trainer_b_rating,
+            winner_name=winner_name,
             log_saved_time=log_saved_time,
         )
         session.add(battle_history)
