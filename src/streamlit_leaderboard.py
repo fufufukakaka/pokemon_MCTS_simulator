@@ -30,6 +30,7 @@ class BattleHistory(Base):
     trainer_b_name = Column(String)
     trainer_a_rating = Column(Integer)
     trainer_b_rating = Column(Integer)
+    winner_name = Column(String)
     log_saved_time = Column(String)
 
 
@@ -179,6 +180,7 @@ if not df_leaderboard.empty:
                     "Rating A": battle.trainer_a_rating,
                     "Trainer B": battle.trainer_b_name,
                     "Rating B": battle.trainer_b_rating,
+                    "Winner Name": battle.winner_name,
                     "Time": battle.log_saved_time,
                 }
             )

@@ -217,7 +217,7 @@ def pokemon_battle(database_handler: DatabaseHandler, trainers: list[Trainer], t
         trainer_b_name=f"{trainer_b.rank}_{trainer_b.name}",
         trainer_a_rating=trainer_a.sim_rating,
         trainer_b_rating=trainer_b.sim_rating,
-        winner_name=winner.name,
+        winner_name=f"{winner.rank}_{winner.name}",
         log_saved_time=saved_time,
     )
 
