@@ -90,6 +90,14 @@ class SimulatedBattle:
         battle.selected[1].append(team_b[1])
         battle.selected[1].append(team_b[2])
 
+        self.log.append(f"Player 0: {self.trainer_a.name} vs Player 1: {self.trainer_b.name}")
+        self.log.append(
+            f"Player 0 team: {[p.name for p in battle.selected[0]]}"
+        )
+        self.log.append(
+            f"Player 1 team: {[p.name for p in battle.selected[1]]}"
+        )
+
         while battle.winner() is None:
             battle.proceed()
 
@@ -98,6 +106,7 @@ class SimulatedBattle:
             for pl in [0, 1]:
                 self.log.append(f"Player {pl}: {battle.log[pl]}")
                 print(f"Player {pl}: {battle.log[pl]}")
+            for pl in [0, 1]:
                 print(
                     f"Player {pl} pokemon HP list: {[v.hp_ratio for v in battle.selected[pl]]}"
                 )
@@ -120,7 +129,7 @@ class SimulatedBattle:
             print(battle.damage_log)
 
         winner = battle.winner()
-        self.log.append(f"勝者: Player {winner}")
+        self.log.append(f"勝者: Player {winner}, {self.trainer_a.name if winner == 0 else self.trainer_b.name}")
 
         # トレーナーのポケモンをすべてリセット
         self.trainer_a.pokemons = []
