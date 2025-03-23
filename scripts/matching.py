@@ -5,8 +5,8 @@ import random
 import click
 
 from src.database_handler import DatabaseHandler
-from src.models import Trainer
 from src.mcts.mcts_battle import MyMCTSBattle
+from src.models import Trainer
 from src.notify_discord import send_discord_notification
 from src.pokemon_battle_sim.pokemon import Pokemon
 
@@ -90,13 +90,11 @@ class SimulatedBattle:
         battle.selected[1].append(team_b[1])
         battle.selected[1].append(team_b[2])
 
-        self.log.append(f"Player 0: {self.trainer_a.name} vs Player 1: {self.trainer_b.name}")
         self.log.append(
-            f"Player 0 team: {[p.name for p in self.trainer_a.pokemons]}"
+            f"Player 0: {self.trainer_a.name} vs Player 1: {self.trainer_b.name}"
         )
-        self.log.append(
-            f"Player 1 team: {[p.name for p in self.trainer_b.pokemons]}"
-        )
+        self.log.append(f"Player 0 team: {[p.name for p in self.trainer_a.pokemons]}")
+        self.log.append(f"Player 1 team: {[p.name for p in self.trainer_b.pokemons]}")
 
         while battle.winner() is None:
             battle.proceed()
@@ -129,7 +127,9 @@ class SimulatedBattle:
             print(battle.damage_log)
 
         winner = battle.winner()
-        self.log.append(f"勝者: Player {winner}, {self.trainer_a.name if winner == 0 else self.trainer_b.name}")
+        self.log.append(
+            f"勝者: Player {winner}, {self.trainer_a.name if winner == 0 else self.trainer_b.name}"
+        )
 
         # トレーナーのポケモンをすべてリセット
         self.trainer_a.pokemons = []
@@ -190,8 +190,15 @@ def update_elo(rating_a, rating_b, result_a, K=32):
     return new_rating_a
 
 
-def pokemon_battle(database_handler: DatabaseHandler, trainers: list[Trainer], trainer_a: Trainer, random_battle: bool = False):
-    trainer_a, trainer_b = match_trainers(trainers, trainer_a, random_battle=random_battle)
+def pokemon_battle(
+    database_handler: DatabaseHandler,
+    trainers: list[Trainer],
+    trainer_a: Trainer,
+    random_battle: bool = False,
+):
+    trainer_a, trainer_b = match_trainers(
+        trainers, trainer_a, random_battle=random_battle
+    )
     print(f"{trainer_a.name} vs {trainer_b.name} の対戦開始!")
 
     battle = SimulatedBattle(trainer_a, trainer_b)
@@ -201,19 +208,16 @@ def pokemon_battle(database_handler: DatabaseHandler, trainers: list[Trainer], t
 
     # 対戦結果に応じた Elo レーティングの更新
     if winner == trainer_a:
-        trainer_a.sim_rating = update_elo(
-            trainer_a.sim_rating, trainer_b.sim_rating, 1
-        )
-        trainer_b.sim_rating = update_elo(
-            trainer_b.sim_rating, trainer_a.sim_rating, 0
-        )
+        result_a, result_b = 1, 0
     else:
-        trainer_a.sim_rating = update_elo(
-            trainer_a.sim_rating, trainer_b.sim_rating, 0
-        )
-        trainer_b.sim_rating = update_elo(
-            trainer_b.sim_rating, trainer_a.sim_rating, 1
-        )
+        result_a, result_b = 0, 1
+
+    # ここで一旦、更新前のレーティングを変数に保持する
+    rating_a_old = trainer_a.sim_rating
+    rating_b_old = trainer_b.sim_rating
+
+    trainer_a.sim_rating = update_elo(rating_a_old, rating_b_old, result_a)
+    trainer_b.sim_rating = update_elo(rating_b_old, rating_a_old, result_b)
 
     print(
         f"更新後のレーティング: {trainer_a.name}: {trainer_a.sim_rating}, {trainer_b.name}: {trainer_b.sim_rating}"
@@ -280,7 +284,7 @@ def main(resume: bool):
         if resumed_battle_count >= 10:
             print(f"{battle_count_key} はすでに対戦済みです。")
             continue
-        
+
         # 対戦回数が10回未満のトレーナーは対戦を行う
         for _ in range(max_battle_count - resumed_battle_count):
             pokemon_battle(
@@ -290,9 +294,7 @@ def main(resume: bool):
                 random_battle=True,
             )
 
-        send_discord_notification(
-            f"🔥{trainer_a.name} の対戦がすべて終了しました🎱"
-        )
+        send_discord_notification(f"🔥{trainer_a.name} の対戦がすべて終了しました🎱")
 
     # 全員の sim_rating と rating を表示
     for trainer in trainers:
