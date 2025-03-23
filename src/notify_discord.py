@@ -1,7 +1,9 @@
 import os
+
 import requests
 
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+
 
 def send_discord_notification(message: str):
     data = {"content": message}
