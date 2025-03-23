@@ -92,10 +92,10 @@ class SimulatedBattle:
 
         self.log.append(f"Player 0: {self.trainer_a.name} vs Player 1: {self.trainer_b.name}")
         self.log.append(
-            f"Player 0 team: {[p.name for p in battle.selected[0]]}"
+            f"Player 0 team: {[p.name for p in self.trainer_a.pokemons]}"
         )
         self.log.append(
-            f"Player 1 team: {[p.name for p in battle.selected[1]]}"
+            f"Player 1 team: {[p.name for p in self.trainer_b.pokemons]}"
         )
 
         while battle.winner() is None:
