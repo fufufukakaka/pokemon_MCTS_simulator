@@ -2411,6 +2411,7 @@ class Battle:
                     self.log[player2].append(f"いかく無効 {p2.ability}")
                 elif 'いかく' not in self.log[player] and self.add_rank(player2, 1, -1, by_enemy=True):
                     self.log[player].append(p1.ability)
+                    p1.ability += "+"
             case "おもかげやどし":
                 p1.ability += "+"
                 ind = {"くさ": 5, "ほのお": 1, "みず": 4, "いわ": 2}
