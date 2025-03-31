@@ -11,3 +11,9 @@ POSTGRES_HOST={} \
 POSTGRES_PORT={} \
 poetry run python scripts/matching.py --resume
 ```
+
+## extract data from simulation
+
+```bash
+poetry run python src/utils/extract_battle_history.py
+```
