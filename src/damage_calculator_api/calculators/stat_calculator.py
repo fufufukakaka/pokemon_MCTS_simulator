@@ -336,21 +336,12 @@ class StatCalculator:
             and conditions.terrain == TerrainCondition.ELECTRIC
             and attacker.paradox_boost_stat
         ):
-            print(
-                f"クォークチャージ条件チェック: terrain={conditions.terrain}, paradox_stat={attacker.paradox_boost_stat}, is_physical={move_data.is_physical}"
-            )
             # 指定された能力値が攻撃系の場合のみ適用
             if move_data.is_physical and attacker.paradox_boost_stat == "attack":
-                print(
-                    f"クォークチャージ攻撃補正適用: {multiplier} -> {multiplier * 1.3}"
-                )
                 multiplier *= 1.3
             elif (
                 not move_data.is_physical and attacker.paradox_boost_stat == "sp_attack"
             ):
-                print(
-                    f"クォークチャージ特攻補正適用: {multiplier} -> {multiplier * 1.3}"
-                )
                 multiplier *= 1.3
 
         # 古代活性（晴れ時最も高い能力値1.3倍）
@@ -765,7 +756,7 @@ class StatCalculator:
 
         # スナイパー（急所時ダメージ1.5倍→2.25倍）
         if attacker.ability == "スナイパー" and move.is_critical:
-            multiplier *= 4 / 3
+            multiplier *= 1.5  # 1.5倍 × 1.5倍 = 2.25倍
 
         # いろめがね（効果今ひとつ技を等倍にする）
         if attacker.ability == "いろめがね":
