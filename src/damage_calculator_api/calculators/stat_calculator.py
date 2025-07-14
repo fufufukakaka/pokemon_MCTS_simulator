@@ -336,25 +336,35 @@ class StatCalculator:
             and conditions.terrain == TerrainCondition.ELECTRIC
             and attacker.paradox_boost_stat
         ):
-            print(f"クォークチャージ条件チェック: terrain={conditions.terrain}, paradox_stat={attacker.paradox_boost_stat}, is_physical={move_data.is_physical}")
+            print(
+                f"クォークチャージ条件チェック: terrain={conditions.terrain}, paradox_stat={attacker.paradox_boost_stat}, is_physical={move_data.is_physical}"
+            )
             # 指定された能力値が攻撃系の場合のみ適用
             if move_data.is_physical and attacker.paradox_boost_stat == "attack":
-                print(f"クォークチャージ攻撃補正適用: {multiplier} -> {multiplier * 1.3}")
+                print(
+                    f"クォークチャージ攻撃補正適用: {multiplier} -> {multiplier * 1.3}"
+                )
                 multiplier *= 1.3
-            elif not move_data.is_physical and attacker.paradox_boost_stat == "sp_attack":
-                print(f"クォークチャージ特攻補正適用: {multiplier} -> {multiplier * 1.3}")
+            elif (
+                not move_data.is_physical and attacker.paradox_boost_stat == "sp_attack"
+            ):
+                print(
+                    f"クォークチャージ特攻補正適用: {multiplier} -> {multiplier * 1.3}"
+                )
                 multiplier *= 1.3
 
         # 古代活性（晴れ時最も高い能力値1.3倍）
         if (
-            ability == "古代活性"
+            ability == "こだいかっせい"
             and conditions.weather == WeatherCondition.SUN
             and attacker.paradox_boost_stat
         ):
             # 指定された能力値が攻撃系の場合のみ適用
             if move_data.is_physical and attacker.paradox_boost_stat == "attack":
                 multiplier *= 1.3
-            elif not move_data.is_physical and attacker.paradox_boost_stat == "sp_attack":
+            elif (
+                not move_data.is_physical and attacker.paradox_boost_stat == "sp_attack"
+            ):
                 multiplier *= 1.3
 
         # すいほう（みず技威力2倍）
@@ -421,19 +431,25 @@ class StatCalculator:
             # 指定された能力値が防御系の場合のみ適用
             if move_data.is_physical and defender.paradox_boost_stat == "defense":
                 multiplier *= 1.3
-            elif not move_data.is_physical and defender.paradox_boost_stat == "sp_defense":
+            elif (
+                not move_data.is_physical
+                and defender.paradox_boost_stat == "sp_defense"
+            ):
                 multiplier *= 1.3
 
         # 古代活性（晴れ時最も高い能力値1.3倍）
         if (
-            ability == "古代活性"
+            ability == "こだいかっせい"
             and conditions.weather == WeatherCondition.SUN
             and defender.paradox_boost_stat
         ):
             # 指定された能力値が防御系の場合のみ適用
             if move_data.is_physical and defender.paradox_boost_stat == "defense":
                 multiplier *= 1.3
-            elif not move_data.is_physical and defender.paradox_boost_stat == "sp_defense":
+            elif (
+                not move_data.is_physical
+                and defender.paradox_boost_stat == "sp_defense"
+            ):
                 multiplier *= 1.3
 
         # きせき（進化前ポケモンの防御・特防1.5倍）
@@ -627,7 +643,13 @@ class StatCalculator:
         # パンクロック（音技威力1.3倍）
         if ability == "パンクロック":
             # TODO: 音技判定が必要（技名での判定）
-            sound_moves = ["ハイパーボイス", "ばくおんぱ", "りんしょう", "いびき", "エコーボイス"]
+            sound_moves = [
+                "ハイパーボイス",
+                "ばくおんぱ",
+                "りんしょう",
+                "いびき",
+                "エコーボイス",
+            ]
             if move_data.name in sound_moves:
                 multiplier *= 1.3
 
@@ -741,11 +763,9 @@ class StatCalculator:
         """特性による最終ダメージ補正"""
         multiplier = 1.0
 
-        # スナイパー（急所時ダメージ2.25倍→3倍）
+        # スナイパー（急所時ダメージ1.5倍→2.25倍）
         if attacker.ability == "スナイパー" and move.is_critical:
-            multiplier *= 4 / 3  # 1.5 → 2.25にするため1.5倍
-
-        # ハードロック、フィルター、プリズムアーマーは TypeCalculator で処理済み
+            multiplier *= 4 / 3
 
         # いろめがね（効果今ひとつ技を等倍にする）
         if attacker.ability == "いろめがね":

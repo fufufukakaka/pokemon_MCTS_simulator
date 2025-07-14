@@ -448,7 +448,7 @@ class TestSimpleUsageExample(unittest.TestCase):
     def test_new_abilities_suihou(self):
         """すいほう特性テスト（みず技威力2倍）"""
         calculator = DamageCalculator()
-        
+
         # すいほう持ちのポケモン
         attacker_with_suihou = create_simple_pokemon(
             species="アーマーガア",  # 仮のポケモン
@@ -457,16 +457,16 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="すいほう",
             evs={"attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         # 同じポケモンで別特性
         attacker_normal = create_simple_pokemon(
             species="アーマーガア",
             level=50,
-            nature="いじっぱり", 
+            nature="いじっぱり",
             ability="プレッシャー",
             evs={"attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         defender = create_simple_pokemon(
             species="ギャラドス",
             level=50,
@@ -474,27 +474,27 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="いかく",
             evs={"defense": 252, "hp": 252},
         )
-        
+
         move = MoveInput(name="アクアテール")  # みず技
-        
+
         result_with_suihou = calculator.calculate_damage(
             attacker_with_suihou, defender, move
         )
-        result_normal = calculator.calculate_damage(
-            attacker_normal, defender, move
-        )
-        
+        result_normal = calculator.calculate_damage(attacker_normal, defender, move)
+
         # すいほうでみず技威力が2倍になっていることを確認
         if result_with_suihou.max_damage > 0 and result_normal.max_damage > 0:
             self.assertGreater(
                 result_with_suihou.max_damage, result_normal.max_damage * 1.8
             )
-            print(f"すいほう効果確認 - 通常: {result_normal.max_damage}, すいほう: {result_with_suihou.max_damage}")
+            print(
+                f"すいほう効果確認 - 通常: {result_normal.max_damage}, すいほう: {result_with_suihou.max_damage}"
+            )
 
     def test_new_abilities_atsuishibo(self):
         """あついしぼう特性テスト（ほのお・こおり技半減）"""
         calculator = DamageCalculator()
-        
+
         attacker = create_simple_pokemon(
             species="コライドン",
             level=50,
@@ -502,7 +502,7 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="ひひいろのこどう",
             evs={"attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         # あついしぼう持ちの防御側
         defender_with_ability = create_simple_pokemon(
             species="マリルリ",  # 仮のポケモン
@@ -511,7 +511,7 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="あついしぼう",
             evs={"defense": 252, "hp": 252},
         )
-        
+
         # 通常特性の防御側
         defender_normal = create_simple_pokemon(
             species="マリルリ",
@@ -520,27 +520,29 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="ちからもち",
             evs={"defense": 252, "hp": 252},
         )
-        
+
         fire_move = MoveInput(name="かえんほうしゃ")
-        
+
         result_with_ability = calculator.calculate_damage(
             attacker, defender_with_ability, fire_move
         )
         result_normal = calculator.calculate_damage(
             attacker, defender_normal, fire_move
         )
-        
+
         # あついしぼうでほのお技が半減されていることを確認
         if result_with_ability.max_damage > 0 and result_normal.max_damage > 0:
             self.assertLess(
                 result_with_ability.max_damage, result_normal.max_damage * 0.6
             )
-            print(f"あついしぼう効果確認 - 通常: {result_normal.max_damage}, あついしぼう: {result_with_ability.max_damage}")
+            print(
+                f"あついしぼう効果確認 - 通常: {result_normal.max_damage}, あついしぼう: {result_with_ability.max_damage}"
+            )
 
     def test_new_abilities_hardrock(self):
         """ハードロック特性テスト（効果抜群技3/4倍）"""
         calculator = DamageCalculator()
-        
+
         attacker = create_simple_pokemon(
             species="ピカチュウ",
             level=50,
@@ -548,7 +550,7 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="せいでんき",
             evs={"sp_attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         # ハードロック持ちの防御側（ひこうタイプ）
         defender_with_hardrock = create_simple_pokemon(
             species="エアームド",  # 仮のポケモン（はがね/ひこう）
@@ -557,7 +559,7 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="ハードロック",
             evs={"defense": 252, "hp": 252},
         )
-        
+
         # 通常特性の防御側
         defender_normal = create_simple_pokemon(
             species="エアームド",
@@ -566,67 +568,71 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="がんじょう",
             evs={"defense": 252, "hp": 252},
         )
-        
+
         electric_move = MoveInput(name="10まんボルト")  # でんき技（ひこうに効果抜群）
-        
+
         result_with_hardrock = calculator.calculate_damage(
             attacker, defender_with_hardrock, electric_move
         )
         result_normal = calculator.calculate_damage(
             attacker, defender_normal, electric_move
         )
-        
+
         # ハードロックで効果抜群技が3/4倍になっていることを確認
         if result_with_hardrock.max_damage > 0 and result_normal.max_damage > 0:
             expected_damage = result_normal.max_damage * 0.75
             self.assertAlmostEqual(
                 result_with_hardrock.max_damage, expected_damage, delta=5
             )
-            print(f"ハードロック効果確認 - 通常: {result_normal.max_damage}, ハードロック: {result_with_hardrock.max_damage}")
+            print(
+                f"ハードロック効果確認 - 通常: {result_normal.max_damage}, ハードロック: {result_with_hardrock.max_damage}"
+            )
 
     def test_new_abilities_sniper(self):
         """スナイパー特性テスト（急所時ダメージ2.25倍）"""
         calculator = DamageCalculator()
-        
+
         # スナイパー持ちの攻撃側
         attacker_with_sniper = create_simple_pokemon(
-            species="ピカチュウ",  # 存在するポケモンを使用
+            species="ピカチュウ",
             level=50,
             nature="いじっぱり",
             ability="スナイパー",
             evs={"attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         defender = create_simple_pokemon(
-            species="ギャラドス",
+            species="ディンルー",
             level=50,
             nature="わんぱく",
-            ability="いかく",
+            ability="わざわいのうつわ",
             evs={"defense": 252, "hp": 252},
         )
-        
+
         normal_move = MoveInput(name="つばめがえし", is_critical=False)
         critical_move = MoveInput(name="つばめがえし", is_critical=True)
-        
+
         result_normal = calculator.calculate_damage(
             attacker_with_sniper, defender, normal_move
         )
         result_critical = calculator.calculate_damage(
             attacker_with_sniper, defender, critical_move
         )
-        
+
         # スナイパーで急所時のダメージが2.25倍になっていることを確認
         if result_normal.max_damage > 0 and result_critical.max_damage > 0:
             # 通常の急所は1.5倍、スナイパーで2.25倍になる
             expected_ratio = 2.25 / 1.5  # ≈ 1.5倍の差
             actual_ratio = result_critical.max_damage / result_normal.max_damage
+            print(
+                f"スナイパー効果確認 - 通常: {result_normal.max_damage}, 急所: {result_critical.max_damage}, 倍率: {actual_ratio:.2f}"
+            )
             self.assertAlmostEqual(actual_ratio, expected_ratio, delta=0.1)
-            print(f"スナイパー効果確認 - 通常: {result_normal.max_damage}, 急所: {result_critical.max_damage}, 倍率: {actual_ratio:.2f}")
 
     def test_new_abilities_iwahakodi(self):
         """いわはこび特性テスト（いわ技威力1.5倍）"""
         calculator = DamageCalculator()
-        
+
         # いわはこび持ちの攻撃側
         attacker_with_ability = create_simple_pokemon(
             species="ドサイドン",  # 仮のポケモン
@@ -635,7 +641,7 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="いわはこび",
             evs={"attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         # 通常特性の攻撃側
         attacker_normal = create_simple_pokemon(
             species="ドサイドン",
@@ -644,7 +650,7 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="ハードロック",
             evs={"attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         defender = create_simple_pokemon(
             species="ピカチュウ",
             level=50,
@@ -652,76 +658,64 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="せいでんき",
             evs={"sp_attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         rock_move = MoveInput(name="いわなだれ")
-        
+
         result_with_ability = calculator.calculate_damage(
             attacker_with_ability, defender, rock_move
         )
         result_normal = calculator.calculate_damage(
             attacker_normal, defender, rock_move
         )
-        
+
         # いわはこびでいわ技威力が1.5倍になっていることを確認
         if result_with_ability.max_damage > 0 and result_normal.max_damage > 0:
             self.assertGreater(
                 result_with_ability.max_damage, result_normal.max_damage * 1.4
             )
-            print(f"いわはこび効果確認 - 通常: {result_normal.max_damage}, いわはこび: {result_with_ability.max_damage}")
+            print(
+                f"いわはこび効果確認 - 通常: {result_normal.max_damage}, いわはこび: {result_with_ability.max_damage}"
+            )
 
     def test_new_abilities_quark_charge(self):
         """クォークチャージ特性テスト（エレキフィールド時最も高い能力値1.3倍）"""
         calculator = DamageCalculator()
-        
+
         # クォークチャージで攻撃が上昇
         attacker_with_quark = create_simple_pokemon(
-            species="ピカチュウ",
+            species="テツノカイナ",
             level=50,
             nature="いじっぱり",
             ability="クォークチャージ",
             evs={"attack": 252, "speed": 252, "hp": 4},
             paradox_boost_stat="attack",  # 攻撃が最も高い能力値として指定
         )
-        
-        # 通常特性の攻撃側
-        attacker_normal = create_simple_pokemon(
-            species="ピカチュウ",
-            level=50,
-            nature="いじっぱり",
-            ability="せいでんき",
-            evs={"attack": 252, "speed": 252, "hp": 4},
-        )
-        
+
         defender = create_simple_pokemon(
-            species="ギャラドス",
+            species="ディンルー",
             level=50,
             nature="わんぱく",
-            ability="いかく",
+            ability="わざわいのうつわ",
             evs={"defense": 252, "hp": 252},
         )
-        
-        move = MoveInput(name="でんこうせっか")  # 物理技
-        
+
+        move = MoveInput(name="インファイト")  # 物理技
+
         # エレキフィールド状態
-        electric_field_conditions = BattleConditions(
-            terrain=TerrainCondition.ELECTRIC
-        )
-        
+        electric_field_conditions = BattleConditions(terrain=TerrainCondition.ELECTRIC)
+
         # 通常フィールド状態
         normal_conditions = BattleConditions()
-        
+
         result_with_quark_electric = calculator.calculate_damage(
             attacker_with_quark, defender, move, electric_field_conditions
         )
         result_with_quark_normal = calculator.calculate_damage(
             attacker_with_quark, defender, move, normal_conditions
         )
-        result_normal = calculator.calculate_damage(
-            attacker_normal, defender, move, electric_field_conditions
-        )
-        
+
         # デバッグ情報
-        print(f"クォークチャージ効果確認:")
+        print("クォークチャージ効果確認:")
         print(f"  通常フィールド: {result_with_quark_normal.max_damage}")
         print(f"  エレキフィールド: {result_with_quark_electric.max_damage}")
         print(f"  攻撃側のparadox_boost_stat: {attacker_with_quark.paradox_boost_stat}")
@@ -730,36 +724,30 @@ class TestSimpleUsageExample(unittest.TestCase):
         print(f"  攻撃実数値: {details.get('attack_stat')}")
         print(f"  地形: {details.get('terrain')}")
         print(f"  エレキフィールド計算詳細: {details}")
-        
+
         # エレキフィールド時にクォークチャージで攻撃力が1.3倍になっていることを確認
-        if result_with_quark_electric.max_damage > 0 and result_with_quark_normal.max_damage > 0:
+        if (
+            result_with_quark_electric.max_damage > 0
+            and result_with_quark_normal.max_damage > 0
+        ):
             self.assertGreater(
-                result_with_quark_electric.max_damage, result_with_quark_normal.max_damage * 1.25
+                result_with_quark_electric.max_damage,
+                result_with_quark_normal.max_damage * 1.25,
             )
 
     def test_new_abilities_protosynthesis(self):
         """古代活性特性テスト（晴れ時最も高い能力値1.3倍）"""
         calculator = DamageCalculator()
-        
+
         # 古代活性で特攻が上昇
         attacker_with_proto = create_simple_pokemon(
             species="ピカチュウ",
             level=50,
             nature="ひかえめ",
-            ability="古代活性",
+            ability="こだいかっせい",
             evs={"sp_attack": 252, "speed": 252, "hp": 4},
             paradox_boost_stat="sp_attack",  # 特攻が最も高い能力値として指定
         )
-        
-        # 通常特性の攻撃側
-        attacker_normal = create_simple_pokemon(
-            species="ピカチュウ",
-            level=50,
-            nature="ひかえめ",
-            ability="せいでんき",
-            evs={"sp_attack": 252, "speed": 252, "hp": 4},
-        )
-        
         defender = create_simple_pokemon(
             species="ギャラドス",
             level=50,
@@ -767,46 +755,47 @@ class TestSimpleUsageExample(unittest.TestCase):
             ability="いかく",
             evs={"sp_defense": 252, "hp": 252},
         )
-        
+
         move = MoveInput(name="10まんボルト")  # 特殊技
-        
+
         # 晴れ状態
-        sunny_conditions = BattleConditions(
-            weather=WeatherCondition.SUN
-        )
-        
+        sunny_conditions = BattleConditions(weather=WeatherCondition.SUN)
+
         # 通常天気状態
         normal_conditions = BattleConditions()
-        
+
         result_with_proto_sunny = calculator.calculate_damage(
             attacker_with_proto, defender, move, sunny_conditions
         )
         result_with_proto_normal = calculator.calculate_damage(
             attacker_with_proto, defender, move, normal_conditions
         )
-        result_normal = calculator.calculate_damage(
-            attacker_normal, defender, move, sunny_conditions
-        )
-        
+
         # 晴れ時に古代活性で特攻が1.3倍になっていることを確認
-        if result_with_proto_sunny.max_damage > 0 and result_with_proto_normal.max_damage > 0:
+        if (
+            result_with_proto_sunny.max_damage > 0
+            and result_with_proto_normal.max_damage > 0
+        ):
             self.assertGreater(
-                result_with_proto_sunny.max_damage, result_with_proto_normal.max_damage * 1.25
+                result_with_proto_sunny.max_damage,
+                result_with_proto_normal.max_damage * 1.25,
             )
-            print(f"古代活性効果確認 - 通常天気: {result_with_proto_normal.max_damage}, 晴れ: {result_with_proto_sunny.max_damage}")
+            print(
+                f"古代活性効果確認 - 通常天気: {result_with_proto_normal.max_damage}, 晴れ: {result_with_proto_sunny.max_damage}"
+            )
 
     def test_new_abilities_quark_charge_defense(self):
         """クォークチャージ防御特性テスト（エレキフィールド時防御1.3倍）"""
         calculator = DamageCalculator()
-        
+
         attacker = create_simple_pokemon(
-            species="ピカチュウ",
+            species="テツノカイナ",
             level=50,
             nature="いじっぱり",
             ability="せいでんき",
             evs={"attack": 252, "speed": 252, "hp": 4},
         )
-        
+
         # クォークチャージで防御が上昇
         defender_with_quark = create_simple_pokemon(
             species="ギャラドス",
@@ -816,36 +805,28 @@ class TestSimpleUsageExample(unittest.TestCase):
             evs={"defense": 252, "hp": 252},
             paradox_boost_stat="defense",  # 防御が最も高い能力値として指定
         )
-        
-        # 通常特性の防御側
-        defender_normal = create_simple_pokemon(
-            species="ギャラドス",
-            level=50,
-            nature="わんぱく",
-            ability="いかく",
-            evs={"defense": 252, "hp": 252},
-        )
-        
-        move = MoveInput(name="でんこうせっか")  # 物理技
-        
+
+        move = MoveInput(name="インファイト")  # 物理技
+
         # エレキフィールド状態
-        electric_field_conditions = BattleConditions(
-            terrain=TerrainCondition.ELECTRIC
-        )
-        
+        electric_field_conditions = BattleConditions(terrain=TerrainCondition.ELECTRIC)
+        normal_conditions = BattleConditions()
+
         result_with_quark = calculator.calculate_damage(
             attacker, defender_with_quark, move, electric_field_conditions
         )
         result_normal = calculator.calculate_damage(
-            attacker, defender_normal, move, electric_field_conditions
+            attacker, defender_with_quark, move, normal_conditions
         )
-        
+
         # エレキフィールド時にクォークチャージで防御力が1.3倍になり、ダメージが軽減されることを確認
         if result_with_quark.max_damage > 0 and result_normal.max_damage > 0:
             self.assertLess(
                 result_with_quark.max_damage, result_normal.max_damage * 0.8
             )
-            print(f"クォークチャージ防御効果確認 - 通常: {result_normal.max_damage}, クォークチャージ: {result_with_quark.max_damage}")
+            print(
+                f"クォークチャージ防御効果確認 - 通常: {result_normal.max_damage}, クォークチャージ: {result_with_quark.max_damage}"
+            )
 
     def test_damage_calc_result_with_pokesol_koraidon(self):
         """ポケソルダメージ計算機との整合性確認"""
