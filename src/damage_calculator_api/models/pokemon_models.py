@@ -79,6 +79,12 @@ class PokemonState:
     # クォークチャージ・古代活性用
     paradox_boost_stat: Optional[str] = None  # "attack", "defense", "sp_attack", "sp_defense" のいずれか
     
+    # 特殊特性用パラメータ
+    gender: Optional[str] = None  # "male", "female", "genderless" - とうそうしん用
+    fainted_teammates: int = 0  # そうだいしょう用（倒れた味方の数）
+    moves_last: bool = False  # アナライズ用（後攻かどうか）
+    flash_fire_active: bool = False  # もらい火発動中かどうか（攻撃力1.5倍）
+    
     def __post_init__(self):
         """初期化後の処理"""
         # デフォルト能力値設定（レベル50、無補正）

@@ -318,6 +318,394 @@ class TestDamageCalculator(unittest.TestCase):
         except Exception as e:
             print(f"ヘルパー関数テストをスキップ: {e}")
 
+    def test_medium_priority_abilities(self):
+        """Medium priority特性のテスト"""
+
+        # あついしぼう（ほのお・こおり技半減）
+        fire_pokemon = create_simple_pokemon(
+            species="ウインディ", level=50, ability="いかく"
+        )
+        thick_fat_pokemon = create_simple_pokemon(
+            species="マリルリ", level=50, ability="あついしぼう"
+        )
+
+        fire_move = MoveInput(name="かえんほうしゃ")
+
+        # 通常ダメージ vs あついしぼう
+        normal_result = self.calculator.calculate_damage(
+            attacker=fire_pokemon, defender=fire_pokemon, move=fire_move
+        )
+        thick_fat_result = self.calculator.calculate_damage(
+            attacker=fire_pokemon, defender=thick_fat_pokemon, move=fire_move
+        )
+
+        # あついしぼうで半減されることを確認
+        if normal_result.max_damage > 0 and thick_fat_result.max_damage > 0:
+            ratio = thick_fat_result.max_damage / normal_result.max_damage
+            print(f"あついしぼう ratio: {ratio:.4f}")
+            self.assertLess(ratio, 0.6, "あついしぼうでほのお技が半減されるべき")
+
+    def test_strong_jaw_ability(self):
+        """がんじょうあご特性のテスト"""
+        strong_jaw_pokemon = create_simple_pokemon(
+            species="ジュラルドン", level=50, ability="がんじょうあご"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ジュラルドン", level=50, ability="ライトメタル"
+        )
+
+        bite_move = MoveInput(name="かみくだく")
+
+        strong_jaw_result = self.calculator.calculate_damage(
+            attacker=strong_jaw_pokemon, defender=normal_pokemon, move=bite_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=bite_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = strong_jaw_result.max_damage / normal_result.max_damage
+            print(f"がんじょうあご ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.5, delta=0.1, msg="がんじょうあごで噛み技が1.5倍になるべき"
+            )
+
+    def test_sheer_force_ability(self):
+        """ちからずく特性のテスト"""
+        sheer_force_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="ちからずく"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
+
+        # 追加効果のある技
+        effect_move = MoveInput(name="10まんボルト")
+
+        sheer_force_result = self.calculator.calculate_damage(
+            attacker=sheer_force_pokemon, defender=normal_pokemon, move=effect_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=effect_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = sheer_force_result.max_damage / normal_result.max_damage
+            print(f"ちからずく ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.3, delta=0.1, msg="ちからずくで追加効果技が1.3倍になるべき"
+            )
+
+    def test_filter_ability(self):
+        """フィルター特性のテスト"""
+        filter_pokemon = create_simple_pokemon(
+            species="ピクシー",
+            level=50,
+            ability="フィルター",
+            evs={"hp": 252, "defense": 252},
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ピクシー",
+            level=50,
+            ability="メロメロボディ",
+            evs={"hp": 252, "defense": 252},
+        )
+
+        # はがねタイプの攻撃者（フェアリーに効果バツグン）
+        steel_attacker = create_simple_pokemon(
+            species="ハッサム", level=50, ability="テクニシャン", evs={"attack": 252}
+        )
+
+        super_effective_move = MoveInput(name="アイアンヘッド")
+
+        filter_result = self.calculator.calculate_damage(
+            attacker=steel_attacker, defender=filter_pokemon, move=super_effective_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=steel_attacker, defender=normal_pokemon, move=super_effective_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = filter_result.max_damage / normal_result.max_damage
+            print(f"フィルター ratio: {ratio:.4f}")
+            self.assertLess(ratio, 0.8, "フィルターで効果バツグン技が軽減されるべき")
+
+    def test_tough_claws_ability(self):
+        """かたいつめ特性のテスト"""
+        tough_claws_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="かたいつめ"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
+
+        # 接触技
+        contact_move = MoveInput(name="じしん")  # 接触技
+
+        tough_claws_result = self.calculator.calculate_damage(
+            attacker=tough_claws_pokemon, defender=normal_pokemon, move=contact_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=contact_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = tough_claws_result.max_damage / normal_result.max_damage
+            print(f"かたいつめ ratio: {ratio:.4f}")
+            # じしんは接触技ではないので、比率は1.0のはず
+            self.assertAlmostEqual(
+                ratio,
+                1.0,
+                delta=0.1,
+                msg="じしんは接触技ではないのでかたいつめ効果なし",
+            )
+
+    def test_iron_fist_ability(self):
+        """てつのこぶし特性のテスト"""
+        iron_fist_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="てつのこぶし"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
+
+        # パンチ技
+        punch_move = MoveInput(name="かみなりパンチ")
+
+        iron_fist_result = self.calculator.calculate_damage(
+            attacker=iron_fist_pokemon, defender=normal_pokemon, move=punch_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=punch_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = iron_fist_result.max_damage / normal_result.max_damage
+            print(f"てつのこぶし ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.2, delta=0.1, msg="てつのこぶしでパンチ技が1.2倍になるべき"
+            )
+
+    def test_sharpness_ability(self):
+        """きれあじ特性のテスト"""
+        sharpness_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="きれあじ"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
+
+        # 切断技
+        cut_move = MoveInput(name="つじぎり")
+
+        sharpness_result = self.calculator.calculate_damage(
+            attacker=sharpness_pokemon, defender=normal_pokemon, move=cut_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=cut_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = sharpness_result.max_damage / normal_result.max_damage
+            print(f"きれあじ ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.5, delta=0.1, msg="きれあじで切断技が1.5倍になるべき"
+            )
+
+    def test_ice_scales_ability(self):
+        """こおりのりんぷん特性のテスト"""
+        ice_scales_pokemon = create_simple_pokemon(
+            species="ピカチュウ", level=50, ability="こおりのりんぷん"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ピカチュウ", level=50, ability="せいでんき"
+        )
+
+        # 特殊技の攻撃者
+        special_attacker = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", evs={"sp_attack": 252}
+        )
+
+        special_move = MoveInput(name="りゅうのはどう")
+
+        ice_scales_result = self.calculator.calculate_damage(
+            attacker=special_attacker, defender=ice_scales_pokemon, move=special_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=special_attacker, defender=normal_pokemon, move=special_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = ice_scales_result.max_damage / normal_result.max_damage
+            print(f"こおりのりんぷん ratio: {ratio:.4f}")
+            self.assertLess(ratio, 0.6, "こおりのりんぷんで特殊技が半減されるべき")
+
+    def test_fluffy_ability(self):
+        """もふもふ特性のテスト"""
+        fluffy_pokemon = create_simple_pokemon(
+            species="ピカチュウ", level=50, ability="もふもふ"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ピカチュウ", level=50, ability="せいでんき"
+        )
+
+        # 接触技の攻撃者
+        physical_attacker = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", evs={"attack": 252}
+        )
+
+        # 接触技
+        contact_move = MoveInput(name="じしん")
+
+        fluffy_result = self.calculator.calculate_damage(
+            attacker=physical_attacker, defender=fluffy_pokemon, move=contact_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=physical_attacker, defender=normal_pokemon, move=contact_move
+        )
+
+        # じしんは接触技ではないので効果なし
+        if normal_result.max_damage > 0:
+            ratio = fluffy_result.max_damage / normal_result.max_damage
+            print(f"もふもふ (じしん) ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.0, delta=0.1, msg="じしんは接触技ではないのでもふもふ効果なし"
+            )
+
+    def test_analytic_ability(self):
+        """アナライズ特性のテスト"""
+        analytic_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="アナライズ", moves_last=True
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", moves_last=False
+        )
+
+        move = MoveInput(name="じしん")
+
+        analytic_result = self.calculator.calculate_damage(
+            attacker=analytic_pokemon, defender=normal_pokemon, move=move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = analytic_result.max_damage / normal_result.max_damage
+            print(f"アナライズ ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.3, delta=0.1, msg="アナライズで後攻時に1.3倍になるべき"
+            )
+
+    def test_rivalry_ability(self):
+        """とうそうしん特性のテスト"""
+        male_rivalry = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="とうそうしん", gender="male"
+        )
+        male_normal = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", gender="male"
+        )
+        female_normal = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", gender="female"
+        )
+
+        move = MoveInput(name="じしん")
+
+        # 同性（male vs male）
+        same_gender_result = self.calculator.calculate_damage(
+            attacker=male_rivalry, defender=male_normal, move=move
+        )
+
+        # 異性（male vs female）
+        opposite_gender_result = self.calculator.calculate_damage(
+            attacker=male_rivalry, defender=female_normal, move=move
+        )
+
+        # 通常
+        normal_result = self.calculator.calculate_damage(
+            attacker=male_normal, defender=male_normal, move=move
+        )
+
+        if normal_result.max_damage > 0:
+            same_ratio = same_gender_result.max_damage / normal_result.max_damage
+            opposite_ratio = (
+                opposite_gender_result.max_damage / normal_result.max_damage
+            )
+
+            print(f"とうそうしん 同性 ratio: {same_ratio:.4f}")
+            print(f"とうそうしん 異性 ratio: {opposite_ratio:.4f}")
+
+            self.assertAlmostEqual(
+                same_ratio,
+                1.25,
+                delta=0.1,
+                msg="とうそうしんで同性相手に1.25倍になるべき",
+            )
+            self.assertAlmostEqual(
+                opposite_ratio,
+                0.75,
+                delta=0.1,
+                msg="とうそうしんで異性相手に0.75倍になるべき",
+            )
+
+    def test_supreme_overlord_ability(self):
+        """そうだいしょう特性のテスト"""
+        overlord_1 = create_simple_pokemon(
+            species="ガブリアス",
+            level=50,
+            ability="そうだいしょう",
+            fainted_teammates=1,
+        )
+        overlord_3 = create_simple_pokemon(
+            species="ガブリアス",
+            level=50,
+            ability="そうだいしょう",
+            fainted_teammates=3,
+        )
+        overlord_5 = create_simple_pokemon(
+            species="ガブリアス",
+            level=50,
+            ability="そうだいしょう",
+            fainted_teammates=5,
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", fainted_teammates=0
+        )
+
+        move = MoveInput(name="じしん")
+
+        result_1 = self.calculator.calculate_damage(
+            attacker=overlord_1, defender=normal_pokemon, move=move
+        )
+        result_3 = self.calculator.calculate_damage(
+            attacker=overlord_3, defender=normal_pokemon, move=move
+        )
+        result_5 = self.calculator.calculate_damage(
+            attacker=overlord_5, defender=normal_pokemon, move=move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio_1 = result_1.max_damage / normal_result.max_damage
+            ratio_3 = result_3.max_damage / normal_result.max_damage
+            ratio_5 = result_5.max_damage / normal_result.max_damage
+
+            print(f"そうだいしょう 1匹 ratio: {ratio_1:.4f}")
+            print(f"そうだいしょう 3匹 ratio: {ratio_3:.4f}")
+            print(f"そうだいしょう 5匹 ratio: {ratio_5:.4f}")
+
+            self.assertAlmostEqual(
+                ratio_1, 1.1, delta=0.1, msg="そうだいしょうで1匹倒れて1.1倍になるべき"
+            )
+            self.assertAlmostEqual(
+                ratio_3, 1.3, delta=0.1, msg="そうだいしょうで3匹倒れて1.3倍になるべき"
+            )
+            self.assertAlmostEqual(
+                ratio_5, 1.5, delta=0.1, msg="そうだいしょうで5匹倒れて1.5倍になるべき"
+            )
+
 
 class TestSimpleUsageExample(unittest.TestCase):
     """簡単な使用例テスト"""
@@ -373,6 +761,10 @@ class TestSimpleUsageExample(unittest.TestCase):
 
         except Exception as e:
             print(f"使用例テストをスキップ: {e}")
+
+
+class TestPokeSolCompatibility(unittest.TestCase):
+    """ポケソル（Pokémon Damage Calculator）との互換性テスト"""
 
     def test_damage_calc_result_with_pokesol_carylex(self):
         """ポケソルダメージ計算機との整合性確認"""
@@ -438,6 +830,208 @@ class TestSimpleUsageExample(unittest.TestCase):
         )
 
         print("ポケソルとの整合性確認: OK")
+
+    def test_damage_calc_result_with_pokesol_koraidon(self):
+        """ポケソルダメージ計算機との整合性確認（コライドン）"""
+        # ポケソルのダメージ計算結果を模擬
+        pokesol_result = {
+            "min_damage": 132,
+            "max_damage": 156,
+            "guaranteed_ko_hits": 2,
+        }
+
+        # ダメージ計算エンジンで同じ条件で計算
+        calculator = DamageCalculator()
+        attacker = create_simple_pokemon(
+            species="コライドン",
+            level=50,
+            nature="いじっぱり",
+            ability="ひひいろのこどう",
+            evs={"attack": 252, "speed": 252, "hp": 4},
+        )
+        defender = create_simple_pokemon(
+            species="チオンジェン",
+            level=50,
+            nature="わんぱく",
+            ability="わざわいのおふだ",
+            evs={"defense": 252, "speed": 252, "hp": 252},
+        )
+        move = MoveInput(name="とんぼがえり")
+        condition = BattleConditions(
+            terrain=TerrainCondition.NONE,
+            weather=WeatherCondition.SUN,
+        )
+
+        result = calculator.calculate_damage(attacker, defender, move, condition)
+
+        # 実際の計算結果を表示
+        print("\n=== コライドン vs チオンジェン ===")
+        print(f"技: {move.name}")
+        print(f"実際のダメージ: {result.min_damage}-{result.max_damage}")
+        print(f"期待値: {pokesol_result['min_damage']}-{pokesol_result['max_damage']}")
+        print(
+            f"差分: min={result.min_damage - pokesol_result['min_damage']}, max={result.max_damage - pokesol_result['max_damage']}"
+        )
+        print(
+            f"確定数: 実際={result.guaranteed_ko_hits}, 期待={pokesol_result['guaranteed_ko_hits']}"
+        )
+
+        # 計算詳細を表示
+        details = result.calculation_details
+        print(f"攻撃実数値: {details.get('attack_stat', 'N/A')}")
+        print(f"防御実数値: {details.get('defense_stat', 'N/A')}")
+        print(f"技威力: {details.get('power', 'N/A')}")
+        print(f"タイプ相性: {details.get('type_effectiveness', 'N/A')}")
+        print(f"STAB補正: {details.get('stab_modifier', 'N/A')}")
+        print(f"最終補正: {details.get('final_modifier', 'N/A')}")
+        print(f"基本ダメージ: {details.get('base_damage', 'N/A')}")
+        print(f"全体補正: {details.get('total_modifier', 'N/A')}")
+        print(f"天気: {condition.weather.value}")
+        print(f"攻撃側特性: {attacker.ability}")
+        print(f"防御側特性: {defender.ability}")
+
+        # 手計算で期待値を確認
+        expected_base = ((50 * 0.4 + 2) * 133 * 204) / (167 * 50) + 2
+        expected_final = expected_base * 2.0 * 1.5  # タイプ相性 × STAB
+        print(f"期待基本ダメージ: {expected_base:.2f}")
+        print(f"期待最終ダメージ: {expected_final:.2f}")
+        print(f"期待範囲: {int(expected_final * 0.85)}-{int(expected_final * 1.0)}")
+
+        self.assertAlmostEqual(result.min_damage, pokesol_result["min_damage"], delta=1)
+        self.assertAlmostEqual(result.max_damage, pokesol_result["max_damage"], delta=1)
+        self.assertEqual(
+            result.guaranteed_ko_hits, pokesol_result["guaranteed_ko_hits"]
+        )
+
+    def test_damage_calc_result_with_pokesol_chienpao(self):
+        """ポケソルダメージ計算機との整合性確認（パオジアン）"""
+        # ポケソルのダメージ計算結果を模擬
+        pokesol_result = {
+            "min_damage": 44,
+            "max_damage": 52,
+            "guaranteed_ko_hits": 4,
+        }
+
+        # ダメージ計算エンジンで同じ条件で計算
+        calculator = DamageCalculator()
+        attacker = create_simple_pokemon(
+            species="パオジアン",
+            level=50,
+            nature="いじっぱり",
+            ability="わざわいのつるぎ",
+            evs={"attack": 252, "speed": 252, "hp": 4},
+        )
+        defender = create_simple_pokemon(
+            species="アシレーヌ",
+            level=50,
+            nature="わんぱく",
+            ability="げきりゅう",
+            evs={"defense": 252, "speed": 252, "hp": 252},
+        )
+        move = MoveInput(name="つららおとし")
+        condition = BattleConditions(
+            terrain=TerrainCondition.NONE,
+            weather=WeatherCondition.NONE,
+        )
+
+        result = calculator.calculate_damage(attacker, defender, move, condition)
+
+        # 実際の計算結果を表示
+        print("\n=== パオジアン vs アシレーヌ ===")
+        print(f"技: {move.name}")
+        print(f"実際のダメージ: {result.min_damage}-{result.max_damage}")
+        print(f"期待値: {pokesol_result['min_damage']}-{pokesol_result['max_damage']}")
+        print(
+            f"差分: min={result.min_damage - pokesol_result['min_damage']}, max={result.max_damage - pokesol_result['max_damage']}"
+        )
+        print(
+            f"確定数: 実際={result.guaranteed_ko_hits}, 期待={pokesol_result['guaranteed_ko_hits']}"
+        )
+
+        # 計算詳細を表示
+        details = result.calculation_details
+        print(f"攻撃実数値: {details.get('attack_stat', 'N/A')}")
+        print(f"防御実数値: {details.get('defense_stat', 'N/A')}")
+        print(f"技威力: {details.get('power', 'N/A')}")
+        print(f"タイプ相性: {details.get('type_effectiveness', 'N/A')}")
+        print(f"天気: {condition.weather.value}")
+        print(f"攻撃側特性: {attacker.ability}")
+        print(f"防御側特性: {defender.ability}")
+
+        self.assertAlmostEqual(result.min_damage, pokesol_result["min_damage"], delta=1)
+        self.assertAlmostEqual(result.max_damage, pokesol_result["max_damage"], delta=1)
+        self.assertEqual(
+            result.guaranteed_ko_hits, pokesol_result["guaranteed_ko_hits"]
+        )
+
+    def test_damage_calc_result_with_pokesol_chiyui(self):
+        """ポケソルダメージ計算機との整合性確認（イーユイ）"""
+        # ポケソルのダメージ計算結果を模擬
+        pokesol_result = {
+            "min_damage": 38,
+            "max_damage": 45,
+            "guaranteed_ko_hits": 5,
+        }
+
+        # ダメージ計算エンジンで同じ条件で計算
+        calculator = DamageCalculator()
+        attacker = create_simple_pokemon(
+            species="イーユイ",
+            level=50,
+            nature="ひかえめ",
+            ability="わざわいのたま",
+            evs={"sp_attack": 252, "speed": 252, "hp": 4},
+        )
+        defender = create_simple_pokemon(
+            species="アシレーヌ",
+            level=50,
+            nature="しんちょう",
+            ability="げきりゅう",
+            evs={"sp_defense": 252, "speed": 252, "hp": 252},
+        )
+        move = MoveInput(name="かえんほうしゃ")
+        condition = BattleConditions(
+            terrain=TerrainCondition.NONE,
+            weather=WeatherCondition.NONE,
+        )
+
+        result = calculator.calculate_damage(attacker, defender, move, condition)
+
+        # 実際の計算結果を表示
+        print("\n=== イーユイ vs アシレーヌ ===")
+        print(f"技: {move.name}")
+        print(f"実際のダメージ: {result.min_damage}-{result.max_damage}")
+        print(f"期待値: {pokesol_result['min_damage']}-{pokesol_result['max_damage']}")
+        print(
+            f"差分: min={result.min_damage - pokesol_result['min_damage']}, max={result.max_damage - pokesol_result['max_damage']}"
+        )
+        print(
+            f"確定数: 実際={result.guaranteed_ko_hits}, 期待={pokesol_result['guaranteed_ko_hits']}"
+        )
+
+        # 計算詳細を表示
+        details = result.calculation_details
+        print(f"攻撃実数値: {details.get('attack_stat', 'N/A')}")
+        print(f"防御実数値: {details.get('defense_stat', 'N/A')}")
+        print(f"技威力: {details.get('power', 'N/A')}")
+        print(f"タイプ相性: {details.get('type_effectiveness', 'N/A')}")
+        print(f"天気: {condition.weather.value}")
+        print(f"攻撃側特性: {attacker.ability}")
+        print(f"防御側特性: {defender.ability}")
+
+        self.assertAlmostEqual(result.min_damage, pokesol_result["min_damage"], delta=1)
+        self.assertAlmostEqual(result.max_damage, pokesol_result["max_damage"], delta=1)
+        self.assertEqual(
+            result.guaranteed_ko_hits, pokesol_result["guaranteed_ko_hits"]
+        )
+
+
+class TestHighPriorityAbilities(unittest.TestCase):
+    """Phase 1 High Priority特性のテスト"""
+
+    def setUp(self):
+        """各テスト前の準備"""
+        self.calculator = DamageCalculator()
 
     def test_new_abilities_suihou(self):
         """すいほう特性テスト（みず技威力2倍）"""
@@ -822,199 +1416,455 @@ class TestSimpleUsageExample(unittest.TestCase):
                 f"クォークチャージ防御効果確認 - 通常: {result_normal.max_damage}, クォークチャージ: {result_with_quark.max_damage}"
             )
 
-    def test_damage_calc_result_with_pokesol_koraidon(self):
-        """ポケソルダメージ計算機との整合性確認"""
-        # ポケソルのダメージ計算結果を模擬
-        pokesol_result = {
-            "min_damage": 132,
-            "max_damage": 156,
-            "guaranteed_ko_hits": 2,
-        }
 
-        # ダメージ計算エンジンで同じ条件で計算
-        calculator = DamageCalculator()
-        attacker = create_simple_pokemon(
-            species="コライドン",
+class TestMediumPriorityAbilities(unittest.TestCase):
+    """Phase 2 Medium Priority特性のテスト"""
+
+    def setUp(self):
+        """各テスト前の準備"""
+        self.calculator = DamageCalculator()
+
+    def test_medium_priority_abilities(self):
+        """Medium priority特性のテスト"""
+
+        # あついしぼう（ほのお・こおり技半減）
+        fire_pokemon = create_simple_pokemon(
+            species="ウインディ", level=50, ability="いかく"
+        )
+        thick_fat_pokemon = create_simple_pokemon(
+            species="マリルリ", level=50, ability="あついしぼう"
+        )
+
+        fire_move = MoveInput(name="かえんほうしゃ")
+
+        # 通常ダメージ vs あついしぼう
+        normal_result = self.calculator.calculate_damage(
+            attacker=fire_pokemon, defender=fire_pokemon, move=fire_move
+        )
+        thick_fat_result = self.calculator.calculate_damage(
+            attacker=fire_pokemon, defender=thick_fat_pokemon, move=fire_move
+        )
+
+        # あついしぼうで半減されることを確認
+        if normal_result.max_damage > 0 and thick_fat_result.max_damage > 0:
+            ratio = thick_fat_result.max_damage / normal_result.max_damage
+            print(f"あついしぼう ratio: {ratio:.4f}")
+            self.assertLess(ratio, 0.6, "あついしぼうでほのお技が半減されるべき")
+
+    def test_strong_jaw_ability(self):
+        """がんじょうあご特性のテスト"""
+        strong_jaw_pokemon = create_simple_pokemon(
+            species="ジュラルドン", level=50, ability="がんじょうあご"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ジュラルドン", level=50, ability="ライトメタル"
+        )
+
+        bite_move = MoveInput(name="かみくだく")
+
+        strong_jaw_result = self.calculator.calculate_damage(
+            attacker=strong_jaw_pokemon, defender=normal_pokemon, move=bite_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=bite_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = strong_jaw_result.max_damage / normal_result.max_damage
+            print(f"がんじょうあご ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.5, delta=0.1, msg="がんじょうあごで噛み技が1.5倍になるべき"
+            )
+
+    def test_sheer_force_ability(self):
+        """ちからずく特性のテスト"""
+        sheer_force_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="ちからずく"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
+
+        # 追加効果のある技
+        effect_move = MoveInput(name="10まんボルト")
+
+        sheer_force_result = self.calculator.calculate_damage(
+            attacker=sheer_force_pokemon, defender=normal_pokemon, move=effect_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=effect_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = sheer_force_result.max_damage / normal_result.max_damage
+            print(f"ちからずく ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.3, delta=0.1, msg="ちからずくで追加効果技が1.3倍になるべき"
+            )
+
+    def test_filter_ability(self):
+        """フィルター特性のテスト"""
+        filter_pokemon = create_simple_pokemon(
+            species="ピクシー",
             level=50,
-            nature="いじっぱり",
-            ability="ひひいろのこどう",
-            evs={"attack": 252, "speed": 252, "hp": 4},
+            ability="フィルター",
+            evs={"hp": 252, "defense": 252},
         )
-        defender = create_simple_pokemon(
-            species="チオンジェン",
+        normal_pokemon = create_simple_pokemon(
+            species="ピクシー",
             level=50,
-            nature="わんぱく",
-            ability="わざわいのおふだ",
-            evs={"defense": 252, "speed": 252, "hp": 252},
-        )
-        move = MoveInput(name="とんぼがえり")
-        condition = BattleConditions(
-            terrain=TerrainCondition.NONE,
-            weather=WeatherCondition.SUN,
+            ability="メロメロボディ",
+            evs={"hp": 252, "defense": 252},
         )
 
-        result = calculator.calculate_damage(attacker, defender, move, condition)
-
-        # 実際の計算結果を表示
-        print("\n=== コライドン vs チオンジェン ===")
-        print(f"技: {move.name}")
-        print(f"実際のダメージ: {result.min_damage}-{result.max_damage}")
-        print(f"期待値: {pokesol_result['min_damage']}-{pokesol_result['max_damage']}")
-        print(
-            f"差分: min={result.min_damage - pokesol_result['min_damage']}, max={result.max_damage - pokesol_result['max_damage']}"
-        )
-        print(
-            f"確定数: 実際={result.guaranteed_ko_hits}, 期待={pokesol_result['guaranteed_ko_hits']}"
+        # はがねタイプの攻撃者（フェアリーに効果バツグン）
+        steel_attacker = create_simple_pokemon(
+            species="ハッサム", level=50, ability="テクニシャン", evs={"attack": 252}
         )
 
-        # 計算詳細を表示
-        details = result.calculation_details
-        print(f"攻撃実数値: {details.get('attack_stat', 'N/A')}")
-        print(f"防御実数値: {details.get('defense_stat', 'N/A')}")
-        print(f"技威力: {details.get('power', 'N/A')}")
-        print(f"タイプ相性: {details.get('type_effectiveness', 'N/A')}")
-        print(f"STAB補正: {details.get('stab_modifier', 'N/A')}")
-        print(f"最終補正: {details.get('final_modifier', 'N/A')}")
-        print(f"基本ダメージ: {details.get('base_damage', 'N/A')}")
-        print(f"全体補正: {details.get('total_modifier', 'N/A')}")
-        print(f"天気: {condition.weather.value}")
-        print(f"攻撃側特性: {attacker.ability}")
-        print(f"防御側特性: {defender.ability}")
+        super_effective_move = MoveInput(name="アイアンヘッド")
+
+        filter_result = self.calculator.calculate_damage(
+            attacker=steel_attacker, defender=filter_pokemon, move=super_effective_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=steel_attacker, defender=normal_pokemon, move=super_effective_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = filter_result.max_damage / normal_result.max_damage
+            print(f"フィルター ratio: {ratio:.4f}")
+            self.assertLess(ratio, 0.8, "フィルターで効果バツグン技が軽減されるべき")
+
+    def test_tough_claws_ability(self):
+        """かたいつめ特性のテスト"""
+        tough_claws_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="かたいつめ"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
+
+        # 接触技
+        contact_move = MoveInput(name="じしん")  # 接触技
+
+        tough_claws_result = self.calculator.calculate_damage(
+            attacker=tough_claws_pokemon, defender=normal_pokemon, move=contact_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=contact_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = tough_claws_result.max_damage / normal_result.max_damage
+            print(f"かたいつめ ratio: {ratio:.4f}")
+            # じしんは接触技ではないので、比率は1.0のはず
+            self.assertAlmostEqual(
+                ratio,
+                1.0,
+                delta=0.1,
+                msg="じしんは接触技ではないのでかたいつめ効果なし",
+            )
+
+    def test_iron_fist_ability(self):
+        """てつのこぶし特性のテスト"""
+        iron_fist_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="てつのこぶし"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
+
+        # パンチ技
+        punch_move = MoveInput(name="かみなりパンチ")
+
+        iron_fist_result = self.calculator.calculate_damage(
+            attacker=iron_fist_pokemon, defender=normal_pokemon, move=punch_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=punch_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = iron_fist_result.max_damage / normal_result.max_damage
+            print(f"てつのこぶし ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.2, delta=0.1, msg="てつのこぶしでパンチ技が1.2倍になるべき"
+            )
+
+    def test_sharpness_ability(self):
+        """きれあじ特性のテスト"""
+        sharpness_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="きれあじ"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
+
+        # 切断技
+        cut_move = MoveInput(name="つじぎり")
+
+        sharpness_result = self.calculator.calculate_damage(
+            attacker=sharpness_pokemon, defender=normal_pokemon, move=cut_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=cut_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = sharpness_result.max_damage / normal_result.max_damage
+            print(f"きれあじ ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.5, delta=0.1, msg="きれあじで切断技が1.5倍になるべき"
+            )
+
+    def test_ice_scales_ability(self):
+        """こおりのりんぷん特性のテスト"""
+        ice_scales_pokemon = create_simple_pokemon(
+            species="ピカチュウ", level=50, ability="こおりのりんぷん"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ピカチュウ", level=50, ability="せいでんき"
+        )
+
+        # 特殊技の攻撃者
+        special_attacker = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", evs={"sp_attack": 252}
+        )
+
+        special_move = MoveInput(name="りゅうのはどう")
+
+        ice_scales_result = self.calculator.calculate_damage(
+            attacker=special_attacker, defender=ice_scales_pokemon, move=special_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=special_attacker, defender=normal_pokemon, move=special_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = ice_scales_result.max_damage / normal_result.max_damage
+            print(f"こおりのりんぷん ratio: {ratio:.4f}")
+            self.assertLess(ratio, 0.6, "こおりのりんぷんで特殊技が半減されるべき")
+
+    def test_fluffy_ability(self):
+        """もふもふ特性のテスト"""
+        fluffy_pokemon = create_simple_pokemon(
+            species="ピカチュウ", level=50, ability="もふもふ"
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ピカチュウ", level=50, ability="せいでんき"
+        )
+
+        # 接触技の攻撃者
+        physical_attacker = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", evs={"attack": 252}
+        )
+
+        # 接触技
+        contact_move = MoveInput(name="じしん")
+
+        fluffy_result = self.calculator.calculate_damage(
+            attacker=physical_attacker, defender=fluffy_pokemon, move=contact_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=physical_attacker, defender=normal_pokemon, move=contact_move
+        )
+
+        # じしんは接触技ではないので効果なし
+        if normal_result.max_damage > 0:
+            ratio = fluffy_result.max_damage / normal_result.max_damage
+            print(f"もふもふ (じしん) ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.0, delta=0.1, msg="じしんは接触技ではないのでもふもふ効果なし"
+            )
+
+
+class TestComplexMechanicsAbilities(unittest.TestCase):
+    """複雑なメカニクス特性のテスト"""
+
+    def setUp(self):
+        """各テスト前の準備"""
+        self.calculator = DamageCalculator()
+
+    def test_analytic_ability(self):
+        """アナライズ特性のテスト"""
+        analytic_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="アナライズ", moves_last=True
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", moves_last=False
+        )
+
+        move = MoveInput(name="じしん")
+
+        analytic_result = self.calculator.calculate_damage(
+            attacker=analytic_pokemon, defender=normal_pokemon, move=move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = analytic_result.max_damage / normal_result.max_damage
+            print(f"アナライズ ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.3, delta=0.1, msg="アナライズで後攻時に1.3倍になるべき"
+            )
+
+    def test_rivalry_ability(self):
+        """とうそうしん特性のテスト"""
+        male_rivalry = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="とうそうしん", gender="male"
+        )
+        male_normal = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", gender="male"
+        )
+        female_normal = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", gender="female"
+        )
+
+        move = MoveInput(name="じしん")
+
+        # 同性（male vs male）
+        same_gender_result = self.calculator.calculate_damage(
+            attacker=male_rivalry, defender=male_normal, move=move
+        )
+
+        # 異性（male vs female）
+        opposite_gender_result = self.calculator.calculate_damage(
+            attacker=male_rivalry, defender=female_normal, move=move
+        )
+
+        # 通常
+        normal_result = self.calculator.calculate_damage(
+            attacker=male_normal, defender=male_normal, move=move
+        )
+
+        if normal_result.max_damage > 0:
+            same_ratio = same_gender_result.max_damage / normal_result.max_damage
+            opposite_ratio = (
+                opposite_gender_result.max_damage / normal_result.max_damage
+            )
+
+            print(f"とうそうしん 同性 ratio: {same_ratio:.4f}")
+            print(f"とうそうしん 異性 ratio: {opposite_ratio:.4f}")
+
+            self.assertAlmostEqual(
+                same_ratio,
+                1.25,
+                delta=0.1,
+                msg="とうそうしんで同性相手に1.25倍になるべき",
+            )
+            self.assertAlmostEqual(
+                opposite_ratio,
+                0.75,
+                delta=0.1,
+                msg="とうそうしんで異性相手に0.75倍になるべき",
+            )
+
+    def test_supreme_overlord_ability(self):
+        """そうだいしょう特性のテスト"""
+        overlord_1 = create_simple_pokemon(
+            species="ガブリアス",
+            level=50,
+            ability="そうだいしょう",
+            fainted_teammates=1,
+        )
+        overlord_3 = create_simple_pokemon(
+            species="ガブリアス",
+            level=50,
+            ability="そうだいしょう",
+            fainted_teammates=3,
+        )
+        overlord_5 = create_simple_pokemon(
+            species="ガブリアス",
+            level=50,
+            ability="そうだいしょう",
+            fainted_teammates=5,
+        )
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ", fainted_teammates=0
+        )
+
+        move = MoveInput(name="じしん")
+
+        result_1 = self.calculator.calculate_damage(
+            attacker=overlord_1, defender=normal_pokemon, move=move
+        )
+        result_3 = self.calculator.calculate_damage(
+            attacker=overlord_3, defender=normal_pokemon, move=move
+        )
+        result_5 = self.calculator.calculate_damage(
+            attacker=overlord_5, defender=normal_pokemon, move=move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio_1 = result_1.max_damage / normal_result.max_damage
+            ratio_3 = result_3.max_damage / normal_result.max_damage
+            ratio_5 = result_5.max_damage / normal_result.max_damage
+
+            print(f"そうだいしょう 1匹 ratio: {ratio_1:.4f}")
+            print(f"そうだいしょう 3匹 ratio: {ratio_3:.4f}")
+            print(f"そうだいしょう 5匹 ratio: {ratio_5:.4f}")
+
+            self.assertAlmostEqual(
+                ratio_1, 1.1, delta=0.1, msg="そうだいしょうで1匹倒れて1.1倍になるべき"
+            )
+            self.assertAlmostEqual(
+                ratio_3, 1.3, delta=0.1, msg="そうだいしょうで3匹倒れて1.3倍になるべき"
+            )
+            self.assertAlmostEqual(
+                ratio_5, 1.5, delta=0.1, msg="そうだいしょうで5匹倒れて1.5倍になるべき"
+            )
+
+    def test_flash_fire_ability(self):
+        """もらい火特性のテスト"""
+        # もらい火持ちの攻撃側
+        flash_fire_attacker = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="もらいび"
+        )
         
-        # 手計算で期待値を確認
-        expected_base = ((50 * 0.4 + 2) * 133 * 204) / (167 * 50) + 2
-        expected_final = expected_base * 2.0 * 1.5  # タイプ相性 × STAB
-        print(f"期待基本ダメージ: {expected_base:.2f}")
-        print(f"期待最終ダメージ: {expected_final:.2f}")
-        print(f"期待範囲: {int(expected_final * 0.85)}-{int(expected_final * 1.0)}")
+        # もらい火持ちの防御側
+        flash_fire_defender = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="もらいび"
+        )
+        
+        # 通常特性のポケモン
+        normal_pokemon = create_simple_pokemon(
+            species="ガブリアス", level=50, ability="すながくれ"
+        )
 
-        self.assertAlmostEqual(result.min_damage, pokesol_result["min_damage"], delta=5)
-        self.assertAlmostEqual(result.max_damage, pokesol_result["max_damage"], delta=5)
+        fire_move = MoveInput(name="かえんほうしゃ")
+
+        # 攻撃側もらい火：ほのお技威力1.5倍
+        flash_fire_result = self.calculator.calculate_damage(
+            attacker=flash_fire_attacker, defender=normal_pokemon, move=fire_move
+        )
+        normal_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=normal_pokemon, move=fire_move
+        )
+
+        if normal_result.max_damage > 0:
+            ratio = flash_fire_result.max_damage / normal_result.max_damage
+            print(f"もらい火攻撃 ratio: {ratio:.4f}")
+            self.assertAlmostEqual(
+                ratio, 1.5, delta=0.1, msg="もらい火特性でほのお技が1.5倍になるべき"
+            )
+
+        # 防御側もらい火：ほのお技無効
+        defense_result = self.calculator.calculate_damage(
+            attacker=normal_pokemon, defender=flash_fire_defender, move=fire_move
+        )
+        
         self.assertEqual(
-            result.guaranteed_ko_hits, pokesol_result["guaranteed_ko_hits"]
+            defense_result.max_damage, 0, 
+            "もらい火持ちへのほのお技は無効になるべき"
         )
-
-    def test_damage_calc_result_with_pokesol_chienpao(self):
-        """ポケソルダメージ計算機との整合性確認"""
-        # ポケソルのダメージ計算結果を模擬
-        pokesol_result = {
-            "min_damage": 44,
-            "max_damage": 52,
-            "guaranteed_ko_hits": 4,
-        }
-
-        # ダメージ計算エンジンで同じ条件で計算
-        calculator = DamageCalculator()
-        attacker = create_simple_pokemon(
-            species="パオジアン",
-            level=50,
-            nature="いじっぱり",
-            ability="わざわいのつるぎ",
-            evs={"attack": 252, "speed": 252, "hp": 4},
-        )
-        defender = create_simple_pokemon(
-            species="アシレーヌ",
-            level=50,
-            nature="わんぱく",
-            ability="げきりゅう",
-            evs={"defense": 252, "speed": 252, "hp": 252},
-        )
-        move = MoveInput(name="つららおとし")
-        condition = BattleConditions(
-            terrain=TerrainCondition.NONE,
-            weather=WeatherCondition.NONE,
-        )
-
-        result = calculator.calculate_damage(attacker, defender, move, condition)
-
-        # 実際の計算結果を表示
-        print("\n=== パオジアン vs アシレーヌ ===")
-        print(f"技: {move.name}")
-        print(f"実際のダメージ: {result.min_damage}-{result.max_damage}")
-        print(f"期待値: {pokesol_result['min_damage']}-{pokesol_result['max_damage']}")
-        print(
-            f"差分: min={result.min_damage - pokesol_result['min_damage']}, max={result.max_damage - pokesol_result['max_damage']}"
-        )
-        print(
-            f"確定数: 実際={result.guaranteed_ko_hits}, 期待={pokesol_result['guaranteed_ko_hits']}"
-        )
-
-        # 計算詳細を表示
-        details = result.calculation_details
-        print(f"攻撃実数値: {details.get('attack_stat', 'N/A')}")
-        print(f"防御実数値: {details.get('defense_stat', 'N/A')}")
-        print(f"技威力: {details.get('power', 'N/A')}")
-        print(f"タイプ相性: {details.get('type_effectiveness', 'N/A')}")
-        print(f"天気: {condition.weather.value}")
-        print(f"攻撃側特性: {attacker.ability}")
-        print(f"防御側特性: {defender.ability}")
-
-        self.assertAlmostEqual(result.min_damage, pokesol_result["min_damage"], delta=1)
-        self.assertAlmostEqual(result.max_damage, pokesol_result["max_damage"], delta=1)
-        self.assertEqual(
-            result.guaranteed_ko_hits, pokesol_result["guaranteed_ko_hits"]
-        )
-
-    def test_damage_calc_result_with_pokesol_chiyui(self):
-        """ポケソルダメージ計算機との整合性確認"""
-        # ポケソルのダメージ計算結果を模擬
-        pokesol_result = {
-            "min_damage": 38,
-            "max_damage": 45,
-            "guaranteed_ko_hits": 5,
-        }
-
-        # ダメージ計算エンジンで同じ条件で計算
-        calculator = DamageCalculator()
-        attacker = create_simple_pokemon(
-            species="イーユイ",
-            level=50,
-            nature="ひかえめ",
-            ability="わざわいのたま",
-            evs={"sp_attack": 252, "speed": 252, "hp": 4},
-        )
-        defender = create_simple_pokemon(
-            species="アシレーヌ",
-            level=50,
-            nature="しんちょう",
-            ability="げきりゅう",
-            evs={"sp_defense": 252, "speed": 252, "hp": 252},
-        )
-        move = MoveInput(name="かえんほうしゃ")
-        condition = BattleConditions(
-            terrain=TerrainCondition.NONE,
-            weather=WeatherCondition.NONE,
-        )
-
-        result = calculator.calculate_damage(attacker, defender, move, condition)
-
-        # 実際の計算結果を表示
-        print("\n=== イーユイ vs アシレーヌ ===")
-        print(f"技: {move.name}")
-        print(f"実際のダメージ: {result.min_damage}-{result.max_damage}")
-        print(f"期待値: {pokesol_result['min_damage']}-{pokesol_result['max_damage']}")
-        print(
-            f"差分: min={result.min_damage - pokesol_result['min_damage']}, max={result.max_damage - pokesol_result['max_damage']}"
-        )
-        print(
-            f"確定数: 実際={result.guaranteed_ko_hits}, 期待={pokesol_result['guaranteed_ko_hits']}"
-        )
-
-        # 計算詳細を表示
-        details = result.calculation_details
-        print(f"攻撃実数値: {details.get('attack_stat', 'N/A')}")
-        print(f"防御実数値: {details.get('defense_stat', 'N/A')}")
-        print(f"技威力: {details.get('power', 'N/A')}")
-        print(f"タイプ相性: {details.get('type_effectiveness', 'N/A')}")
-        print(f"天気: {condition.weather.value}")
-        print(f"攻撃側特性: {attacker.ability}")
-        print(f"防御側特性: {defender.ability}")
-
-        self.assertAlmostEqual(result.min_damage, pokesol_result["min_damage"], delta=1)
-        self.assertAlmostEqual(result.max_damage, pokesol_result["max_damage"], delta=1)
-        self.assertEqual(
-            result.guaranteed_ko_hits, pokesol_result["guaranteed_ko_hits"]
-        )
+        
+        print(f"もらい火防御効果確認 - ダメージ: {defense_result.max_damage} (無効)")
 
 
 if __name__ == "__main__":

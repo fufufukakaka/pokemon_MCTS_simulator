@@ -62,7 +62,12 @@ def convert_pokemon_request(pokemon_req) -> PokemonState:
         is_terastalized=pokemon_req.is_terastalized,
         status_ailment=pokemon_req.status_ailment,
         hp_ratio=pokemon_req.hp_ratio,
-        stat_boosts=pokemon_req.stat_boosts or {}
+        stat_boosts=pokemon_req.stat_boosts or {},
+        paradox_boost_stat=pokemon_req.paradox_boost_stat,
+        gender=pokemon_req.gender,
+        fainted_teammates=pokemon_req.fainted_teammates,
+        moves_last=pokemon_req.moves_last,
+        flash_fire_active=pokemon_req.flash_fire_active
     )
 
 

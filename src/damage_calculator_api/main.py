@@ -5,15 +5,16 @@ FastAPIを使用したREST APIサーバー
 高精度なダメージ計算エンジンをWeb APIとして提供
 """
 
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.exceptions import RequestValidationError
-import uvicorn
 import logging
 from contextlib import asynccontextmanager
 
-from src.damage_calculator_api.routers import damage, pokemon, info
+import uvicorn
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
+from src.damage_calculator_api.routers import damage, info, pokemon
 from src.damage_calculator_api.utils.data_loader import get_data_loader
 
 # ログ設定
@@ -28,13 +29,15 @@ async def lifespan(app: FastAPI):
     logger.info("Starting Pokémon SV Damage Calculator API...")
     try:
         data_loader = get_data_loader()
-        logger.info(f"Loaded {len(data_loader.pokemon_data)} Pokémon and {len(data_loader.move_data)} moves")
+        logger.info(
+            f"Loaded {len(data_loader.pokemon_data)} Pokémon and {len(data_loader.move_data)} moves"
+        )
     except Exception as e:
         logger.error(f"Failed to load data: {e}")
         raise
-    
+
     yield
-    
+
     # 終了時のクリーンアップ
     logger.info("Shutting down Pokémon SV Damage Calculator API...")
 
@@ -65,7 +68,7 @@ response = requests.post("/api/v1/damage/calculate", json={
         "ability": "せいでんき"
     },
     "defender": {
-        "species": "ギャラドス", 
+        "species": "ギャラドス",
         "level": 50,
         "stats": {"sp_defense": 120}
     },
@@ -84,7 +87,7 @@ response = requests.post("/api/v1/damage/calculate", json={
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT",
     },
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # CORS設定
@@ -106,8 +109,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         content={
             "error": "Validation Error",
             "detail": "リクエストデータが無効です",
-            "errors": exc.errors()
-        }
+            "errors": exc.errors(),
+        },
     )
 
 
@@ -115,11 +118,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 async def value_error_handler(request: Request, exc: ValueError):
     """値エラーハンドラー"""
     return JSONResponse(
-        status_code=400,
-        content={
-            "error": "Invalid Value",
-            "detail": str(exc)
-        }
+        status_code=400, content={"error": "Invalid Value", "detail": str(exc)}
     )
 
 
@@ -131,8 +130,8 @@ async def general_exception_handler(request: Request, exc: Exception):
         status_code=500,
         content={
             "error": "Internal Server Error",
-            "detail": "サーバー内部エラーが発生しました"
-        }
+            "detail": "サーバー内部エラーが発生しました",
+        },
     )
 
 
@@ -149,7 +148,7 @@ async def health_check():
     return {
         "status": "healthy",
         "service": "Pokémon SV Damage Calculator API",
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
 
 
@@ -162,16 +161,10 @@ async def root():
         "version": "1.0.0",
         "docs": "/docs",
         "health": "/health",
-        "api_base": "/api/v1"
+        "api_base": "/api/v1",
     }
 
 
 # 開発用サーバー起動
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True,
-        log_level="info"
-    )
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, log_level="info")

@@ -416,8 +416,9 @@ class TypeCalculator:
         if defender_ability == "でんきエンジン" and attacking_type == "でんき":
             effectiveness = 0.0
         
-        # フィルター・ハードロック（効果抜群軽減）
-        if defender_ability in ["フィルター", "ハードロック"] and effectiveness > 1.0:
+        # フィルター（効果抜群軽減）
+        # Note: ハードロックは stat_calculator.py の final damage modifier で処理
+        if defender_ability == "フィルター" and effectiveness > 1.0:
             effectiveness *= 0.75
         
         # たいねつ（ほのお技軽減）

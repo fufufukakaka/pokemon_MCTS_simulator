@@ -100,6 +100,32 @@ class PokemonRequest(BaseModel):
         None, description="能力ランク補正", example={"attack": 2, "speed": 1}
     )
 
+    # 特殊特性用パラメータ（テスト準拠）
+    paradox_boost_stat: Optional[str] = Field(
+        None, 
+        description="クォークチャージ・古代活性で上昇する能力値",
+        example="attack"
+    )
+    gender: Optional[str] = Field(
+        None, 
+        description="性別（とうそうしん用）",
+        example="male"
+    )
+    fainted_teammates: int = Field(
+        0, 
+        ge=0, 
+        le=5, 
+        description="倒れた味方の数（そうだいしょう用）"
+    )
+    moves_last: bool = Field(
+        False, 
+        description="後攻かどうか（アナライズ用）"
+    )
+    flash_fire_active: bool = Field(
+        False, 
+        description="もらい火発動中かどうか"
+    )
+
 
     @validator("stat_boosts")
     def validate_stat_boosts(cls, v):

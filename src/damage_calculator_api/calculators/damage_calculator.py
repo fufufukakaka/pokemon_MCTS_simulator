@@ -432,6 +432,10 @@ def create_simple_pokemon(
     evs: Optional[Dict[str, int]] = None,
     ivs: Optional[Dict[str, int]] = None,
     paradox_boost_stat: Optional[str] = None,
+    gender: Optional[str] = None,
+    fainted_teammates: int = 0,
+    moves_last: bool = False,
+    flash_fire_active: bool = False,
 ) -> PokemonState:
     """
     簡単なポケモン作成ヘルパー関数
@@ -445,6 +449,10 @@ def create_simple_pokemon(
         evs: 努力値 {"hp": 252, "attack": 252, ...}
         ivs: 個体値 {"hp": 31, "attack": 31, ...}
         paradox_boost_stat: クォークチャージ・古代活性で上昇する能力値 ("attack", "defense", "sp_attack", "sp_defense")
+        gender: 性別 ("male", "female", "genderless") - とうそうしん用
+        fainted_teammates: 倒れた味方の数 - そうだいしょう用
+        moves_last: 後攻かどうか - アナライズ用
+        flash_fire_active: もらい火発動中かどうか - もらい火用
     """
     data_loader = get_data_loader()
     species_data = data_loader.get_pokemon_data(species)
@@ -543,4 +551,8 @@ def create_simple_pokemon(
         ability=ability,
         item=item,
         paradox_boost_stat=paradox_boost_stat,
+        gender=gender,
+        fainted_teammates=fainted_teammates,
+        moves_last=moves_last,
+        flash_fire_active=flash_fire_active,
     )
