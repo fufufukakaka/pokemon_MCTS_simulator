@@ -17,3 +17,11 @@ poetry run python scripts/matching.py --resume
 ```bash
 poetry run python src/utils/extract_battle_history.py
 ```
+
+## train fasttext
+
+サブワードで文字の類似性を見てくるのがちょっと嫌かも。word2vec にしようかな。
+
+```bash
+poetry run python src/utils/train_fasttext.py
+```
