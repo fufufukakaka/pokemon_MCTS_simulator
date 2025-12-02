@@ -4,34 +4,174 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Pokémon battle simulator using Monte Carlo Tree Search (MCTS) for AI decision-making. The system simulates competitive Pokémon battles with realistic mechanics, manages trainer rankings using Elo ratings, and provides battle analytics.
+A Pokémon battle simulator combining Monte Carlo Tree Search (MCTS), hypothesis-based incomplete information handling, and neural network-guided decision making. Features include Gen9-compliant battle simulation, AlphaZero-style reinforcement learning, team selection networks, LLM training pipelines, and a FastAPI damage calculator.
 
 ## Core Architecture
 
-### Main Components
+### 1. Battle Simulation Engine (`src/pokemon_battle_sim/`)
 
-1. **Battle Simulation Engine** (`src/pokemon_battle_sim/`)
-   - `battle.py`: Core battle logic, turn management, and game state
-   - `pokemon.py`: Pokémon class with comprehensive battle mechanics (stats, abilities, moves, items)
-   - `damage.py`: Damage calculation engine
-   - `utils.py`: Battle utility functions
+- **[battle.py](src/pokemon_battle_sim/battle.py)**: Core battle state management with turn-based simulation
+  - Command system: `SKIP=-1`, `STRUGGLE=30`, `NO_COMMAND=40`, moves `0-3`, switches `20+`
+  - Deep cloning support via `seed` and `copy_count` for MCTS simulations
+  - `available_commands(player, phase)`: Returns legal moves/switches for given phase ("battle" or "change")
+  - `winner()`: Returns 0/1 for winner or None if ongoing
 
-2. **MCTS AI System** (`src/mcts/`)
-   - `mcts_battle.py`: MCTS implementation with UCT (Upper Confidence Bound applied to Trees)
-   - `MyMCTSBattle`: Extends base Battle class with AI decision-making
+- **[pokemon.py](src/pokemon_battle_sim/pokemon.py)**: Pokémon class with comprehensive mechanics
+  - Stats calculation with nature/EVs/IVs support
+  - Abilities, items, moves, status effects, Terastal support
+  - `Pokemon.init()`: **Must be called before instantiating any Pokémon** to load data files
 
-3. **Tournament Management** (`scripts/`)
-   - `matching.py`: Main tournament runner with Elo rating system
-   - Handles trainer matching, battle execution, and result tracking
+- **[damage.py](src/pokemon_battle_sim/damage.py)**: Damage calculation engine with full Gen 9 mechanics
 
-4. **Data Management** (`src/`)
-   - `database_handler.py`: PostgreSQL database operations
-   - `models.py`: Data models (Trainer class)
-   - `utils/`: Data extraction and ML model training utilities
+- **MCTS implementations**: Two locations exist:
+  - `src/pokemon_battle_sim/mcts_battle.py`: Original MCTS battle
+  - `src/mcts/mcts_battle.py`: Standalone MCTS module (imports as `src.mcts.mcts_battle`)
+  - Both provide `MyMCTSBattle`, `MCTSNode`, UCT exploration with `sqrt(2)`, default 1000 iterations
+
+### 2. Hypothesis-Based MCTS (`src/hypothesis/`)
+
+Handles incomplete information games (opponent's hidden items) via hypothesis sampling.
+
+- **[hypothesis_mcts.py](src/hypothesis/hypothesis_mcts.py)**: `HypothesisMCTS` and `HypothesisMCTSBattle`
+  - Samples hypotheses about opponent's items and averages over outcomes
+  - `PolicyValue`: Protocol for neural network guidance integration
+
+- **[item_belief_state.py](src/hypothesis/item_belief_state.py)**: `ItemBeliefState` tracks probability distributions over opponent items
+
+- **[item_prior_database.py](src/hypothesis/item_prior_database.py)**: `ItemPriorDatabase` provides prior probabilities for items
+
+- **[selfplay.py](src/hypothesis/selfplay.py)**: `SelfPlayGenerator` produces training data
+  - `GameRecord`, `TurnRecord`, `PokemonState`, `FieldCondition`: Data structures for recording games
+  - `save_records_to_jsonl()`, `load_records_from_jsonl()`: Persistence utilities
+
+### 3. Policy-Value Network (`src/policy_value_network/`)
+
+AlphaZero-style neural network for action prediction and win rate estimation.
+
+- **[network.py](src/policy_value_network/network.py)**: `PolicyValueNetwork` outputs policy logits and value estimate
+- **[observation_encoder.py](src/policy_value_network/observation_encoder.py)**: `ObservationEncoder` converts battle state to tensor
+- **[nn_guided_mcts.py](src/policy_value_network/nn_guided_mcts.py)**: `NNGuidedMCTS` uses neural network to guide tree search
+- **[trainer.py](src/policy_value_network/trainer.py)**: `PolicyValueTrainer` with `TrainingConfig`
+- **[reinforcement_loop.py](src/policy_value_network/reinforcement_loop.py)**: `ReinforcementLoop` orchestrates Self-Play → Train → Evaluate cycles
+- **[evaluator.py](src/policy_value_network/evaluator.py)**: `ModelEvaluator` compares model generations
+
+### 4. Team Selection Network (`src/policy_value_network/`)
+
+Selects optimal 3 Pokémon from 6 based on opponent's team.
+
+- **[team_selection_network.py](src/policy_value_network/team_selection_network.py)**: `TeamSelectionNetwork`
+- **[team_selection_encoder.py](src/policy_value_network/team_selection_encoder.py)**: `TeamSelectionEncoder`
+- **[team_selector.py](src/policy_value_network/team_selector.py)**: Selector implementations
+  - `NNTeamSelector`: Neural network-based selection
+  - `RandomTeamSelector`: Random baseline
+  - `TopNTeamSelector`: First N Pokémon (legacy behavior)
+  - `HybridTeamSelector`: Combines strategies
+  - `load_team_selector(path, device)`: Load trained selector
+
+### 6. LLM Training Pipeline (`src/llm/`)
+
+**Purpose**: Train LLMs to play Pokémon battles through supervised fine-tuning and reinforcement learning.
+
+- **[static_dataset.py](src/llm/static_dataset.py)**: Generate static training examples from damage calculations
+  - `build_example_from_battle(battle, player)`: Creates one training sample
+  - Output format: `{state_text, actions, label_action_id, policy_dist}`
+  - Uses damage-based scoring to label optimal moves
+
+- **[state_representation.py](src/llm/state_representation.py)**: Convert `Battle` state to LLM-readable text
+  - `battle_to_llm_state(battle, player)`: Returns `LLMState` with text representation and legal actions
+  - `LLMAction`: Typed action with `id` (e.g., "MOVE_0", "SWITCH_1") and descriptive `text`
+
+- **[policy.py](src/llm/policy.py)**: LLM-based battle policy using Hugging Face models
+  - `LLMPolicy`: Wraps `llm-jp/llm-jp-3.1-1.8b-instruct4` or similar chat models
+  - `select_action(battle, player)`: Generates next move from battle state
+
+- **[action_scoring.py](src/llm/action_scoring.py)**: Score actions using damage calculations for labeling
+
+- **[reward.py](src/llm/reward.py)**: Reward functions for RL training
+
+- **[selfplay_rl.py](src/llm/selfplay_rl.py)**: Self-play loop generating (state, action, reward) trajectories
+
+- **[sft_format.py](src/llm/sft_format.py)**: Convert static datasets to chat format for supervised fine-tuning
+
+### 7. Damage Calculator API (`src/damage_calculator_api/`)
+
+FastAPI-based REST service providing high-precision damage calculations.
+
+- **[main.py](src/damage_calculator_api/main.py)**: FastAPI application with CORS, error handling, lifespan management
+- **[calculators/damage_calculator.py](src/damage_calculator_api/calculators/damage_calculator.py)**: Core damage engine (16-stage rolls, all modifiers)
+- **[calculators/stat_calculator.py](src/damage_calculator_api/calculators/stat_calculator.py)**: Stat calculation with nature/EV/IV
+- **Routers**: `/api/v1/damage`, `/api/v1/pokemon`, `/api/v1/info`
+
+### 8. Tournament System (`scripts/matching.py`)
+
+- Elo rating system for trainer ranking
+- Resume capability via PostgreSQL database
+- Discord webhook notifications
+- Randomly selects 2 trainers, runs 3v3 battle using `MyMCTSBattle`, updates ratings
+
+### 9. Data Management
+
+- **[database_handler.py](src/database_handler.py)**: PostgreSQL operations for trainers and battle history
+- **[models.py](src/models.py)**: `Trainer` class with `choose_team()` method
+- Trainer data: `data/top_rankers/season_27.json`
 
 ## Key Development Commands
 
-### Running Battles
+### Reinforcement Learning Pipeline
+
+```bash
+# 1. Generate Self-Play data with MCTS
+poetry run python scripts/generate_selfplay_dataset.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --output data/selfplay_records.jsonl \
+  --num-games 100 \
+  --mcts-iterations 100
+
+# 2. Train Policy-Value Network from Self-Play data
+poetry run python scripts/train_policy_value_network.py \
+  --dataset data/selfplay_records.jsonl \
+  --output models/policy_value \
+  --hidden-dim 256 \
+  --num-epochs 100
+
+# 3. Run full AlphaZero-style RL loop (Self-Play → Train → Evaluate → Repeat)
+poetry run python scripts/run_reinforcement_loop.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --output models/reinforcement \
+  --num-generations 10 \
+  --games-per-generation 100 \
+  --evaluation-games 50
+
+# Lightweight test run
+poetry run python scripts/run_reinforcement_loop.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --output models/reinforcement_test \
+  --num-generations 3 \
+  --games-per-generation 20 \
+  --evaluation-games 10 \
+  --training-epochs 10
+```
+
+### Team Selection Training
+
+```bash
+# Train with random data
+poetry run python scripts/train_team_selection.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --output models/team_selection \
+  --num-samples 10000 \
+  --num-epochs 50
+
+# Train with Self-Play data (higher quality)
+poetry run python scripts/train_team_selection.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --selfplay-data data/selfplay_records.jsonl \
+  --output models/team_selection \
+  --num-epochs 100
+```
+
+### Running Tournaments
+
 ```bash
 # Run tournament with resume capability
 DISCORD_WEBHOOK_URL={} \
@@ -43,77 +183,168 @@ POSTGRES_PORT={} \
 poetry run python scripts/matching.py --resume
 ```
 
+### LLM Dataset Generation
+
+```bash
+# Generate static dataset from battle simulations
+poetry run python scripts/generate_llm_static_dataset.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --output data/llm_static_dataset.jsonl \
+  --num-battles 10000
+
+# Convert to chat format for SFT
+poetry run python scripts/convert_llm_static_to_chat_sft.py \
+  --input data/llm_static_dataset.jsonl \
+  --output data/llm_sft_chat_dataset.jsonl
+```
+
+### Damage Calculator API
+
+```bash
+# Start FastAPI server
+poetry run python src/damage_calculator_api/main.py
+
+# Or with uvicorn
+poetry run uvicorn src.damage_calculator_api.main:app --reload --port 8000
+```
+
+API documentation available at `http://localhost:8000/docs`
+
 ### Data Processing
+
 ```bash
 # Extract battle history from simulation logs
 poetry run python src/utils/extract_battle_history.py
 
-# Train word2vec model for Pokémon analysis
+# Train word2vec model for Pokémon embeddings
 poetry run python src/utils/train_word2vec.py
 ```
 
-### Development Setup
+### Testing
+
+```bash
+# Run all tests (uses unittest framework)
+poetry run python -m unittest discover tests/
+
+# Run specific test file
+poetry run python -m unittest tests.test_calculators.test_damage_calculator
+
+# Run with pytest (also supported)
+poetry run pytest tests/
+```
+
+### Development Tools
+
 ```bash
 # Install dependencies
 poetry install
 
-# Run Jupyter notebooks for analysis
+# Run Jupyter for analysis
 poetry run jupyter notebook
+
+# Streamlit leaderboard dashboard
+poetry run streamlit run src/streamlit_leaderboard.py
 ```
 
-## Technical Implementation Details
+## Important Implementation Patterns
 
-### Battle System
-- **Turn-based simulation**: Each turn processes both players' commands simultaneously
-- **Command types**: Battle moves, switch/change commands, status effects
-- **State management**: Deep cloning for MCTS simulations without affecting main game state
+### Battle Initialization Pattern
 
-### MCTS Algorithm
-- **UCT exploration**: Uses sqrt(2) exploration parameter
-- **Policy separation**: Different policies for battle commands vs. switching
-- **Evaluation function**: TOD_score-based board evaluation with ratio scoring
-- **Iterations**: Default 1000 iterations per decision (configurable)
+When creating battles, **always** initialize Pokémon data first:
 
-### Database Schema
-- **Trainers**: Stores trainer data with Elo ratings
-- **Battle History**: Records all matches with timestamps and ratings
-- **Resume functionality**: Can restart tournaments from last saved state
+```python
+from src.pokemon_battle_sim.pokemon import Pokemon
+from src.pokemon_battle_sim.battle import Battle
 
-### Data Sources
-- Trainer data loaded from `data/top_rankers/season_27.json`
-- Pokémon data from various text files in `data/`
-- Battle logs saved to `logs/` directory with timestamps
+Pokemon.init()  # MUST call before creating any Pokémon
 
-## Development Notes
+# Then create Pokémon instances
+pokemon = Pokemon("ピカチュウ")
+pokemon.item = "きあいのタスキ"
+# ... set other attributes
 
-### Poetry Configuration
-- Uses Poetry for dependency management
+battle = Battle()
+battle.reset_game()
+```
+
+### Command Encoding
+
+- Moves: `0-3` (indexes into Pokémon's move list)
+- Switches: `20 + pokemon_index` (e.g., switch to 2nd team member = `21`)
+- Special: `SKIP=-1`, `STRUGGLE=30`, `NO_COMMAND=40`
+
+### State Cloning for MCTS
+
+The `Battle` class supports deep cloning via `seed` tracking:
+
+```python
+original_battle = Battle(seed=12345)
+# During MCTS simulation, clone states
+cloned_state = deepcopy(original_battle)
+# The clone maintains seed + copy_count for reproducibility
+```
+
+### LLM Action Format
+
+LLM outputs must follow strict formats:
+- Moves: `"MOVE: わざ名"` or action ID `"MOVE_0"`
+- Switches: `"SWITCH: ポケモン名"` or action ID `"SWITCH_1"`
+
+Parsing handled by `parse_llm_action_output()` in [state_representation.py](src/llm/state_representation.py).
+
+### Using Team Selectors
+
+```python
+from src.policy_value_network import (
+    load_team_selector,
+    RandomTeamSelector,
+    TopNTeamSelector,
+)
+
+# NN-based selector (requires trained model)
+selector = load_team_selector("models/team_selection", device="cpu")
+
+# Select 3 Pokémon based on opponent's team
+my_team = [...]  # 6 Pokémon data dicts
+opp_team = [...]  # Opponent's 6 Pokémon
+selected = selector.select(my_team, opp_team, num_select=3)
+
+# Baseline selectors
+random_selector = RandomTeamSelector()
+top_n_selector = TopNTeamSelector()  # Legacy: first N Pokémon
+```
+
+### Database Environment Variables
+
+PostgreSQL connection requires:
+- `POSTGRES_HOST`
+- `POSTGRES_PORT`
+- `POSTGRES_DB`
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+
+Optional: `DISCORD_WEBHOOK_URL` for notifications
+
+## Technical Notes
+
+### Dependencies
+
 - Python 3.12+ required
-- Key dependencies: pandas, requests, langchain, openai, sqlalchemy, psycopg2-binary
-
-### Testing and Validation
-- Battle logs are automatically saved for analysis
-- Discord notifications for tournament progress
-- Streamlit dashboard for leaderboard visualization
+- Key packages: `torch`, `transformers`, `fastapi`, `sqlalchemy`, `langchain`, `gensim`, `lightgbm`
+- Uses Poetry for dependency management (`pyproject.toml`)
 
 ### Performance Considerations
-- MCTS iterations can be adjusted based on computational resources
-- Battle state cloning is computationally expensive - optimize for production use
-- PostgreSQL connection pooling recommended for high-volume tournaments
 
-## Data Flow
+- MCTS iterations (default 1000) are tunable via the `iterations` parameter
+- Deep cloning Battle states is computationally expensive—minimize during production
+- LLM inference requires GPU for reasonable performance (uses `torch.bfloat16`)
+- GPU is auto-detected; use `--device cuda` to explicitly specify
+- RL loop is time-intensive; use lightweight test options for development
 
-1. **Tournament Start**: Load trainer data from JSON files
-2. **Battle Matching**: Elo-based matchmaking or random battles
-3. **MCTS Decision**: AI evaluates possible moves using tree search
-4. **Battle Execution**: Simulate turn-by-turn combat
-5. **Result Recording**: Update Elo ratings and save battle logs
-6. **Analytics**: Extract patterns and train ML models
+### Data Files
 
-## Common File Locations
+Pokémon data loaded from `data/` directory:
+- Move data, Pokémon stats, type charts, etc.
+- Ensure these files exist before running simulations
 
-- Battle logs: `logs/battle_log_YYYYMMDD_HHMMSS.txt`
-- Trainer data: `data/top_rankers/season_27.json`
-- Pokémon data: `data/*.txt` files
-- Notebooks: `notebook/` directory for analysis
-- Models: `models/` directory for trained ML models
+Battle logs saved to `logs/battle_log_YYYYMMDD_HHMMSS.txt`
