@@ -54,7 +54,13 @@ def main():
         "--trainer-json",
         type=str,
         default="data/top_rankers/season_27.json",
-        help="トレーナーデータのJSONファイル",
+        help="トレーナーデータのJSONファイル（対戦相手）",
+    )
+    parser.add_argument(
+        "--fixed-party",
+        type=str,
+        default="",
+        help="固定パーティのJSONファイル（指定時はPlayer 0を固定）",
     )
     parser.add_argument(
         "--output",
@@ -137,6 +143,25 @@ def main():
         help="新モデル採用の勝率閾値",
     )
 
+    # Team Selection設定
+    parser.add_argument(
+        "--train-team-selection",
+        action="store_true",
+        help="Team Selection Networkも学習する",
+    )
+    parser.add_argument(
+        "--team-selection-epochs",
+        type=int,
+        default=20,
+        help="Team Selection学習エポック数",
+    )
+    parser.add_argument(
+        "--team-selection-update-interval",
+        type=int,
+        default=1,
+        help="何世代ごとにTeam Selectorを更新するか",
+    )
+
     # デバイス
     parser.add_argument(
         "--device",
@@ -155,6 +180,19 @@ def main():
     logger.info("持ち物事前確率DBを構築中...")
     prior_db = ItemPriorDatabase.from_trainer_json(args.trainer_json)
 
+    # 固定パーティの読み込み
+    fixed_party = None
+    if args.fixed_party:
+        import json
+        with open(args.fixed_party, "r", encoding="utf-8") as f:
+            fixed_party_data = json.load(f)
+        # {"pokemons": [...]} or [...] の両方に対応
+        if isinstance(fixed_party_data, list):
+            fixed_party = fixed_party_data
+        else:
+            fixed_party = fixed_party_data.get("pokemons", fixed_party_data)
+        logger.info(f"固定パーティをロード: {len(fixed_party)}体")
+
     # 設定
     config = ReinforcementLoopConfig(
         num_generations=args.num_generations,
@@ -169,6 +207,10 @@ def main():
         learning_rate=args.learning_rate,
         evaluation_games=args.evaluation_games,
         win_rate_threshold=args.win_rate_threshold,
+        fixed_party=fixed_party,
+        train_team_selection=args.train_team_selection,
+        team_selection_epochs=args.team_selection_epochs,
+        team_selection_update_interval=args.team_selection_update_interval,
     )
 
     if args.device:
@@ -178,7 +220,11 @@ def main():
     print("=" * 60)
     print("強化学習ループ")
     print("=" * 60)
-    print(f"トレーナーデータ: {args.trainer_json}")
+    print(f"対戦相手データ: {args.trainer_json}")
+    if args.fixed_party:
+        print(f"固定パーティ: {args.fixed_party} ({len(fixed_party)}体)")
+    else:
+        print("固定パーティ: なし（双方ランダム選出）")
     print(f"出力ディレクトリ: {args.output}")
     print()
     print("ループ設定:")
@@ -195,6 +241,12 @@ def main():
     print(f"  評価対戦数: {config.evaluation_games}")
     print(f"  勝率閾値: {config.win_rate_threshold:.1%}")
     print()
+    if config.train_team_selection:
+        print("Team Selection設定:")
+        print(f"  学習: 有効")
+        print(f"  エポック数: {config.team_selection_epochs}")
+        print(f"  更新間隔: {config.team_selection_update_interval}世代ごと")
+        print()
     print(f"デバイス: {config.device}")
     print("=" * 60)
 

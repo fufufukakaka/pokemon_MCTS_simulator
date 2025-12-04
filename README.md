@@ -9,6 +9,7 @@
 - **Policy-Value Network**: AlphaZeroスタイルの行動予測・勝率予測ネットワーク
 - **Team Selection Network**: 相手チームを見て最適な3匹を選出するネットワーク
 - **強化学習ループ**: Self-Play → 学習 → 評価のサイクルで継続的に強化
+- **固定パーティモード**: 自分のパーティを固定して最適な戦い方を学習
 
 ---
 
@@ -51,7 +52,7 @@ poetry run python scripts/train_policy_value_network.py \
 ### 3. 強化学習ループ（Self-Play → 学習 → 評価 → 繰り返し）
 
 ```bash
-# AlphaZeroスタイルの強化学習ループ
+# AlphaZeroスタイルの強化学習ループ（標準モード）
 poetry run python scripts/run_reinforcement_loop.py \
     --trainer-json data/top_rankers/season_27.json \
     --output models/reinforcement \
@@ -69,13 +70,60 @@ poetry run python scripts/run_reinforcement_loop.py \
     --training-epochs 10
 ```
 
+### 4. 固定パーティモード
+
+自分の考えたパーティを固定し、そのパーティで最も強く戦えるモデルを学習する。
+
+```bash
+# 固定パーティで強化学習
+# - Player 0: 固定パーティ（自分）
+# - Player 1: trainer-jsonからランダムに選出（対戦相手）
+poetry run python scripts/run_reinforcement_loop.py \
+    --trainer-json data/top_rankers/season_36.json \
+    --fixed-party data/my_fixed_party.json \
+    --output models/my_party_rl \
+    --num-generations 50 \
+    --games-per-generation 100 \
+    --evaluation-games 50
+
+# Team Selection Networkも同時に学習
+poetry run python scripts/run_reinforcement_loop.py \
+    --trainer-json data/top_rankers/season_36.json \
+    --fixed-party data/my_fixed_party.json \
+    --output models/my_party_rl_with_selection \
+    --num-generations 50 \
+    --games-per-generation 100 \
+    --train-team-selection \
+    --team-selection-epochs 20 \
+    --team-selection-update-interval 1
+```
+
+#### 固定パーティJSONの形式
+
+```json
+{
+  "pokemons": [
+    {
+      "name": "ポケモン名",
+      "item": "持ち物",
+      "nature": "性格",
+      "evs": "H,A,B,C,D,S",
+      "moves": ["技1", "技2", "技3", "技4"],
+      "tera_type": "テラスタイプ"
+    }
+  ]
+}
+```
+
+サンプル: `data/sample_fixed_party.json`, `data/my_fixed_party.json`
+
 ---
 
 ## Team Selection Network
 
 相手の6匹を見て、自分の6匹から最適な3匹を選出するネットワーク。
 
-### 学習
+### 単独学習
 
 ```bash
 # ランダムデータで初期学習
@@ -92,6 +140,26 @@ poetry run python scripts/train_team_selection.py \
     --output models/team_selection \
     --num-epochs 100
 ```
+
+### 強化学習ループ内で学習
+
+強化学習ループ実行時に `--train-team-selection` オプションを指定すると、Self-Play中に収集した選出データを使ってTeam Selection Networkも同時に学習する。
+
+```bash
+poetry run python scripts/run_reinforcement_loop.py \
+    --trainer-json data/top_rankers/season_36.json \
+    --output models/reinforcement_with_selection \
+    --num-generations 20 \
+    --games-per-generation 100 \
+    --train-team-selection \
+    --team-selection-epochs 20 \
+    --team-selection-update-interval 1
+```
+
+**オプション:**
+- `--train-team-selection`: Team Selection Networkの学習を有効化
+- `--team-selection-epochs`: 学習エポック数（デフォルト: 20）
+- `--team-selection-update-interval`: 何世代ごとに更新するか（デフォルト: 1）
 
 ### 使い方（コード内）
 
@@ -118,6 +186,27 @@ selected = random_selector.select(my_team, opp_team, num_select=3)
 top_n_selector = TopNTeamSelector()
 selected = top_n_selector.select(my_team, opp_team, num_select=3)
 ```
+
+---
+
+## データ変換ツール
+
+### CSV → トレーナーJSON変換
+
+ポケモンのCSVデータをトレーナーJSON形式に変換するスクリプト。
+
+```bash
+poetry run python scripts/convert_csv_to_trainer_json.py \
+    --input data/season_36_pokemon_data.csv \
+    --output data/top_rankers/season_36.json
+```
+
+**CSVの形式:**
+```csv
+rank,rating,trainer_name,pokemon1_name,pokemon1_item,pokemon1_nature,...
+```
+
+各ポケモンに対して `pokemonN_name`, `pokemonN_item`, `pokemonN_nature`, `pokemonN_evs`, `pokemonN_moves`, `pokemonN_tera_type` のカラムが必要（N=1〜6）。
 
 ---
 

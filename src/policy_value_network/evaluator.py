@@ -67,10 +67,12 @@ class ModelEvaluator:
         trainer_data_path: str | Path,
         mcts_config: Optional[NNGuidedMCTSConfig] = None,
         team_selector: Optional[TeamSelectorProtocol] = None,
+        fixed_party: Optional[list[dict]] = None,
     ):
         self.prior_db = prior_db
         self.mcts_config = mcts_config or NNGuidedMCTSConfig()
         self.team_selector = team_selector or TopNTeamSelector()
+        self.fixed_party = fixed_party
 
         # トレーナーデータ読み込み
         with open(trainer_data_path, "r", encoding="utf-8") as f:
@@ -100,17 +102,37 @@ class ModelEvaluator:
         draws = 0
 
         for game_idx in tqdm(range(num_games), desc="Evaluating"):
-            # ランダムにマッチアップを選択
-            trainer0, trainer1 = random.sample(self.trainers, 2)
-            full_team0 = trainer0["pokemons"][:6]
-            full_team1 = trainer1["pokemons"][:6]
+            # 固定パーティモードかどうかで分岐
+            if self.fixed_party:
+                # Player 0: 固定パーティ
+                full_team0 = self.fixed_party[:6]
+                # Player 1: ランダムな対戦相手
+                trainer1 = random.choice(self.trainers)
+                full_team1 = trainer1["pokemons"][:6]
+            else:
+                # 従来の動作: 両方ランダム
+                trainer0, trainer1 = random.sample(self.trainers, 2)
+                full_team0 = trainer0["pokemons"][:6]
+                full_team1 = trainer1["pokemons"][:6]
 
             # Team Selectorで選出
             team0 = self.team_selector.select(full_team0, full_team1, num_select=3)
             team1 = self.team_selector.select(full_team1, full_team0, num_select=3)
 
-            # 先手後手を交互に
-            if game_idx % 2 == 0:
+            # 固定パーティモード: model_aは常にPlayer 0（固定パーティ側）
+            # 従来モード: 先手後手を交互に
+            if self.fixed_party:
+                # 固定パーティモードでは、model_aは常にPlayer 0
+                winner = self._play_game(
+                    model_a, model_b, team0, team1, max_turns
+                )
+                if winner == 0:
+                    wins += 1
+                elif winner == 1:
+                    losses += 1
+                else:
+                    draws += 1
+            elif game_idx % 2 == 0:
                 winner = self._play_game(
                     model_a, model_b, team0, team1, max_turns
                 )
