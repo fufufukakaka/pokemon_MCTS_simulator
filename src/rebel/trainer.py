@@ -2,6 +2,7 @@
 ReBeL Trainer
 
 自己対戦によるデータ生成と Value Network の学習を行う。
+選出ネットワークとの統合学習もサポート。
 """
 
 from __future__ import annotations
@@ -22,6 +23,11 @@ from torch.utils.data import DataLoader, Dataset
 from src.hypothesis.pokemon_usage_database import PokemonUsageDatabase
 from src.pokemon_battle_sim.battle import Battle
 from src.pokemon_battle_sim.pokemon import Pokemon
+from src.policy_value_network.team_selection_encoder import TeamSelectionEncoder
+from src.policy_value_network.team_selection_network import (
+    TeamSelectionNetwork,
+    TeamSelectionNetworkConfig,
+)
 
 from .belief_state import Observation, ObservationType, PokemonBeliefState
 from .cfr_solver import CFRConfig, ReBeLSolver
@@ -47,6 +53,17 @@ class TrainingExample:
 
     # 実際に選択された行動
     action: Optional[int] = None
+
+
+@dataclass
+class SelectionExample:
+    """選出学習用データの1サンプル"""
+
+    my_team_data: list[dict]  # 6匹の元データ
+    opp_team_data: list[dict]  # 相手の6匹
+    selected_indices: list[int]  # 選出した3匹のインデックス
+    winner: Optional[int] = None  # 勝者（0 or 1）
+    perspective: int = 0  # どちらの視点か
 
 
 @dataclass
@@ -81,6 +98,16 @@ class TrainingConfig:
     device: str = "cpu"
     save_interval: int = 10
 
+    # 固定対戦相手の設定
+    # 設定すると Player 1 は常にこのパーティを使用
+    fixed_opponent: Optional[dict] = None  # トレーナーデータ形式
+    fixed_opponent_select_all: bool = False  # True の場合、ランダム選出ではなく先頭3体を使用
+
+    # 選出学習の設定
+    train_selection: bool = False  # 選出ネットワークも学習するか
+    selection_learning_rate: float = 1e-4
+    selection_explore_prob: float = 0.3  # 探索時にランダム選出する確率
+
 
 class SelfPlayDataset(Dataset):
     """自己対戦データのデータセット"""
@@ -109,7 +136,8 @@ class ReBeLTrainer:
 
     1. 自己対戦でデータ生成（CFR で戦略計算）
     2. Value Network の学習
-    3. 繰り返し
+    3. （オプション）選出ネットワークの学習
+    4. 繰り返し
     """
 
     def __init__(
@@ -118,6 +146,7 @@ class ReBeLTrainer:
         trainer_data: list[dict],
         config: Optional[TrainingConfig] = None,
         value_network: Optional[ReBeLValueNetwork] = None,
+        selection_network: Optional[TeamSelectionNetwork] = None,
     ):
         """
         Args:
@@ -125,6 +154,7 @@ class ReBeLTrainer:
             trainer_data: トレーナーデータ（チーム情報）
             config: 学習設定
             value_network: 既存の Value Network（None の場合は新規作成）
+            selection_network: 選出ネットワーク（None の場合は新規作成、train_selection=True時のみ使用）
         """
         self.usage_db = usage_db
         self.trainer_data = trainer_data
@@ -151,6 +181,23 @@ class ReBeLTrainer:
             cfr_config=cfr_config,
             use_simplified=True,
         )
+
+        # 選出ネットワーク（オプション）
+        self.selection_network: Optional[TeamSelectionNetwork] = None
+        self.selection_optimizer: Optional[optim.Optimizer] = None
+        self.selection_encoder: Optional[TeamSelectionEncoder] = None
+
+        if self.config.train_selection:
+            self.selection_encoder = TeamSelectionEncoder()
+            self.selection_network = selection_network or TeamSelectionNetwork(
+                TeamSelectionNetworkConfig(pokemon_feature_dim=15)
+            )
+            self.selection_network.to(self.config.device)
+            self.selection_optimizer = optim.AdamW(
+                self.selection_network.parameters(),
+                lr=self.config.selection_learning_rate,
+                weight_decay=self.config.weight_decay,
+            )
 
         # 学習履歴
         self.training_history: list[dict] = []
@@ -256,24 +303,63 @@ class ReBeLTrainer:
 
     def _generate_game_with_pbs(
         self, game_id: str
-    ) -> tuple[GameResult, list[tuple[PublicBeliefState, Optional[float], Optional[float]]]]:
+    ) -> tuple[
+        GameResult,
+        list[tuple[PublicBeliefState, Optional[float], Optional[float]]],
+        list[SelectionExample],
+    ]:
         """
         1試合を実行してデータを生成（PBS オブジェクトも返す）
 
         Returns:
-            (GameResult, list of (PBS, target_my_value, target_opp_value))
+            (GameResult, list of (PBS, target_my_value, target_opp_value), list of SelectionExample)
         """
-        # ランダムに2人のトレーナーを選択
-        trainer0, trainer1 = random.sample(self.trainer_data, 2)
+        # Player 0 はランダムに選択
+        trainer0 = random.choice(self.trainer_data)
+
+        # Player 1 は固定対戦相手が設定されていればそれを使用
+        if self.config.fixed_opponent is not None:
+            trainer1 = self.config.fixed_opponent
+            trainer1_fixed_selection = self.config.fixed_opponent_select_all
+        else:
+            trainer1 = random.choice(self.trainer_data)
+            # 同じトレーナーが選ばれた場合は別のを選ぶ
+            while trainer1 is trainer0 and len(self.trainer_data) > 1:
+                trainer1 = random.choice(self.trainer_data)
+            trainer1_fixed_selection = False
+
+        # 6匹のデータを保存
+        trainer0_team = trainer0.get("pokemons", [])[:6]
+        trainer1_team = trainer1.get("pokemons", [])[:6]
 
         # バトル初期化
         Pokemon.init()
         battle = Battle()
         battle.reset_game()
 
-        # チーム設定（3体選出も含む）
-        self._setup_team(battle, 0, trainer0)
-        self._setup_team(battle, 1, trainer1)
+        # 選出ネットワークを使った選出 or ランダム選出
+        selected_indices_0: list[int] = []
+        selected_indices_1: list[int] = []
+
+        if self.config.train_selection and self.selection_network is not None:
+            # Player 0: 選出ネットワーク or 探索
+            selected_indices_0 = self._select_team_with_network(
+                trainer0_team, trainer1_team, explore=True
+            )
+            self._setup_team_with_indices(battle, 0, trainer0_team, selected_indices_0)
+        else:
+            selected_indices_0 = self._setup_team(battle, 0, trainer0, fixed_selection=False)
+
+        if trainer1_fixed_selection:
+            selected_indices_1 = self._setup_team(battle, 1, trainer1, fixed_selection=True)
+        elif self.config.train_selection and self.selection_network is not None:
+            # 固定でない場合は選出ネットワーク
+            selected_indices_1 = self._select_team_with_network(
+                trainer1_team, trainer0_team, explore=True
+            )
+            self._setup_team_with_indices(battle, 1, trainer1_team, selected_indices_1)
+        else:
+            selected_indices_1 = self._setup_team(battle, 1, trainer1, fixed_selection=False)
 
         # ターン0で先頭のポケモンを場に出す
         battle.proceed(commands=[Battle.SKIP, Battle.SKIP])
@@ -377,10 +463,48 @@ class ReBeLTrainer:
             examples=examples,
         )
 
-        return result, pbs_with_targets
+        # 選出データ
+        selection_examples: list[SelectionExample] = []
+        if self.config.train_selection:
+            # Player 0 の選出データ
+            selection_examples.append(
+                SelectionExample(
+                    my_team_data=trainer0_team,
+                    opp_team_data=trainer1_team,
+                    selected_indices=selected_indices_0,
+                    winner=winner,
+                    perspective=0,
+                )
+            )
+            # Player 1 の選出データ（固定選出でない場合）
+            if not trainer1_fixed_selection:
+                selection_examples.append(
+                    SelectionExample(
+                        my_team_data=trainer1_team,
+                        opp_team_data=trainer0_team,
+                        selected_indices=selected_indices_1,
+                        winner=winner,
+                        perspective=1,
+                    )
+                )
 
-    def _setup_team(self, battle: Battle, player: int, trainer: dict) -> None:
-        """トレーナーのチームを設定（3体選出）"""
+        return result, pbs_with_targets, selection_examples
+
+    def _setup_team(
+        self, battle: Battle, player: int, trainer: dict, fixed_selection: bool = False
+    ) -> list[int]:
+        """
+        トレーナーのチームを設定（3体選出）
+
+        Args:
+            battle: Battle オブジェクト
+            player: プレイヤー番号 (0 or 1)
+            trainer: トレーナーデータ
+            fixed_selection: True の場合、ランダム選出ではなく先頭3体を使用
+
+        Returns:
+            選出されたインデックスのリスト
+        """
         pokemons_data = trainer.get("pokemons", [])[:6]
 
         # ポケモンオブジェクトを作成
@@ -390,27 +514,109 @@ class ReBeLTrainer:
             pokemon.item = pokemon_data.get("item", "")
             pokemon.ability = pokemon_data.get("ability", "")
             pokemon.moves = pokemon_data.get("moves", [])[:4]
-            pokemon.Ttype = pokemon_data.get("tera_type", "ノーマル")
+            # Ttype または tera_type の両方に対応
+            pokemon.Ttype = pokemon_data.get("Ttype") or pokemon_data.get("tera_type", "ノーマル")
 
-            # ステータス設定
-            if "evs" in pokemon_data:
+            # ステータス設定 (evs または effort の両方に対応)
+            if "effort" in pokemon_data:
+                pokemon.effort = pokemon_data["effort"]
+            elif "evs" in pokemon_data:
                 pokemon.effort = pokemon_data["evs"]
             if "nature" in pokemon_data:
                 pokemon.nature = pokemon_data["nature"]
 
             team.append(pokemon)
 
-        # ランダムに3体選出
-        import random
         num_select = min(3, len(team))
+        selected_indices: list[int] = []
+
         if num_select == 0:
             # ポケモンがない場合はダミー
             dummy = Pokemon("ピカチュウ")
             battle.selected[player].append(dummy)
+            selected_indices = []
+        elif fixed_selection:
+            # 先頭3体を固定選出
+            for i in range(num_select):
+                battle.selected[player].append(team[i])
+            selected_indices = list(range(num_select))
         else:
+            # ランダムに3体選出
             selected_indices = random.sample(range(len(team)), num_select)
             for idx in selected_indices:
                 battle.selected[player].append(team[idx])
+
+        return selected_indices
+
+    def _select_team_with_network(
+        self, my_team_data: list[dict], opp_team_data: list[dict], explore: bool = True
+    ) -> list[int]:
+        """
+        選出ネットワークを使ってチームを選出
+
+        Args:
+            my_team_data: 自分の6匹のデータ
+            opp_team_data: 相手の6匹のデータ
+            explore: 探索モード（確率的に選出）
+
+        Returns:
+            選出するインデックスのリスト
+        """
+        if self.selection_network is None or self.selection_encoder is None:
+            # ネットワークがない場合はランダム選出
+            num_select = min(3, len(my_team_data))
+            return random.sample(range(len(my_team_data)), num_select)
+
+        # 探索確率でランダム選出
+        if explore and random.random() < self.config.selection_explore_prob:
+            num_select = min(3, len(my_team_data))
+            return random.sample(range(len(my_team_data)), num_select)
+
+        # ネットワークで選出
+        self.selection_network.eval()
+        with torch.no_grad():
+            my_tensor = self.selection_encoder.encode_team(my_team_data)
+            opp_tensor = self.selection_encoder.encode_team(opp_team_data)
+
+            my_tensor = my_tensor.unsqueeze(0).to(self.config.device)
+            opp_tensor = opp_tensor.unsqueeze(0).to(self.config.device)
+
+            indices, _ = self.selection_network.select_team(
+                my_tensor, opp_tensor, num_select=3, deterministic=not explore
+            )
+
+        return indices[0].tolist()
+
+    def _setup_team_with_indices(
+        self, battle: Battle, player: int, team_data: list[dict], indices: list[int]
+    ) -> None:
+        """
+        指定されたインデックスでチームを設定
+
+        Args:
+            battle: Battle オブジェクト
+            player: プレイヤー番号
+            team_data: 6匹のポケモンデータ
+            indices: 選出するインデックス
+        """
+        for idx in indices:
+            if idx >= len(team_data):
+                continue
+            pokemon_data = team_data[idx]
+            pokemon = Pokemon(pokemon_data.get("name", "ピカチュウ"))
+            pokemon.item = pokemon_data.get("item", "")
+            pokemon.ability = pokemon_data.get("ability", "")
+            pokemon.moves = pokemon_data.get("moves", [])[:4]
+            pokemon.Ttype = pokemon_data.get("Ttype") or pokemon_data.get("tera_type", "ノーマル")
+
+            if "effort" in pokemon_data:
+                pokemon.effort = pokemon_data["effort"]
+            elif "evs" in pokemon_data:
+                pokemon.effort = pokemon_data["evs"]
+            if "nature" in pokemon_data:
+                pokemon.nature = pokemon_data["nature"]
+
+            battle.selected[player].append(pokemon)
 
     def _serialize_public_state(self, ps: PublicGameState) -> dict:
         """PublicGameState をシリアライズ"""
@@ -457,17 +663,21 @@ class ReBeLTrainer:
         print(f"Iteration {iteration}: Generating games...")
         all_examples = []
         all_pbs_data: list[tuple[PublicBeliefState, float, float]] = []
+        all_selection_data: list[SelectionExample] = []
         wins = {0: 0, 1: 0, None: 0}
 
         for i in range(self.config.games_per_iteration):
             game_id = f"iter{iteration}_game{i}"
-            result, pbs_data = self._generate_game_with_pbs(game_id)
+            result, pbs_data, selection_data = self._generate_game_with_pbs(game_id)
             all_examples.extend(result.examples)
             all_pbs_data.extend(pbs_data)
+            all_selection_data.extend(selection_data)
             wins[result.winner] = wins.get(result.winner, 0) + 1
 
         print(f"  Generated {len(all_examples)} examples from {self.config.games_per_iteration} games")
         print(f"  Wins: P0={wins[0]}, P1={wins[1]}, Draw={wins[None]}")
+        if self.config.train_selection:
+            print(f"  Selection examples: {len(all_selection_data)}")
 
         # 有効なデータのみ抽出
         valid_data = [(pbs, my_v, opp_v) for pbs, my_v, opp_v in all_pbs_data if my_v is not None]
@@ -526,13 +736,20 @@ class ReBeLTrainer:
             total_loss += epoch_loss
 
         avg_loss = total_loss / max(num_batches, 1)
-        print(f"  Average loss: {avg_loss:.4f}")
+        print(f"  Value Network Average loss: {avg_loss:.4f}")
+
+        # 選出ネットワークの学習
+        selection_loss = 0.0
+        if self.config.train_selection and len(all_selection_data) > 0:
+            selection_loss = self._train_selection_network(all_selection_data)
+            print(f"  Selection Network Average loss: {selection_loss:.4f}")
 
         stats = {
             "iteration": iteration,
             "examples": len(all_examples),
             "games": self.config.games_per_iteration,
             "avg_loss": avg_loss,
+            "selection_loss": selection_loss,
             "wins_p0": wins[0],
             "wins_p1": wins[1],
             "draws": wins[None],
@@ -540,6 +757,88 @@ class ReBeLTrainer:
         self.training_history.append(stats)
 
         return stats
+
+    def _train_selection_network(self, selection_data: list[SelectionExample]) -> float:
+        """
+        選出ネットワークを学習
+
+        Args:
+            selection_data: 選出データのリスト
+
+        Returns:
+            平均損失
+        """
+        if self.selection_network is None or self.selection_optimizer is None:
+            return 0.0
+
+        self.selection_network.train()
+        device = torch.device(self.config.device)
+
+        total_loss = 0.0
+        num_batches = 0
+
+        random.shuffle(selection_data)
+
+        for epoch in range(self.config.num_epochs):
+            for batch_start in range(0, len(selection_data), self.config.batch_size):
+                batch = selection_data[batch_start:batch_start + self.config.batch_size]
+                if len(batch) == 0:
+                    continue
+
+                # バッチデータをテンソルに変換
+                my_teams = []
+                opp_teams = []
+                targets = []
+                values = []
+
+                for ex in batch:
+                    my_tensor = self.selection_encoder.encode_team(ex.my_team_data)
+                    opp_tensor = self.selection_encoder.encode_team(ex.opp_team_data)
+                    my_teams.append(my_tensor)
+                    opp_teams.append(opp_tensor)
+
+                    # 選出ラベル（選ばれた3匹は1、それ以外は0）
+                    target = torch.zeros(6)
+                    for idx in ex.selected_indices:
+                        if idx < 6:
+                            target[idx] = 1.0
+                    targets.append(target)
+
+                    # 勝敗に基づく価値（自分視点で勝ち=1、負け=0）
+                    if ex.winner is not None:
+                        value = 1.0 if ex.winner == ex.perspective else 0.0
+                    else:
+                        value = 0.5
+                    values.append(value)
+
+                my_batch = torch.stack(my_teams).to(device)
+                opp_batch = torch.stack(opp_teams).to(device)
+                target_batch = torch.stack(targets).to(device)
+                value_batch = torch.tensor(values, device=device, dtype=torch.float).unsqueeze(1)
+
+                # Forward
+                self.selection_optimizer.zero_grad()
+                output = self.selection_network(my_batch, opp_batch)
+
+                # 選出ロス（Binary Cross Entropy）
+                selection_probs = torch.sigmoid(output["selection_logits"])
+                selection_loss = F.binary_cross_entropy(selection_probs, target_batch)
+
+                # 価値ロス（MSE）
+                value_loss = F.mse_loss(output["value"], value_batch)
+
+                # 合計ロス
+                loss = selection_loss + 0.5 * value_loss
+
+                # Backward
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.selection_network.parameters(), 1.0)
+                self.selection_optimizer.step()
+
+                total_loss += loss.item()
+                num_batches += 1
+
+        return total_loss / max(num_batches, 1)
 
     def train(self, num_iterations: int, output_dir: str) -> None:
         """
@@ -581,6 +880,18 @@ class ReBeLTrainer:
         with open(path / "encoder_vocab.json", "w", encoding="utf-8") as f:
             json.dump(encoder_state, f, ensure_ascii=False, indent=2)
 
+        # 選出ネットワークの保存
+        if self.selection_network is not None:
+            torch.save(
+                self.selection_network.state_dict(), path / "selection_network.pt"
+            )
+            if self.selection_optimizer is not None:
+                torch.save(
+                    self.selection_optimizer.state_dict(), path / "selection_optimizer.pt"
+                )
+            if self.selection_encoder is not None:
+                self.selection_encoder.save(path / "selection_encoder.json")
+
     def load(self, path: Path) -> None:
         """モデルを読み込み"""
         self.value_network.load_state_dict(
@@ -596,6 +907,21 @@ class ReBeLTrainer:
         self.value_network.encoder.pokemon_to_id = encoder_state["pokemon_to_id"]
         self.value_network.encoder.move_to_id = encoder_state["move_to_id"]
         self.value_network.encoder.item_to_id = encoder_state["item_to_id"]
+
+        # 選出ネットワークの読み込み
+        selection_path = path / "selection_network.pt"
+        if selection_path.exists() and self.selection_network is not None:
+            self.selection_network.load_state_dict(
+                torch.load(selection_path, map_location=self.config.device)
+            )
+        selection_opt_path = path / "selection_optimizer.pt"
+        if selection_opt_path.exists() and self.selection_optimizer is not None:
+            self.selection_optimizer.load_state_dict(
+                torch.load(selection_opt_path, map_location=self.config.device)
+            )
+        selection_enc_path = path / "selection_encoder.json"
+        if selection_enc_path.exists():
+            self.selection_encoder = TeamSelectionEncoder.load(selection_enc_path)
 
     def evaluate_against_baseline(
         self,

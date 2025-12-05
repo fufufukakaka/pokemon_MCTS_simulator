@@ -110,6 +110,34 @@ def main():
         default=30,
         help="評価試合数",
     )
+    parser.add_argument(
+        "--fixed-opponent",
+        type=str,
+        default=None,
+        help="固定対戦相手のJSONファイルパス（単一トレーナー）",
+    )
+    parser.add_argument(
+        "--fixed-opponent-index",
+        type=int,
+        default=None,
+        help="trainer-json内の固定対戦相手のインデックス",
+    )
+    parser.add_argument(
+        "--fixed-opponent-select-all",
+        action="store_true",
+        help="固定対戦相手はランダム選出ではなく先頭3体を使用",
+    )
+    parser.add_argument(
+        "--train-selection",
+        action="store_true",
+        help="選出ネットワークも同時に学習する",
+    )
+    parser.add_argument(
+        "--selection-explore-prob",
+        type=float,
+        default=0.3,
+        help="選出時の探索確率（ランダム選出する確率）",
+    )
     args = parser.parse_args()
 
     # データ読み込み
@@ -122,6 +150,22 @@ def main():
     print(f"Loaded {len(trainer_data)} trainers")
     print(f"Usage DB: {usage_db}")
 
+    # 固定対戦相手の設定
+    fixed_opponent = None
+    if args.fixed_opponent:
+        with open(args.fixed_opponent, "r", encoding="utf-8") as f:
+            fixed_opponent = json.load(f)
+        print(f"Fixed opponent loaded from: {args.fixed_opponent}")
+    elif args.fixed_opponent_index is not None:
+        if 0 <= args.fixed_opponent_index < len(trainer_data):
+            fixed_opponent = trainer_data[args.fixed_opponent_index]
+            print(f"Fixed opponent: index {args.fixed_opponent_index}")
+            if "pokemons" in fixed_opponent:
+                pokemon_names = [p.get("name", "?") for p in fixed_opponent["pokemons"][:6]]
+                print(f"  Team: {', '.join(pokemon_names)}")
+        else:
+            print(f"Warning: Invalid fixed_opponent_index {args.fixed_opponent_index}, ignoring")
+
     # 設定
     config = TrainingConfig(
         games_per_iteration=args.games_per_iteration,
@@ -132,7 +176,14 @@ def main():
         num_epochs=args.num_epochs,
         device=args.device,
         save_interval=5,
+        fixed_opponent=fixed_opponent,
+        fixed_opponent_select_all=args.fixed_opponent_select_all,
+        train_selection=args.train_selection,
+        selection_explore_prob=args.selection_explore_prob,
     )
+
+    if args.train_selection:
+        print("Selection network training: ENABLED")
 
     # Value Network
     value_network = ReBeLValueNetwork(

@@ -159,6 +159,164 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
   --output models/rebel_full
 ```
 
+### 4. 固定対戦相手との学習
+
+特定のパーティに対する対策を学習させたい場合：
+
+```bash
+# 固定パーティを指定して学習（ランダム選出）
+PYTHONPATH=. poetry run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --fixed-opponent data/my_fixed_party.json \
+  --output models/rebel_vs_my_party \
+  --num-iterations 50 \
+  --games-per-iteration 50
+
+# 固定パーティで先頭3体を固定選出
+PYTHONPATH=. poetry run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --fixed-opponent data/my_fixed_party.json \
+  --fixed-opponent-select-all \
+  --output models/rebel_vs_fixed_selection \
+  --num-iterations 50 \
+  --games-per-iteration 50
+
+# trainer-json 内のインデックスで固定対戦相手を指定
+PYTHONPATH=. poetry run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --fixed-opponent-index 0 \
+  --output models/rebel_vs_trainer0 \
+  --num-iterations 50
+```
+
+#### 固定対戦相手の JSON フォーマット
+
+```json
+{
+    "pokemons": [
+        {
+            "name": "ガブリアス",
+            "item": "きあいのタスキ",
+            "nature": "ようき",
+            "ability": "さめはだ",
+            "Ttype": "はがね",
+            "moves": ["じしん", "げきりん", "つるぎのまい", "がんせきふうじ"],
+            "effort": [0, 252, 4, 0, 0, 252]
+        },
+        // ... 6匹分
+    ]
+}
+```
+
+### 5. 選出ネットワークの統合学習
+
+6匹から3匹を選ぶ「選出」も含めた統合学習：
+
+```bash
+# 選出 + バトルの統合学習
+PYTHONPATH=. poetry run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --train-selection \
+  --output models/rebel_with_selection \
+  --num-iterations 100 \
+  --games-per-iteration 50
+
+# 固定対戦相手に対する選出学習
+PYTHONPATH=. poetry run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --fixed-opponent data/my_fixed_party.json \
+  --train-selection \
+  --selection-explore-prob 0.3 \
+  --output models/rebel_selection_vs_my_party \
+  --num-iterations 100 \
+  --games-per-iteration 50
+
+# 探索確率を下げて活用重視（学習後半向け）
+PYTHONPATH=. poetry run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --train-selection \
+  --selection-explore-prob 0.1 \
+  --output models/rebel_selection_exploit \
+  --num-iterations 50
+```
+
+#### 選出学習の仕組み
+
+```
+┌────────────────────────────────────────────────────────────┐
+│                  統合学習フロー                             │
+├────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐  │
+│  │ 相手の6匹   │────▶│ Selection   │────▶│ 選出3匹     │  │
+│  │             │     │ Network     │     │             │  │
+│  │ 自分の6匹   │     │             │     │             │  │
+│  └─────────────┘     └─────────────┘     └─────────────┘  │
+│                              │                    │        │
+│                              │                    ▼        │
+│                              │           ┌─────────────┐  │
+│                              │           │ ReBeL       │  │
+│                              │           │ (CFR+VN)    │  │
+│                              │           │             │  │
+│                              │           │ バトル実行   │  │
+│                              │           └──────┬──────┘  │
+│                              │                  │         │
+│                              │                  ▼         │
+│                              │           ┌─────────────┐  │
+│                              │           │ 勝敗結果    │  │
+│                              │           └──────┬──────┘  │
+│                              │                  │         │
+│                              ▼                  │         │
+│  ┌──────────────────────────────────────────────┴──────┐  │
+│  │                  学習更新                            │  │
+│  │                                                      │  │
+│  │  Selection Network: 選出→勝敗の関係を学習            │  │
+│  │  Value Network: ターン状態→勝率を学習               │  │
+│  └──────────────────────────────────────────────────────┘  │
+│                                                             │
+└────────────────────────────────────────────────────────────┘
+```
+
+#### Selection Network の構造
+
+```python
+# Cross-Attention ベースの選出ネットワーク
+#
+# 入力:
+#   - my_team: [batch, 6, 15]  自分の6匹の特徴量
+#   - opp_team: [batch, 6, 15] 相手の6匹の特徴量
+#
+# 出力:
+#   - selection_logits: [batch, 6] 各ポケモンの選出スコア
+#   - value: [batch, 1] このマッチアップの勝率予測
+```
+
+#### 選出学習のオプション
+
+| オプション | デフォルト | 説明 |
+|-----------|-----------|------|
+| `--train-selection` | False | 選出ネットワークの統合学習を有効化 |
+| `--selection-explore-prob` | 0.3 | 探索時にランダム選出する確率（0.0〜1.0） |
+
+#### 選出学習のポイント
+
+1. **探索と活用のバランス**: `selection-explore-prob` で調整
+   - 学習初期: 高め（0.3〜0.5）で多様な選出パターンを探索
+   - 学習後半: 低め（0.1〜0.2）で良い選出を活用
+
+2. **固定対戦相手との組み合わせ**: 特定構築への最適選出を学習
+   - 相手のパーティ構成に対するカウンターピックを自動学習
+
+3. **学習データの効率**: 1試合から2つの選出データを取得
+   - Player 0 と Player 1 の両方の選出を学習に使用
+   - 固定選出の場合は Player 1 のデータは使用しない
+
 ## モジュール構成
 
 ### `src/rebel/`
@@ -301,21 +459,35 @@ my_values, opp_values = network.forward_batch(pbs_list)
 
 ### ReBeLTrainer
 
-自己対戦による強化学習ループ。
+自己対戦による強化学習ループ。選出ネットワークの統合学習もサポート。
 
 ```python
 from src.rebel import ReBeLTrainer, TrainingConfig, ReBeLValueNetwork
 
 config = TrainingConfig(
+    # データ生成
     games_per_iteration=50,
     max_turns=100,
+
+    # CFR 設定
     cfr_iterations=50,
     cfr_world_samples=20,
+
+    # 学習設定
     batch_size=32,
     learning_rate=1e-4,
     num_epochs=10,
     device="cuda",
     save_interval=10,
+
+    # 固定対戦相手（オプション）
+    fixed_opponent=None,  # dict or None
+    fixed_opponent_select_all=False,  # 先頭3体固定選出
+
+    # 選出学習（オプション）
+    train_selection=True,  # 選出ネットワークも学習
+    selection_learning_rate=1e-4,
+    selection_explore_prob=0.3,  # ランダム選出確率
 )
 
 trainer = ReBeLTrainer(
@@ -334,6 +506,26 @@ results = trainer.evaluate_against_baseline(
     baseline_type="random",  # or "cfr_only"
 )
 ```
+
+#### TrainingConfig の全オプション
+
+| パラメータ | デフォルト | 説明 |
+|-----------|-----------|------|
+| `games_per_iteration` | 100 | 1イテレーションあたりの試合数 |
+| `max_turns` | 100 | 試合の最大ターン数 |
+| `cfr_iterations` | 50 | CFR のイテレーション数 |
+| `cfr_world_samples` | 20 | 仮説サンプル数 |
+| `batch_size` | 32 | ミニバッチサイズ |
+| `learning_rate` | 1e-4 | Value Network の学習率 |
+| `num_epochs` | 10 | エポック数 |
+| `weight_decay` | 1e-5 | 重み減衰 |
+| `device` | "cpu" | デバイス ("cpu" or "cuda") |
+| `save_interval` | 10 | チェックポイント保存間隔 |
+| `fixed_opponent` | None | 固定対戦相手のデータ |
+| `fixed_opponent_select_all` | False | 固定対戦相手は先頭3体を使用 |
+| `train_selection` | False | 選出ネットワークを学習 |
+| `selection_learning_rate` | 1e-4 | 選出ネットワークの学習率 |
+| `selection_explore_prob` | 0.3 | ランダム選出確率 |
 
 ## MCTS との比較
 
