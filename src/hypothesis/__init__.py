@@ -8,6 +8,12 @@
 from .hypothesis_mcts import HypothesisMCTS, HypothesisMCTSBattle, PolicyValue
 from .item_belief_state import ItemBeliefState
 from .item_prior_database import ItemPriorDatabase
+from .pokemon_usage_database import (
+    ItemPriorDatabaseAdapter,
+    PokemonHypothesis,
+    PokemonUsageDatabase,
+    PokemonUsageEntry,
+)
 from .selfplay import (
     FieldCondition,
     GameRecord,
@@ -31,4 +37,9 @@ __all__ = [
     "FieldCondition",
     "save_records_to_jsonl",
     "load_records_from_jsonl",
+    # 新しいクラス
+    "PokemonUsageDatabase",
+    "PokemonUsageEntry",
+    "PokemonHypothesis",
+    "ItemPriorDatabaseAdapter",
 ]

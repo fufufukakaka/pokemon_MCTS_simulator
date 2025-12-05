@@ -68,6 +68,42 @@ Selects optimal 3 Pokémon from 6 based on opponent's team.
   - `HybridTeamSelector`: Combines strategies
   - `load_team_selector(path, device)`: Load trained selector
 
+### 5. ReBeL - Recursive Belief-based Learning (`src/rebel/`)
+
+**Purpose**: Handle incomplete information more rigorously than hypothesis sampling MCTS using game-theoretic approaches.
+
+ReBeL addresses limitations of HypothesisMCTS by:
+1. Tracking beliefs over opponent's full type (moves + item + tera + nature), not just items
+2. Using CFR (Counterfactual Regret Minimization) to compute Nash equilibrium strategies
+3. Learning a value network on Public Belief States (PBS)
+
+- **[belief_state.py](src/rebel/belief_state.py)**: `PokemonBeliefState` tracks probability distributions over opponent's type hypotheses
+  - `PokemonTypeHypothesis`: Frozen dataclass representing (moves, item, tera_type, nature, ability)
+  - Bayesian updates from observations (move used, item revealed, tera used)
+  - `sample_world()`: Sample one complete "world" from belief distribution
+
+- **[public_state.py](src/rebel/public_state.py)**: `PublicGameState` and `PublicBeliefState`
+  - `PublicGameState`: Observable information only (HP ratios, revealed moves/items, field)
+  - `PublicBeliefState` (PBS): Public state + belief + current strategies
+
+- **[cfr_solver.py](src/rebel/cfr_solver.py)**: CFR subgame solving
+  - `CFRSubgameSolver`: Full CFR with regret matching
+  - `SimplifiedCFRSolver`: Faster approximation using maximin
+  - `ReBeLSolver`: Wrapper combining value network with CFR
+
+- **[value_network.py](src/rebel/value_network.py)**: Neural networks for PBS evaluation
+  - `PBSEncoder`: Encodes PBS to fixed-length tensor
+  - `ReBeLValueNetwork`: Predicts expected values from PBS
+  - `ReBeLPolicyValueNetwork`: Predicts both policy and value
+
+- **[battle_interface.py](src/rebel/battle_interface.py)**: Integration with Battle class
+  - `ReBeLBattle`: Drop-in replacement for `HypothesisMCTSBattle`
+  - `ReBeLMCTSAdapter`: Use ReBeL with existing HypothesisMCTS interface
+  - `load_rebel_battle()`: Factory function
+
+- **[trainer.py](src/rebel/trainer.py)**: Self-play training loop
+  - `ReBeLTrainer`: Generate data via self-play, train value network
+
 ### 6. LLM Training Pipeline (`src/llm/`)
 
 **Purpose**: Train LLMs to play Pokémon battles through supervised fine-tuning and reinforcement learning.
@@ -150,6 +186,23 @@ poetry run python scripts/run_reinforcement_loop.py \
   --games-per-generation 20 \
   --evaluation-games 10 \
   --training-epochs 10
+```
+
+### ReBeL Training and Comparison
+
+```bash
+# Compare ReBeL vs HypothesisMCTS
+poetry run python scripts/compare_rebel_vs_mcts.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --num-matches 50 \
+  --output results/rebel_vs_mcts.json
+
+# Quick test (fewer matches)
+poetry run python scripts/compare_rebel_vs_mcts.py \
+  --num-matches 5 \
+  --rebel-cfr-iterations 20 \
+  --rebel-world-samples 10
 ```
 
 ### Team Selection Training
@@ -348,3 +401,145 @@ Pokémon data loaded from `data/` directory:
 - Ensure these files exist before running simulations
 
 Battle logs saved to `logs/battle_log_YYYYMMDD_HHMMSS.txt`
+
+## Known Limitations
+
+### MCTS and Incomplete Information
+
+Pokémon battles are **imperfect information games**. The current MCTS implementations have important limitations regarding how they handle hidden information:
+
+#### What Information is Hidden in Real Battles
+
+| Information | Real Battle | Basic MCTS | Hypothesis MCTS |
+|-------------|-------------|------------|-----------------|
+| Opponent's moves | Unknown until used | **Fully visible** ❌ | **Fully visible** ❌ |
+| Opponent's held item | Unknown | **Fully visible** ❌ | Sampled from prior ✓ |
+| Opponent's EV/IV spread | Unknown | **Fully visible** ❌ | **Fully visible** ❌ |
+| Opponent's Tera type | Unknown until used | **Fully visible** ❌ | **Fully visible** ❌ |
+| Opponent's action choice | Strategic | Random assumption △ | Random assumption △ |
+
+#### Implications
+
+1. **Overly Accurate Lookahead**: The MCTS can simulate damage calculations with perfect knowledge of opponent's stats and moves, which is impossible in real battles.
+
+2. **No Move Discovery**: In real battles, you learn opponent's moveset gradually. The simulator knows all 4 moves from the start.
+
+3. **Simplified Opponent Model**: Both MCTS variants assume the opponent plays randomly during rollouts, rather than strategically.
+
+#### Why This May Be Acceptable
+
+In competitive play, much information is effectively public:
+- Top-ranked team compositions are published and shared
+- Common "template builds" (テンプレ型) are well-known
+- Team preview allows experienced players to predict movesets with high accuracy
+
+When using data from `data/top_rankers/`, the simulator operates under an implicit assumption that both players know common competitive builds—which approximates real high-level play.
+
+## Future Work
+
+### Improved Incomplete Information Handling
+
+1. **Moveset Hypothesis Sampling**
+   - Extend `ItemBeliefState` to `PokemonBeliefState` covering moves, EVs, and Tera type
+   - Sample from usage statistics (e.g., Pokémon Home data, Pikalytics)
+   - Challenge: Combinatorial explosion (moves × items × EVs × Tera = millions of combinations per Pokémon)
+
+2. **Bayesian Belief Updates**
+   - Update beliefs as information is revealed during battle
+   - Example: If opponent uses Dragon Dance, probability of physical attacker increases
+   - Requires tracking observation history and conditional probabilities
+
+3. **Information Set MCTS (ISMCTS)**
+   - Determinize hidden information at the start of each simulation
+   - Average results across multiple determinizations
+   - Well-established technique for imperfect information games (poker, etc.)
+
+4. **Improved Opponent Modeling**
+   - Replace random rollout policy with heuristic-based or learned opponent model
+   - Options: Damage maximization heuristic, minimax at shallow depth, or neural network policy
+
+5. **Neural Network Approaches**
+   - Train networks on **observable state only** (hiding opponent's private information)
+   - The network implicitly learns to handle uncertainty through training data distribution
+   - This is the direction of `src/llm/` and `src/policy_value_network/`
+
+### Alternative Approaches to MCTS
+
+Beyond improving MCTS, there are other algorithmic approaches better suited for imperfect information games:
+
+1. **Counterfactual Regret Minimization (CFR)**
+   - Used by poker AIs (Libratus, Pluribus) to find Nash equilibrium strategies
+   - Theoretically optimal but computationally expensive for large state spaces
+   - Deep CFR / Neural Fictitious Self-Play (NFSP) scale better with neural network approximation
+   - Challenge: Pokémon's state space may be too large even for Deep CFR
+
+2. **ReBeL (Recursive Belief-based Learning)**
+   - Meta AI's approach combining search with learned value functions on public information
+   - Tracks beliefs about hidden information as part of the state
+   - Well-suited for games where information is gradually revealed (like Pokémon)
+   - Promising direction for future implementation
+
+3. **Opponent Modeling with RL**
+   - Explicitly model opponent's policy and incorporate predictions into decision-making
+   - Can learn opponent tendencies from historical data
+   - More practical than full game-theoretic solutions
+
+| Approach | Theory | Scalability | Implementation | Pokémon Fit |
+|----------|--------|-------------|----------------|-------------|
+| CFR | ◎ | △ | Medium | △ State space too large |
+| Deep CFR/NFSP | ○ | ○ | Hard | ○ |
+| ReBeL | ○ | ○ | Hard | ◎ Gradual info reveal |
+| Opponent Modeling | △ | ◎ | Medium | ○ |
+| MCTS + Hypothesis (current) | △ | ○ | Easy | ○ |
+
+### LLM-Based Approaches
+
+The `src/llm/` pipeline represents a promising direction with unique advantages:
+
+**Strengths for Pokémon battles:**
+- Implicit handling of incomplete information through pattern learning from large datasets
+- Access to pre-existing knowledge (team archetypes, common strategies, matchup theory)
+- Flexible reasoning about opponent intentions ("why would they switch here?")
+- Explainability: can articulate reasoning in natural language
+
+**Current limitations:**
+- Inference latency (seconds per decision vs. milliseconds for NN)
+- Hallucination risk (inventing non-existent moves/abilities)
+- Weak at precise numerical reasoning (damage calculations)
+- Inconsistent decisions in similar situations
+
+**Promising hybrid architecture:**
+```
+┌─────────────────────────────────────────────────────┐
+│  LLM Layer: Strategic Reasoning                      │
+│  - Assess win conditions                             │
+│  - Predict opponent's game plan                      │
+│  - Decide high-level strategy (aggressive/defensive) │
+└─────────────────────┬───────────────────────────────┘
+                      │
+┌─────────────────────▼───────────────────────────────┐
+│  Calculation Module: Tactical Execution              │
+│  - Damage calculator API                             │
+│  - Speed tier calculations                           │
+│  - KO probability estimation                         │
+└─────────────────────┬───────────────────────────────┘
+                      │
+┌─────────────────────▼───────────────────────────────┐
+│  Decision Integration                                │
+│  - Rank candidate actions by expected value          │
+│  - Final action selection                            │
+└─────────────────────────────────────────────────────┘
+```
+
+**Future directions:**
+- Tool-augmented LLM that calls damage calculator API during reasoning
+- Fine-tuning on high-quality annotated battle logs with strategic commentary
+- Retrieval-augmented generation (RAG) with matchup databases
+- Distillation from LLM reasoning into faster policy networks
+
+### Other Enhancements
+
+- [ ] Support for double battles
+- [ ] More comprehensive Gen 9 mechanics (all abilities, items, moves)
+- [ ] Real-time battle log parsing for online play integration
+- [ ] Distributed self-play for faster training
