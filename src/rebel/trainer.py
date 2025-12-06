@@ -108,6 +108,9 @@ class TrainingConfig:
     selection_learning_rate: float = 1e-4
     selection_explore_prob: float = 0.3  # 探索時にランダム選出する確率
 
+    # ポケモン統計データのパス
+    usage_data_path: Optional[str] = None  # None の場合はデフォルト(season22.json)を使用
+
 
 class SelfPlayDataset(Dataset):
     """自己対戦データのデータセット"""
@@ -216,7 +219,7 @@ class ReBeLTrainer:
         trainer0, trainer1 = random.sample(self.trainer_data, 2)
 
         # バトル初期化
-        Pokemon.init()
+        Pokemon.init(usage_data_path=self.config.usage_data_path)
         battle = Battle()
         battle.reset_game()
 
@@ -333,7 +336,7 @@ class ReBeLTrainer:
         trainer1_team = trainer1.get("pokemons", [])[:6]
 
         # バトル初期化
-        Pokemon.init()
+        Pokemon.init(usage_data_path=self.config.usage_data_path)
         battle = Battle()
         battle.reset_game()
 
@@ -950,7 +953,7 @@ class ReBeLTrainer:
             trainer0, trainer1 = random.sample(self.trainer_data, 2)
 
             # バトル初期化
-            Pokemon.init()
+            Pokemon.init(usage_data_path=self.config.usage_data_path)
             battle = Battle()
             battle.reset_game()
 

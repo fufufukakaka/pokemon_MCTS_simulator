@@ -138,6 +138,12 @@ def main():
         default=0.3,
         help="選出時の探索確率（ランダム選出する確率）",
     )
+    parser.add_argument(
+        "--usage-data-path",
+        type=str,
+        default=None,
+        help="ポケモン統計データのパス（新形式のpokedb JSONにも対応）",
+    )
     args = parser.parse_args()
 
     # データ読み込み
@@ -180,6 +186,7 @@ def main():
         fixed_opponent_select_all=args.fixed_opponent_select_all,
         train_selection=args.train_selection,
         selection_explore_prob=args.selection_explore_prob,
+        usage_data_path=args.usage_data_path,
     )
 
     if args.train_selection:
