@@ -908,8 +908,16 @@ class Pokemon:
         p.update_status()
         return p.status
 
-    def init(season=None):
-        """ライブラリを初期化する"""
+    def init(season=None, usage_data_path: str | None = None):
+        """ライブラリを初期化する
+
+        Args:
+            season: シーズン番号（usage_data_pathが指定されていない場合に使用）
+            usage_data_path: 統計データのJSONファイルパス。指定した場合はseasonは無視される。
+                            対応形式:
+                            - 旧形式: {"ポケモン名": {"move": [[技名...], [採用率...]], ...}}
+                            - 新形式(pokedb): [{"pokemon_name": "...", "moves": {"技名": 採用率}, ...}]
+        """
 
         # シーズンが指定されていなければ、最新のシーズンを取得する
         if season is None:
@@ -1121,42 +1129,129 @@ class Pokemon:
             # print(Pokemon.type_corrections)
 
         # ランクマッチの統計データの読み込み
-        # filename = "src/battle_data/season" + str(season) + ".json"
-        filename = "src/battle_data/season22.json"
-        print(f"{filename}")
+        if usage_data_path is not None:
+            filename = usage_data_path
+        else:
+            filename = "src/battle_data/season22.json"
+        print(f"Loading usage data from: {filename}")
         with open(filename, encoding="utf-8") as fin:
-            dict = json.load(fin)
-            for org_name in dict:
-                name = to_hankaku(org_name)
-                Pokemon.home[name] = {}
-                Pokemon.home[name]["nature"] = dict[org_name]["nature"]
-                Pokemon.home[name]["ability"] = dict[org_name]["ability"]
-                Pokemon.home[name]["item"] = dict[org_name]["item"]
-                Pokemon.home[name]["Ttype"] = dict[org_name]["Ttype"]
-                Pokemon.home[name]["move"] = dict[org_name]["move"]
+            raw_data = json.load(fin)
 
-                # 半角表記に統一する
-                for key in ["ability", "item", "move"]:
-                    for i, s in enumerate(Pokemon.home[name][key][0]):
-                        Pokemon.home[name][key][0][i] = to_hankaku(s)
-
-                # データの補完
-                if not Pokemon.home[name]["nature"][0]:
-                    Pokemon.home[name]["nature"] = [["まじめ"], [100]]
-                if not Pokemon.home[name]["ability"][0]:
-                    Pokemon.home[name]["ability"] = [
-                        [Pokemon.zukan[name]["ability"][0]],
-                        [100],
-                    ]
-                if not Pokemon.home[name]["item"][0]:
-                    Pokemon.home[name]["item"] = [[""], [100]]
-                if not Pokemon.home[name]["Ttype"][0]:
-                    Pokemon.home[name]["Ttype"] = [
-                        [Pokemon.zukan[name]["type"][0]],
-                        [100],
-                    ]
+            # 新形式(pokedb)かどうかを判定: リスト形式なら新形式
+            if isinstance(raw_data, list):
+                # 新形式: [{"pokemon_name": "...", "moves": {...}, ...}]
+                Pokemon._load_pokedb_format(raw_data)
+            else:
+                # 旧形式: {"ポケモン名": {"move": [[...], [...]], ...}}
+                Pokemon._load_legacy_format(raw_data)
 
             # print(Pokemon.home.keys())
+
+    def _load_legacy_format(data: dict):
+        """旧形式の統計データを読み込む
+
+        形式: {"ポケモン名": {"move": [[技名...], [採用率...]], "nature": [...], ...}}
+        """
+        for org_name in data:
+            name = to_hankaku(org_name)
+            Pokemon.home[name] = {}
+            Pokemon.home[name]["nature"] = data[org_name]["nature"]
+            Pokemon.home[name]["ability"] = data[org_name]["ability"]
+            Pokemon.home[name]["item"] = data[org_name]["item"]
+            Pokemon.home[name]["Ttype"] = data[org_name]["Ttype"]
+            Pokemon.home[name]["move"] = data[org_name]["move"]
+
+            # 半角表記に統一する
+            for key in ["ability", "item", "move"]:
+                for i, s in enumerate(Pokemon.home[name][key][0]):
+                    Pokemon.home[name][key][0][i] = to_hankaku(s)
+
+            # データの補完
+            Pokemon._fill_missing_data(name)
+
+    def _load_pokedb_format(data: list):
+        """pokedb形式の統計データを読み込む
+
+        形式: [{"pokemon_name": "...", "moves": {"技名": 採用率}, "items": {...}, ...}]
+        """
+        for entry in data:
+            org_name = entry.get("pokemon_name", "")
+            name = to_hankaku(org_name)
+            if not name:
+                continue
+
+            Pokemon.home[name] = {}
+
+            # moves -> move: dictから[[技名...], [採用率...]]形式に変換
+            moves_dict = entry.get("moves", {})
+            if moves_dict:
+                move_names = [to_hankaku(m) for m in moves_dict.keys()]
+                move_rates = [v * 100 for v in moves_dict.values()]  # 0-1 -> 0-100
+                Pokemon.home[name]["move"] = [move_names, move_rates]
+            else:
+                Pokemon.home[name]["move"] = [[], []]
+
+            # items -> item
+            items_dict = entry.get("items", {})
+            if items_dict:
+                item_names = [to_hankaku(i) for i in items_dict.keys()]
+                item_rates = [v * 100 for v in items_dict.values()]
+                Pokemon.home[name]["item"] = [item_names, item_rates]
+            else:
+                Pokemon.home[name]["item"] = [[], []]
+
+            # abilities -> ability
+            abilities_dict = entry.get("abilities", {})
+            if abilities_dict:
+                ability_names = [to_hankaku(a) for a in abilities_dict.keys()]
+                ability_rates = [v * 100 for v in abilities_dict.values()]
+                Pokemon.home[name]["ability"] = [ability_names, ability_rates]
+            else:
+                Pokemon.home[name]["ability"] = [[], []]
+
+            # tera_types -> Ttype
+            tera_dict = entry.get("tera_types", {})
+            if tera_dict:
+                tera_names = list(tera_dict.keys())
+                tera_rates = [v * 100 for v in tera_dict.values()]
+                Pokemon.home[name]["Ttype"] = [tera_names, tera_rates]
+            else:
+                Pokemon.home[name]["Ttype"] = [[], []]
+
+            # natures -> nature
+            natures_dict = entry.get("natures", {})
+            if natures_dict:
+                nature_names = list(natures_dict.keys())
+                nature_rates = [v * 100 for v in natures_dict.values()]
+                Pokemon.home[name]["nature"] = [nature_names, nature_rates]
+            else:
+                Pokemon.home[name]["nature"] = [[], []]
+
+            # データの補完
+            Pokemon._fill_missing_data(name)
+
+    def _fill_missing_data(name: str):
+        """統計データの欠損を補完する"""
+        if not Pokemon.home[name]["nature"][0]:
+            Pokemon.home[name]["nature"] = [["まじめ"], [100]]
+        if not Pokemon.home[name]["ability"][0]:
+            if name in Pokemon.zukan and Pokemon.zukan[name]["ability"]:
+                Pokemon.home[name]["ability"] = [
+                    [Pokemon.zukan[name]["ability"][0]],
+                    [100],
+                ]
+            else:
+                Pokemon.home[name]["ability"] = [[""], [100]]
+        if not Pokemon.home[name]["item"][0]:
+            Pokemon.home[name]["item"] = [[""], [100]]
+        if not Pokemon.home[name]["Ttype"][0]:
+            if name in Pokemon.zukan and Pokemon.zukan[name]["type"]:
+                Pokemon.home[name]["Ttype"] = [
+                    [Pokemon.zukan[name]["type"][0]],
+                    [100],
+                ]
+            else:
+                Pokemon.home[name]["Ttype"] = [["ノーマル"], [100]]
 
 
 # ダメージ
