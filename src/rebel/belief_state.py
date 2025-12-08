@@ -38,6 +38,7 @@ class ObservationType(Enum):
     ASSAULT_VEST_BLOCK = auto()  # とつげきチョッキで変化技不可
     BOOST_ENERGY_ACTIVATED = auto()  # ブーストエナジー発動
     BERRY_CONSUMED = auto()  # きのみ消費
+    AIR_BALLOON_CONSUMED = auto()  # ふうせん消費（被弾時）
 
     # === 技が判明する観測 ===
     MOVE_USED = auto()  # 技を使用した
@@ -157,6 +158,12 @@ class PokemonBeliefState:
         }
         self.revealed_tera: dict[str, Optional[str]] = {
             name: None for name in opponent_pokemon_names
+        }
+
+        # 技使用回数の追跡（PP枯渇の推測に使用）
+        # {pokemon_name: {move_name: use_count}}
+        self.move_use_count: dict[str, dict[str, int]] = {
+            name: {} for name in opponent_pokemon_names
         }
 
         # 観測履歴
@@ -400,6 +407,11 @@ class PokemonBeliefState:
             if move:
                 self.revealed_moves[pokemon_name].add(move)
                 self._filter_by_revealed_moves(pokemon_name)
+                # 技使用回数を更新
+                if pokemon_name not in self.move_use_count:
+                    self.move_use_count[pokemon_name] = {}
+                self.move_use_count[pokemon_name][move] = \
+                    self.move_use_count[pokemon_name].get(move, 0) + 1
 
         # === 持ち物の確定 ===
         elif obs_type == ObservationType.ITEM_REVEALED:
@@ -594,8 +606,36 @@ class PokemonBeliefState:
         new_state.revealed_moves = deepcopy(self.revealed_moves)
         new_state.revealed_items = deepcopy(self.revealed_items)
         new_state.revealed_tera = deepcopy(self.revealed_tera)
+        new_state.move_use_count = deepcopy(self.move_use_count)
         new_state.observation_history = list(self.observation_history)
         return new_state
+
+    def get_move_use_count(self, pokemon_name: str, move: str) -> int:
+        """特定の技の使用回数を取得"""
+        if pokemon_name not in self.move_use_count:
+            return 0
+        return self.move_use_count[pokemon_name].get(move, 0)
+
+    def get_all_move_use_counts(self, pokemon_name: str) -> dict[str, int]:
+        """ポケモンの全技使用回数を取得"""
+        return self.move_use_count.get(pokemon_name, {})
+
+    def estimate_pp_remaining(self, pokemon_name: str, move: str, max_pp: int = 8) -> float:
+        """
+        相手の技のPP残量を推定
+
+        Args:
+            pokemon_name: ポケモン名
+            move: 技名
+            max_pp: 技の最大PP（デフォルト8、実際はポイントアップで増加可能）
+
+        Returns:
+            推定PP残量（0.0-1.0の比率）
+        """
+        use_count = self.get_move_use_count(pokemon_name, move)
+        # PPを使い切った可能性を考慮
+        estimated_remaining = max(0, max_pp - use_count)
+        return estimated_remaining / max_pp if max_pp > 0 else 1.0
 
     def summary(self) -> str:
         """信念状態の概要"""

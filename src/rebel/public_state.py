@@ -21,32 +21,48 @@ if TYPE_CHECKING:
 
 
 def _extract_field_condition(battle: Battle) -> FieldCondition:
-    """Battle から FieldCondition を抽出"""
+    """Battle から FieldCondition を抽出
+
+    Note: Battle.condition の変数名と FieldCondition の変数名は異なる場合がある
+    - elecfield -> electric_field
+    - glassfield -> grass_field
+    - psycofield -> psychic_field
+    - mistfield -> mist_field
+    - trickroom -> trick_room
+    - lightwall -> light_screen
+    - oikaze -> tailwind
+    - whitemist -> mist
+    - makibishi -> spikes
+    - dokubishi -> toxic_spikes
+    - stealthrock -> stealth_rock
+    - nebanet -> sticky_web
+    """
+    cond = battle.condition
     return FieldCondition(
         # 天候
-        sunny=getattr(battle.field, "sunny", 0),
-        rainy=getattr(battle.field, "rainy", 0),
-        snow=getattr(battle.field, "snow", 0),
-        sandstorm=getattr(battle.field, "sandstorm", 0),
+        sunny=cond.get("sunny", 0),
+        rainy=cond.get("rainy", 0),
+        snow=cond.get("snow", 0),
+        sandstorm=cond.get("sandstorm", 0),
         # フィールド
-        electric_field=getattr(battle.field, "electric_field", 0),
-        grass_field=getattr(battle.field, "grass_field", 0),
-        psychic_field=getattr(battle.field, "psychic_field", 0),
-        mist_field=getattr(battle.field, "mist_field", 0),
+        electric_field=cond.get("elecfield", 0),
+        grass_field=cond.get("glassfield", 0),
+        psychic_field=cond.get("psycofield", 0),
+        mist_field=cond.get("mistfield", 0),
         # その他
-        gravity=getattr(battle.field, "gravity", 0),
-        trick_room=getattr(battle.field, "trick_room", 0),
+        gravity=cond.get("gravity", 0),
+        trick_room=cond.get("trickroom", 0),
         # 壁
-        reflector=list(getattr(battle.field, "reflector", [0, 0])),
-        light_screen=list(getattr(battle.field, "light_screen", [0, 0])),
-        tailwind=list(getattr(battle.field, "tailwind", [0, 0])),
-        safeguard=list(getattr(battle.field, "safeguard", [0, 0])),
-        mist=list(getattr(battle.field, "mist", [0, 0])),
+        reflector=list(cond.get("reflector", [0, 0])),
+        light_screen=list(cond.get("lightwall", [0, 0])),
+        tailwind=list(cond.get("oikaze", [0, 0])),
+        safeguard=list(cond.get("safeguard", [0, 0])),
+        mist=list(cond.get("whitemist", [0, 0])),
         # 設置技
-        spikes=list(getattr(battle.field, "spikes", [0, 0])),
-        toxic_spikes=list(getattr(battle.field, "toxic_spikes", [0, 0])),
-        stealth_rock=list(getattr(battle.field, "stealth_rock", [0, 0])),
-        sticky_web=list(getattr(battle.field, "sticky_web", [0, 0])),
+        spikes=list(cond.get("makibishi", [0, 0])),
+        toxic_spikes=list(cond.get("dokubishi", [0, 0])),
+        stealth_rock=list(cond.get("stealthrock", [0, 0])),
+        sticky_web=list(cond.get("nebanet", [0, 0])),
     )
 
 
@@ -54,6 +70,19 @@ def _pokemon_to_state(pokemon: "Pokemon", include_hidden: bool = True) -> Pokemo
     """Pokemon オブジェクトを PokemonState に変換"""
     max_hp = pokemon.status[0] if pokemon.status else 1
     hp_ratio = pokemon.hp / max_hp if max_hp > 0 else 0.0
+
+    # 状態異常の詳細情報を抽出
+    bad_poison_counter = 0
+    sleep_counter = 0
+    if hasattr(pokemon, "condition") and pokemon.condition:
+        bad_poison_counter = pokemon.condition.get("badpoison", 0)
+    if hasattr(pokemon, "sleep_count"):
+        sleep_counter = pokemon.sleep_count
+
+    # PP情報を抽出（include_hiddenがTrueの場合のみ）
+    pp_list = []
+    if include_hidden and hasattr(pokemon, "pp") and pokemon.pp:
+        pp_list = list(pokemon.pp)
 
     return PokemonState(
         name=pokemon.name,
@@ -68,6 +97,9 @@ def _pokemon_to_state(pokemon: "Pokemon", include_hidden: bool = True) -> Pokemo
         moves=list(pokemon.moves) if include_hidden else [],
         terastallized=pokemon.terastal if hasattr(pokemon, "terastal") else False,
         tera_type=pokemon.Ttype if hasattr(pokemon, "Ttype") else "",
+        bad_poison_counter=bad_poison_counter,
+        sleep_counter=sleep_counter,
+        pp=pp_list,
     )
 
 
@@ -86,6 +118,10 @@ class PublicPokemonState:
     types: list[str]  # 現在のタイプ（見える、テラスタル後は変化）
     terastallized: bool  # テラスタル済みか（見える）
     tera_type: str  # 使用後のテラスタイプ（使用後のみ見える）
+
+    # 状態異常の詳細（観測可能）
+    bad_poison_counter: int = 0  # もうどくカウンター（毎ターン増加）
+    sleep_counter: int = 0  # ねむりの残りターン数
 
     # 観測により判明した情報
     revealed_moves: set[str] = field(default_factory=set)
@@ -160,6 +196,15 @@ class PublicGameState:
 
         # 相手の情報（観測可能な部分のみ）
         opp_active = battle.pokemon[opponent]
+
+        # 状態異常詳細を抽出
+        opp_bad_poison = 0
+        opp_sleep = 0
+        if hasattr(opp_active, "condition") and opp_active.condition:
+            opp_bad_poison = opp_active.condition.get("badpoison", 0)
+        if hasattr(opp_active, "sleep_count"):
+            opp_sleep = opp_active.sleep_count
+
         opp_pokemon = PublicPokemonState(
             name=opp_active.name,
             hp_ratio=opp_active.hp / opp_active.status[0] if opp_active.status[0] > 0 else 0,
@@ -168,6 +213,8 @@ class PublicGameState:
             types=list(opp_active.types) if opp_active.types else [],
             terastallized=opp_active.terastal if hasattr(opp_active, "terastal") else False,
             tera_type=opp_active.Ttype if hasattr(opp_active, "Ttype") and opp_active.terastal else "",
+            bad_poison_counter=opp_bad_poison,
+            sleep_counter=opp_sleep,
             revealed_moves=set(revealed_info.get("moves", {}).get(opp_active.name, set())),
             revealed_item=revealed_info.get("items", {}).get(opp_active.name),
             revealed_ability=revealed_info.get("abilities", {}).get(opp_active.name),
@@ -176,6 +223,14 @@ class PublicGameState:
         opp_bench = []
         for p in battle.selected[opponent]:
             if p != opp_active and p.hp > 0:
+                # 控えの状態異常詳細
+                bench_bad_poison = 0
+                bench_sleep = 0
+                if hasattr(p, "condition") and p.condition:
+                    bench_bad_poison = p.condition.get("badpoison", 0)
+                if hasattr(p, "sleep_count"):
+                    bench_sleep = p.sleep_count
+
                 opp_bench.append(
                     PublicPokemonState(
                         name=p.name,
@@ -185,6 +240,8 @@ class PublicGameState:
                         types=list(p.types) if p.types else [],
                         terastallized=p.terastal if hasattr(p, "terastal") else False,
                         tera_type=p.Ttype if hasattr(p, "Ttype") and p.terastal else "",
+                        bad_poison_counter=bench_bad_poison,
+                        sleep_counter=bench_sleep,
                         revealed_moves=set(revealed_info.get("moves", {}).get(p.name, set())),
                         revealed_item=revealed_info.get("items", {}).get(p.name),
                         revealed_ability=revealed_info.get("abilities", {}).get(p.name),

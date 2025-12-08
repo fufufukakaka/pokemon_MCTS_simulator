@@ -372,6 +372,100 @@ class SimplifiedCFRSolver:
         return {a: 1.0 / n for a in scores}
 
 
+class LightweightCFRSolver:
+    """
+    超軽量 CFR ソルバー
+
+    最小限のワールドサンプリングと単純なダメージベース評価で
+    高速に近似戦略を計算する。精度は低いが学習初期には十分。
+    """
+
+    def __init__(
+        self,
+        num_samples: int = 3,
+        value_estimator: Optional[ValueEstimator] = None,
+    ):
+        self.num_samples = num_samples
+        self.value_fn = value_estimator or default_value_estimator
+
+    def solve(
+        self,
+        pbs: PublicBeliefState,
+        original_battle: Battle,
+    ) -> tuple[dict[int, float], dict[int, float]]:
+        """
+        軽量版 CFR で戦略を計算
+
+        行動ごとの期待ダメージに基づく簡易評価
+        """
+        perspective = pbs.public_state.perspective
+        opponent = 1 - perspective
+
+        my_actions = original_battle.available_commands(perspective)
+        opp_actions = original_battle.available_commands(opponent)
+
+        if not my_actions:
+            return ({}, {})
+        if len(my_actions) == 1:
+            return ({my_actions[0]: 1.0}, {a: 1.0 / len(opp_actions) for a in opp_actions} if opp_actions else {})
+        if not opp_actions:
+            return ({a: 1.0 / len(my_actions) for a in my_actions}, {})
+
+        # 少数のワールドをサンプリング
+        worlds = pbs.belief.sample_worlds(self.num_samples)
+
+        # 各行動の期待価値を計算（相手の行動は均等分布を仮定）
+        action_values: dict[int, list[float]] = {a: [] for a in my_actions}
+
+        for world in worlds:
+            battle = instantiate_battle_from_hypothesis(pbs, world, original_battle)
+
+            for my_action in my_actions:
+                # 相手は1つだけサンプリング（高速化）
+                opp_action = random.choice(opp_actions)
+                test_battle = deepcopy(battle)
+
+                if perspective == 0:
+                    commands = [my_action, opp_action]
+                else:
+                    commands = [opp_action, my_action]
+
+                try:
+                    test_battle.proceed(commands=commands)
+                    value = self.value_fn(test_battle, perspective)
+                except Exception:
+                    value = 0.5
+
+                action_values[my_action].append(value)
+
+        # 平均値を計算
+        avg_values = {a: sum(v) / len(v) if v else 0.5 for a, v in action_values.items()}
+
+        # Softmax で戦略に変換
+        my_strategy = self._softmax_strategy(avg_values, temperature=0.3)
+
+        # 相手戦略は均等分布
+        opp_strategy = {a: 1.0 / len(opp_actions) for a in opp_actions}
+
+        return my_strategy, opp_strategy
+
+    def _softmax_strategy(
+        self, scores: dict[int, float], temperature: float = 1.0
+    ) -> dict[int, float]:
+        """スコアを Softmax で戦略に変換"""
+        if not scores:
+            return {}
+
+        max_score = max(scores.values())
+        exp_scores = {a: pow(2.718, (s - max_score) / temperature) for a, s in scores.items()}
+        total = sum(exp_scores.values())
+
+        if total > 0:
+            return {a: e / total for a, e in exp_scores.items()}
+        n = len(scores)
+        return {a: 1.0 / n for a in scores}
+
+
 class ReBeLSolver:
     """
     ReBeL スタイルのソルバー
@@ -385,17 +479,20 @@ class ReBeLSolver:
         value_network: Optional["ReBeLValueNetwork"] = None,
         cfr_config: Optional[CFRConfig] = None,
         use_simplified: bool = True,
+        use_lightweight: bool = False,
     ):
         """
         Args:
             value_network: Value Network（None の場合はヒューリスティック使用）
             cfr_config: CFR の設定
             use_simplified: 簡略化 CFR を使用
+            use_lightweight: 超軽量CFRを使用（最高速、精度低）
         """
         from .value_network import ReBeLValueNetwork
 
         self.value_network = value_network
         self.use_simplified = use_simplified
+        self.use_lightweight = use_lightweight
 
         # Value Estimator を構築
         if value_network is not None:
@@ -404,7 +501,12 @@ class ReBeLSolver:
         else:
             value_estimator = default_value_estimator
 
-        if use_simplified:
+        if use_lightweight:
+            self.solver = LightweightCFRSolver(
+                num_samples=min(3, cfr_config.num_world_samples) if cfr_config else 3,
+                value_estimator=value_estimator,
+            )
+        elif use_simplified:
             self.solver = SimplifiedCFRSolver(
                 num_samples=cfr_config.num_world_samples if cfr_config else 30,
                 value_estimator=value_estimator,

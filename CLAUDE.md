@@ -203,6 +203,41 @@ uv run python scripts/run_reinforcement_loop.py \
 ### ReBeL Training and Comparison
 
 ```bash
+# ReBeL Value Network training (self-play)
+uv run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --output models/rebel \
+  --num-iterations 10 \
+  --games-per-iteration 20
+
+# Fast training with parallel workers and lightweight CFR
+uv run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --output models/rebel \
+  --num-iterations 10 \
+  --games-per-iteration 50 \
+  --num-workers 4 \
+  --lightweight-cfr
+
+# High accuracy training (slower, more precise CFR)
+uv run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --output models/rebel \
+  --num-iterations 20 \
+  --cfr-iterations 50 \
+  --cfr-world-samples 30 \
+  --no-lightweight-cfr
+
+# Training against fixed opponent (for debugging/testing)
+uv run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --fixed-opponent-index 0 \
+  --fixed-opponent-select-all \
+  --num-iterations 5
+
 # Compare ReBeL vs HypothesisMCTS
 uv run python scripts/compare_rebel_vs_mcts.py \
   --trainer-json data/top_rankers/season_27.json \
@@ -216,6 +251,30 @@ uv run python scripts/compare_rebel_vs_mcts.py \
   --rebel-cfr-iterations 20 \
   --rebel-world-samples 10
 ```
+
+**train_rebel.py オプション一覧:**
+
+| オプション | 説明 | デフォルト |
+|------------|------|------------|
+| `--num-iterations` | 学習イテレーション数 | 10 |
+| `--games-per-iteration` | 各イテレーションでの自己対戦数 | 20 |
+| `--cfr-iterations` | CFR イテレーション数 | 30 |
+| `--cfr-world-samples` | CFR ワールドサンプル数 | 10 |
+| `--num-workers` | 並列ゲーム生成のワーカー数 | 1 |
+| `--lightweight-cfr` | 軽量CFRモード（高速、デフォルト有効） | True |
+| `--no-lightweight-cfr` | 軽量CFRを無効化（高精度だが低速） | - |
+| `--batch-size` | 学習バッチサイズ | 32 |
+| `--learning-rate` | 学習率 | 1e-4 |
+| `--hidden-dim` | ネットワークの隠れ層次元 | 256 |
+| `--device` | デバイス (cpu/cuda) | cpu |
+| `--resume` | チェックポイントから再開 | - |
+| `--fixed-opponent` | 固定対戦相手のJSONパス | - |
+| `--fixed-opponent-index` | trainer-json内の対戦相手インデックス | - |
+| `--train-selection` | 選出ネットワークも同時に学習 | False |
+
+**ログ出力:**
+- 各イテレーションの学習記録は `{output_dir}/training_log.jsonl` に保存されます
+- 最終的な学習履歴は `{output_dir}/training_history.json` に保存されます
 
 ### Team Selection Training
 

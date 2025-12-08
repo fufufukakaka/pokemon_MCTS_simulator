@@ -2,12 +2,14 @@
 Team Selection Network
 
 相手の6匹を見て、自分の6匹から最適な3匹を選出するネットワーク。
+また、選出した3匹のうち誰を先発にするかも予測する。
 
 アーキテクチャ:
 1. 各ポケモンを個別にエンコード（共有Embedding + MLP）
 2. 自チームと相手チームをそれぞれSet Encoderで集約
 3. Cross Attentionで相手チームを考慮した自チーム表現を生成
 4. 各ポケモンの選出スコアを出力
+5. 選出されたポケモンの中から先発スコアを出力
 """
 
 from __future__ import annotations
@@ -39,6 +41,9 @@ class TeamSelectionNetworkConfig:
     # 出力
     team_size: int = 6
     select_size: int = 3  # 選出する数
+
+    # 先発予測を有効にするか
+    predict_lead: bool = True
 
 
 class PokemonEmbedding(nn.Module):
@@ -195,6 +200,17 @@ class TeamSelectionNetwork(nn.Module):
             nn.Linear(self.config.hidden_dim, 1),
         )
 
+        # 先発スコア出力（選出されたポケモンの中から先発を決める）
+        if self.config.predict_lead:
+            self.lead_head = nn.Sequential(
+                nn.Linear(self.config.pokemon_embed_dim, self.config.hidden_dim),
+                nn.ReLU(),
+                nn.Dropout(self.config.dropout),
+                nn.Linear(self.config.hidden_dim, 1),
+            )
+        else:
+            self.lead_head = None
+
         # Value Head（勝率予測、オプショナル）
         self.value_head = nn.Sequential(
             nn.Linear(self.config.pokemon_embed_dim * 2, self.config.hidden_dim),
@@ -210,6 +226,7 @@ class TeamSelectionNetwork(nn.Module):
         opp_team: torch.Tensor,
         my_mask: Optional[torch.Tensor] = None,
         opp_mask: Optional[torch.Tensor] = None,
+        selection_mask: Optional[torch.Tensor] = None,
     ) -> dict[str, torch.Tensor]:
         """
         Args:
@@ -217,11 +234,14 @@ class TeamSelectionNetwork(nn.Module):
             opp_team: [batch, 6, feature_dim] 相手チーム
             my_mask: [batch, 6] 自チームのパディングマスク
             opp_mask: [batch, 6] 相手チームのパディングマスク
+            selection_mask: [batch, 6] 選出マスク（Trueで選出済み、先発予測時に使用）
 
         Returns:
             {
                 "selection_logits": [batch, 6] 各ポケモンの選出ロジット
                 "selection_probs": [batch, 6] 選出確率（softmax後）
+                "lead_logits": [batch, 6] 各ポケモンの先発ロジット（選出されていないポケモンは-inf）
+                "lead_probs": [batch, 6] 先発確率（選出されたポケモン内でsoftmax）
                 "value": [batch, 1] 勝率予測
             }
         """
@@ -249,6 +269,33 @@ class TeamSelectionNetwork(nn.Module):
 
         selection_probs = F.softmax(selection_logits, dim=-1)
 
+        # 先発スコア
+        if self.lead_head is not None:
+            lead_logits = self.lead_head(my_with_opp).squeeze(-1)  # [batch, 6]
+
+            # 選出されていないポケモンは先発になれない
+            # selection_mask が与えられた場合はそれを使う
+            # 与えられない場合は、selection_probsから上位3匹を選出済みとみなす
+            if selection_mask is not None:
+                # selection_mask: True = 選出済み
+                lead_mask = ~selection_mask  # True = 選出されていない（マスク対象）
+            else:
+                # selection_probsから上位3匹を選出済みとみなす
+                _, top_indices = torch.topk(selection_probs, self.config.select_size, dim=-1)
+                lead_mask = torch.ones_like(lead_logits, dtype=torch.bool)
+                for b in range(batch_size):
+                    lead_mask[b, top_indices[b]] = False
+
+            # パディングマスクも適用
+            if my_mask is not None:
+                lead_mask = lead_mask | my_mask
+
+            lead_logits = lead_logits.masked_fill(lead_mask, float("-inf"))
+            lead_probs = F.softmax(lead_logits, dim=-1)
+        else:
+            lead_logits = torch.zeros_like(selection_logits)
+            lead_probs = torch.zeros_like(selection_probs)
+
         # Value予測
         # チーム全体の表現を集約（mean pooling）
         if my_mask is not None:
@@ -273,6 +320,8 @@ class TeamSelectionNetwork(nn.Module):
         return {
             "selection_logits": selection_logits,
             "selection_probs": selection_probs,
+            "lead_logits": lead_logits,
+            "lead_probs": lead_probs,
             "value": value,
         }
 
@@ -283,7 +332,7 @@ class TeamSelectionNetwork(nn.Module):
         num_select: int = 3,
         temperature: float = 1.0,
         deterministic: bool = False,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         チームを選出する
 
@@ -295,28 +344,33 @@ class TeamSelectionNetwork(nn.Module):
             deterministic: Trueなら確率最大の3匹を選択
 
         Returns:
-            selected_indices: [batch, num_select] 選出されたインデックス
+            selected_indices: [batch, num_select] 選出されたインデックス（先発が[0]）
             selection_probs: [batch, 6] 選出確率
+            lead_index: [batch] 先発のインデックス
+            lead_probs: [batch, 6] 先発確率
         """
         # バッチ次元を追加
         if my_team.dim() == 2:
             my_team = my_team.unsqueeze(0)
             opp_team = opp_team.unsqueeze(0)
 
+        batch_size = my_team.size(0)
+
+        # まず選出を決定
         output = self.forward(my_team, opp_team)
-        logits = output["selection_logits"] / temperature
+        selection_logits = output["selection_logits"] / temperature
 
         if deterministic:
             # 上位num_select個を選択
-            _, indices = torch.topk(logits, num_select, dim=-1)
+            _, indices = torch.topk(selection_logits, num_select, dim=-1)
         else:
             # 確率的にサンプリング（重複なし）
-            probs = F.softmax(logits, dim=-1)
+            probs = F.softmax(selection_logits, dim=-1)
             indices = torch.zeros(
-                my_team.size(0), num_select, dtype=torch.long, device=my_team.device
+                batch_size, num_select, dtype=torch.long, device=my_team.device
             )
 
-            for b in range(my_team.size(0)):
+            for b in range(batch_size):
                 remaining_probs = probs[b].clone()
                 for i in range(num_select):
                     idx = torch.multinomial(remaining_probs, 1)
@@ -326,7 +380,43 @@ class TeamSelectionNetwork(nn.Module):
                         remaining_probs.sum() + 1e-8
                     )  # 再正規化
 
-        return indices, output["selection_probs"]
+        # 選出マスクを作成して先発を決定
+        selection_mask = torch.zeros(batch_size, 6, dtype=torch.bool, device=my_team.device)
+        for b in range(batch_size):
+            selection_mask[b, indices[b]] = True
+
+        # 先発確率を計算
+        output_with_selection = self.forward(my_team, opp_team, selection_mask=selection_mask)
+        lead_logits = output_with_selection["lead_logits"] / temperature
+        lead_probs = output_with_selection["lead_probs"]
+
+        # 先発を決定
+        if deterministic:
+            lead_index = torch.argmax(lead_logits, dim=-1)
+        else:
+            # 選出されたポケモンの中からサンプリング
+            lead_index = torch.zeros(batch_size, dtype=torch.long, device=my_team.device)
+            for b in range(batch_size):
+                valid_probs = lead_probs[b].clone()
+                if valid_probs.sum() > 0:
+                    lead_index[b] = torch.multinomial(valid_probs, 1)
+                else:
+                    # フォールバック: 最初の選出ポケモン
+                    lead_index[b] = indices[b, 0]
+
+        # indicesを並び替え（先発が最初に来るように）
+        for b in range(batch_size):
+            lead_pos = (indices[b] == lead_index[b]).nonzero(as_tuple=True)[0]
+            if len(lead_pos) > 0 and lead_pos[0] != 0:
+                # 先発を先頭に移動
+                pos = lead_pos[0].item()
+                indices[b] = torch.cat([
+                    indices[b, pos:pos+1],
+                    indices[b, :pos],
+                    indices[b, pos+1:]
+                ])
+
+        return indices, output["selection_probs"], lead_index, lead_probs
 
 
 class TeamSelectionLoss(nn.Module):
@@ -334,12 +424,19 @@ class TeamSelectionLoss(nn.Module):
     Team Selection用の損失関数
 
     1. Selection Loss: 正解の選出との交差エントロピー
-    2. Value Loss: 勝敗予測のMSE
+    2. Lead Loss: 正解の先発との交差エントロピー
+    3. Value Loss: 勝敗予測のMSE
     """
 
-    def __init__(self, selection_weight: float = 1.0, value_weight: float = 0.5):
+    def __init__(
+        self,
+        selection_weight: float = 1.0,
+        lead_weight: float = 0.5,
+        value_weight: float = 0.5,
+    ):
         super().__init__()
         self.selection_weight = selection_weight
+        self.lead_weight = lead_weight
         self.value_weight = value_weight
 
     def forward(
@@ -348,6 +445,8 @@ class TeamSelectionLoss(nn.Module):
         selection_target: torch.Tensor,
         value_pred: torch.Tensor,
         value_target: torch.Tensor,
+        lead_logits: Optional[torch.Tensor] = None,
+        lead_target: Optional[torch.Tensor] = None,
         selection_mask: Optional[torch.Tensor] = None,
     ) -> dict[str, torch.Tensor]:
         """
@@ -356,10 +455,12 @@ class TeamSelectionLoss(nn.Module):
             selection_target: [batch, 6] 選出ラベル（0 or 1）
             value_pred: [batch, 1] 勝率予測
             value_target: [batch, 1] 実際の勝敗
+            lead_logits: [batch, 6] 先発ロジット（オプション）
+            lead_target: [batch] 先発のインデックス（オプション）
             selection_mask: [batch, 6] マスク（1で有効）
 
         Returns:
-            {"loss": total_loss, "selection_loss": ..., "value_loss": ...}
+            {"loss": total_loss, "selection_loss": ..., "lead_loss": ..., "value_loss": ...}
         """
         # Selection Loss（Binary Cross Entropy）
         if selection_mask is not None:
@@ -372,16 +473,26 @@ class TeamSelectionLoss(nn.Module):
             selection_probs, selection_target.float(), reduction="mean"
         )
 
+        # Lead Loss（Cross Entropy - 選出された3匹の中から1匹を選ぶ）
+        if lead_logits is not None and lead_target is not None:
+            # 選出されていないポケモンはマスク（-infになっているはず）
+            lead_loss = F.cross_entropy(lead_logits, lead_target, reduction="mean")
+        else:
+            lead_loss = torch.tensor(0.0, device=selection_logits.device)
+
         # Value Loss
         value_loss = F.mse_loss(value_pred, value_target)
 
         # Total Loss
         total_loss = (
-            self.selection_weight * selection_loss + self.value_weight * value_loss
+            self.selection_weight * selection_loss
+            + self.lead_weight * lead_loss
+            + self.value_weight * value_loss
         )
 
         return {
             "loss": total_loss,
             "selection_loss": selection_loss,
+            "lead_loss": lead_loss,
             "value_loss": value_loss,
         }

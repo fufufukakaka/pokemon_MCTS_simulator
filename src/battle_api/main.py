@@ -10,6 +10,7 @@ import time
 import uuid
 from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
@@ -28,12 +29,15 @@ from src.policy_value_network.team_selection_network import (
 )
 from src.rebel import (
     CFRConfig,
+    FullBeliefState,
     PokemonBeliefState,
     PublicBeliefState,
     ReBeLSolver,
     ReBeLValueNetwork,
+    TeamCompositionBelief,
 )
 from src.rebel.belief_state import Observation, ObservationType
+from src.rebel.cfr_solver import default_value_estimator
 
 
 # ============================================================
@@ -56,6 +60,138 @@ class InteractiveBattle(Battle):
             self.player_needs_switch = True
         # Use default behavior (random selection) but track it
         return super().change_command(player)
+
+
+# ============================================================
+# Item Observation Detection from Battle Log
+# ============================================================
+
+# 持ち物→観測タイプのマッピング
+ITEM_OBSERVATION_MAP = {
+    "きあいのタスキ": ObservationType.FOCUS_SASH_ACTIVATED,
+    "たべのこし": ObservationType.LEFTOVERS_HEAL,
+    "くろいヘドロ": ObservationType.BLACK_SLUDGE_HEAL,
+    "いのちのたま": ObservationType.LIFE_ORB_RECOIL,
+    "ゴツゴツメット": ObservationType.ROCKY_HELMET_DAMAGE,
+    "とつげきチョッキ": ObservationType.ASSAULT_VEST_BLOCK,
+    "ブーストエナジー": ObservationType.BOOST_ENERGY_ACTIVATED,
+    "ふうせん": ObservationType.AIR_BALLOON_CONSUMED,
+}
+
+# きのみのリスト
+BERRIES = [
+    "オボンのみ", "ラムのみ", "カゴのみ", "クラボのみ", "モモンのみ",
+    "チーゴのみ", "ナナシのみ", "ヒメリのみ", "オレンのみ", "キーのみ",
+    "ウイのみ", "バンジのみ", "イアのみ", "フィラのみ", "マゴのみ",
+    "イバンのみ", "ヤタピのみ", "カムラのみ", "サンのみ", "チイラのみ",
+    "リュガのみ", "ズアのみ", "アッキのみ", "タラプのみ",
+    # タイプ半減きのみ
+    "ソクノのみ", "タンガのみ", "ヨプのみ", "シュカのみ", "バコウのみ",
+    "ウタンのみ", "オッカのみ", "イトケのみ", "リンドのみ", "ヤチェのみ",
+    "ビアーのみ", "ナモのみ", "リリバのみ", "ホズのみ", "ハバンのみ",
+    "カシブのみ", "レンブのみ", "ロゼルのみ",
+]
+
+
+def extract_item_observations_from_log(
+    battle_log: list[str], pokemon_name: str
+) -> list[Observation]:
+    """
+    バトルログから持ち物発動の観測イベントを抽出
+
+    Args:
+        battle_log: バトルログ（battle.log[player]）
+        pokemon_name: 対象のポケモン名
+
+    Returns:
+        観測イベントのリスト
+    """
+    observations = []
+
+    for entry in battle_log:
+        if not isinstance(entry, str):
+            continue
+
+        # 持ち物発動の検出
+        for item, obs_type in ITEM_OBSERVATION_MAP.items():
+            if item in entry:
+                observations.append(
+                    Observation(
+                        type=obs_type,
+                        pokemon_name=pokemon_name,
+                        details={"item": item, "log_entry": entry},
+                    )
+                )
+                break
+
+        # きのみ消費の検出
+        for berry in BERRIES:
+            if berry in entry and ("発動" in entry or "回復" in entry or "上がった" in entry):
+                observations.append(
+                    Observation(
+                        type=ObservationType.BERRY_CONSUMED,
+                        pokemon_name=pokemon_name,
+                        details={"item": berry, "log_entry": entry},
+                    )
+                )
+                break
+
+        # こだわり系の検出（技固定の表示）
+        if "こだわり" in entry and ("固定" in entry or "変化技" in entry):
+            observations.append(
+                Observation(
+                    type=ObservationType.CHOICE_LOCKED,
+                    pokemon_name=pokemon_name,
+                    details={"log_entry": entry},
+                )
+            )
+
+    return observations
+
+
+def update_belief_from_battle_log(
+    session: "BattleSession",
+    prev_log_lengths: dict[int, int],
+) -> dict[int, int]:
+    """
+    バトルログの変化を検出して信念を更新
+
+    Args:
+        session: バトルセッション
+        prev_log_lengths: 前回のログ長さ {player: length}
+
+    Returns:
+        更新後のログ長さ
+    """
+    if not session.rebel_belief:
+        return prev_log_lengths
+
+    battle = session.battle
+    new_log_lengths = {}
+
+    for player in [0, 1]:
+        current_log = battle.log[player] if hasattr(battle, 'log') else []
+        prev_length = prev_log_lengths.get(player, 0)
+        new_log_lengths[player] = len(current_log)
+
+        if len(current_log) <= prev_length:
+            continue
+
+        # 新しいログエントリを取得
+        new_entries = current_log[prev_length:]
+        pokemon = battle.pokemon[player]
+
+        if pokemon:
+            # 相手（player=1）のログから持ち物観測を抽出
+            if player == 1:
+                observations = extract_item_observations_from_log(
+                    new_entries, pokemon.name
+                )
+                for obs in observations:
+                    session.rebel_belief.update(obs)
+
+    return new_log_lengths
+
 
 # ============================================================
 # Pydantic Models
@@ -98,6 +234,11 @@ class ActionRequest(BaseModel):
 # ============================================================
 
 
+# TOD (Time Over Death) settings
+TOD_TIME_LIMIT_SECONDS = 10 * 60  # 10 minutes
+AI_SURRENDER_THRESHOLD = 0.05  # AI surrenders if win probability < 5%
+
+
 @dataclass
 class BattleSession:
     """Manages a single battle session."""
@@ -110,11 +251,17 @@ class BattleSession:
     ai_pokemon: list[Pokemon]  # Created Pokemon objects for AI
     rebel_solver: ReBeLSolver
     rebel_belief: Optional[PokemonBeliefState] = None
+    full_belief: Optional[FullBeliefState] = None  # Full belief with selection/lead uncertainty
     log: list[dict] = field(default_factory=list)
     turn: int = 0
     phase: str = "selection"  # "selection", "battle", "change", "finished"
     pending_switch_pokemon: Optional[str] = None  # Name of pokemon that auto-switched
     fainted_pokemon_name: Optional[str] = None  # Name of pokemon that fainted
+    created_at: datetime = field(default_factory=datetime.now)  # For TOD tracking
+    # バトルログの長さ追跡（持ち物観測検出用）
+    battle_log_lengths: dict = field(default_factory=lambda: {0: 0, 1: 0})
+    last_ai_value: Optional[float] = None  # AI's estimated win probability
+    ai_selection_probs: Optional[dict] = None  # AI's selection/lead probabilities for display
 
 
 class SessionManager:
@@ -214,17 +361,18 @@ class SessionManager:
         my_team_data: list[dict],
         opp_team_data: list[dict],
         num_select: int = 3,
-    ) -> list[int]:
+    ) -> tuple[list[int], Optional[dict]]:
         """
-        選出ネットワークを使用してチームを選出
+        選出ネットワークを使用してチームを選出（先発も決定）
 
         Returns:
-            選出するインデックスのリスト
+            (選出するインデックスのリスト（先発が最初）, 確率情報)
         """
         if self.selection_network is None or self.selection_encoder is None:
             # ネットワークがない場合はランダム選出
             available = list(range(len(my_team_data)))
-            return random.sample(available, min(num_select, len(available)))
+            selected = random.sample(available, min(num_select, len(available)))
+            return selected, None
 
         self.selection_network.eval()
         with torch.no_grad():
@@ -234,11 +382,18 @@ class SessionManager:
             my_tensor = my_tensor.unsqueeze(0)
             opp_tensor = opp_tensor.unsqueeze(0)
 
-            indices, _ = self.selection_network.select_team(
+            indices, selection_probs, lead_index, lead_probs = self.selection_network.select_team(
                 my_tensor, opp_tensor, num_select=num_select, deterministic=True
             )
 
-        return indices[0].tolist()
+        # 確率情報を辞書で返す
+        probs_info = {
+            "selection_probs": selection_probs[0].tolist()[:len(my_team_data)],
+            "lead_probs": lead_probs[0].tolist()[:len(my_team_data)],
+            "lead_index": lead_index[0].item(),
+        }
+
+        return indices[0].tolist(), probs_info
 
     def create_session(
         self,
@@ -269,7 +424,8 @@ class SessionManager:
             pokemon.item = poke_data.get("item", "")
             pokemon.ability = poke_data.get("ability", "")
             pokemon.moves = poke_data.get("moves", [])[:4]
-            pokemon.Ttype = poke_data.get("tera_type", "ノーマル")
+            # Support both "Ttype" (trainer data) and "tera_type" (API request)
+            pokemon.Ttype = poke_data.get("Ttype", poke_data.get("tera_type", "ノーマル"))
             if poke_data.get("nature"):
                 pokemon.nature = poke_data["nature"]
             if poke_data.get("evs"):
@@ -283,7 +439,8 @@ class SessionManager:
             pokemon.item = poke_data.get("item", "")
             pokemon.ability = poke_data.get("ability", "")
             pokemon.moves = poke_data.get("moves", [])[:4]
-            pokemon.Ttype = poke_data.get("tera_type", "ノーマル")
+            # Support both "Ttype" (trainer data) and "tera_type" (API request)
+            pokemon.Ttype = poke_data.get("Ttype", poke_data.get("tera_type", "ノーマル"))
             if poke_data.get("nature"):
                 pokemon.nature = poke_data["nature"]
             if poke_data.get("evs"):
@@ -485,15 +642,20 @@ def get_available_actions(
     if phase == "finished":
         return actions
 
-    # For change phase after fainting, we need to show all alive pokemon except the fainted one
+    # For change phase after fainting, show all alive pokemon except the fainted one
+    # Include the auto-switched pokemon (marked as current) so user can confirm it
     if phase == "change" and fainted_pokemon_name:
+        current_pokemon = battle.pokemon[player]
+        current_pokemon_name = current_pokemon.name if current_pokemon else None
         for i, pokemon in enumerate(battle.selected[player]):
             if pokemon and pokemon.hp > 0 and pokemon.name != fainted_pokemon_name:
+                is_current = pokemon.name == current_pokemon_name
                 actions.append(
                     {
                         "type": "switch",
                         "index": i,
-                        "name": pokemon.name,
+                        "name": pokemon.name + ("（現在）" if is_current else ""),
+                        "is_current": is_current,
                     }
                 )
         return actions
@@ -614,6 +776,10 @@ def build_battle_state(session: BattleSession, include_log: bool = True) -> dict
     else:
         available_actions = []
 
+    # Calculate remaining time for TOD
+    elapsed_seconds = (datetime.now() - session.created_at).total_seconds()
+    remaining_seconds = max(0, TOD_TIME_LIMIT_SECONDS - elapsed_seconds)
+
     state = {
         "session_id": session.session_id,
         "turn": session.turn,
@@ -634,6 +800,8 @@ def build_battle_state(session: BattleSession, include_log: bool = True) -> dict
         ],
         "field": get_field_state(battle),
         "available_actions": available_actions,
+        "remaining_seconds": remaining_seconds,
+        "time_limit_seconds": TOD_TIME_LIMIT_SECONDS,
     }
 
     if include_log:
@@ -713,10 +881,11 @@ async def select_pokemon(request: SelectionRequest):
             raise HTTPException(status_code=400, detail=f"Invalid pokemon index: {idx}")
         battle.selected[0].append(session.player_pokemon[idx])
 
-    # AI selection using NN
-    ai_selection = session_manager.select_team_with_network(
+    # AI selection using NN (with lead prediction)
+    ai_selection, ai_probs = session_manager.select_team_with_network(
         session.ai_team_data, session.player_team_data
     )
+    session.ai_selection_probs = ai_probs  # Store for display/debugging
     for idx in ai_selection:
         if idx < len(session.ai_pokemon):
             battle.selected[1].append(session.ai_pokemon[idx])
@@ -778,12 +947,59 @@ async def perform_action(request: ActionRequest):
         )
 
     # Validate action
-    available = battle.available_commands(0, session.phase)
-    if player_cmd not in available:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid action. Available: {available}, Got: {player_cmd}",
+    # For change phase, we allow selecting the auto-switched pokemon (to confirm it)
+    # so we skip the standard validation and do custom validation
+    if session.phase == "change":
+        # Validate that the selected pokemon exists and is alive (excluding fainted one)
+        switch_idx = action.index
+        if switch_idx < 0 or switch_idx >= len(battle.selected[0]):
+            raise HTTPException(
+                status_code=400, detail=f"Invalid switch index: {switch_idx}"
+            )
+        target = battle.selected[0][switch_idx]
+        if not target or target.hp <= 0:
+            raise HTTPException(
+                status_code=400, detail="Cannot switch to fainted pokemon"
+            )
+        if session.fainted_pokemon_name and target.name == session.fainted_pokemon_name:
+            raise HTTPException(
+                status_code=400, detail="Cannot switch to the pokemon that just fainted"
+            )
+    else:
+        available = battle.available_commands(0, session.phase)
+        if player_cmd not in available:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid action. Available: {available}, Got: {player_cmd}",
+            )
+
+    # Check TOD (Time Over Death) - 10 minute time limit
+    elapsed_seconds = (datetime.now() - session.created_at).total_seconds()
+    remaining_seconds = max(0, TOD_TIME_LIMIT_SECONDS - elapsed_seconds)
+
+    if remaining_seconds <= 0 and session.phase != "finished":
+        # Time's up - determine winner by HP
+        winner = battle.winner(is_timeup=True)
+        session.phase = "finished"
+        player_score = battle.TOD_score(0)
+        ai_score = battle.TOD_score(1)
+        session.log.append(
+            {
+                "turn": session.turn,
+                "messages": [
+                    "時間切れ！TOD判定に入ります。",
+                    f"あなたのTODスコア: {player_score:.2f}",
+                    f"AIのTODスコア: {ai_score:.2f}",
+                    "勝者: " + ("あなた" if winner == 0 else "AI"),
+                ],
+            }
         )
+        return {
+            "state": build_battle_state(session),
+            "ai_action": None,
+            "ai_thinking_time": 0,
+            "tod_triggered": True,
+        }
 
     # AI action
     ai_cmd = Battle.SKIP
@@ -792,6 +1008,30 @@ async def perform_action(request: ActionRequest):
 
     if session.phase == "battle":
         start_time = time.time()
+
+        # Calculate AI's estimated win probability
+        ai_value = default_value_estimator(battle, 1)  # AI is player 1
+        session.last_ai_value = ai_value
+
+        # Check if AI should surrender
+        if ai_value < AI_SURRENDER_THRESHOLD:
+            session.phase = "finished"
+            session.log.append(
+                {
+                    "turn": session.turn,
+                    "messages": [
+                        f"AIの推定勝率: {ai_value * 100:.1f}%",
+                        "AIは降参した！",
+                        "勝者: あなた",
+                    ],
+                }
+            )
+            return {
+                "state": build_battle_state(session),
+                "ai_action": {"type": "surrender"},
+                "ai_thinking_time": time.time() - start_time,
+                "ai_surrendered": True,
+            }
 
         # Use ReBeL solver
         pbs = PublicBeliefState.from_battle(battle, 1, session.rebel_belief)
@@ -934,6 +1174,11 @@ async def perform_action(request: ActionRequest):
         )
         session.rebel_belief.update(obs)
 
+    # Update belief from battle log (item activations, berry consumption, etc.)
+    session.battle_log_lengths = update_belief_from_battle_log(
+        session, session.battle_log_lengths
+    )
+
     # Check for phase changes
     winner = battle.winner()
     if winner is not None:
@@ -981,6 +1226,33 @@ async def get_battle_state(session_id: str):
     """Get current battle state."""
     session = session_manager.get_session(session_id)
     return {"state": build_battle_state(session)}
+
+
+class SurrenderRequest(BaseModel):
+    session_id: str
+
+
+@app.post("/api/battle/surrender")
+async def surrender_battle(request: SurrenderRequest):
+    """Surrender the battle (player loses)."""
+    session = session_manager.get_session(request.session_id)
+
+    if session.phase == "finished":
+        raise HTTPException(status_code=400, detail="Battle already finished")
+
+    # Set battle as finished with AI as winner
+    session.phase = "finished"
+    session.log.append(
+        {
+            "turn": session.turn,
+            "messages": ["あなたは降参した！", "勝者: AI"],
+        }
+    )
+
+    return {
+        "state": build_battle_state(session),
+        "message": "You surrendered. AI wins.",
+    }
 
 
 # ============================================================

@@ -12,6 +12,7 @@ import {
   createBattle,
   selectPokemon,
   performAction,
+  surrenderBattle,
 } from "@/lib/api";
 import type { BattleState, PokemonData, TrainerInfo, Action } from "@/types/battle";
 import { Loader2 } from "lucide-react";
@@ -95,6 +96,23 @@ export default function Home() {
     }
   };
 
+  const handleSurrender = async () => {
+    if (!sessionId) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await surrenderBattle(sessionId);
+      setBattleState(response.state);
+      setPhase("finished");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "降参に失敗しました");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleReset = () => {
     setPhase("setup");
     setSessionId(null);
@@ -165,6 +183,7 @@ export default function Home() {
             <BattleField
               state={battleState}
               onAction={handleAction}
+              onSurrender={handleSurrender}
               isLoading={isLoading}
               aiThinkingTime={aiThinkingTime}
             />

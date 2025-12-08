@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,22 +8,51 @@ import { PokemonCard } from "@/components/pokemon-card";
 import { ActionPanel } from "@/components/action-panel";
 import { BattleLog } from "@/components/battle-log";
 import type { BattleState, Action } from "@/types/battle";
-import { Loader2 } from "lucide-react";
+import { Loader2, Clock } from "lucide-react";
 
 interface BattleFieldProps {
   state: BattleState;
   onAction: (action: Action) => Promise<void>;
+  onSurrender: () => Promise<void>;
   isLoading: boolean;
   aiThinkingTime?: number;
+}
+
+// Format seconds to MM:SS
+function formatTime(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
 export function BattleField({
   state,
   onAction,
+  onSurrender,
   isLoading,
   aiThinkingTime,
 }: BattleFieldProps) {
   const [pendingAction, setPendingAction] = useState<Action | null>(null);
+  const [displayTime, setDisplayTime] = useState<number>(
+    state.remaining_seconds ?? 600
+  );
+
+  // Update timer every second
+  useEffect(() => {
+    if (state.remaining_seconds !== undefined) {
+      setDisplayTime(state.remaining_seconds);
+    }
+  }, [state.remaining_seconds]);
+
+  useEffect(() => {
+    if (state.phase === "finished") return;
+
+    const interval = setInterval(() => {
+      setDisplayTime((prev) => Math.max(0, prev - 1));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [state.phase]);
 
   const handleAction = async (action: Action) => {
     setPendingAction(action);
@@ -36,25 +65,55 @@ export function BattleField({
 
   const isFinished = state.phase === "finished";
   const isPlayerTurn = !isLoading && !isFinished;
+  const isLowTime = displayTime < 60; // Less than 1 minute
 
   return (
     <div className="space-y-4">
-      {/* Turn indicator */}
+      {/* Turn indicator and Timer */}
       <div className="flex items-center justify-between">
-        <Badge variant="outline" className="text-lg px-4 py-1">
-          ターン {state.turn}
-        </Badge>
-        {isLoading && (
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span>AIが考え中...</span>
-          </div>
-        )}
-        {aiThinkingTime !== undefined && aiThinkingTime > 0 && !isLoading && (
-          <Badge variant="secondary">
-            AI思考時間: {aiThinkingTime.toFixed(2)}s
+        <div className="flex items-center gap-4">
+          <Badge variant="outline" className="text-lg px-4 py-1">
+            ターン {state.turn}
           </Badge>
-        )}
+          {/* TOD Timer */}
+          {!isFinished && (
+            <div
+              className={`flex items-center gap-2 px-3 py-1 rounded-md ${
+                isLowTime
+                  ? "bg-red-100 text-red-700 animate-pulse"
+                  : "bg-gray-100 text-gray-700"
+              }`}
+            >
+              <Clock className="w-4 h-4" />
+              <span className="font-mono font-bold">
+                {formatTime(displayTime)}
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center gap-4">
+          {isLoading && (
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>AIが考え中...</span>
+            </div>
+          )}
+          {aiThinkingTime !== undefined && aiThinkingTime > 0 && !isLoading && (
+            <Badge variant="secondary">
+              AI思考時間: {aiThinkingTime.toFixed(2)}s
+            </Badge>
+          )}
+          {!isFinished && (
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={onSurrender}
+              disabled={isLoading}
+            >
+              降参
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Battle result */}

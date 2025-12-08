@@ -39,6 +39,12 @@ class PokemonState:
     terastallized: bool  # テラスタル済みか
     tera_type: str  # テラスタイプ
 
+    # 状態異常の詳細情報（オプション、後方互換性のためデフォルト値を設定）
+    bad_poison_counter: int = 0  # もうどくカウンター（1から開始、毎ターン+1）
+    sleep_counter: int = 0  # ねむりの残りターン数
+    # PP情報（オプション）
+    pp: list[int] = field(default_factory=list)  # 各技のPP残量（[pp1, pp2, pp3, pp4]）
+
 
 @dataclass
 class FieldCondition:

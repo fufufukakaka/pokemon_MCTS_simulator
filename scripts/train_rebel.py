@@ -144,6 +144,23 @@ def main():
         default=None,
         help="ポケモン統計データのパス（新形式のpokedb JSONにも対応）",
     )
+    parser.add_argument(
+        "--num-workers",
+        type=int,
+        default=1,
+        help="並列ゲーム生成のワーカー数（1=逐次実行、CPUコア数以下を推奨）",
+    )
+    parser.add_argument(
+        "--lightweight-cfr",
+        action="store_true",
+        default=True,
+        help="軽量CFRモードを使用（デフォルト：有効）",
+    )
+    parser.add_argument(
+        "--no-lightweight-cfr",
+        action="store_true",
+        help="軽量CFRモードを無効化（精度向上、速度低下）",
+    )
     args = parser.parse_args()
 
     # データ読み込み
@@ -172,6 +189,9 @@ def main():
         else:
             print(f"Warning: Invalid fixed_opponent_index {args.fixed_opponent_index}, ignoring")
 
+    # 軽量CFRの設定（--no-lightweight-cfrで無効化）
+    use_lightweight_cfr = not args.no_lightweight_cfr
+
     # 設定
     config = TrainingConfig(
         games_per_iteration=args.games_per_iteration,
@@ -187,10 +207,15 @@ def main():
         train_selection=args.train_selection,
         selection_explore_prob=args.selection_explore_prob,
         usage_data_path=args.usage_data_path,
+        num_workers=args.num_workers,
+        use_lightweight_cfr=use_lightweight_cfr,
     )
 
     if args.train_selection:
         print("Selection network training: ENABLED")
+    if args.num_workers > 1:
+        print(f"Parallel game generation: {args.num_workers} workers")
+    print(f"Lightweight CFR: {'ENABLED' if use_lightweight_cfr else 'DISABLED'}")
 
     # Value Network
     value_network = ReBeLValueNetwork(

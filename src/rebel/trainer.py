@@ -3,12 +3,21 @@ ReBeL Trainer
 
 自己対戦によるデータ生成と Value Network の学習を行う。
 選出ネットワークとの統合学習もサポート。
+
+Performance Optimizations:
+- Parallel game generation with multiprocessing
+- Lightweight CFR solver option
+- Configurable CFR complexity
 """
 
 from __future__ import annotations
 
 import json
+import multiprocessing as mp
+import os
 import random
+import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from copy import deepcopy
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -31,7 +40,9 @@ from src.policy_value_network.team_selection_network import (
 
 from .belief_state import Observation, ObservationType, PokemonBeliefState
 from .cfr_solver import CFRConfig, ReBeLSolver
+from .full_belief_state import FullBeliefState
 from .public_state import PublicBeliefState, PublicGameState
+from .team_composition_belief import TeamCompositionBelief
 from .value_network import ReBeLValueNetwork
 
 
@@ -62,6 +73,7 @@ class SelectionExample:
     my_team_data: list[dict]  # 6匹の元データ
     opp_team_data: list[dict]  # 相手の6匹
     selected_indices: list[int]  # 選出した3匹のインデックス
+    lead_index: int = 0  # 先発のインデックス（6匹中での位置）
     winner: Optional[int] = None  # 勝者（0 or 1）
     perspective: int = 0  # どちらの視点か
 
@@ -110,6 +122,253 @@ class TrainingConfig:
 
     # ポケモン統計データのパス
     usage_data_path: Optional[str] = None  # None の場合はデフォルト(season22.json)を使用
+
+    # 完全信念状態を使用するか（選出・先発の不確実性を含む）
+    use_full_belief: bool = False
+
+    # 並列化設定
+    num_workers: int = 1  # 並列ゲーム生成のワーカー数（1=逐次実行）
+    use_lightweight_cfr: bool = True  # 軽量CFRモード（高速だが精度低下）
+    skip_cfr_for_obvious: bool = True  # 行動が1つしかない場合はCFRをスキップ
+
+
+def _generate_game_worker(
+    args: tuple[str, list[dict], dict, str, str, bool, bool, Optional[dict], bool],
+) -> tuple[
+    dict,  # GameResult as dict (serializable)
+    list[dict],  # PBS data as dicts
+    list[dict],  # Selection data as dicts
+]:
+    """
+    並列実行用のゲーム生成ワーカー関数
+
+    Note: multiprocessing で使用するため、引数はシリアライズ可能である必要がある
+    """
+    (
+        game_id,
+        trainer_data,
+        config_dict,
+        usage_db_path,
+        usage_data_path,
+        train_selection,
+        use_lightweight_cfr,
+        fixed_opponent,
+        fixed_opponent_select_all,
+    ) = args
+
+    # 各ワーカーで必要なオブジェクトを再構築
+    from src.hypothesis.pokemon_usage_database import PokemonUsageDatabase
+    from src.pokemon_battle_sim.battle import Battle
+    from src.pokemon_battle_sim.pokemon import Pokemon
+
+    from .belief_state import PokemonBeliefState
+    from .cfr_solver import CFRConfig, ReBeLSolver
+    from .public_state import PublicBeliefState
+
+    # 初期化
+    Pokemon.init(usage_data_path=usage_data_path)
+    usage_db = PokemonUsageDatabase.from_json(usage_db_path)
+
+    # CFRソルバー
+    cfr_config = CFRConfig(
+        num_iterations=config_dict.get("cfr_iterations", 30),
+        num_world_samples=config_dict.get("cfr_world_samples", 10),
+    )
+    solver = ReBeLSolver(
+        value_network=None,
+        cfr_config=cfr_config,
+        use_simplified=True,
+        use_lightweight=use_lightweight_cfr,
+    )
+
+    # トレーナー選択
+    trainer0 = random.choice(trainer_data)
+    if fixed_opponent is not None:
+        trainer1 = fixed_opponent
+        trainer1_fixed_selection = fixed_opponent_select_all
+    else:
+        trainer1 = random.choice(trainer_data)
+        while trainer1 is trainer0 and len(trainer_data) > 1:
+            trainer1 = random.choice(trainer_data)
+        trainer1_fixed_selection = False
+
+    trainer0_team = trainer0.get("pokemons", [])[:6]
+    trainer1_team = trainer1.get("pokemons", [])[:6]
+
+    # バトル初期化
+    battle = Battle()
+    battle.reset_game()
+
+    # チーム設定
+    selected_indices_0: list[int] = []
+    selected_indices_1: list[int] = []
+
+    # ランダム選出
+    available_0 = list(range(len(trainer0_team)))
+    selected_indices_0 = random.sample(available_0, min(3, len(available_0)))
+    for idx in selected_indices_0:
+        pokemon_data = trainer0_team[idx]
+        pokemon = Pokemon(pokemon_data.get("name", "ピカチュウ"))
+        pokemon.item = pokemon_data.get("item", "")
+        pokemon.ability = pokemon_data.get("ability", "")
+        pokemon.moves = pokemon_data.get("moves", [])[:4]
+        pokemon.Ttype = pokemon_data.get("Ttype") or pokemon_data.get("tera_type", "ノーマル")
+        if "effort" in pokemon_data:
+            pokemon.effort = pokemon_data["effort"]
+        elif "evs" in pokemon_data:
+            pokemon.effort = pokemon_data["evs"]
+        if "nature" in pokemon_data:
+            pokemon.nature = pokemon_data["nature"]
+        battle.selected[0].append(pokemon)
+
+    if trainer1_fixed_selection:
+        selected_indices_1 = list(range(min(3, len(trainer1_team))))
+    else:
+        available_1 = list(range(len(trainer1_team)))
+        selected_indices_1 = random.sample(available_1, min(3, len(available_1)))
+
+    for idx in selected_indices_1:
+        pokemon_data = trainer1_team[idx]
+        pokemon = Pokemon(pokemon_data.get("name", "ピカチュウ"))
+        pokemon.item = pokemon_data.get("item", "")
+        pokemon.ability = pokemon_data.get("ability", "")
+        pokemon.moves = pokemon_data.get("moves", [])[:4]
+        pokemon.Ttype = pokemon_data.get("Ttype") or pokemon_data.get("tera_type", "ノーマル")
+        if "effort" in pokemon_data:
+            pokemon.effort = pokemon_data["effort"]
+        elif "evs" in pokemon_data:
+            pokemon.effort = pokemon_data["evs"]
+        if "nature" in pokemon_data:
+            pokemon.nature = pokemon_data["nature"]
+        battle.selected[1].append(pokemon)
+
+    # ターン0
+    battle.proceed(commands=[Battle.SKIP, Battle.SKIP])
+
+    # 信念状態の初期化
+    beliefs = [
+        PokemonBeliefState([p.name for p in battle.selected[1]], usage_db),
+        PokemonBeliefState([p.name for p in battle.selected[0]], usage_db),
+    ]
+
+    examples: list[dict] = []
+    pbs_records: list[tuple[dict, int]] = []
+    turn = 0
+    last_actions = [Battle.SKIP, Battle.SKIP]
+    max_turns = config_dict.get("max_turns", 100)
+
+    while battle.winner() is None and turn < max_turns:
+        turn += 1
+
+        for player in [0, 1]:
+            if battle.winner() is not None:
+                break
+
+            try:
+                pbs = PublicBeliefState.from_battle(battle, player, beliefs[player])
+            except Exception:
+                continue
+
+            # PBS を簡易シリアライズして記録
+            pbs_dict = {
+                "perspective": pbs.public_state.perspective,
+                "turn": pbs.public_state.turn,
+                "my_pokemon_name": pbs.public_state.my_pokemon.name,
+                "my_hp_ratio": pbs.public_state.my_pokemon.hp_ratio,
+                "opp_pokemon_name": pbs.public_state.opp_pokemon.name,
+                "opp_hp_ratio": pbs.public_state.opp_pokemon.hp_ratio,
+            }
+            pbs_records.append((pbs_dict, player))
+
+            # CFRで戦略計算
+            try:
+                my_strategy, opp_strategy = solver.solve(pbs, battle)
+            except Exception:
+                my_strategy = {}
+                opp_strategy = {}
+
+            example = {
+                "public_state_dict": pbs_dict,
+                "belief_summary": {},
+                "my_strategy": my_strategy,
+                "opp_strategy": opp_strategy,
+                "action": None,
+                "target_my_value": None,
+                "target_opp_value": None,
+            }
+            examples.append(example)
+
+            # 行動選択
+            try:
+                action = solver.get_action(pbs, battle, explore=True, temperature=1.0)
+            except Exception:
+                available = battle.available_commands(player)
+                action = random.choice(available) if available else Battle.SKIP
+
+            example["action"] = action
+            last_actions[player] = action
+
+        # ターン実行
+        try:
+            battle.proceed(commands=last_actions)
+        except Exception:
+            break
+
+    # 終局処理
+    winner = battle.winner()
+    pbs_with_targets: list[dict] = []
+    for pbs_dict, player in pbs_records:
+        if winner is not None:
+            target_my = 1.0 if winner == player else 0.0
+            target_opp = 1.0 if winner != player else 0.0
+        else:
+            target_my = 0.5
+            target_opp = 0.5
+        pbs_with_targets.append({
+            "pbs_dict": pbs_dict,
+            "player": player,
+            "target_my": target_my,
+            "target_opp": target_opp,
+        })
+
+    for i, example in enumerate(examples):
+        player = i % 2
+        if winner is not None:
+            example["target_my_value"] = 1.0 if winner == player else 0.0
+            example["target_opp_value"] = 1.0 if winner != player else 0.0
+        else:
+            example["target_my_value"] = 0.5
+            example["target_opp_value"] = 0.5
+
+    result_dict = {
+        "game_id": game_id,
+        "winner": winner,
+        "total_turns": turn,
+        "examples": examples,
+    }
+
+    # 選出データ
+    selection_data: list[dict] = []
+    if train_selection:
+        selection_data.append({
+            "my_team_data": trainer0_team,
+            "opp_team_data": trainer1_team,
+            "selected_indices": selected_indices_0,
+            "lead_index": selected_indices_0[0] if selected_indices_0 else 0,
+            "winner": winner,
+            "perspective": 0,
+        })
+        if not trainer1_fixed_selection:
+            selection_data.append({
+                "my_team_data": trainer1_team,
+                "opp_team_data": trainer0_team,
+                "selected_indices": selected_indices_1,
+                "lead_index": selected_indices_1[0] if selected_indices_1 else 0,
+                "winner": winner,
+                "perspective": 1,
+            })
+
+    return result_dict, pbs_with_targets, selection_data
 
 
 class SelfPlayDataset(Dataset):
@@ -183,6 +442,7 @@ class ReBeLTrainer:
             value_network=None,  # 最初はヒューリスティック
             cfr_config=cfr_config,
             use_simplified=True,
+            use_lightweight=self.config.use_lightweight_cfr,
         )
 
         # 選出ネットワーク（オプション）
@@ -469,12 +729,17 @@ class ReBeLTrainer:
         # 選出データ
         selection_examples: list[SelectionExample] = []
         if self.config.train_selection:
+            # 先発を記録（selected_indicesの最初が先発）
+            lead_0 = selected_indices_0[0] if selected_indices_0 else 0
+            lead_1 = selected_indices_1[0] if selected_indices_1 else 0
+
             # Player 0 の選出データ
             selection_examples.append(
                 SelectionExample(
                     my_team_data=trainer0_team,
                     opp_team_data=trainer1_team,
                     selected_indices=selected_indices_0,
+                    lead_index=lead_0,
                     winner=winner,
                     perspective=0,
                 )
@@ -486,6 +751,7 @@ class ReBeLTrainer:
                         my_team_data=trainer1_team,
                         opp_team_data=trainer0_team,
                         selected_indices=selected_indices_1,
+                        lead_index=lead_1,
                         winner=winner,
                         perspective=1,
                     )
@@ -652,6 +918,122 @@ class ReBeLTrainer:
         # ここでは簡略化のため省略
         pass
 
+    def _generate_games_parallel(
+        self,
+        iteration: int,
+        num_games: int,
+        num_workers: int,
+    ) -> tuple[
+        list[TrainingExample],
+        list[tuple[PublicBeliefState, float, float]],
+        list[SelectionExample],
+        dict[Optional[int], int],
+    ]:
+        """
+        並列でゲームを生成
+
+        Args:
+            iteration: イテレーション番号
+            num_games: 生成するゲーム数
+            num_workers: ワーカー数
+
+        Returns:
+            (examples, pbs_data, selection_data, wins)
+        """
+        # usage_db のパスを取得（ワーカーで再ロードするため）
+        # Note: PokemonUsageDatabaseにはパスを保持する機能がないため、
+        # configから取得するか、デフォルトを使用
+        usage_db_path = getattr(self.usage_db, '_source_path', None)
+        if usage_db_path is None:
+            # デフォルトのパスを使用
+            usage_db_path = "data/pokedb_usage/season_37_top150.json"
+
+        # 設定を辞書化
+        config_dict = {
+            "cfr_iterations": self.config.cfr_iterations,
+            "cfr_world_samples": self.config.cfr_world_samples,
+            "max_turns": self.config.max_turns,
+        }
+
+        # ワーカー引数を準備
+        worker_args = []
+        for i in range(num_games):
+            game_id = f"iter{iteration}_game{i}"
+            args = (
+                game_id,
+                self.trainer_data,
+                config_dict,
+                usage_db_path,
+                self.config.usage_data_path,
+                self.config.train_selection,
+                self.config.use_lightweight_cfr,
+                self.config.fixed_opponent,
+                self.config.fixed_opponent_select_all,
+            )
+            worker_args.append(args)
+
+        # 並列実行
+        all_examples: list[TrainingExample] = []
+        all_pbs_data: list[tuple[PublicBeliefState, float, float]] = []
+        all_selection_data: list[SelectionExample] = []
+        wins: dict[Optional[int], int] = {0: 0, 1: 0, None: 0}
+
+        # ProcessPoolExecutorでゲームを並列生成
+        # Note: spawn方式を使用してWindowsとの互換性を確保
+        ctx = mp.get_context("spawn")
+        with ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
+            futures = [executor.submit(_generate_game_worker, args) for args in worker_args]
+
+            for future in as_completed(futures):
+                try:
+                    result_dict, pbs_data_list, selection_data_list = future.result()
+
+                    # GameResult を復元
+                    winner = result_dict["winner"]
+                    wins[winner] = wins.get(winner, 0) + 1
+
+                    # TrainingExample を復元
+                    for ex_dict in result_dict["examples"]:
+                        example = TrainingExample(
+                            public_state_dict=ex_dict["public_state_dict"],
+                            belief_summary=ex_dict["belief_summary"],
+                            my_strategy=ex_dict["my_strategy"],
+                            opp_strategy=ex_dict["opp_strategy"],
+                            action=ex_dict["action"],
+                            target_my_value=ex_dict["target_my_value"],
+                            target_opp_value=ex_dict["target_opp_value"],
+                        )
+                        all_examples.append(example)
+
+                    # PBS データ（簡略版）- 実際のPBSオブジェクトではなくdictを使用
+                    # Note: 並列実行では完全なPBSオブジェクトを渡すのが難しいため、
+                    # train_iteration側で対応が必要
+                    for pbs_dict in pbs_data_list:
+                        # ここではdictのまま保持（学習時に別途処理）
+                        all_pbs_data.append((
+                            pbs_dict,  # type: ignore
+                            pbs_dict["target_my"],
+                            pbs_dict["target_opp"],
+                        ))
+
+                    # SelectionExample を復元
+                    for sel_dict in selection_data_list:
+                        sel_ex = SelectionExample(
+                            my_team_data=sel_dict["my_team_data"],
+                            opp_team_data=sel_dict["opp_team_data"],
+                            selected_indices=sel_dict["selected_indices"],
+                            lead_index=sel_dict["lead_index"],
+                            winner=sel_dict["winner"],
+                            perspective=sel_dict["perspective"],
+                        )
+                        all_selection_data.append(sel_ex)
+
+                except Exception as e:
+                    print(f"  Worker error: {e}")
+                    continue
+
+        return all_examples, all_pbs_data, all_selection_data, wins
+
     def train_iteration(self, iteration: int) -> dict:
         """
         1イテレーションの学習
@@ -664,20 +1046,34 @@ class ReBeLTrainer:
         """
         # データ生成
         print(f"Iteration {iteration}: Generating games...")
+        start_time = time.time()
+
         all_examples = []
         all_pbs_data: list[tuple[PublicBeliefState, float, float]] = []
         all_selection_data: list[SelectionExample] = []
         wins = {0: 0, 1: 0, None: 0}
 
-        for i in range(self.config.games_per_iteration):
-            game_id = f"iter{iteration}_game{i}"
-            result, pbs_data, selection_data = self._generate_game_with_pbs(game_id)
-            all_examples.extend(result.examples)
-            all_pbs_data.extend(pbs_data)
-            all_selection_data.extend(selection_data)
-            wins[result.winner] = wins.get(result.winner, 0) + 1
+        num_workers = self.config.num_workers
+        num_games = self.config.games_per_iteration
 
-        print(f"  Generated {len(all_examples)} examples from {self.config.games_per_iteration} games")
+        if num_workers > 1:
+            # 並列実行
+            all_examples, all_pbs_data, all_selection_data, wins = self._generate_games_parallel(
+                iteration, num_games, num_workers
+            )
+        else:
+            # 逐次実行（従来通り）
+            for i in range(num_games):
+                game_id = f"iter{iteration}_game{i}"
+                result, pbs_data, selection_data = self._generate_game_with_pbs(game_id)
+                all_examples.extend(result.examples)
+                all_pbs_data.extend(pbs_data)
+                all_selection_data.extend(selection_data)
+                wins[result.winner] = wins.get(result.winner, 0) + 1
+
+        elapsed = time.time() - start_time
+        games_per_sec = num_games / elapsed if elapsed > 0 else 0
+        print(f"  Generated {len(all_examples)} examples from {num_games} games in {elapsed:.1f}s ({games_per_sec:.2f} games/s)")
         print(f"  Wins: P0={wins[0]}, P1={wins[1]}, Draw={wins[None]}")
         if self.config.train_selection:
             print(f"  Selection examples: {len(all_selection_data)}")
@@ -763,7 +1159,7 @@ class ReBeLTrainer:
 
     def _train_selection_network(self, selection_data: list[SelectionExample]) -> float:
         """
-        選出ネットワークを学習
+        選出ネットワークを学習（先発予測も含む）
 
         Args:
             selection_data: 選出データのリスト
@@ -791,7 +1187,9 @@ class ReBeLTrainer:
                 # バッチデータをテンソルに変換
                 my_teams = []
                 opp_teams = []
-                targets = []
+                selection_targets = []
+                lead_targets = []
+                selection_masks = []
                 values = []
 
                 for ex in batch:
@@ -801,11 +1199,17 @@ class ReBeLTrainer:
                     opp_teams.append(opp_tensor)
 
                     # 選出ラベル（選ばれた3匹は1、それ以外は0）
-                    target = torch.zeros(6)
+                    sel_target = torch.zeros(6)
+                    sel_mask = torch.zeros(6, dtype=torch.bool)
                     for idx in ex.selected_indices:
                         if idx < 6:
-                            target[idx] = 1.0
-                    targets.append(target)
+                            sel_target[idx] = 1.0
+                            sel_mask[idx] = True
+                    selection_targets.append(sel_target)
+                    selection_masks.append(sel_mask)
+
+                    # 先発ラベル（6匹中のインデックス）
+                    lead_targets.append(ex.lead_index)
 
                     # 勝敗に基づく価値（自分視点で勝ち=1、負け=0）
                     if ex.winner is not None:
@@ -816,22 +1220,30 @@ class ReBeLTrainer:
 
                 my_batch = torch.stack(my_teams).to(device)
                 opp_batch = torch.stack(opp_teams).to(device)
-                target_batch = torch.stack(targets).to(device)
+                selection_target_batch = torch.stack(selection_targets).to(device)
+                selection_mask_batch = torch.stack(selection_masks).to(device)
+                lead_target_batch = torch.tensor(lead_targets, device=device, dtype=torch.long)
                 value_batch = torch.tensor(values, device=device, dtype=torch.float).unsqueeze(1)
 
-                # Forward
+                # Forward（選出マスクを渡して先発確率を正しく計算）
                 self.selection_optimizer.zero_grad()
-                output = self.selection_network(my_batch, opp_batch)
+                output = self.selection_network(
+                    my_batch, opp_batch, selection_mask=selection_mask_batch
+                )
 
                 # 選出ロス（Binary Cross Entropy）
                 selection_probs = torch.sigmoid(output["selection_logits"])
-                selection_loss = F.binary_cross_entropy(selection_probs, target_batch)
+                selection_loss = F.binary_cross_entropy(selection_probs, selection_target_batch)
+
+                # 先発ロス（Cross Entropy、選出されたポケモン内での分類）
+                lead_logits = output["lead_logits"]
+                lead_loss = F.cross_entropy(lead_logits, lead_target_batch)
 
                 # 価値ロス（MSE）
                 value_loss = F.mse_loss(output["value"], value_batch)
 
                 # 合計ロス
-                loss = selection_loss + 0.5 * value_loss
+                loss = selection_loss + 0.5 * lead_loss + 0.5 * value_loss
 
                 # Backward
                 loss.backward()
@@ -854,8 +1266,19 @@ class ReBeLTrainer:
         output_path = Path(output_dir)
         output_path.mkdir(parents=True, exist_ok=True)
 
+        # ログファイルのパス
+        log_file_path = output_path / "training_log.jsonl"
+
         for iteration in range(1, num_iterations + 1):
             stats = self.train_iteration(iteration)
+
+            # 各イテレーションの統計をログファイルに追記
+            stats_with_timestamp = {
+                **stats,
+                "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            with open(log_file_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(stats_with_timestamp, ensure_ascii=False) + "\n")
 
             # 定期保存
             if iteration % self.config.save_interval == 0:
@@ -867,6 +1290,8 @@ class ReBeLTrainer:
         # 学習履歴を保存
         with open(output_path / "training_history.json", "w") as f:
             json.dump(self.training_history, f, indent=2)
+
+        print(f"\nTraining log saved to: {log_file_path}")
 
     def save(self, path: Path) -> None:
         """モデルを保存"""

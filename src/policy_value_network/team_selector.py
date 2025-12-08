@@ -106,7 +106,7 @@ class NNTeamSelector:
             num_select: 選出数
 
         Returns:
-            選出されたポケモンのリスト
+            選出されたポケモンのリスト（先発が最初）
         """
         if len(my_team) <= num_select:
             return my_team
@@ -116,7 +116,52 @@ class NNTeamSelector:
         opp_team_tensor = self.encoder.encode_team(opp_team).unsqueeze(0).to(self.device)
 
         with torch.no_grad():
-            indices, probs = self.model.select_team(
+            indices, _, _, _ = self.model.select_team(
+                my_team_tensor,
+                opp_team_tensor,
+                num_select=num_select,
+                temperature=self.temperature,
+                deterministic=self.deterministic,
+            )
+
+        # インデックスからポケモンを取得（先発が最初）
+        selected_indices = indices[0].cpu().tolist()
+        return [my_team[i] for i in selected_indices if i < len(my_team)]
+
+    def select_with_lead(
+        self,
+        my_team: list[dict],
+        opp_team: list[dict],
+        num_select: int = 3,
+    ) -> tuple[list[dict], int, dict[str, list[float]]]:
+        """
+        NNを使ってチームを選出し、先発も決定
+
+        Args:
+            my_team: 自チーム（最大6匹）
+            opp_team: 相手チーム（最大6匹）
+            num_select: 選出数
+
+        Returns:
+            selected: 選出されたポケモンのリスト（先発が最初）
+            lead_index: 先発のインデックス（元の6匹中での位置）
+            probs: {
+                "selection_probs": 各ポケモンの選出確率,
+                "lead_probs": 各ポケモンの先発確率
+            }
+        """
+        if len(my_team) <= num_select:
+            return my_team, 0, {
+                "selection_probs": [1.0 / len(my_team)] * len(my_team),
+                "lead_probs": [1.0 / len(my_team)] * len(my_team),
+            }
+
+        # エンコード
+        my_team_tensor = self.encoder.encode_team(my_team).unsqueeze(0).to(self.device)
+        opp_team_tensor = self.encoder.encode_team(opp_team).unsqueeze(0).to(self.device)
+
+        with torch.no_grad():
+            indices, selection_probs, lead_index, lead_probs = self.model.select_team(
                 my_team_tensor,
                 opp_team_tensor,
                 num_select=num_select,
@@ -126,7 +171,16 @@ class NNTeamSelector:
 
         # インデックスからポケモンを取得
         selected_indices = indices[0].cpu().tolist()
-        return [my_team[i] for i in selected_indices if i < len(my_team)]
+        lead_idx = lead_index[0].cpu().item()
+
+        return (
+            [my_team[i] for i in selected_indices if i < len(my_team)],
+            lead_idx,
+            {
+                "selection_probs": selection_probs[0].cpu().tolist()[:len(my_team)],
+                "lead_probs": lead_probs[0].cpu().tolist()[:len(my_team)],
+            },
+        )
 
     def get_selection_probs(
         self,
@@ -147,6 +201,31 @@ class NNTeamSelector:
             probs = output["selection_probs"][0].cpu().tolist()
 
         return probs[: len(my_team)]
+
+    def get_selection_and_lead_probs(
+        self,
+        my_team: list[dict],
+        opp_team: list[dict],
+    ) -> dict[str, list[float]]:
+        """
+        各ポケモンの選出確率と先発確率を取得
+
+        Returns:
+            {
+                "selection_probs": 各ポケモンの選出確率,
+                "lead_probs": 各ポケモンの先発確率（選出上位3匹での条件付き）
+            }
+        """
+        my_team_tensor = self.encoder.encode_team(my_team).unsqueeze(0).to(self.device)
+        opp_team_tensor = self.encoder.encode_team(opp_team).unsqueeze(0).to(self.device)
+
+        with torch.no_grad():
+            output = self.model(my_team_tensor, opp_team_tensor)
+
+        return {
+            "selection_probs": output["selection_probs"][0].cpu().tolist()[:len(my_team)],
+            "lead_probs": output["lead_probs"][0].cpu().tolist()[:len(my_team)],
+        }
 
 
 def load_team_selector(

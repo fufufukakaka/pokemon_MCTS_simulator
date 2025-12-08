@@ -137,10 +137,12 @@ class PBSEncoder(nn.Module):
             self.pokemon_name_dim  # name
             + 1  # hp_ratio
             + 7  # ailment (one-hot)
+            + 2  # ailment details (bad_poison_counter, sleep_counter)
             + 8  # rank
             + self.tera_dim * 2  # types
             + self.item_dim  # item
             + self.move_dim * 4  # moves
+            + 4  # pp ratios for 4 moves
             + 1  # terastallized
             + self.tera_dim  # tera_type
         )
@@ -153,6 +155,7 @@ class PBSEncoder(nn.Module):
             self.pokemon_name_dim  # name
             + 1  # hp_ratio
             + 7  # ailment
+            + 2  # ailment details (bad_poison_counter, sleep_counter)
             + 8  # rank
             + self.tera_dim * 2  # types
             + 1  # terastallized
@@ -163,7 +166,9 @@ class PBSEncoder(nn.Module):
         opp_bench_dim = (self.pokemon_name_dim + 1) * 2  # name + hp_ratio
 
         # 場の状態
-        field_dim = 24
+        # 天候(4) + フィールド(4) + gravity/trick_room(2) + 壁(4) + おいかぜ(2)
+        # + しんぴのまもり/しろいきり(4) + 設置技(8) = 28
+        field_dim = 28
 
         # 信念状態（相手3体分）
         # 各ポケモン: 持ち物分布 + テラス分布 + 主要技の確率
@@ -217,6 +222,11 @@ class PBSEncoder(nn.Module):
         ailment = F.one_hot(torch.tensor(ailment_idx, device=device), num_classes=7)
         features.append(ailment.float())
 
+        # 状態異常詳細（もうどくカウンター、ねむりカウンター）
+        bad_poison_counter = getattr(pokemon, 'bad_poison_counter', 0) / 16.0  # 最大16で正規化
+        sleep_counter = getattr(pokemon, 'sleep_counter', 0) / 3.0  # 最大3で正規化
+        features.append(torch.tensor([bad_poison_counter, sleep_counter], device=device))
+
         # ランク変化
         rank = torch.tensor(pokemon.rank[:8], device=device, dtype=torch.float) / 6.0
         features.append(rank)
@@ -239,6 +249,17 @@ class PBSEncoder(nn.Module):
             move = pokemon.moves[i] if i < len(pokemon.moves) else ""
             move_id = torch.tensor([self._get_move_id(move)], device=device)
             features.append(self.move_embed(move_id).squeeze(0))
+
+        # PP情報（各技のPP残量比率、最大PPを仮定して正規化）
+        pp_list = getattr(pokemon, 'pp', []) or []
+        pp_ratios = []
+        for i in range(4):
+            if i < len(pp_list) and i < len(pokemon.moves):
+                # PP残量を正規化（最大PPは技によって異なるが、一般的に5-40程度）
+                pp_ratios.append(min(pp_list[i] / 32.0, 1.0))  # 32で正規化（平均的な最大PP）
+            else:
+                pp_ratios.append(1.0)  # 不明な場合は満タンと仮定
+        features.append(torch.tensor(pp_ratios, device=device, dtype=torch.float))
 
         # テラスタル
         features.append(
@@ -275,6 +296,11 @@ class PBSEncoder(nn.Module):
         ailment = F.one_hot(torch.tensor(ailment_idx, device=device), num_classes=7)
         features.append(ailment.float())
 
+        # 状態異常詳細（もうどくカウンター、ねむりカウンター）- 相手も観測可能
+        bad_poison_counter = getattr(pokemon, 'bad_poison_counter', 0) / 16.0
+        sleep_counter = getattr(pokemon, 'sleep_counter', 0) / 3.0
+        features.append(torch.tensor([bad_poison_counter, sleep_counter], device=device))
+
         # ランク変化
         rank = torch.tensor(pokemon.rank[:8], device=device, dtype=torch.float) / 6.0
         features.append(rank)
@@ -302,15 +328,26 @@ class PBSEncoder(nn.Module):
     def encode_field(
         self, field: "FieldCondition", device: torch.device
     ) -> torch.Tensor:
-        """場の状態をエンコード"""
+        """場の状態をエンコード（28次元）"""
         features = [
+            # 天候 (4)
             field.sunny / 5.0, field.rainy / 5.0, field.snow / 5.0, field.sandstorm / 5.0,
+            # フィールド (4)
             field.electric_field / 5.0, field.grass_field / 5.0,
             field.psychic_field / 5.0, field.mist_field / 5.0,
+            # その他場の効果 (2)
             field.gravity / 5.0, field.trick_room / 5.0,
+            # 壁 (4)
             field.reflector[0] / 5.0, field.light_screen[0] / 5.0,
             field.reflector[1] / 5.0, field.light_screen[1] / 5.0,
+            # おいかぜ (2)
             field.tailwind[0] / 4.0, field.tailwind[1] / 4.0,
+            # しんぴのまもり・しろいきり (4)
+            field.safeguard[0] / 5.0 if hasattr(field, 'safeguard') else 0.0,
+            field.safeguard[1] / 5.0 if hasattr(field, 'safeguard') else 0.0,
+            field.mist[0] / 5.0 if hasattr(field, 'mist') else 0.0,
+            field.mist[1] / 5.0 if hasattr(field, 'mist') else 0.0,
+            # 設置技 (8)
             field.spikes[0] / 3.0, field.toxic_spikes[0] / 2.0,
             float(field.stealth_rock[0]), float(field.sticky_web[0]),
             field.spikes[1] / 3.0, field.toxic_spikes[1] / 2.0,

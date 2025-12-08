@@ -82,6 +82,10 @@ export interface BattleState {
 
   // Battle log
   log: LogEntry[];
+
+  // TOD (Time Over Death) timer
+  remaining_seconds?: number;
+  time_limit_seconds?: number;
 }
 
 export interface Action {

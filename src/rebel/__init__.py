@@ -34,6 +34,14 @@ from .belief_state import (
     PokemonTypeHypothesis,
     PokemonBeliefState,
 )
+from .team_composition_belief import (
+    TeamCompositionHypothesis,
+    TeamCompositionBelief,
+)
+from .full_belief_state import (
+    SampledWorld,
+    FullBeliefState,
+)
 from .ev_template import (
     EVSpread,
     EVSpreadType,
@@ -52,6 +60,7 @@ from .cfr_solver import (
     CFRConfig,
     CFRSubgameSolver,
     SimplifiedCFRSolver,
+    LightweightCFRSolver,
     ReBeLSolver,
     default_value_estimator,
 )
@@ -78,6 +87,12 @@ __all__ = [
     "Observation",
     "PokemonTypeHypothesis",
     "PokemonBeliefState",
+    # Team Composition Belief
+    "TeamCompositionHypothesis",
+    "TeamCompositionBelief",
+    # Full Belief State
+    "SampledWorld",
+    "FullBeliefState",
     # EV Template
     "EVSpread",
     "EVSpreadType",
@@ -94,6 +109,7 @@ __all__ = [
     "CFRConfig",
     "CFRSubgameSolver",
     "SimplifiedCFRSolver",
+    "LightweightCFRSolver",
     "ReBeLSolver",
     "default_value_estimator",
     # Value Network
