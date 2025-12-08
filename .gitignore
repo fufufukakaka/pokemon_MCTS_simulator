@@ -175,3 +175,5 @@ node_modules
 logs
 
 .config
+models
+.next
