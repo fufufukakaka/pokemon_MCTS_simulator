@@ -176,4 +176,4 @@ logs
 
 .config
 models
-frontend/.next
+.next

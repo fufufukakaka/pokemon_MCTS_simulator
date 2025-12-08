@@ -1388,10 +1388,31 @@ class ReBeLTrainer:
             print("  No valid examples, skipping training")
             return {"iteration": iteration, "examples": 0}
 
+        # 並列実行時はPBSがdictになっているため、PublicBeliefStateに変換が必要
+        # 現在の実装では並列実行時にPBSオブジェクトを渡せないため、
+        # 逐次実行時のみ学習が正しく動作する
+        if num_workers > 1:
+            # 並列実行時はPBSがdictのため、学習をスキップ
+            # TODO: dictからPBSを再構築する or dictから直接エンコードする
+            print(f"  Warning: Parallel execution returns dict instead of PBS objects.")
+            print(f"  Skipping value network training. Use --num-workers 1 for training.")
+            return {
+                "iteration": iteration,
+                "examples": len(all_examples),
+                "games": self.config.games_per_iteration,
+                "avg_loss": 0.0,
+                "selection_loss": 0.0,
+                "wins_p0": wins[0],
+                "wins_p1": wins[1],
+                "draws": wins[None],
+                "skipped_training": True,
+            }
+
         # 学習
         print(f"  Training on {len(valid_data)} examples...")
         total_loss = 0.0
         num_batches = 0
+        batch_errors = 0
 
         self.value_network.train()
         device = torch.device(self.config.device)
@@ -1417,7 +1438,9 @@ class ReBeLTrainer:
                     pred_my, pred_opp = self.value_network.forward_batch(pbs_batch)
                 except Exception as e:
                     # エンコードエラーの場合はスキップ
-                    print(f"    Batch encoding error: {e}")
+                    batch_errors += 1
+                    if batch_errors <= 3:  # 最初の3回だけ表示
+                        print(f"    Batch encoding error: {e}")
                     continue
 
                 # Loss (MSE)
@@ -1434,12 +1457,16 @@ class ReBeLTrainer:
                 num_batches += 1
 
             if (epoch + 1) % 5 == 0:
-                print(f"    Epoch {epoch + 1}: loss = {epoch_loss / max(1, num_batches):.4f}")
+                avg_epoch_loss = epoch_loss / max(1, num_batches // self.config.num_epochs)
+                print(f"    Epoch {epoch + 1}: loss = {avg_epoch_loss:.4f}")
 
             total_loss += epoch_loss
 
+        if batch_errors > 0:
+            print(f"  Warning: {batch_errors} batches skipped due to encoding errors")
+
         avg_loss = total_loss / max(num_batches, 1)
-        print(f"  Value Network Average loss: {avg_loss:.4f}")
+        print(f"  Value Network Average loss: {avg_loss:.4f} ({num_batches} batches)")
 
         # 選出ネットワークの学習
         selection_loss = 0.0
