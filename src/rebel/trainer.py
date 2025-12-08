@@ -400,15 +400,8 @@ def _generate_game_worker(
             except Exception:
                 continue
 
-            # PBS を簡易シリアライズして記録
-            pbs_dict = {
-                "perspective": pbs.public_state.perspective,
-                "turn": pbs.public_state.turn,
-                "my_pokemon_name": pbs.public_state.my_pokemon.name,
-                "my_hp_ratio": pbs.public_state.my_pokemon.hp_ratio,
-                "opp_pokemon_name": pbs.public_state.opp_pokemon.name,
-                "opp_hp_ratio": pbs.public_state.opp_pokemon.hp_ratio,
-            }
+            # PBS を完全にシリアライズして記録（from_dictで復元可能）
+            pbs_dict = pbs.to_dict()
             pbs_records.append((pbs_dict, player))
 
             # CFRで戦略計算
@@ -1388,25 +1381,26 @@ class ReBeLTrainer:
             print("  No valid examples, skipping training")
             return {"iteration": iteration, "examples": 0}
 
-        # 並列実行時はPBSがdictになっているため、PublicBeliefStateに変換が必要
-        # 現在の実装では並列実行時にPBSオブジェクトを渡せないため、
-        # 逐次実行時のみ学習が正しく動作する
+        # 並列実行時はPBSがdictになっているため、PublicBeliefStateに変換
         if num_workers > 1:
-            # 並列実行時はPBSがdictのため、学習をスキップ
-            # TODO: dictからPBSを再構築する or dictから直接エンコードする
-            print(f"  Warning: Parallel execution returns dict instead of PBS objects.")
-            print(f"  Skipping value network training. Use --num-workers 1 for training.")
-            return {
-                "iteration": iteration,
-                "examples": len(all_examples),
-                "games": self.config.games_per_iteration,
-                "avg_loss": 0.0,
-                "selection_loss": 0.0,
-                "wins_p0": wins[0],
-                "wins_p1": wins[1],
-                "draws": wins[None],
-                "skipped_training": True,
-            }
+            print(f"  Converting {len(valid_data)} PBS dicts to objects...")
+            converted_data: list[tuple[PublicBeliefState, float, float]] = []
+            conversion_errors = 0
+            for pbs_or_dict, my_v, opp_v in valid_data:
+                if isinstance(pbs_or_dict, dict):
+                    try:
+                        pbs = PublicBeliefState.from_dict(pbs_or_dict, self.usage_db)
+                        converted_data.append((pbs, my_v, opp_v))
+                    except Exception as e:
+                        conversion_errors += 1
+                        if conversion_errors <= 3:
+                            print(f"    Conversion error: {e}")
+                else:
+                    converted_data.append((pbs_or_dict, my_v, opp_v))
+            if conversion_errors > 0:
+                print(f"  Warning: {conversion_errors} PBS conversions failed")
+            valid_data = converted_data
+            print(f"  Converted {len(valid_data)} PBS objects successfully")
 
         # 学習
         print(f"  Training on {len(valid_data)} examples...")

@@ -11,7 +11,7 @@ import random
 from copy import deepcopy
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Optional
+from typing import Any, Optional
 
 from src.hypothesis.pokemon_usage_database import PokemonUsageDatabase
 
@@ -106,6 +106,29 @@ class PokemonTypeHypothesis:
     def matches_revealed_moves(self, revealed: set[str]) -> bool:
         """判明した技と矛盾しないか"""
         return revealed.issubset(set(self.moves))
+
+    def to_dict(self) -> dict[str, Any]:
+        """シリアライズ可能な辞書に変換"""
+        return {
+            "moves": list(self.moves),
+            "item": self.item,
+            "tera_type": self.tera_type,
+            "nature": self.nature,
+            "ability": self.ability,
+            "ev_spread_type": self.ev_spread_type.name,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "PokemonTypeHypothesis":
+        """辞書から復元"""
+        return cls(
+            moves=tuple(data["moves"]),
+            item=data["item"],
+            tera_type=data["tera_type"],
+            nature=data["nature"],
+            ability=data["ability"],
+            ev_spread_type=EVSpreadType[data["ev_spread_type"]],
+        )
 
     def get_evs(self) -> list[int]:
         """EV配分をリストで取得 [H, A, B, C, D, S]"""
@@ -675,3 +698,53 @@ class PokemonBeliefState:
     def __repr__(self) -> str:
         total_hypos = sum(len(b) for b in self.beliefs.values())
         return f"PokemonBeliefState(pokemon={len(self.beliefs)}, total_hypotheses={total_hypos})"
+
+    def to_dict(self) -> dict[str, Any]:
+        """シリアライズ可能な辞書に変換"""
+        # beliefs の変換: {pokemon_name: [(hypothesis_dict, probability), ...]}
+        beliefs_serialized = {}
+        for pokemon_name, hypo_dist in self.beliefs.items():
+            beliefs_serialized[pokemon_name] = [
+                (hypo.to_dict(), prob) for hypo, prob in hypo_dist.items()
+            ]
+
+        return {
+            "beliefs": beliefs_serialized,
+            "revealed_moves": {k: list(v) for k, v in self.revealed_moves.items()},
+            "revealed_items": self.revealed_items,
+            "revealed_tera": self.revealed_tera,
+            "move_use_count": self.move_use_count,
+            "max_hypotheses": self.max_hypotheses,
+            "min_probability": self.min_probability,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict[str, Any], usage_db: PokemonUsageDatabase
+    ) -> "PokemonBeliefState":
+        """辞書から復元"""
+        # まず空のポケモン名リストでインスタンスを作成
+        pokemon_names = list(data["beliefs"].keys())
+        instance = cls.__new__(cls)
+
+        # 基本属性を設定
+        instance.usage_db = usage_db
+        instance.max_hypotheses = data.get("max_hypotheses", 50)
+        instance.min_probability = data.get("min_probability", 0.01)
+        instance.observation_history = []
+
+        # revealed情報を復元
+        instance.revealed_moves = {k: set(v) for k, v in data["revealed_moves"].items()}
+        instance.revealed_items = data["revealed_items"]
+        instance.revealed_tera = data["revealed_tera"]
+        instance.move_use_count = data.get("move_use_count", {name: {} for name in pokemon_names})
+
+        # beliefs を復元
+        instance.beliefs = {}
+        for pokemon_name, hypo_list in data["beliefs"].items():
+            instance.beliefs[pokemon_name] = {
+                PokemonTypeHypothesis.from_dict(hypo_dict): prob
+                for hypo_dict, prob in hypo_list
+            }
+
+        return instance
