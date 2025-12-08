@@ -42,8 +42,98 @@ from .belief_state import Observation, ObservationType, PokemonBeliefState
 from .cfr_solver import CFRConfig, ReBeLSolver
 from .full_belief_state import FullBeliefState
 from .public_state import PublicBeliefState, PublicGameState
-from .team_composition_belief import TeamCompositionBelief
 from .value_network import ReBeLValueNetwork
+
+
+# ============================================================
+# バトルログから観測を抽出するための定数とユーティリティ
+# ============================================================
+
+# 持ち物→観測タイプのマッピング
+ITEM_OBSERVATION_MAP = {
+    "きあいのタスキ": ObservationType.FOCUS_SASH_ACTIVATED,
+    "たべのこし": ObservationType.LEFTOVERS_HEAL,
+    "くろいヘドロ": ObservationType.BLACK_SLUDGE_HEAL,
+    "いのちのたま": ObservationType.LIFE_ORB_RECOIL,
+    "ゴツゴツメット": ObservationType.ROCKY_HELMET_DAMAGE,
+    "とつげきチョッキ": ObservationType.ASSAULT_VEST_BLOCK,
+    "ブーストエナジー": ObservationType.BOOST_ENERGY_ACTIVATED,
+    "ふうせん": ObservationType.AIR_BALLOON_CONSUMED,
+}
+
+# きのみのリスト
+BERRIES = [
+    "オボンのみ", "ラムのみ", "カゴのみ", "クラボのみ", "モモンのみ",
+    "チーゴのみ", "ナナシのみ", "ヒメリのみ", "オレンのみ", "キーのみ",
+    "ウイのみ", "バンジのみ", "イアのみ", "フィラのみ", "マゴのみ",
+    "イバンのみ", "ヤタピのみ", "カムラのみ", "サンのみ", "チイラのみ",
+    "リュガのみ", "ズアのみ", "アッキのみ", "タラプのみ",
+    # タイプ半減きのみ
+    "ソクノのみ", "タンガのみ", "ヨプのみ", "シュカのみ", "バコウのみ",
+    "ウタンのみ", "オッカのみ", "イトケのみ", "リンドのみ", "ヤチェのみ",
+    "ビアーのみ", "ナモのみ", "リリバのみ", "ホズのみ", "ハバンのみ",
+    "カシブのみ", "レンブのみ", "ロゼルのみ",
+]
+
+
+def extract_item_observations_from_log(
+    battle_log: list[str], pokemon_name: str
+) -> list[Observation]:
+    """
+    バトルログから持ち物発動の観測イベントを抽出
+
+    Args:
+        battle_log: バトルログ（battle.log[player]）
+        pokemon_name: 対象のポケモン名
+
+    Returns:
+        観測イベントのリスト
+    """
+    observations = []
+
+    for entry in battle_log:
+        if not isinstance(entry, str):
+            continue
+
+        # ポケモン名がログエントリに含まれているかチェック
+        if pokemon_name not in entry:
+            continue
+
+        # 持ち物発動の検出
+        for item, obs_type in ITEM_OBSERVATION_MAP.items():
+            if item in entry:
+                observations.append(
+                    Observation(
+                        type=obs_type,
+                        pokemon_name=pokemon_name,
+                        details={"item": item, "log_entry": entry},
+                    )
+                )
+                break
+
+        # きのみ消費の検出
+        for berry in BERRIES:
+            if berry in entry and ("発動" in entry or "回復" in entry or "上がった" in entry):
+                observations.append(
+                    Observation(
+                        type=ObservationType.BERRY_CONSUMED,
+                        pokemon_name=pokemon_name,
+                        details={"item": berry, "log_entry": entry},
+                    )
+                )
+                break
+
+        # こだわり系の検出（技固定の表示）
+        if "こだわり" in entry and ("固定" in entry or "変化技" in entry):
+            observations.append(
+                Observation(
+                    type=ObservationType.CHOICE_LOCKED,
+                    pokemon_name=pokemon_name,
+                    details={"log_entry": entry},
+                )
+            )
+
+    return observations
 
 
 @dataclass
@@ -133,7 +223,7 @@ class TrainingConfig:
 
 
 def _generate_game_worker(
-    args: tuple[str, list[dict], dict, str, str, bool, bool, Optional[dict], bool],
+    args: tuple[str, list[dict], dict, str, str, bool, bool, Optional[dict], bool, bool],
 ) -> tuple[
     dict,  # GameResult as dict (serializable)
     list[dict],  # PBS data as dicts
@@ -154,6 +244,7 @@ def _generate_game_worker(
         use_lightweight_cfr,
         fixed_opponent,
         fixed_opponent_select_all,
+        use_full_belief,
     ) = args
 
     # 各ワーカーで必要なオブジェクトを再構築
@@ -163,6 +254,7 @@ def _generate_game_worker(
 
     from .belief_state import PokemonBeliefState
     from .cfr_solver import CFRConfig, ReBeLSolver
+    from .full_belief_state import FullBeliefState
     from .public_state import PublicBeliefState
 
     # 初期化
@@ -246,16 +338,55 @@ def _generate_game_worker(
     battle.proceed(commands=[Battle.SKIP, Battle.SKIP])
 
     # 信念状態の初期化
-    beliefs = [
-        PokemonBeliefState([p.name for p in battle.selected[1]], usage_db),
-        PokemonBeliefState([p.name for p in battle.selected[0]], usage_db),
-    ]
+    full_beliefs: list[Optional[FullBeliefState]] = [None, None]
+
+    if use_full_belief:
+        # 完全信念状態を使用
+        full_belief_0 = FullBeliefState(
+            team_preview_names=[p.get("name", "") for p in trainer1_team],
+            team_preview_data=trainer1_team,
+            usage_db=usage_db,
+            selector=None,
+            my_team_data=trainer0_team,
+        )
+        full_belief_1 = FullBeliefState(
+            team_preview_names=[p.get("name", "") for p in trainer0_team],
+            team_preview_data=trainer0_team,
+            usage_db=usage_db,
+            selector=None,
+            my_team_data=trainer1_team,
+        )
+        full_beliefs = [full_belief_0, full_belief_1]
+
+        # 先発が判明した状態で更新
+        lead_pokemon_0 = battle.pokemon[1]
+        lead_pokemon_1 = battle.pokemon[0]
+        if lead_pokemon_0:
+            full_belief_0.update_lead_revealed(lead_pokemon_0.name)
+        if lead_pokemon_1:
+            full_belief_1.update_lead_revealed(lead_pokemon_1.name)
+
+        # PokemonBeliefStateに変換
+        beliefs = [
+            full_belief_0.to_pokemon_belief_state() or PokemonBeliefState(
+                [p.name for p in battle.selected[1]], usage_db
+            ),
+            full_belief_1.to_pokemon_belief_state() or PokemonBeliefState(
+                [p.name for p in battle.selected[0]], usage_db
+            ),
+        ]
+    else:
+        beliefs = [
+            PokemonBeliefState([p.name for p in battle.selected[1]], usage_db),
+            PokemonBeliefState([p.name for p in battle.selected[0]], usage_db),
+        ]
 
     examples: list[dict] = []
     pbs_records: list[tuple[dict, int]] = []
     turn = 0
     last_actions = [Battle.SKIP, Battle.SKIP]
     max_turns = config_dict.get("max_turns", 100)
+    log_lengths: dict[int, int] = {0: 0, 1: 0}
 
     while battle.winner() is None and turn < max_turns:
         turn += 1
@@ -313,6 +444,60 @@ def _generate_game_worker(
             battle.proceed(commands=last_actions)
         except Exception:
             break
+
+        # FullBeliefState の更新（交代で新しいポケモンが出た場合）
+        if use_full_belief:
+            for player in [0, 1]:
+                fb = full_beliefs[player]
+                if fb is None:
+                    continue
+                opponent = 1 - player
+                current_pokemon = battle.pokemon[opponent]
+                if current_pokemon:
+                    pokemon_name = current_pokemon.name
+                    confirmed = fb.get_confirmed_selected_names()
+                    if pokemon_name not in confirmed:
+                        fb.update_pokemon_revealed(pokemon_name)
+                        new_belief = fb.to_pokemon_belief_state()
+                        if new_belief:
+                            beliefs[player] = new_belief
+
+        # バトルログから観測を抽出して信念を更新
+        if hasattr(battle, 'log'):
+            for player in [0, 1]:
+                opponent = 1 - player
+                belief = beliefs[player]
+
+                # 相手のポケモン情報
+                opp_pokemon = battle.pokemon[opponent]
+                if opp_pokemon is None:
+                    continue
+
+                pokemon_name = opp_pokemon.name
+
+                # ログを取得
+                current_log = battle.log[player] if isinstance(battle.log, list) and len(battle.log) > player else []
+                if not isinstance(current_log, list):
+                    current_log = []
+
+                prev_length = log_lengths.get(player, 0)
+                log_lengths[player] = len(current_log)
+
+                if len(current_log) <= prev_length:
+                    continue
+
+                # 新しいログエントリを取得
+                new_entries = current_log[prev_length:]
+
+                # 持ち物観測を抽出
+                observations = extract_item_observations_from_log(new_entries, pokemon_name)
+                for obs in observations:
+                    belief.update(obs)
+                    # FullBeliefState にも反映
+                    if use_full_belief:
+                        fb = full_beliefs[player]
+                        if fb is not None:
+                            fb.update(obs)
 
     # 終局処理
     winner = battle.winner()
@@ -504,6 +689,7 @@ class ReBeLTrainer:
 
         examples: list[TrainingExample] = []
         turn = 0
+        log_lengths: dict[int, int] = {0: 0, 1: 0}
 
         while battle.winner() is None and turn < self.config.max_turns:
             turn += 1
@@ -542,8 +728,8 @@ class ReBeLTrainer:
             ]
             battle.proceed(commands=commands)
 
-            # 観測更新（簡略化: 技使用のみ）
-            self._update_beliefs_from_battle(battle, beliefs)
+            # 観測更新（バトルログから持ち物発動等を抽出）
+            log_lengths = self._update_beliefs_from_battle(battle, beliefs, None, log_lengths)
 
         # 終局結果でターゲット値を設定
         winner = battle.winner()
@@ -628,21 +814,62 @@ class ReBeLTrainer:
         battle.proceed(commands=[Battle.SKIP, Battle.SKIP])
 
         # 信念状態の初期化
-        beliefs = [
-            PokemonBeliefState(
-                [p.name for p in battle.selected[1]],
-                self.usage_db,
-            ),
-            PokemonBeliefState(
-                [p.name for p in battle.selected[0]],
-                self.usage_db,
-            ),
-        ]
+        full_beliefs: list[Optional[FullBeliefState]] = [None, None]
+
+        if self.config.use_full_belief:
+            # 完全信念状態を使用（選出・先発の不確実性を含む）
+            full_belief_0 = FullBeliefState(
+                team_preview_names=[p.get("name", "") for p in trainer1_team],
+                team_preview_data=trainer1_team,
+                usage_db=self.usage_db,
+                selector=None,  # TODO: TeamSelectorを渡す
+                my_team_data=trainer0_team,
+            )
+            full_belief_1 = FullBeliefState(
+                team_preview_names=[p.get("name", "") for p in trainer0_team],
+                team_preview_data=trainer0_team,
+                usage_db=self.usage_db,
+                selector=None,
+                my_team_data=trainer1_team,
+            )
+            full_beliefs = [full_belief_0, full_belief_1]
+
+            # 先発が判明した状態で更新
+            lead_pokemon_0 = battle.pokemon[1]
+            lead_pokemon_1 = battle.pokemon[0]
+            if lead_pokemon_0:
+                full_belief_0.update_lead_revealed(lead_pokemon_0.name)
+            if lead_pokemon_1:
+                full_belief_1.update_lead_revealed(lead_pokemon_1.name)
+
+            # PokemonBeliefStateに変換（互換性のため）
+            beliefs = [
+                full_belief_0.to_pokemon_belief_state() or PokemonBeliefState(
+                    [p.name for p in battle.selected[1]],
+                    self.usage_db,
+                ),
+                full_belief_1.to_pokemon_belief_state() or PokemonBeliefState(
+                    [p.name for p in battle.selected[0]],
+                    self.usage_db,
+                ),
+            ]
+        else:
+            beliefs = [
+                PokemonBeliefState(
+                    [p.name for p in battle.selected[1]],
+                    self.usage_db,
+                ),
+                PokemonBeliefState(
+                    [p.name for p in battle.selected[0]],
+                    self.usage_db,
+                ),
+            ]
 
         examples: list[TrainingExample] = []
         pbs_records: list[tuple[PublicBeliefState, int]] = []  # (PBS, player)
         turn = 0
         last_actions = [Battle.SKIP, Battle.SKIP]
+        log_lengths: dict[int, int] = {0: 0, 1: 0}
 
         while battle.winner() is None and turn < self.config.max_turns:
             turn += 1
@@ -692,8 +919,8 @@ class ReBeLTrainer:
             except Exception:
                 break
 
-            # 観測更新（簡略化）
-            self._update_beliefs_from_battle(battle, beliefs)
+            # 観測更新（バトルログから持ち物発動等を抽出）
+            log_lengths = self._update_beliefs_from_battle(battle, beliefs, full_beliefs, log_lengths)
 
         # 終局結果でターゲット値を設定
         winner = battle.winner()
@@ -911,12 +1138,88 @@ class ReBeLTrainer:
         return result
 
     def _update_beliefs_from_battle(
-        self, battle: Battle, beliefs: list[PokemonBeliefState]
-    ) -> None:
-        """バトルの進行から信念を更新（簡略化版）"""
-        # 実際の実装では、バトルログを解析して観測を抽出する
-        # ここでは簡略化のため省略
-        pass
+        self,
+        battle: Battle,
+        beliefs: list[PokemonBeliefState],
+        full_beliefs: Optional[list[Optional[FullBeliefState]]] = None,
+        prev_log_lengths: Optional[dict[int, int]] = None,
+    ) -> dict[int, int]:
+        """バトルの進行から信念を更新
+
+        Args:
+            battle: Battle オブジェクト
+            beliefs: PokemonBeliefState のリスト [player0視点, player1視点]
+            full_beliefs: FullBeliefState のリスト（use_full_belief時に使用）
+            prev_log_lengths: 前回のログ長さ {player: length}（初回はNone）
+
+        Returns:
+            更新後のログ長さ {player: length}
+        """
+        if prev_log_lengths is None:
+            prev_log_lengths = {0: 0, 1: 0}
+
+        new_log_lengths = {0: 0, 1: 0}
+
+        # FullBeliefState が有効な場合は、新しいポケモンの登場を追跡
+        if full_beliefs is not None:
+            for player in [0, 1]:
+                fb = full_beliefs[player]
+                if fb is None:
+                    continue
+
+                opponent = 1 - player
+                # 場にいるポケモンが判明しているかチェック
+                current_pokemon = battle.pokemon[opponent]
+                if current_pokemon:
+                    pokemon_name = current_pokemon.name
+                    # まだ確認されていないポケモンなら更新
+                    confirmed = fb.get_confirmed_selected_names()
+                    if pokemon_name not in confirmed:
+                        fb.update_pokemon_revealed(pokemon_name)
+
+                        # PokemonBeliefState も更新
+                        new_belief = fb.to_pokemon_belief_state()
+                        if new_belief:
+                            beliefs[player] = new_belief
+
+        # バトルログから観測を抽出して信念を更新
+        if hasattr(battle, 'log'):
+            for player in [0, 1]:
+                opponent = 1 - player
+                belief = beliefs[player]
+
+                # 相手のポケモン情報
+                opp_pokemon = battle.pokemon[opponent]
+                if opp_pokemon is None:
+                    continue
+
+                pokemon_name = opp_pokemon.name
+
+                # ログを取得
+                current_log = battle.log[player] if isinstance(battle.log, list) and len(battle.log) > player else []
+                if not isinstance(current_log, list):
+                    current_log = []
+
+                prev_length = prev_log_lengths.get(player, 0)
+                new_log_lengths[player] = len(current_log)
+
+                if len(current_log) <= prev_length:
+                    continue
+
+                # 新しいログエントリを取得
+                new_entries = current_log[prev_length:]
+
+                # 持ち物観測を抽出
+                observations = extract_item_observations_from_log(new_entries, pokemon_name)
+                for obs in observations:
+                    belief.update(obs)
+                    # FullBeliefState にも反映
+                    if full_beliefs is not None:
+                        fb = full_beliefs[player]
+                        if fb is not None:
+                            fb.update(obs)
+
+        return new_log_lengths
 
     def _generate_games_parallel(
         self,
@@ -969,6 +1272,7 @@ class ReBeLTrainer:
                 self.config.use_lightweight_cfr,
                 self.config.fixed_opponent,
                 self.config.fixed_opponent_select_all,
+                self.config.use_full_belief,
             )
             worker_args.append(args)
 

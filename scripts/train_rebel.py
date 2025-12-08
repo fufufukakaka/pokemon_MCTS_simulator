@@ -161,6 +161,11 @@ def main():
         action="store_true",
         help="軽量CFRモードを無効化（精度向上、速度低下）",
     )
+    parser.add_argument(
+        "--use-full-belief",
+        action="store_true",
+        help="完全信念状態を使用（選出・先発の不確実性を含む）",
+    )
     args = parser.parse_args()
 
     # データ読み込み
@@ -212,10 +217,13 @@ def main():
         usage_data_path=usage_data_path,
         num_workers=args.num_workers,
         use_lightweight_cfr=use_lightweight_cfr,
+        use_full_belief=args.use_full_belief,
     )
 
     if args.train_selection:
         print("Selection network training: ENABLED")
+    if args.use_full_belief:
+        print("Full belief state: ENABLED")
     if args.num_workers > 1:
         print(f"Parallel game generation: {args.num_workers} workers")
     print(f"Lightweight CFR: {'ENABLED' if use_lightweight_cfr else 'DISABLED'}")
