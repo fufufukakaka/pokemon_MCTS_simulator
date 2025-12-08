@@ -192,6 +192,9 @@ def main():
     # 軽量CFRの設定（--no-lightweight-cfrで無効化）
     use_lightweight_cfr = not args.no_lightweight_cfr
 
+    # usage_data_path の決定（--usage-data-path が未指定なら --usage-db を使用）
+    usage_data_path = args.usage_data_path if args.usage_data_path else args.usage_db
+
     # 設定
     config = TrainingConfig(
         games_per_iteration=args.games_per_iteration,
@@ -206,7 +209,7 @@ def main():
         fixed_opponent_select_all=args.fixed_opponent_select_all,
         train_selection=args.train_selection,
         selection_explore_prob=args.selection_explore_prob,
-        usage_data_path=args.usage_data_path,
+        usage_data_path=usage_data_path,
         num_workers=args.num_workers,
         use_lightweight_cfr=use_lightweight_cfr,
     )
