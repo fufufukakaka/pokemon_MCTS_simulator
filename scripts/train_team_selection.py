@@ -6,13 +6,13 @@ Team Selection Network 学習スクリプト
 
 Usage:
     # ランダムデータで初期学習
-    poetry run python scripts/train_team_selection.py \
+    uv run python scripts/train_team_selection.py \
         --trainer-json data/top_rankers/season_27.json \
         --output models/team_selection \
         --num-samples 10000
 
     # Self-Playデータで学習（より高品質）
-    poetry run python scripts/train_team_selection.py \
+    uv run python scripts/train_team_selection.py \
         --trainer-json data/top_rankers/season_27.json \
         --selfplay-data data/selfplay_records.jsonl \
         --output models/team_selection \

@@ -3,7 +3,7 @@
 CSVファイルをトレーナーJSON形式に変換するスクリプト
 
 Usage:
-    poetry run python scripts/convert_csv_to_trainer_json.py \
+    uv run python scripts/convert_csv_to_trainer_json.py \
         --input data/season_36_pokemon_data.csv \
         --output data/top_rankers/season_36.json
 """

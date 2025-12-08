@@ -104,13 +104,13 @@ print(f"Selected action: {action}")
 
 ```bash
 # 基本的な比較（10試合）
-PYTHONPATH=. poetry run python scripts/compare_rebel_vs_mcts.py \
+PYTHONPATH=. uv run python scripts/compare_rebel_vs_mcts.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --num-matches 10
 
 # パラメータ調整版
-PYTHONPATH=. poetry run python scripts/compare_rebel_vs_mcts.py \
+PYTHONPATH=. uv run python scripts/compare_rebel_vs_mcts.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --num-matches 50 \
@@ -125,7 +125,7 @@ PYTHONPATH=. poetry run python scripts/compare_rebel_vs_mcts.py \
 
 ```bash
 # 軽量テスト（動作確認用）
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --output models/rebel_test \
@@ -136,7 +136,7 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
   --num-epochs 3
 
 # 本格的なトレーニング
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --output models/rebel_full \
@@ -153,7 +153,7 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
   --eval-games 50
 
 # チェックポイントから再開
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --resume models/rebel_full/checkpoint_iter50 \
   --num-iterations 50 \
   --output models/rebel_full
@@ -165,7 +165,7 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
 
 ```bash
 # 固定パーティを指定して学習（ランダム選出）
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --fixed-opponent data/my_fixed_party.json \
@@ -174,7 +174,7 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
   --games-per-iteration 50
 
 # 固定パーティで先頭3体を固定選出
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --fixed-opponent data/my_fixed_party.json \
@@ -184,7 +184,7 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
   --games-per-iteration 50
 
 # trainer-json 内のインデックスで固定対戦相手を指定
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --fixed-opponent-index 0 \
@@ -196,28 +196,28 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
 
 ```json
 {
-    "pokemons": [
-        {
-            "name": "ガブリアス",
-            "item": "きあいのタスキ",
-            "nature": "ようき",
-            "ability": "さめはだ",
-            "Ttype": "はがね",
-            "moves": ["じしん", "げきりん", "つるぎのまい", "がんせきふうじ"],
-            "effort": [0, 252, 4, 0, 0, 252]
-        },
-        // ... 6匹分
-    ]
+  "pokemons": [
+    {
+      "name": "ガブリアス",
+      "item": "きあいのタスキ",
+      "nature": "ようき",
+      "ability": "さめはだ",
+      "Ttype": "はがね",
+      "moves": ["じしん", "げきりん", "つるぎのまい", "がんせきふうじ"],
+      "effort": [0, 252, 4, 0, 0, 252]
+    }
+    // ... 6匹分
+  ]
 }
 ```
 
 ### 5. 選出ネットワークの統合学習
 
-6匹から3匹を選ぶ「選出」も含めた統合学習：
+6 匹から 3 匹を選ぶ「選出」も含めた統合学習：
 
 ```bash
 # 選出 + バトルの統合学習
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --train-selection \
@@ -226,7 +226,7 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
   --games-per-iteration 50
 
 # 固定対戦相手に対する選出学習
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --fixed-opponent data/my_fixed_party.json \
@@ -237,7 +237,7 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
   --games-per-iteration 50
 
 # 探索確率を下げて活用重視（学習後半向け）
-PYTHONPATH=. poetry run python scripts/train_rebel.py \
+PYTHONPATH=. uv run python scripts/train_rebel.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --train-selection \
@@ -299,21 +299,23 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
 
 #### 選出学習のオプション
 
-| オプション | デフォルト | 説明 |
-|-----------|-----------|------|
-| `--train-selection` | False | 選出ネットワークの統合学習を有効化 |
-| `--selection-explore-prob` | 0.3 | 探索時にランダム選出する確率（0.0〜1.0） |
+| オプション                 | デフォルト | 説明                                     |
+| -------------------------- | ---------- | ---------------------------------------- |
+| `--train-selection`        | False      | 選出ネットワークの統合学習を有効化       |
+| `--selection-explore-prob` | 0.3        | 探索時にランダム選出する確率（0.0〜1.0） |
 
 #### 選出学習のポイント
 
 1. **探索と活用のバランス**: `selection-explore-prob` で調整
+
    - 学習初期: 高め（0.3〜0.5）で多様な選出パターンを探索
    - 学習後半: 低め（0.1〜0.2）で良い選出を活用
 
 2. **固定対戦相手との組み合わせ**: 特定構築への最適選出を学習
+
    - 相手のパーティ構成に対するカウンターピックを自動学習
 
-3. **学習データの効率**: 1試合から2つの選出データを取得
+3. **学習データの効率**: 1 試合から 2 つの選出データを取得
    - Player 0 と Player 1 の両方の選出を学習に使用
    - 固定選出の場合は Player 1 のデータは使用しない
 
@@ -321,22 +323,22 @@ PYTHONPATH=. poetry run python scripts/train_rebel.py \
 
 ### `src/rebel/`
 
-| ファイル | 説明 |
-|---------|------|
-| `belief_state.py` | 信念状態の管理（`PokemonBeliefState`, `PokemonTypeHypothesis`） |
-| `public_state.py` | 公開ゲーム状態（`PublicGameState`, `PublicBeliefState`） |
-| `ev_template.py` | 努力値テンプレート推定 |
-| `cfr_solver.py` | CFR サブゲーム解決（`CFRSubgameSolver`, `SimplifiedCFRSolver`, `ReBeLSolver`） |
-| `value_network.py` | Value Network（`PBSEncoder`, `ReBeLValueNetwork`） |
-| `battle_interface.py` | バトル AI インターフェース（`ReBeLBattle`） |
-| `trainer.py` | 強化学習トレーナー（`ReBeLTrainer`） |
+| ファイル              | 説明                                                                           |
+| --------------------- | ------------------------------------------------------------------------------ |
+| `belief_state.py`     | 信念状態の管理（`PokemonBeliefState`, `PokemonTypeHypothesis`）                |
+| `public_state.py`     | 公開ゲーム状態（`PublicGameState`, `PublicBeliefState`）                       |
+| `ev_template.py`      | 努力値テンプレート推定                                                         |
+| `cfr_solver.py`       | CFR サブゲーム解決（`CFRSubgameSolver`, `SimplifiedCFRSolver`, `ReBeLSolver`） |
+| `value_network.py`    | Value Network（`PBSEncoder`, `ReBeLValueNetwork`）                             |
+| `battle_interface.py` | バトル AI インターフェース（`ReBeLBattle`）                                    |
+| `trainer.py`          | 強化学習トレーナー（`ReBeLTrainer`）                                           |
 
 ### `scripts/`
 
-| ファイル | 説明 |
-|---------|------|
-| `compare_rebel_vs_mcts.py` | ReBeL と HypothesisMCTS の性能比較 |
-| `train_rebel.py` | ReBeL 強化学習トレーニングスクリプト |
+| ファイル                   | 説明                                 |
+| -------------------------- | ------------------------------------ |
+| `compare_rebel_vs_mcts.py` | ReBeL と HypothesisMCTS の性能比較   |
+| `train_rebel.py`           | ReBeL 強化学習トレーニングスクリプト |
 
 ## 主要クラスの詳細
 
@@ -509,34 +511,34 @@ results = trainer.evaluate_against_baseline(
 
 #### TrainingConfig の全オプション
 
-| パラメータ | デフォルト | 説明 |
-|-----------|-----------|------|
-| `games_per_iteration` | 100 | 1イテレーションあたりの試合数 |
-| `max_turns` | 100 | 試合の最大ターン数 |
-| `cfr_iterations` | 50 | CFR のイテレーション数 |
-| `cfr_world_samples` | 20 | 仮説サンプル数 |
-| `batch_size` | 32 | ミニバッチサイズ |
-| `learning_rate` | 1e-4 | Value Network の学習率 |
-| `num_epochs` | 10 | エポック数 |
-| `weight_decay` | 1e-5 | 重み減衰 |
-| `device` | "cpu" | デバイス ("cpu" or "cuda") |
-| `save_interval` | 10 | チェックポイント保存間隔 |
-| `fixed_opponent` | None | 固定対戦相手のデータ |
-| `fixed_opponent_select_all` | False | 固定対戦相手は先頭3体を使用 |
-| `train_selection` | False | 選出ネットワークを学習 |
-| `selection_learning_rate` | 1e-4 | 選出ネットワークの学習率 |
-| `selection_explore_prob` | 0.3 | ランダム選出確率 |
+| パラメータ                  | デフォルト | 説明                           |
+| --------------------------- | ---------- | ------------------------------ |
+| `games_per_iteration`       | 100        | 1 イテレーションあたりの試合数 |
+| `max_turns`                 | 100        | 試合の最大ターン数             |
+| `cfr_iterations`            | 50         | CFR のイテレーション数         |
+| `cfr_world_samples`         | 20         | 仮説サンプル数                 |
+| `batch_size`                | 32         | ミニバッチサイズ               |
+| `learning_rate`             | 1e-4       | Value Network の学習率         |
+| `num_epochs`                | 10         | エポック数                     |
+| `weight_decay`              | 1e-5       | 重み減衰                       |
+| `device`                    | "cpu"      | デバイス ("cpu" or "cuda")     |
+| `save_interval`             | 10         | チェックポイント保存間隔       |
+| `fixed_opponent`            | None       | 固定対戦相手のデータ           |
+| `fixed_opponent_select_all` | False      | 固定対戦相手は先頭 3 体を使用  |
+| `train_selection`           | False      | 選出ネットワークを学習         |
+| `selection_learning_rate`   | 1e-4       | 選出ネットワークの学習率       |
+| `selection_explore_prob`    | 0.3        | ランダム選出確率               |
 
 ## MCTS との比較
 
-| 項目 | HypothesisMCTS | ReBeL |
-|------|----------------|-------|
-| 相手の技 | 完全に見える（チート） | 仮説からサンプリング |
-| 相手の持ち物 | 仮説からサンプリング | 仮説からサンプリング |
+| 項目         | HypothesisMCTS         | ReBeL                |
+| ------------ | ---------------------- | -------------------- |
+| 相手の技     | 完全に見える（チート） | 仮説からサンプリング |
+| 相手の持ち物 | 仮説からサンプリング   | 仮説からサンプリング |
 | 相手のテラス | 完全に見える（チート） | 仮説からサンプリング |
-| 相手の EV | 完全に見える（チート） | 性格+種族値から推定 |
-| 計算速度 | 遅い（MCTS 探索） | 速い（CFR + NN） |
-| 理論的根拠 | なし | Nash 均衡への収束 |
+| 相手の EV    | 完全に見える（チート） | 性格+種族値から推定  |
+| 計算速度     | 遅い（MCTS 探索）      | 速い（CFR + NN）     |
+| 理論的根拠   | なし                   | Nash 均衡への収束    |
 
 ## トレーニングループの流れ
 

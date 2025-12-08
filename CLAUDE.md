@@ -11,12 +11,14 @@ A Pokémon battle simulator combining Monte Carlo Tree Search (MCTS), hypothesis
 ### 1. Battle Simulation Engine (`src/pokemon_battle_sim/`)
 
 - **[battle.py](src/pokemon_battle_sim/battle.py)**: Core battle state management with turn-based simulation
+
   - Command system: `SKIP=-1`, `STRUGGLE=30`, `NO_COMMAND=40`, moves `0-3`, switches `20+`
   - Deep cloning support via `seed` and `copy_count` for MCTS simulations
   - `available_commands(player, phase)`: Returns legal moves/switches for given phase ("battle" or "change")
   - `winner()`: Returns 0/1 for winner or None if ongoing
 
 - **[pokemon.py](src/pokemon_battle_sim/pokemon.py)**: Pokémon class with comprehensive mechanics
+
   - Stats calculation with nature/EVs/IVs support
   - Abilities, items, moves, status effects, Terastal support
   - `Pokemon.init()`: **Must be called before instantiating any Pokémon** to load data files
@@ -33,6 +35,7 @@ A Pokémon battle simulator combining Monte Carlo Tree Search (MCTS), hypothesis
 Handles incomplete information games (opponent's hidden items) via hypothesis sampling.
 
 - **[hypothesis_mcts.py](src/hypothesis/hypothesis_mcts.py)**: `HypothesisMCTS` and `HypothesisMCTSBattle`
+
   - Samples hypotheses about opponent's items and averages over outcomes
   - `PolicyValue`: Protocol for neural network guidance integration
 
@@ -73,30 +76,36 @@ Selects optimal 3 Pokémon from 6 based on opponent's team.
 **Purpose**: Handle incomplete information more rigorously than hypothesis sampling MCTS using game-theoretic approaches.
 
 ReBeL addresses limitations of HypothesisMCTS by:
+
 1. Tracking beliefs over opponent's full type (moves + item + tera + nature), not just items
 2. Using CFR (Counterfactual Regret Minimization) to compute Nash equilibrium strategies
 3. Learning a value network on Public Belief States (PBS)
 
 - **[belief_state.py](src/rebel/belief_state.py)**: `PokemonBeliefState` tracks probability distributions over opponent's type hypotheses
+
   - `PokemonTypeHypothesis`: Frozen dataclass representing (moves, item, tera_type, nature, ability)
   - Bayesian updates from observations (move used, item revealed, tera used)
   - `sample_world()`: Sample one complete "world" from belief distribution
 
 - **[public_state.py](src/rebel/public_state.py)**: `PublicGameState` and `PublicBeliefState`
+
   - `PublicGameState`: Observable information only (HP ratios, revealed moves/items, field)
   - `PublicBeliefState` (PBS): Public state + belief + current strategies
 
 - **[cfr_solver.py](src/rebel/cfr_solver.py)**: CFR subgame solving
+
   - `CFRSubgameSolver`: Full CFR with regret matching
   - `SimplifiedCFRSolver`: Faster approximation using maximin
   - `ReBeLSolver`: Wrapper combining value network with CFR
 
 - **[value_network.py](src/rebel/value_network.py)**: Neural networks for PBS evaluation
+
   - `PBSEncoder`: Encodes PBS to fixed-length tensor
   - `ReBeLValueNetwork`: Predicts expected values from PBS
   - `ReBeLPolicyValueNetwork`: Predicts both policy and value
 
 - **[battle_interface.py](src/rebel/battle_interface.py)**: Integration with Battle class
+
   - `ReBeLBattle`: Drop-in replacement for `HypothesisMCTSBattle`
   - `ReBeLMCTSAdapter`: Use ReBeL with existing HypothesisMCTS interface
   - `load_rebel_battle()`: Factory function
@@ -109,15 +118,18 @@ ReBeL addresses limitations of HypothesisMCTS by:
 **Purpose**: Train LLMs to play Pokémon battles through supervised fine-tuning and reinforcement learning.
 
 - **[static_dataset.py](src/llm/static_dataset.py)**: Generate static training examples from damage calculations
+
   - `build_example_from_battle(battle, player)`: Creates one training sample
   - Output format: `{state_text, actions, label_action_id, policy_dist}`
   - Uses damage-based scoring to label optimal moves
 
 - **[state_representation.py](src/llm/state_representation.py)**: Convert `Battle` state to LLM-readable text
+
   - `battle_to_llm_state(battle, player)`: Returns `LLMState` with text representation and legal actions
   - `LLMAction`: Typed action with `id` (e.g., "MOVE_0", "SWITCH_1") and descriptive `text`
 
 - **[policy.py](src/llm/policy.py)**: LLM-based battle policy using Hugging Face models
+
   - `LLMPolicy`: Wraps `llm-jp/llm-jp-3.1-1.8b-instruct4` or similar chat models
   - `select_action(battle, player)`: Generates next move from battle state
 
@@ -157,21 +169,21 @@ FastAPI-based REST service providing high-precision damage calculations.
 
 ```bash
 # 1. Generate Self-Play data with MCTS
-poetry run python scripts/generate_selfplay_dataset.py \
+uv run python scripts/generate_selfplay_dataset.py \
   --trainer-json data/top_rankers/season_27.json \
   --output data/selfplay_records.jsonl \
   --num-games 100 \
   --mcts-iterations 100
 
 # 2. Train Policy-Value Network from Self-Play data
-poetry run python scripts/train_policy_value_network.py \
+uv run python scripts/train_policy_value_network.py \
   --dataset data/selfplay_records.jsonl \
   --output models/policy_value \
   --hidden-dim 256 \
   --num-epochs 100
 
 # 3. Run full AlphaZero-style RL loop (Self-Play → Train → Evaluate → Repeat)
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
   --trainer-json data/top_rankers/season_27.json \
   --output models/reinforcement \
   --num-generations 10 \
@@ -179,7 +191,7 @@ poetry run python scripts/run_reinforcement_loop.py \
   --evaluation-games 50
 
 # Lightweight test run
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
   --trainer-json data/top_rankers/season_27.json \
   --output models/reinforcement_test \
   --num-generations 3 \
@@ -192,14 +204,14 @@ poetry run python scripts/run_reinforcement_loop.py \
 
 ```bash
 # Compare ReBeL vs HypothesisMCTS
-poetry run python scripts/compare_rebel_vs_mcts.py \
+uv run python scripts/compare_rebel_vs_mcts.py \
   --trainer-json data/top_rankers/season_27.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
   --num-matches 50 \
   --output results/rebel_vs_mcts.json
 
 # Quick test (fewer matches)
-poetry run python scripts/compare_rebel_vs_mcts.py \
+uv run python scripts/compare_rebel_vs_mcts.py \
   --num-matches 5 \
   --rebel-cfr-iterations 20 \
   --rebel-world-samples 10
@@ -209,14 +221,14 @@ poetry run python scripts/compare_rebel_vs_mcts.py \
 
 ```bash
 # Train with random data
-poetry run python scripts/train_team_selection.py \
+uv run python scripts/train_team_selection.py \
   --trainer-json data/top_rankers/season_27.json \
   --output models/team_selection \
   --num-samples 10000 \
   --num-epochs 50
 
 # Train with Self-Play data (higher quality)
-poetry run python scripts/train_team_selection.py \
+uv run python scripts/train_team_selection.py \
   --trainer-json data/top_rankers/season_27.json \
   --selfplay-data data/selfplay_records.jsonl \
   --output models/team_selection \
@@ -233,20 +245,20 @@ POSTGRES_PASSWORD={} \
 POSTGRES_USER={} \
 POSTGRES_HOST={} \
 POSTGRES_PORT={} \
-poetry run python scripts/matching.py --resume
+uv run python scripts/matching.py --resume
 ```
 
 ### LLM Dataset Generation
 
 ```bash
 # Generate static dataset from battle simulations
-poetry run python scripts/generate_llm_static_dataset.py \
+uv run python scripts/generate_llm_static_dataset.py \
   --trainer-json data/top_rankers/season_27.json \
   --output data/llm_static_dataset.jsonl \
   --num-battles 10000
 
 # Convert to chat format for SFT
-poetry run python scripts/convert_llm_static_to_chat_sft.py \
+uv run python scripts/convert_llm_static_to_chat_sft.py \
   --input data/llm_static_dataset.jsonl \
   --output data/llm_sft_chat_dataset.jsonl
 ```
@@ -255,10 +267,10 @@ poetry run python scripts/convert_llm_static_to_chat_sft.py \
 
 ```bash
 # Start FastAPI server
-poetry run python src/damage_calculator_api/main.py
+uv run python src/damage_calculator_api/main.py
 
 # Or with uvicorn
-poetry run uvicorn src.damage_calculator_api.main:app --reload --port 8000
+uv run uvicorn src.damage_calculator_api.main:app --reload --port 8000
 ```
 
 API documentation available at `http://localhost:8000/docs`
@@ -267,23 +279,23 @@ API documentation available at `http://localhost:8000/docs`
 
 ```bash
 # Extract battle history from simulation logs
-poetry run python src/utils/extract_battle_history.py
+uv run python src/utils/extract_battle_history.py
 
 # Train word2vec model for Pokémon embeddings
-poetry run python src/utils/train_word2vec.py
+uv run python src/utils/train_word2vec.py
 ```
 
 ### Testing
 
 ```bash
 # Run all tests (uses unittest framework)
-poetry run python -m unittest discover tests/
+uv run python -m unittest discover tests/
 
 # Run specific test file
-poetry run python -m unittest tests.test_calculators.test_damage_calculator
+uv run python -m unittest tests.test_calculators.test_damage_calculator
 
 # Run with pytest (also supported)
-poetry run pytest tests/
+uv run pytest tests/
 ```
 
 ### Development Tools
@@ -293,10 +305,10 @@ poetry run pytest tests/
 poetry install
 
 # Run Jupyter for analysis
-poetry run jupyter notebook
+uv run jupyter notebook
 
 # Streamlit leaderboard dashboard
-poetry run streamlit run src/streamlit_leaderboard.py
+uv run streamlit run src/streamlit_leaderboard.py
 ```
 
 ## Important Implementation Patterns
@@ -340,6 +352,7 @@ cloned_state = deepcopy(original_battle)
 ### LLM Action Format
 
 LLM outputs must follow strict formats:
+
 - Moves: `"MOVE: わざ名"` or action ID `"MOVE_0"`
 - Switches: `"SWITCH: ポケモン名"` or action ID `"SWITCH_1"`
 
@@ -370,6 +383,7 @@ top_n_selector = TopNTeamSelector()  # Legacy: first N Pokémon
 ### Database Environment Variables
 
 PostgreSQL connection requires:
+
 - `POSTGRES_HOST`
 - `POSTGRES_PORT`
 - `POSTGRES_DB`
@@ -397,6 +411,7 @@ Optional: `DISCORD_WEBHOOK_URL` for notifications
 ### Data Files
 
 Pokémon data loaded from `data/` directory:
+
 - Move data, Pokémon stats, type charts, etc.
 - Ensure these files exist before running simulations
 
@@ -410,13 +425,13 @@ Pokémon battles are **imperfect information games**. The current MCTS implement
 
 #### What Information is Hidden in Real Battles
 
-| Information | Real Battle | Basic MCTS | Hypothesis MCTS |
-|-------------|-------------|------------|-----------------|
-| Opponent's moves | Unknown until used | **Fully visible** ❌ | **Fully visible** ❌ |
-| Opponent's held item | Unknown | **Fully visible** ❌ | Sampled from prior ✓ |
-| Opponent's EV/IV spread | Unknown | **Fully visible** ❌ | **Fully visible** ❌ |
-| Opponent's Tera type | Unknown until used | **Fully visible** ❌ | **Fully visible** ❌ |
-| Opponent's action choice | Strategic | Random assumption △ | Random assumption △ |
+| Information              | Real Battle        | Basic MCTS           | Hypothesis MCTS      |
+| ------------------------ | ------------------ | -------------------- | -------------------- |
+| Opponent's moves         | Unknown until used | **Fully visible** ❌ | **Fully visible** ❌ |
+| Opponent's held item     | Unknown            | **Fully visible** ❌ | Sampled from prior ✓ |
+| Opponent's EV/IV spread  | Unknown            | **Fully visible** ❌ | **Fully visible** ❌ |
+| Opponent's Tera type     | Unknown until used | **Fully visible** ❌ | **Fully visible** ❌ |
+| Opponent's action choice | Strategic          | Random assumption △  | Random assumption △  |
 
 #### Implications
 
@@ -429,6 +444,7 @@ Pokémon battles are **imperfect information games**. The current MCTS implement
 #### Why This May Be Acceptable
 
 In competitive play, much information is effectively public:
+
 - Top-ranked team compositions are published and shared
 - Common "template builds" (テンプレ型) are well-known
 - Team preview allows experienced players to predict movesets with high accuracy
@@ -440,21 +456,25 @@ When using data from `data/top_rankers/`, the simulator operates under an implic
 ### Improved Incomplete Information Handling
 
 1. **Moveset Hypothesis Sampling**
+
    - Extend `ItemBeliefState` to `PokemonBeliefState` covering moves, EVs, and Tera type
    - Sample from usage statistics (e.g., Pokémon Home data, Pikalytics)
    - Challenge: Combinatorial explosion (moves × items × EVs × Tera = millions of combinations per Pokémon)
 
 2. **Bayesian Belief Updates**
+
    - Update beliefs as information is revealed during battle
    - Example: If opponent uses Dragon Dance, probability of physical attacker increases
    - Requires tracking observation history and conditional probabilities
 
 3. **Information Set MCTS (ISMCTS)**
+
    - Determinize hidden information at the start of each simulation
    - Average results across multiple determinizations
    - Well-established technique for imperfect information games (poker, etc.)
 
 4. **Improved Opponent Modeling**
+
    - Replace random rollout policy with heuristic-based or learned opponent model
    - Options: Damage maximization heuristic, minimax at shallow depth, or neural network policy
 
@@ -468,12 +488,14 @@ When using data from `data/top_rankers/`, the simulator operates under an implic
 Beyond improving MCTS, there are other algorithmic approaches better suited for imperfect information games:
 
 1. **Counterfactual Regret Minimization (CFR)**
+
    - Used by poker AIs (Libratus, Pluribus) to find Nash equilibrium strategies
    - Theoretically optimal but computationally expensive for large state spaces
    - Deep CFR / Neural Fictitious Self-Play (NFSP) scale better with neural network approximation
    - Challenge: Pokémon's state space may be too large even for Deep CFR
 
 2. **ReBeL (Recursive Belief-based Learning)**
+
    - Meta AI's approach combining search with learned value functions on public information
    - Tracks beliefs about hidden information as part of the state
    - Well-suited for games where information is gradually revealed (like Pokémon)
@@ -484,31 +506,34 @@ Beyond improving MCTS, there are other algorithmic approaches better suited for 
    - Can learn opponent tendencies from historical data
    - More practical than full game-theoretic solutions
 
-| Approach | Theory | Scalability | Implementation | Pokémon Fit |
-|----------|--------|-------------|----------------|-------------|
-| CFR | ◎ | △ | Medium | △ State space too large |
-| Deep CFR/NFSP | ○ | ○ | Hard | ○ |
-| ReBeL | ○ | ○ | Hard | ◎ Gradual info reveal |
-| Opponent Modeling | △ | ◎ | Medium | ○ |
-| MCTS + Hypothesis (current) | △ | ○ | Easy | ○ |
+| Approach                    | Theory | Scalability | Implementation | Pokémon Fit             |
+| --------------------------- | ------ | ----------- | -------------- | ----------------------- |
+| CFR                         | ◎      | △           | Medium         | △ State space too large |
+| Deep CFR/NFSP               | ○      | ○           | Hard           | ○                       |
+| ReBeL                       | ○      | ○           | Hard           | ◎ Gradual info reveal   |
+| Opponent Modeling           | △      | ◎           | Medium         | ○                       |
+| MCTS + Hypothesis (current) | △      | ○           | Easy           | ○                       |
 
 ### LLM-Based Approaches
 
 The `src/llm/` pipeline represents a promising direction with unique advantages:
 
 **Strengths for Pokémon battles:**
+
 - Implicit handling of incomplete information through pattern learning from large datasets
 - Access to pre-existing knowledge (team archetypes, common strategies, matchup theory)
 - Flexible reasoning about opponent intentions ("why would they switch here?")
 - Explainability: can articulate reasoning in natural language
 
 **Current limitations:**
+
 - Inference latency (seconds per decision vs. milliseconds for NN)
 - Hallucination risk (inventing non-existent moves/abilities)
 - Weak at precise numerical reasoning (damage calculations)
 - Inconsistent decisions in similar situations
 
 **Promising hybrid architecture:**
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │  LLM Layer: Strategic Reasoning                      │
@@ -532,6 +557,7 @@ The `src/llm/` pipeline represents a promising direction with unique advantages:
 ```
 
 **Future directions:**
+
 - Tool-augmented LLM that calls damage calculator API during reasoning
 - Fine-tuning on high-quality annotated battle logs with strategic commentary
 - Retrieval-augmented generation (RAG) with matchup databases

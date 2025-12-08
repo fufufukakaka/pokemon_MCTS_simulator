@@ -4,13 +4,13 @@ pokedb.tokyo からポケモンの使用率データを取得するスクリプ�
 
 使用例:
     # 特定のポケモンのデータを取得
-    poetry run python scripts/fetch_pokedb_usage.py --pokemon-id 1003-00 --season 37
+    uv run python scripts/fetch_pokedb_usage.py --pokemon-id 1003-00 --season 37
 
     # 複数のポケモンを取得（上位使用率ポケモン）
-    poetry run python scripts/fetch_pokedb_usage.py --top 50 --season 37
+    uv run python scripts/fetch_pokedb_usage.py --top 50 --season 37
 
     # 既存のtrainer.jsonからポケモンリストを取得
-    poetry run python scripts/fetch_pokedb_usage.py --from-trainer data/top_rankers/season_36.json --season 37
+    uv run python scripts/fetch_pokedb_usage.py --from-trainer data/top_rankers/season_36.json --season 37
 """
 
 from __future__ import annotations
@@ -19,12 +19,11 @@ import argparse
 import json
 import re
 import time
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Optional
-from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
-
+from urllib.request import Request, urlopen
 
 # =============================================================================
 # 図鑑番号から正規名へのマッピング（data/zukan.txt から自動生成）
@@ -268,6 +267,7 @@ POKEMON_NAME_TO_ID: dict[str, str] = {
 @dataclass
 class PokemonUsageData:
     """ポケモンの使用率データ"""
+
     pokemon_id: str
     pokemon_name: str
     season: int
@@ -303,7 +303,9 @@ def fetch_pokemon_usage(
     Returns:
         PokemonUsageData or None（取得失敗時）
     """
-    url = f"https://sv.pokedb.tokyo/pokemon/show/{pokemon_id}?season={season}&rule={rule}"
+    url = (
+        f"https://sv.pokedb.tokyo/pokemon/show/{pokemon_id}?season={season}&rule={rule}"
+    )
 
     try:
         req = Request(url, headers={"User-Agent": "Pokemon-MCTS-Simulator/1.0"})
@@ -333,27 +335,27 @@ def fetch_pokemon_usage(
     )
 
     # trendItems: 持ち物の採用率（パーセント形式）
-    items_match = re.search(r'trendItems:\s*(\{[^}]+\})', html)
+    items_match = re.search(r"trendItems:\s*(\{[^}]+\})", html)
     if items_match:
         data.items = _parse_trend_data(items_match.group(1))
 
     # trendAbilities: 特性の採用率
-    abilities_match = re.search(r'trendAbilities:\s*(\{[^}]+\})', html)
+    abilities_match = re.search(r"trendAbilities:\s*(\{[^}]+\})", html)
     if abilities_match:
         data.abilities = _parse_trend_data(abilities_match.group(1))
 
     # trendTeraTypes: テラスタイプの採用率
-    tera_match = re.search(r'trendTeraTypes:\s*(\{[^}]+\})', html)
+    tera_match = re.search(r"trendTeraTypes:\s*(\{[^}]+\})", html)
     if tera_match:
         data.tera_types = _parse_trend_data(tera_match.group(1))
 
     # trendNatures: 性格の採用率（存在する場合）
-    natures_match = re.search(r'trendNatures:\s*(\{[^}]+\})', html)
+    natures_match = re.search(r"trendNatures:\s*(\{[^}]+\})", html)
     if natures_match:
         data.natures = _parse_trend_data(natures_match.group(1))
 
     # trendMoves: 技の採用率（存在する場合）
-    moves_match = re.search(r'trendMoves:\s*(\{[^}]+\})', html)
+    moves_match = re.search(r"trendMoves:\s*(\{[^}]+\})", html)
     if moves_match:
         data.moves = _parse_trend_data(moves_match.group(1))
 
@@ -367,8 +369,7 @@ def fetch_pokemon_usage(
 
     # analysisTeamsから指定シーズンのデータを補完
     analysis_match = re.search(
-        r'window\.pokedbChart\.charts\.analysisTeams\s*=\s*(\{.+?\});',
-        html
+        r"window\.pokedbChart\.charts\.analysisTeams\s*=\s*(\{.+?\});", html
     )
     if analysis_match:
         try:
@@ -387,6 +388,7 @@ def fetch_pokemon_usage(
 
     # 取得時刻
     from datetime import datetime
+
     data.fetched_at = datetime.now().isoformat()
 
     time.sleep(delay)  # サーバー負荷軽減
@@ -475,7 +477,9 @@ def _parse_natures_from_html(html: str) -> dict[str, float]:
     result = {}
 
     # trendNatures の JavaScript オブジェクトを探す（より広いパターン）
-    pattern = r'trendNatures:\s*\{[^}]*"data":\s*\[([^\]]+)\][^}]*"labels":\s*\[([^\]]+)\]'
+    pattern = (
+        r'trendNatures:\s*\{[^}]*"data":\s*\[([^\]]+)\][^}]*"labels":\s*\[([^\]]+)\]'
+    )
     match = re.search(pattern, html)
     if match:
         try:
@@ -483,10 +487,12 @@ def _parse_natures_from_html(html: str) -> dict[str, float]:
             labels_str = match.group(2)
 
             # 値をパース
-            values = [float(v.strip().strip('"')) for v in values_str.split(',')]
+            values = [float(v.strip().strip('"')) for v in values_str.split(",")]
             # ラベルをパース
-            labels = [l.strip().strip('"').encode().decode('unicode_escape')
-                     for l in labels_str.split(',')]
+            labels = [
+                l.strip().strip('"').encode().decode("unicode_escape")
+                for l in labels_str.split(",")
+            ]
 
             for label, value in zip(labels, values):
                 result[label] = value / 100.0
@@ -554,7 +560,7 @@ def fetch_top_pokemon_ids(
         return []
 
     # /pokemon/show/XXXX-XX 形式のリンクを抽出
-    pattern = r'/pokemon/show/(\d{4}-\d{2})'
+    pattern = r"/pokemon/show/(\d{4}-\d{2})"
     matches = re.findall(pattern, html)
 
     # 重複を除去しつつ順序を保持
@@ -585,7 +591,9 @@ def fetch_multiple_pokemon(
         data = fetch_pokemon_usage(pokemon_id, season, rule, delay)
         if data:
             results.append(data)
-            print(f"  -> {data.pokemon_name}: {len(data.moves)} moves, {len(data.items)} items")
+            print(
+                f"  -> {data.pokemon_name}: {len(data.moves)} moves, {len(data.items)} items"
+            )
 
     return results
 
@@ -623,7 +631,9 @@ def save_usage_data(
     print(f"Saved {len(data_list)} pokemon data to {path}")
 
 
-def normalize_existing_json(input_path: str | Path, output_path: str | Path | None = None) -> None:
+def normalize_existing_json(
+    input_path: str | Path, output_path: str | Path | None = None
+) -> None:
     """
     既存のJSONファイルのポケモン名をzukan.txtに基づいて正規化
 
@@ -720,7 +730,10 @@ def main():
     # 既存JSONの正規化モード
     if args.normalize:
         print(f"Normalizing pokemon names in {args.normalize}...")
-        normalize_existing_json(args.normalize, args.output if args.output != "data/pokedb_usage/usage_data.json" else None)
+        normalize_existing_json(
+            args.normalize,
+            args.output if args.output != "data/pokedb_usage/usage_data.json" else None,
+        )
         return
 
     pokemon_ids = []
@@ -772,7 +785,9 @@ def main():
         return
 
     # データ取得
-    print(f"\nFetching data for season {args.season}, rule {'Singles' if args.rule == 0 else 'Doubles'}")
+    print(
+        f"\nFetching data for season {args.season}, rule {'Singles' if args.rule == 0 else 'Doubles'}"
+    )
     results = fetch_multiple_pokemon(
         pokemon_ids,
         season=args.season,
@@ -791,10 +806,14 @@ def main():
             print(f"\n{data.pokemon_name}:")
             if data.moves:
                 top_moves = sorted(data.moves.items(), key=lambda x: -x[1])[:3]
-                print(f"  Top moves: {', '.join(f'{m}({v:.1%})' for m, v in top_moves)}")
+                print(
+                    f"  Top moves: {', '.join(f'{m}({v:.1%})' for m, v in top_moves)}"
+                )
             if data.items:
                 top_items = sorted(data.items.items(), key=lambda x: -x[1])[:3]
-                print(f"  Top items: {', '.join(f'{i}({v:.1%})' for i, v in top_items)}")
+                print(
+                    f"  Top items: {', '.join(f'{i}({v:.1%})' for i, v in top_items)}"
+                )
         if len(results) > 5:
             print(f"\n... and {len(results) - 5} more pokemon")
 

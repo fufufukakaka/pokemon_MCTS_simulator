@@ -20,16 +20,17 @@
 
 ## 設計方針
 
-| 項目 | 決定 |
-|------|------|
-| 入力 | 観測情報のみ（相手の隠し情報は内部で推論） |
-| アーキテクチャ | ハイブリッド（MCTS→NNの教師データ→NN推論） |
-| 不完全情報の扱い | 期待値で1つの答えを出力 |
-| 学習データ生成 | Self-Play |
+| 項目             | 決定                                          |
+| ---------------- | --------------------------------------------- |
+| 入力             | 観測情報のみ（相手の隠し情報は内部で推論）    |
+| アーキテクチャ   | ハイブリッド（MCTS→NN の教師データ →NN 推論） |
+| 不完全情報の扱い | 期待値で 1 つの答えを出力                     |
+| 学習データ生成   | Self-Play                                     |
 
 ## 不完全情報の扱い
 
 ポケモン対戦の主要な不完全情報要素:
+
 1. 相手の控えポケモンの詳細（技構成、持ち物、努力値）
 2. 相手の技構成（最初は不明）
 3. 相手の持ち物
@@ -38,15 +39,15 @@
 
 ### 持ち物が判明するタイミング
 
-| 観測 | 判明する持ち物 |
-|------|---------------|
-| HP1で耐えた | きあいのタスキ |
-| 技が固定された | こだわり系 |
-| 2回行動した | こだわりスカーフ確定 |
+| 観測                   | 判明する持ち物          |
+| ---------------------- | ----------------------- |
+| HP1 で耐えた           | きあいのタスキ          |
+| 技が固定された         | こだわり系              |
+| 2 回行動した           | こだわりスカーフ確定    |
 | ダメージ量が異常に高い | こだわりハチマキ/メガネ |
-| 状態異常無効 | ラムのみ |
-| HP回復した | たべのこし、オボンのみ |
-| ブーストがかかった | ブーストエナジー |
+| 状態異常無効           | ラムのみ                |
+| HP 回復した            | たべのこし、オボンのみ  |
+| ブーストがかかった     | ブーストエナジー        |
 
 ## 全体アーキテクチャ
 
@@ -185,7 +186,7 @@ class ItemBeliefState:
 
 ### 3. HypothesisMCTS
 
-仮説ベースのMCTS。複数の持ち物仮説に対してMCTSを実行し、結果を集約。
+仮説ベースの MCTS。複数の持ち物仮説に対して MCTS を実行し、結果を集約。
 
 ```python
 class HypothesisMCTS:
@@ -211,7 +212,7 @@ class HypothesisMCTS:
 
 ### 4. ObservationEncoder
 
-観測情報をNNの入力形式（テンソル）に変換。
+観測情報を NN の入力形式（テンソル）に変換。
 
 ```python
 class ObservationEncoder:
@@ -249,27 +250,32 @@ class PolicyValueNetwork(nn.Module):
 ## 実装ロードマップ
 
 ### Phase 1: 基盤構築 ✅ 完了
+
 - [x] ItemPriorDatabase（持ち物事前確率）
 - [x] ItemBeliefState（信念状態管理）
 - [x] 観測からの信念更新ロジック
 
-### Phase 2: 仮説MCTS ✅ 完了
-- [x] 既存MCTSを拡張して仮説サンプリング対応
+### Phase 2: 仮説 MCTS ✅ 完了
+
+- [x] 既存 MCTS を拡張して仮説サンプリング対応
 - [x] 複数仮説の結果集約
-- [x] HypothesisMCTSBattleクラス（MyMCTSBattleの仮説対応版）
+- [x] HypothesisMCTSBattle クラス（MyMCTSBattle の仮説対応版）
 
 ### Phase 3: Self-Play データ生成 ✅ 完了
-- [x] 仮説MCTS同士の対戦ループ（SelfPlayGenerator）
-- [x] 盤面・Policy・Valueの記録フォーマット（TurnRecord, GameRecord）
+
+- [x] 仮説 MCTS 同士の対戦ループ（SelfPlayGenerator）
+- [x] 盤面・Policy・Value の記録フォーマット（TurnRecord, GameRecord）
 - [x] データ生成スクリプト（scripts/generate_selfplay_dataset.py）
 
 ### Phase 4: Neural Network ✅ 完了
-- [x] ObservationEncoder（盤面→テンソル）
-- [x] PolicyValueNetwork設計・学習
+
+- [x] ObservationEncoder（盤面 → テンソル）
+- [x] PolicyValueNetwork 設計・学習
 - [x] Trainer（学習ループ）
-- [x] NN誘導型MCTS（NNGuidedMCTS）
+- [x] NN 誘導型 MCTS（NNGuidedMCTS）
 
 ### Phase 5: 強化学習ループ ✅ 完了
+
 - [x] モデル評価器（新旧モデル対戦）
 - [x] 強化学習ループ（Self-Play → 学習 → 評価 → 採用判定）
 - [x] 実行スクリプト
@@ -301,31 +307,31 @@ scripts/
 
 ## 使い方
 
-### 1. 単発のSelf-Play + 学習
+### 1. 単発の Self-Play + 学習
 
 ```bash
 # Self-Playデータ生成
-poetry run python scripts/generate_selfplay_dataset.py \
+uv run python scripts/generate_selfplay_dataset.py \
   --num-games 100 --output data/selfplay_dataset.jsonl
 
 # Neural Network学習
-poetry run python scripts/train_policy_value_network.py \
+uv run python scripts/train_policy_value_network.py \
   --dataset data/selfplay_dataset.jsonl \
   --output models/policy_value_v1
 ```
 
-### 2. 強化学習ループ（AlphaZeroスタイル）
+### 2. 強化学習ループ（AlphaZero スタイル）
 
 ```bash
 # 完全な強化学習ループ
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
   --trainer-json data/top_rankers/season_27.json \
   --output models/reinforcement \
   --num-generations 10 \
   --games-per-generation 100
 
 # 軽量テスト
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
   --num-generations 3 \
   --games-per-generation 20 \
   --evaluation-games 10 \
@@ -334,6 +340,6 @@ poetry run python scripts/run_reinforcement_loop.py \
 
 ## 参考資料
 
-- AlphaGo / AlphaZero: Policy-Value Networkの基本アーキテクチャ
-- Pluribus (ポーカーAI): 不完全情報ゲームへのアプローチ
-- Information Set MCTS: 不完全情報を扱うMCTSの拡張
+- AlphaGo / AlphaZero: Policy-Value Network の基本アーキテクチャ
+- Pluribus (ポーカー AI): 不完全情報ゲームへのアプローチ
+- Information Set MCTS: 不完全情報を扱う MCTS の拡張

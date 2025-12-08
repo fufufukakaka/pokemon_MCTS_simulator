@@ -5,7 +5,7 @@ Self-Play データ生成スクリプト
 仮説ベースMCTS同士を対戦させ、Policy-Value Networkの学習用データを生成する。
 
 Usage:
-    poetry run python scripts/generate_selfplay_dataset.py \
+    uv run python scripts/generate_selfplay_dataset.py \
         --trainer-json data/top_rankers/season_27.json \
         --output data/selfplay_dataset.jsonl \
         --num-games 100 \
@@ -24,11 +24,7 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-from src.hypothesis import (
-    ItemPriorDatabase,
-    SelfPlayGenerator,
-    save_records_to_jsonl,
-)
+from src.hypothesis import ItemPriorDatabase, SelfPlayGenerator, save_records_to_jsonl
 from src.pokemon_battle_sim.pokemon import Pokemon
 
 
@@ -45,9 +41,7 @@ def select_random_matchup(trainers: list[dict]) -> tuple[dict, dict]:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Self-Play データ生成"
-    )
+    parser = argparse.ArgumentParser(description="Self-Play データ生成")
     parser.add_argument(
         "--trainer-json",
         type=str,
@@ -125,7 +119,9 @@ def main():
     # 事前確率データベース構築
     print("持ち物事前確率データベースを構築中...")
     prior_db = ItemPriorDatabase.from_trainer_json(args.trainer_json)
-    print(f"  {len(prior_db.get_all_pokemon_names())} 種のポケモンの持ち物分布を構築しました")
+    print(
+        f"  {len(prior_db.get_all_pokemon_names())} 種のポケモンの持ち物分布を構築しました"
+    )
 
     # Self-Playジェネレーター
     generator = SelfPlayGenerator(

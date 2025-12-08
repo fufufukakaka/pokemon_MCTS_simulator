@@ -29,16 +29,17 @@ def main(input_path: Path, output_path: Path) -> None:
     静的データセットを LLM-jp 向けチャット形式データセットに変換する。
 
     使い方:
-        poetry run python scripts/convert_llm_static_to_chat_sft.py \\
+        uv run python scripts/convert_llm_static_to_chat_sft.py \\
             --input data/llm_static_dataset.jsonl \\
             --output data/llm_sft_chat_dataset.jsonl
     """
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     count = 0
-    with input_path.open("r", encoding="utf-8") as fin, output_path.open(
-        "w", encoding="utf-8"
-    ) as fout:
+    with (
+        input_path.open("r", encoding="utf-8") as fin,
+        output_path.open("w", encoding="utf-8") as fout,
+    ):
         for line in fin:
             if not line.strip():
                 continue
@@ -53,5 +54,3 @@ def main(input_path: Path, output_path: Path) -> None:
 
 if __name__ == "__main__":
     main()
-
-

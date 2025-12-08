@@ -124,7 +124,7 @@ def main(trainer_json: Path, output: Path, num_battles: int, seed: int) -> None:
     ダメージ計算 API を用いた静的教師データセットを生成する。
 
     使い方:
-        poetry run python scripts/generate_llm_static_dataset.py \
+        uv run python scripts/generate_llm_static_dataset.py \
             --num-battles 1000 \
             --output data/llm_static_dataset.jsonl
     """

@@ -5,7 +5,7 @@ Policy-Value Network 学習スクリプト
 Self-Playデータを使ってPolicy-Value Networkを学習する。
 
 Usage:
-    poetry run python scripts/train_policy_value_network.py \
+    uv run python scripts/train_policy_value_network.py \
         --dataset data/selfplay_dataset.jsonl \
         --output models/policy_value_v1 \
         --num-epochs 100 \

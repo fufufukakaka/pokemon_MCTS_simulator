@@ -4,10 +4,10 @@
 
 ## 機能
 
-- **ポケモン対戦シミュレーション**: Gen9対応の対戦シミュレータ
-- **MCTS (Monte Carlo Tree Search)**: 仮説ベースのMCTSで不完全情報ゲームに対応
-- **Policy-Value Network**: AlphaZeroスタイルの行動予測・勝率予測ネットワーク
-- **Team Selection Network**: 相手チームを見て最適な3匹を選出するネットワーク
+- **ポケモン対戦シミュレーション**: Gen9 対応の対戦シミュレータ
+- **MCTS (Monte Carlo Tree Search)**: 仮説ベースの MCTS で不完全情報ゲームに対応
+- **Policy-Value Network**: AlphaZero スタイルの行動予測・勝率予測ネットワーク
+- **Team Selection Network**: 相手チームを見て最適な 3 匹を選出するネットワーク
 - **強化学習ループ**: Self-Play → 学習 → 評価のサイクルで継続的に強化
 - **固定パーティモード**: 自分のパーティを固定して最適な戦い方を学習
 
@@ -27,11 +27,11 @@ poetry install
 
 ## 強化学習パイプライン
 
-### 1. Self-Playデータ生成
+### 1. Self-Play データ生成
 
 ```bash
 # 純粋MCTSでSelf-Playデータを生成
-poetry run python scripts/generate_selfplay_dataset.py \
+uv run python scripts/generate_selfplay_dataset.py \
     --trainer-json data/top_rankers/season_27.json \
     --output data/selfplay_records.jsonl \
     --num-games 100 \
@@ -42,7 +42,7 @@ poetry run python scripts/generate_selfplay_dataset.py \
 
 ```bash
 # Self-PlayデータでPolicy-Value Networkを学習
-poetry run python scripts/train_policy_value_network.py \
+uv run python scripts/train_policy_value_network.py \
     --dataset data/selfplay_records.jsonl \
     --output models/policy_value \
     --hidden-dim 256 \
@@ -53,7 +53,7 @@ poetry run python scripts/train_policy_value_network.py \
 
 ```bash
 # AlphaZeroスタイルの強化学習ループ（標準モード）
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
     --trainer-json data/top_rankers/season_27.json \
     --output models/reinforcement \
     --num-generations 10 \
@@ -61,7 +61,7 @@ poetry run python scripts/run_reinforcement_loop.py \
     --evaluation-games 50
 
 # 軽量テスト
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
     --trainer-json data/top_rankers/season_27.json \
     --output models/reinforcement_test \
     --num-generations 3 \
@@ -78,7 +78,7 @@ poetry run python scripts/run_reinforcement_loop.py \
 # 固定パーティで強化学習
 # - Player 0: 固定パーティ（自分）
 # - Player 1: trainer-jsonからランダムに選出（対戦相手）
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
     --trainer-json data/top_rankers/season_36.json \
     --fixed-party data/my_fixed_party.json \
     --output models/my_party_rl \
@@ -87,7 +87,7 @@ poetry run python scripts/run_reinforcement_loop.py \
     --evaluation-games 50
 
 # Team Selection Networkも同時に学習
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
     --trainer-json data/top_rankers/season_36.json \
     --fixed-party data/my_fixed_party.json \
     --output models/my_party_rl_with_selection \
@@ -98,7 +98,7 @@ poetry run python scripts/run_reinforcement_loop.py \
     --team-selection-update-interval 1
 ```
 
-#### 固定パーティJSONの形式
+#### 固定パーティ JSON の形式
 
 ```json
 {
@@ -121,20 +121,20 @@ poetry run python scripts/run_reinforcement_loop.py \
 
 ## Team Selection Network
 
-相手の6匹を見て、自分の6匹から最適な3匹を選出するネットワーク。
+相手の 6 匹を見て、自分の 6 匹から最適な 3 匹を選出するネットワーク。
 
 ### 単独学習
 
 ```bash
 # ランダムデータで初期学習
-poetry run python scripts/train_team_selection.py \
+uv run python scripts/train_team_selection.py \
     --trainer-json data/top_rankers/season_27.json \
     --output models/team_selection \
     --num-samples 10000 \
     --num-epochs 50
 
 # Self-Playデータで学習（より高品質）
-poetry run python scripts/train_team_selection.py \
+uv run python scripts/train_team_selection.py \
     --trainer-json data/top_rankers/season_27.json \
     --selfplay-data data/selfplay_records.jsonl \
     --output models/team_selection \
@@ -143,10 +143,10 @@ poetry run python scripts/train_team_selection.py \
 
 ### 強化学習ループ内で学習
 
-強化学習ループ実行時に `--train-team-selection` オプションを指定すると、Self-Play中に収集した選出データを使ってTeam Selection Networkも同時に学習する。
+強化学習ループ実行時に `--train-team-selection` オプションを指定すると、Self-Play 中に収集した選出データを使って Team Selection Network も同時に学習する。
 
 ```bash
-poetry run python scripts/run_reinforcement_loop.py \
+uv run python scripts/run_reinforcement_loop.py \
     --trainer-json data/top_rankers/season_36.json \
     --output models/reinforcement_with_selection \
     --num-generations 20 \
@@ -157,7 +157,8 @@ poetry run python scripts/run_reinforcement_loop.py \
 ```
 
 **オプション:**
-- `--train-team-selection`: Team Selection Networkの学習を有効化
+
+- `--train-team-selection`: Team Selection Network の学習を有効化
 - `--team-selection-epochs`: 学習エポック数（デフォルト: 20）
 - `--team-selection-update-interval`: 何世代ごとに更新するか（デフォルト: 1）
 
@@ -191,17 +192,18 @@ selected = top_n_selector.select(my_team, opp_team, num_select=3)
 
 ## データ変換ツール
 
-### CSV → トレーナーJSON変換
+### CSV → トレーナー JSON 変換
 
-ポケモンのCSVデータをトレーナーJSON形式に変換するスクリプト。
+ポケモンの CSV データをトレーナー JSON 形式に変換するスクリプト。
 
 ```bash
-poetry run python scripts/convert_csv_to_trainer_json.py \
+uv run python scripts/convert_csv_to_trainer_json.py \
     --input data/season_36_pokemon_data.csv \
     --output data/top_rankers/season_36.json
 ```
 
-**CSVの形式:**
+**CSV の形式:**
+
 ```csv
 rank,rating,trainer_name,pokemon1_name,pokemon1_item,pokemon1_nature,...
 ```
@@ -220,39 +222,151 @@ POSTGRES_PASSWORD={} \
 POSTGRES_USER={} \
 POSTGRES_HOST={} \
 POSTGRES_PORT={} \
-poetry run python scripts/matching.py --resume
+uv run python scripts/matching.py --resume
 ```
 
 ---
 
-## LLMデータセット生成
+## LLM データセット生成
 
 ```bash
 # 静的データセット生成（ダメージ計算ベース）
-poetry run python scripts/generate_llm_static_dataset.py \
+uv run python scripts/generate_llm_static_dataset.py \
     --trainer-json data/top_rankers/season_27.json \
     --output data/llm_static_dataset.jsonl \
     --num-battles 10000
 
 # チャット形式に変換（SFT用）
-poetry run python scripts/convert_llm_static_to_chat_sft.py \
+uv run python scripts/convert_llm_static_to_chat_sft.py \
     --input data/llm_static_dataset.jsonl \
     --output data/llm_sft_chat_dataset.jsonl
 ```
 
 ---
 
-## ダメージ計算API
+## ダメージ計算 API
 
 ```bash
 # FastAPIサーバー起動
-poetry run python src/damage_calculator_api/main.py
+uv run python src/damage_calculator_api/main.py
 
 # または uvicorn で起動
-poetry run uvicorn src.damage_calculator_api.main:app --reload --port 8000
+uv run uvicorn src.damage_calculator_api.main:app --reload --port 8000
 ```
 
 API ドキュメント: http://localhost:8000/docs
+
+---
+
+## Human vs ReBeL AI Battle Interface
+
+学習した ReBeL AI モデルと人間が対戦できる Web インターフェース。
+
+### 必要なもの
+
+- 学習済みモデル（例: `models/rebel_selection_vs_my_party`）
+- 固定パーティ JSON（例: `data/my_fixed_party.json`）
+- Node.js + pnpm（フロントエンド用）
+
+### セットアップ
+
+```bash
+# フロントエンドの依存関係インストール（初回のみ）
+cd frontend
+pnpm install
+cd ..
+```
+
+### 起動方法
+
+**ターミナル 1: バックエンド（FastAPI）**
+
+```bash
+uv run python -m src.battle_api.main
+```
+
+バックエンドは http://localhost:8001 で起動します。
+
+**ターミナル 2: フロントエンド（Next.js）**
+
+```bash
+cd frontend
+pnpm dev
+```
+
+フロントエンドは http://localhost:3000 で起動します。
+
+### 使い方
+
+1. ブラウザで http://localhost:3000 にアクセス
+2. **対戦相手選択**: トレーナー一覧から対戦相手を選ぶ
+3. **選出フェーズ**:
+   - 相手の 6 匹が表示される
+   - 自分のパーティ（`my_fixed_party.json`）から 3 匹を選ぶ
+   - AI はニューラルネットワークで最適な 3 匹を自動選出
+4. **バトルフェーズ**:
+   - 技を選択（MOVE_0〜MOVE_3）または交代（SWITCH）
+   - テラスタル可能（1 回のみ）
+   - ダメージログがリアルタイムで表示される
+5. 勝敗が決まると結果が表示される
+
+### スクリーンショット
+
+```
+┌─────────────────────────────────────────────────────┐
+│  相手の6匹を見て、あなたの3匹を選んでください        │
+├─────────────────────────────────────────────────────┤
+│  [相手のポケモン6匹のカード]                         │
+│                                                     │
+│  あなたのパーティ:                                   │
+│  [選択可能なポケモン6匹のカード]                     │
+│                                                     │
+│  選出: ① アルセウス  ② コライドン  ③ サーフゴー    │
+│                                [選出を確定]          │
+└─────────────────────────────────────────────────────┘
+```
+
+### カスタマイズ
+
+#### 自分のパーティを変更する
+
+`data/my_fixed_party.json` を編集:
+
+```json
+{
+  "pokemons": [
+    {
+      "name": "ポケモン名",
+      "item": "持ち物",
+      "ability": "特性",
+      "nature": "性格",
+      "Ttype": "テラスタイプ",
+      "effort": [H, A, B, C, D, S],
+      "moves": ["技1", "技2", "技3", "技4"]
+    }
+  ]
+}
+```
+
+#### 使用するモデルを変更する
+
+`src/battle_api/main.py` 内の以下のパスを変更:
+
+```python
+# モデルパス
+MODEL_PATH = "models/rebel_selection_vs_my_party"
+
+# パーティパス
+FIXED_PARTY_PATH = "data/my_fixed_party.json"
+```
+
+### 技術構成
+
+- **バックエンド**: FastAPI + Python
+  - `src/battle_api/main.py`: セッション管理、ReBeL AI、バトル進行
+- **フロントエンド**: Next.js 15 + shadcn/ui + Tailwind CSS
+  - `frontend/src/app/page.tsx`: メインページ
+  - `frontend/src/components/`: UI コンポーネント
 
 ---
 
@@ -260,10 +374,10 @@ API ドキュメント: http://localhost:8000/docs
 
 ```bash
 # バトル履歴抽出
-poetry run python src/utils/extract_battle_history.py
+uv run python src/utils/extract_battle_history.py
 
 # Word2Vecモデル学習
-poetry run python src/utils/train_word2vec.py
+uv run python src/utils/train_word2vec.py
 ```
 
 ---
@@ -296,5 +410,5 @@ src/
 ## 注意事項
 
 - `Pokemon.init()` はコード内で最初に呼ぶ必要があります
-- GPUがある場合は自動的に使用されます（`--device cuda` で明示指定可能）
+- GPU がある場合は自動的に使用されます（`--device cuda` で明示指定可能）
 - 強化学習ループは時間がかかります（軽量テストオプションを使用推奨）

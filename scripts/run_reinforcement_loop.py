@@ -5,14 +5,14 @@
 AlphaZeroスタイルのSelf-Play + 学習 + 評価のループを実行する。
 
 Usage:
-    poetry run python scripts/run_reinforcement_loop.py \
+    uv run python scripts/run_reinforcement_loop.py \
         --trainer-json data/top_rankers/season_27.json \
         --output models/reinforcement \
         --num-generations 10 \
         --games-per-generation 100
 
     # 軽量テスト
-    poetry run python scripts/run_reinforcement_loop.py \
+    uv run python scripts/run_reinforcement_loop.py \
         --trainer-json data/top_rankers/season_27.json \
         --output models/reinforcement_test \
         --num-generations 3 \
@@ -184,6 +184,7 @@ def main():
     fixed_party = None
     if args.fixed_party:
         import json
+
         with open(args.fixed_party, "r", encoding="utf-8") as f:
             fixed_party_data = json.load(f)
         # {"pokemons": [...]} or [...] の両方に対応
