@@ -38,6 +38,21 @@ from src.policy_value_network.team_selection_network import (
     TeamSelectionNetworkConfig,
 )
 
+# Selection BERT (optional import)
+try:
+    from src.selection_bert import (
+        PokemonBertConfig,
+        PokemonBertForMLM,
+        PokemonBertForTokenClassification,
+        PokemonSelectionDataset,
+        PokemonVocab,
+        SelectionBeliefPredictor,
+    )
+
+    SELECTION_BERT_AVAILABLE = True
+except ImportError:
+    SELECTION_BERT_AVAILABLE = False
+
 from .belief_state import Observation, ObservationType, PokemonBeliefState
 from .cfr_solver import CFRConfig, ReBeLSolver
 from .full_belief_state import FullBeliefState
@@ -209,6 +224,14 @@ class TrainingConfig:
     train_selection: bool = False  # 選出ネットワークも学習するか
     selection_learning_rate: float = 1e-4
     selection_explore_prob: float = 0.3  # 探索時にランダム選出する確率
+
+    # Selection BERT の設定（train_selection=True かつ use_selection_bert=True で有効）
+    use_selection_bert: bool = False  # Selection BERT を使用するか
+    selection_bert_pretrained: Optional[str] = None  # 事前学習済みBERTモデルのパス
+    selection_bert_hidden_size: int = 256
+    selection_bert_num_layers: int = 4
+    selection_bert_num_heads: int = 4
+    selection_bert_epochs_per_iter: int = 5  # 各イテレーションでのエポック数
 
     # ポケモン統計データのパス
     usage_data_path: Optional[str] = None  # None の場合はデフォルト(season22.json)を使用
@@ -628,17 +651,28 @@ class ReBeLTrainer:
         self.selection_optimizer: Optional[optim.Optimizer] = None
         self.selection_encoder: Optional[TeamSelectionEncoder] = None
 
+        # Selection BERT（オプション）
+        self.selection_bert: Optional[PokemonBertForTokenClassification] = None
+        self.selection_bert_optimizer: Optional[optim.Optimizer] = None
+        self.selection_bert_vocab: Optional[PokemonVocab] = None
+        self.selection_bert_predictor: Optional["SelectionBeliefPredictor"] = None
+
         if self.config.train_selection:
-            self.selection_encoder = TeamSelectionEncoder()
-            self.selection_network = selection_network or TeamSelectionNetwork(
-                TeamSelectionNetworkConfig(pokemon_feature_dim=15)
-            )
-            self.selection_network.to(self.config.device)
-            self.selection_optimizer = optim.AdamW(
-                self.selection_network.parameters(),
-                lr=self.config.selection_learning_rate,
-                weight_decay=self.config.weight_decay,
-            )
+            if self.config.use_selection_bert and SELECTION_BERT_AVAILABLE:
+                # Selection BERT を使用
+                self._init_selection_bert()
+            else:
+                # 従来の TeamSelectionNetwork を使用
+                self.selection_encoder = TeamSelectionEncoder()
+                self.selection_network = selection_network or TeamSelectionNetwork(
+                    TeamSelectionNetworkConfig(pokemon_feature_dim=15)
+                )
+                self.selection_network.to(self.config.device)
+                self.selection_optimizer = optim.AdamW(
+                    self.selection_network.parameters(),
+                    lr=self.config.selection_learning_rate,
+                    weight_decay=self.config.weight_decay,
+                )
 
         # 学習履歴
         self.training_history: list[dict] = []
@@ -811,19 +845,27 @@ class ReBeLTrainer:
 
         if self.config.use_full_belief:
             # 完全信念状態を使用（選出・先発の不確実性を含む）
+            # Selection BERT があれば使用して相手の選出を予測
+            trainer0_names = [p.get("name", "") for p in trainer0_team]
+            trainer1_names = [p.get("name", "") for p in trainer1_team]
+
             full_belief_0 = FullBeliefState(
-                team_preview_names=[p.get("name", "") for p in trainer1_team],
+                team_preview_names=trainer1_names,
                 team_preview_data=trainer1_team,
                 usage_db=self.usage_db,
-                selector=None,  # TODO: TeamSelectorを渡す
+                selector=None,
                 my_team_data=trainer0_team,
+                my_team_names=trainer0_names,
+                selection_bert_predictor=self.selection_bert_predictor,
             )
             full_belief_1 = FullBeliefState(
-                team_preview_names=[p.get("name", "") for p in trainer0_team],
+                team_preview_names=trainer0_names,
                 team_preview_data=trainer0_team,
                 usage_db=self.usage_db,
                 selector=None,
                 my_team_data=trainer1_team,
+                my_team_names=trainer1_names,
+                selection_bert_predictor=self.selection_bert_predictor,
             )
             full_beliefs = [full_belief_0, full_belief_1]
 
@@ -1467,9 +1509,17 @@ class ReBeLTrainer:
 
         # 選出ネットワークの学習
         selection_loss = 0.0
+        selection_bert_loss = 0.0
         if self.config.train_selection and len(all_selection_data) > 0:
-            selection_loss = self._train_selection_network(all_selection_data)
-            print(f"  Selection Network Average loss: {selection_loss:.4f}")
+            if self.config.use_selection_bert and self.selection_bert is not None:
+                # Selection BERT を使用
+                bert_metrics = self._train_selection_bert(all_selection_data, iteration)
+                selection_bert_loss = bert_metrics.get("selection_bert_loss", 0.0)
+                print(f"  Selection BERT Average loss: {selection_bert_loss:.4f}")
+            else:
+                # 従来の TeamSelectionNetwork を使用
+                selection_loss = self._train_selection_network(all_selection_data)
+                print(f"  Selection Network Average loss: {selection_loss:.4f}")
 
         stats = {
             "iteration": iteration,
@@ -1477,6 +1527,7 @@ class ReBeLTrainer:
             "games": self.config.games_per_iteration,
             "avg_loss": avg_loss,
             "selection_loss": selection_loss,
+            "selection_bert_loss": selection_bert_loss,
             "wins_p0": wins[0],
             "wins_p1": wins[1],
             "draws": wins[None],
@@ -1648,6 +1699,9 @@ class ReBeLTrainer:
             if self.selection_encoder is not None:
                 self.selection_encoder.save(path / "selection_encoder.json")
 
+        # Selection BERT の保存
+        self._save_selection_bert(path)
+
     def load(self, path: Path) -> None:
         """モデルを読み込み"""
         self.value_network.load_state_dict(
@@ -1678,6 +1732,9 @@ class ReBeLTrainer:
         selection_enc_path = path / "selection_encoder.json"
         if selection_enc_path.exists():
             self.selection_encoder = TeamSelectionEncoder.load(selection_enc_path)
+
+        # Selection BERT の読み込み
+        self._load_selection_bert(path)
 
     def evaluate_against_baseline(
         self,
@@ -1791,3 +1848,182 @@ class ReBeLTrainer:
         print(f"  Avg turns:     {avg_turns:.1f}")
 
         return results
+
+    # ============================================================
+    # Selection BERT 関連メソッド
+    # ============================================================
+
+    def _init_selection_bert(self) -> None:
+        """Selection BERT を初期化"""
+        if not SELECTION_BERT_AVAILABLE:
+            print("Warning: Selection BERT not available, skipping initialization")
+            return
+
+        # 語彙読み込み
+        zukan_path = Path("data/zukan.txt")
+        if not zukan_path.exists():
+            print(f"Warning: {zukan_path} not found, skipping Selection BERT")
+            return
+
+        self.selection_bert_vocab = PokemonVocab.from_zukan(zukan_path)
+        print(f"  Selection BERT vocab size: {len(self.selection_bert_vocab)}")
+
+        # モデル設定
+        config = PokemonBertConfig(
+            vocab_size=len(self.selection_bert_vocab),
+            hidden_size=self.config.selection_bert_hidden_size,
+            num_hidden_layers=self.config.selection_bert_num_layers,
+            num_attention_heads=self.config.selection_bert_num_heads,
+            intermediate_size=self.config.selection_bert_hidden_size * 2,
+        )
+
+        # 事前学習済みモデルがあれば読み込み
+        if self.config.selection_bert_pretrained:
+            pretrained_path = Path(self.config.selection_bert_pretrained)
+            if pretrained_path.exists():
+                print(f"  Loading pretrained Selection BERT from {pretrained_path}")
+                # MLM モデルを読み込み
+                mlm_model = PokemonBertForMLM(config)
+                mlm_model.load_state_dict(
+                    torch.load(pretrained_path / "best_model.pt", map_location="cpu")
+                )
+                # Token Classification に変換
+                self.selection_bert = PokemonBertForTokenClassification.from_pretrained_mlm(
+                    mlm_model, config
+                )
+            else:
+                print(f"  Warning: Pretrained model not found at {pretrained_path}")
+                self.selection_bert = PokemonBertForTokenClassification(config)
+        else:
+            # 新規作成
+            self.selection_bert = PokemonBertForTokenClassification(config)
+
+        self.selection_bert.to(self.config.device)
+        self.selection_bert_optimizer = optim.AdamW(
+            self.selection_bert.parameters(),
+            lr=self.config.selection_learning_rate,
+            weight_decay=self.config.weight_decay,
+        )
+
+        # SelectionBeliefPredictor を作成（信念状態に使用）
+        self.selection_bert_predictor = SelectionBeliefPredictor(
+            model=self.selection_bert,
+            vocab=self.selection_bert_vocab,
+            device=self.config.device,
+        )
+        print(f"  Selection BERT initialized on {self.config.device}")
+        print(f"  SelectionBeliefPredictor ready for belief state integration")
+
+    def _train_selection_bert(
+        self, selection_data: list[SelectionExample], iteration: int
+    ) -> dict[str, float]:
+        """
+        Selection BERT を学習
+
+        Args:
+            selection_data: 選出データ
+            iteration: イテレーション番号
+
+        Returns:
+            学習メトリクス
+        """
+        if self.selection_bert is None or self.selection_bert_vocab is None:
+            return {}
+
+        # SelectionExample を PokemonSelectionDataset 形式に変換
+        matchups = []
+        for ex in selection_data:
+            # 勝者側のデータのみ使用（または全データ）
+            if ex.winner == ex.perspective or ex.winner is None:
+                matchups.append({
+                    "my_team": [p["name"] for p in ex.my_team_data],
+                    "opp_team": [p["name"] for p in ex.opp_team_data],
+                    "my_selection": ex.selected_indices,
+                    "opp_selection": [0, 1, 2],  # 相手の選出は不明なので仮
+                })
+
+        if not matchups:
+            return {"selection_bert_loss": 0.0}
+
+        dataset = PokemonSelectionDataset(matchups, self.selection_bert_vocab)
+        dataloader = DataLoader(
+            dataset, batch_size=self.config.batch_size, shuffle=True
+        )
+
+        self.selection_bert.train()
+        total_loss = 0.0
+        num_batches = 0
+
+        for epoch in range(self.config.selection_bert_epochs_per_iter):
+            epoch_loss = 0.0
+            for batch in dataloader:
+                input_ids = batch["input_ids"].to(self.config.device)
+                attention_mask = batch["attention_mask"].to(self.config.device)
+                token_type_ids = batch["token_type_ids"].to(self.config.device)
+                labels = batch["labels"].to(self.config.device)
+
+                self.selection_bert_optimizer.zero_grad()
+                output = self.selection_bert(
+                    input_ids, attention_mask, token_type_ids, labels=labels
+                )
+                loss = output["loss"]
+                loss.backward()
+                self.selection_bert_optimizer.step()
+
+                epoch_loss += loss.item()
+                num_batches += 1
+
+            total_loss += epoch_loss
+
+        avg_loss = total_loss / num_batches if num_batches > 0 else 0.0
+        return {"selection_bert_loss": avg_loss}
+
+    def _save_selection_bert(self, path: Path) -> None:
+        """Selection BERT を保存"""
+        if self.selection_bert is None or self.selection_bert_vocab is None:
+            return
+
+        torch.save(self.selection_bert.state_dict(), path / "selection_bert.pt")
+        if self.selection_bert_optimizer:
+            torch.save(
+                self.selection_bert_optimizer.state_dict(),
+                path / "selection_bert_optimizer.pt",
+            )
+        self.selection_bert_vocab.save(path / "selection_bert_vocab.json")
+
+    def _load_selection_bert(self, path: Path) -> None:
+        """Selection BERT を読み込み"""
+        if not SELECTION_BERT_AVAILABLE:
+            return
+
+        vocab_path = path / "selection_bert_vocab.json"
+        model_path = path / "selection_bert.pt"
+
+        if not vocab_path.exists() or not model_path.exists():
+            return
+
+        self.selection_bert_vocab = PokemonVocab.load(vocab_path)
+
+        config = PokemonBertConfig(
+            vocab_size=len(self.selection_bert_vocab),
+            hidden_size=self.config.selection_bert_hidden_size,
+            num_hidden_layers=self.config.selection_bert_num_layers,
+            num_attention_heads=self.config.selection_bert_num_heads,
+            intermediate_size=self.config.selection_bert_hidden_size * 2,
+        )
+
+        self.selection_bert = PokemonBertForTokenClassification(config)
+        self.selection_bert.load_state_dict(
+            torch.load(model_path, map_location=self.config.device)
+        )
+        self.selection_bert.to(self.config.device)
+
+        opt_path = path / "selection_bert_optimizer.pt"
+        if opt_path.exists() and self.selection_bert_optimizer is None:
+            self.selection_bert_optimizer = optim.AdamW(
+                self.selection_bert.parameters(),
+                lr=self.config.selection_learning_rate,
+            )
+            self.selection_bert_optimizer.load_state_dict(
+                torch.load(opt_path, map_location=self.config.device)
+            )

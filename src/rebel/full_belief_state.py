@@ -27,6 +27,7 @@ from .team_composition_belief import TeamCompositionBelief, TeamCompositionHypot
 
 if TYPE_CHECKING:
     from src.policy_value_network.team_selector import NNTeamSelector
+    from src.selection_bert.selection_belief import SelectionBeliefPredictor
 
 
 @dataclass
@@ -62,6 +63,8 @@ class FullBeliefState:
         usage_db: PokemonUsageDatabase,
         selector: Optional["NNTeamSelector"] = None,
         my_team_data: Optional[list[dict]] = None,
+        my_team_names: Optional[list[str]] = None,
+        selection_bert_predictor: Optional["SelectionBeliefPredictor"] = None,
         max_hypotheses_per_pokemon: int = 50,
     ):
         """
@@ -71,6 +74,8 @@ class FullBeliefState:
             usage_db: 使用率データベース
             selector: TeamSelectionNetwork（Noneなら一様分布）
             my_team_data: 自分の6匹のデータ（selector使用時に必要）
+            my_team_names: 自分の6匹の名前（selection_bert_predictor使用時に必要）
+            selection_bert_predictor: SelectionBeliefPredictor（selection_bertを使う場合）
             max_hypotheses_per_pokemon: ポケモンあたりの最大型仮説数
         """
         self.team_preview_names = team_preview_names
@@ -82,7 +87,14 @@ class FullBeliefState:
         self.name_to_index = {name: i for i, name in enumerate(team_preview_names)}
 
         # チーム構成の信念
-        if selector is not None and my_team_data is not None:
+        # Selection BERTを優先、次にNNTeamSelector、どちらもなければ一様分布
+        if selection_bert_predictor is not None and my_team_names is not None:
+            self.composition_belief = TeamCompositionBelief.from_selection_bert(
+                team_preview_names=team_preview_names,
+                my_team_names=my_team_names,
+                predictor=selection_bert_predictor,
+            )
+        elif selector is not None and my_team_data is not None:
             self.composition_belief = TeamCompositionBelief.from_selection_network(
                 team_preview_names=team_preview_names,
                 team_preview_data=team_preview_data,

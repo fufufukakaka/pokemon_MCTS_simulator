@@ -16,6 +16,7 @@ from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from src.policy_value_network.team_selector import NNTeamSelector
+    from src.selection_bert.selection_belief import SelectionBeliefPredictor
 
 
 @dataclass
@@ -143,6 +144,70 @@ class TeamCompositionBelief:
                 lead_sum = sum(
                     lead_probs[i] if i < len(lead_probs) else 0.1
                     for i in selected
+                )
+                if lead_sum > 0:
+                    normalized_lead_prob = lead_prob / lead_sum
+                else:
+                    normalized_lead_prob = 1.0 / 3.0
+
+                hypothesis = TeamCompositionHypothesis(
+                    selected_indices=tuple(sorted(selected)),
+                    lead_index=lead,
+                )
+                belief.hypotheses[hypothesis] = selection_prob * normalized_lead_prob
+
+        belief._normalize()
+        return belief
+
+    @classmethod
+    def from_selection_bert(
+        cls,
+        team_preview_names: list[str],
+        my_team_names: list[str],
+        predictor: "SelectionBeliefPredictor",
+    ) -> "TeamCompositionBelief":
+        """
+        Selection BERTの出力を事前分布として信念を初期化
+
+        Args:
+            team_preview_names: 相手の6匹の名前
+            my_team_names: 自分の6匹の名前
+            predictor: SelectionBeliefPredictor
+
+        Returns:
+            初期化されたTeamCompositionBelief
+        """
+        belief = cls(team_preview_names=team_preview_names)
+
+        # Selection BERTで相手の選出を予測（相手視点で予測）
+        # 引数の順序: predict(my_team, opp_team) なので、
+        # 相手視点では my_team=team_preview_names, opp_team=my_team_names
+        _, opp_pred = predictor.predict(team_preview_names, my_team_names)
+
+        selection_probs = opp_pred.selection_probs  # 6次元
+        lead_probs = opp_pred.lead_probs  # 6次元
+
+        # 仮説の確率を計算
+        belief.hypotheses = {}
+        n = len(team_preview_names)
+
+        for selected in combinations(range(n), 3):
+            # 選出確率（独立仮定で近似）
+            # P(A, B, C selected) ≈ P(A) * P(B) * P(C) / Z
+            selection_prob = 1.0
+            for idx in selected:
+                if idx < len(selection_probs):
+                    selection_prob *= selection_probs[idx]
+                else:
+                    selection_prob *= 0.5  # デフォルト
+
+            for lead in selected:
+                # 先発確率（選出された3匹の中での条件付き確率）
+                lead_prob = lead_probs[lead] if lead < len(lead_probs) else 0.1
+
+                # 先発確率を選出された3匹内で正規化
+                lead_sum = sum(
+                    lead_probs[i] if i < len(lead_probs) else 0.1 for i in selected
                 )
                 if lead_sum > 0:
                     normalized_lead_prob = lead_prob / lead_sum
