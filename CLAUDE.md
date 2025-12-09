@@ -323,13 +323,18 @@ uv run python scripts/train_rebel.py \
 
 # High accuracy training (slower, more precise CFR)
 uv run python scripts/train_rebel.py \
-  --trainer-json data/top_rankers/season_27.json \
+  --trainer-json data/top_rankers/season_36.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
-  --output models/rebel \
-  --num-iterations 20 \
+  --output models/rebel_v2 \
+  --num-iterations 100 \
+  --games-per-iteration 50 \
   --cfr-iterations 50 \
   --cfr-world-samples 30 \
-  --no-lightweight-cfr
+  --num-workers 8 \
+  --no-lightweight-cfr \
+  --device cuda \
+  --use-full-belief \
+  --train-selection
 
 # Training against fixed opponent (for debugging/testing)
 uv run python scripts/train_rebel.py \
