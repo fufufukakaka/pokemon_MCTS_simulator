@@ -90,6 +90,94 @@ BERRIES = [
     "カシブのみ", "レンブのみ", "ロゼルのみ",
 ]
 
+# 特性の検出パターン（特性名: 発動時のログキーワードリスト）
+# 各特性は発動時に特徴的なログ出力があるものを対象とする
+ABILITY_PATTERNS: dict[str, list[str]] = {
+    # 場に出た時に発動する特性
+    "いかく": ["いかく", "こうげきが下がった"],
+    "かたやぶり": ["かたやぶり"],
+    "ひでり": ["ひざしがつよくなった", "ひでり"],
+    "あめふらし": ["あめがふりはじめた", "あめふらし"],
+    "すなおこし": ["すなあらしになった", "すなおこし"],
+    "ゆきふらし": ["あられがふりはじめた", "ゆきふらし"],
+    "エレキメイカー": ["エレキフィールド", "エレキメイカー"],
+    "サイコメイカー": ["サイコフィールド", "サイコメイカー"],
+    "グラスメイカー": ["グラスフィールド", "グラスメイカー"],
+    "ミストメイカー": ["ミストフィールド", "ミストメイカー"],
+    "ダウンロード": ["ダウンロード"],
+    "トレース": ["トレース"],
+    "かわりもの": ["かわりもの", "へんしんした"],
+    "イリュージョン": ["イリュージョン"],
+    "おみとおし": ["おみとおし", "持ち物を見通した"],
+    "きんちょうかん": ["きんちょうかん"],
+    "プレッシャー": ["プレッシャー"],
+    "わるいてぐせ": ["わるいてぐせ", "奪った"],
+    "ゆうばく": ["ゆうばく", "まきこんだ"],
+    "てつのトゲ": ["てつのトゲ"],
+    "さめはだ": ["さめはだ"],
+    # ダメージ時に発動する特性
+    "がんじょう": ["がんじょう", "こらえた"],
+    "ばけのかわ": ["ばけのかわ"],
+    "マルチスケイル": ["マルチスケイル"],
+    "ファントムガード": ["ファントムガード"],
+    "ふしぎなまもり": ["ふしぎなまもり"],
+    "もらいび": ["もらいび"],
+    "ちょすい": ["ちょすい"],
+    "よびみず": ["よびみず"],
+    "ひらいしん": ["ひらいしん"],
+    "でんきエンジン": ["でんきエンジン"],
+    "そうしょく": ["そうしょく"],
+    "かんそうはだ": ["かんそうはだ"],
+    "ちくでん": ["ちくでん"],
+    # 攻撃後に発動する特性
+    "いのちがけ": ["いのちがけ"],
+    "がんじょうあご": ["がんじょうあご"],
+    "テクニシャン": ["テクニシャン"],
+    "てきおうりょく": ["てきおうりょく"],
+    "すてみ": ["すてみ"],
+    "ちからもち": ["ちからもち"],
+    "ヨガパワー": ["ヨガパワー"],
+    "フェアリースキン": ["フェアリースキン"],
+    # ターン終了時に発動する特性
+    "ポイズンヒール": ["ポイズンヒール"],
+    "あめうけざら": ["あめうけざら"],
+    "アイスボディ": ["アイスボディ"],
+    "サンパワー": ["サンパワー"],
+    "かそく": ["かそく", "すばやさが上がった"],
+    "スピードブースト": ["スピードブースト"],
+    "ムラっけ": ["ムラっけ"],
+    "じきゅうりょく": ["じきゅうりょく"],
+    # 状態異常関連
+    "めんえき": ["めんえき"],
+    "じゅうなん": ["じゅうなん"],
+    "ふみん": ["ふみん"],
+    "やるき": ["やるき"],
+    "マグマのよろい": ["マグマのよろい"],
+    "みずのベール": ["みずのベール"],
+    "しぜんかいふく": ["しぜんかいふく"],
+    "だっぴ": ["だっぴ"],
+    # その他よく見る特性
+    "せいでんき": ["せいでんき"],
+    "ほのおのからだ": ["ほのおのからだ"],
+    "どくのトゲ": ["どくのトゲ"],
+    "ほうし": ["ほうし"],
+    "メロメロボディ": ["メロメロボディ"],
+    "シンクロ": ["シンクロ"],
+    "クリアボディ": ["クリアボディ"],
+    "しろいけむり": ["しろいけむり"],
+    "すりぬけ": ["すりぬけ"],
+    "マジックガード": ["マジックガード"],
+    "てんねん": ["てんねん"],
+    "ふゆう": ["ふゆう"],
+    "きけんよち": ["きけんよち"],
+    "よちむ": ["よちむ"],
+    "いたずらごころ": ["いたずらごころ"],
+    "マジックミラー": ["マジックミラー"],
+    # パラドックス特性
+    "こだいかっせい": ["こだいかっせい"],
+    "クォークチャージ": ["クォークチャージ"],
+}
+
 
 def extract_item_observations_from_log(
     battle_log: list[str], pokemon_name: str
@@ -147,6 +235,50 @@ def extract_item_observations_from_log(
                     details={"log_entry": entry},
                 )
             )
+
+    return observations
+
+
+def extract_ability_observations_from_log(
+    battle_log: list[str], pokemon_name: str
+) -> list[Observation]:
+    """
+    バトルログから特性発動の観測イベントを抽出
+
+    Args:
+        battle_log: バトルログ（battle.log[player]）
+        pokemon_name: 対象のポケモン名
+
+    Returns:
+        観測イベントのリスト
+    """
+    observations = []
+    detected_abilities: set[str] = set()  # 同じ特性を重複検出しないため
+
+    for entry in battle_log:
+        if not isinstance(entry, str):
+            continue
+
+        # ポケモン名がログエントリに含まれているかチェック
+        if pokemon_name not in entry:
+            continue
+
+        # 特性発動の検出
+        for ability, patterns in ABILITY_PATTERNS.items():
+            if ability in detected_abilities:
+                continue  # 既に検出済み
+
+            for pattern in patterns:
+                if pattern in entry:
+                    observations.append(
+                        Observation(
+                            type=ObservationType.ABILITY_REVEALED,
+                            pokemon_name=pokemon_name,
+                            details={"ability": ability, "log_entry": entry},
+                        )
+                    )
+                    detected_abilities.add(ability)
+                    break
 
     return observations
 
@@ -508,6 +640,16 @@ def _generate_game_worker(
                 # 持ち物観測を抽出
                 observations = extract_item_observations_from_log(new_entries, pokemon_name)
                 for obs in observations:
+                    belief.update(obs)
+                    # FullBeliefState にも反映
+                    if use_full_belief:
+                        fb = full_beliefs[player]
+                        if fb is not None:
+                            fb.update(obs)
+
+                # 特性観測を抽出
+                ability_observations = extract_ability_observations_from_log(new_entries, pokemon_name)
+                for obs in ability_observations:
                     belief.update(obs)
                     # FullBeliefState にも反映
                     if use_full_belief:
@@ -1247,6 +1389,16 @@ class ReBeLTrainer:
                 # 持ち物観測を抽出
                 observations = extract_item_observations_from_log(new_entries, pokemon_name)
                 for obs in observations:
+                    belief.update(obs)
+                    # FullBeliefState にも反映
+                    if full_beliefs is not None:
+                        fb = full_beliefs[player]
+                        if fb is not None:
+                            fb.update(obs)
+
+                # 特性観測を抽出
+                ability_observations = extract_ability_observations_from_log(new_entries, pokemon_name)
+                for obs in ability_observations:
                     belief.update(obs)
                     # FullBeliefState にも反映
                     if full_beliefs is not None:

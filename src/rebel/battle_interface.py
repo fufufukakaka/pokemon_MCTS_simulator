@@ -245,6 +245,24 @@ class ReBeLBattle(Battle):
         )
         self.update_belief(player, obs)
 
+    def auto_observe_ability(
+        self, player: int, ability: str, pokemon_name: str
+    ) -> None:
+        """
+        特性発動観測を自動登録
+
+        Args:
+            player: 観測するプレイヤー
+            ability: 発動した特性名
+            pokemon_name: 対象ポケモン名
+        """
+        obs = Observation(
+            type=ObservationType.ABILITY_REVEALED,
+            pokemon_name=pokemon_name,
+            details={"ability": ability},
+        )
+        self.update_belief(player, obs)
+
 
 def load_rebel_battle(
     usage_db_path: str,
