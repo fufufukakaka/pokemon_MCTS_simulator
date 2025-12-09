@@ -1070,7 +1070,7 @@ class ReBeLTrainer:
             my_tensor = my_tensor.unsqueeze(0).to(self.config.device)
             opp_tensor = opp_tensor.unsqueeze(0).to(self.config.device)
 
-            indices, _ = self.selection_network.select_team(
+            indices, _, _, _ = self.selection_network.select_team(
                 my_tensor, opp_tensor, num_select=3, deterministic=not explore
             )
 
@@ -1389,7 +1389,10 @@ class ReBeLTrainer:
             for pbs_or_dict, my_v, opp_v in valid_data:
                 if isinstance(pbs_or_dict, dict):
                     try:
-                        pbs = PublicBeliefState.from_dict(pbs_or_dict, self.usage_db)
+                        # ワーカーからの戻り値は {"pbs_dict": {...}, "target_my": ..., ...} 形式
+                        # 内側の pbs_dict を取り出して変換する
+                        actual_pbs_dict = pbs_or_dict.get("pbs_dict", pbs_or_dict)
+                        pbs = PublicBeliefState.from_dict(actual_pbs_dict, self.usage_db)
                         converted_data.append((pbs, my_v, opp_v))
                     except Exception as e:
                         conversion_errors += 1
