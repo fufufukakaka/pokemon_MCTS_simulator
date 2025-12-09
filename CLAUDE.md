@@ -287,17 +287,20 @@ uv run python scripts/train_rebel.py \
 
 # フル機能有効（Selection BERT + Full Belief + 並列化）
 uv run python scripts/train_rebel.py \
-  --trainer-json data/top_rankers/season_27.json \
+  --trainer-json data/top_rankers/season_36.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
-  --output models/rebel_full \
-  --num-iterations 20 \
+  --output models/rebel_v2 \
+  --num-iterations 100 \
   --games-per-iteration 100 \
+  --cfr-iterations 50 \
+  --cfr-world-samples 30 \
+  --num-workers 8 \
+  --no-lightweight-cfr \
+  --device cuda \
+  --use-full-belief \
   --train-selection \
   --use-selection-bert \
-  --selection-bert-pretrained models/pokemon_bert \
-  --use-full-belief \
-  --num-workers 4 \
-  --lightweight-cfr
+  --selection-bert-pretrained models/pokemon_bert
 ```
 
 ### ReBeL Training and Comparison
