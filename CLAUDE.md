@@ -340,7 +340,8 @@ uv run python scripts/train_rebel.py \
   --train-selection \
   --use-selection-bert \
   --selection-bert-pretrained models/pokemon_bert \
-  --resume models/revel_full_state_selection_BERT/checkpoint_iter35
+  --resume models/revel_full_state_selection_BERT/checkpoint_iter35 \
+  --save-interval 1
 ```
 
 ### ReBeL Training and Comparison

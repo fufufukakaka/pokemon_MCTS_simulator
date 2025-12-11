@@ -94,6 +94,12 @@ def main():
         help="デバイス (cpu/cuda)",
     )
     parser.add_argument(
+        "--save-interval",
+        type=int,
+        default=5,
+        help="チェックポイント保存間隔（イテレーション数）",
+    )
+    parser.add_argument(
         "--resume",
         type=str,
         default=None,
@@ -245,7 +251,7 @@ def main():
         learning_rate=args.learning_rate,
         num_epochs=args.num_epochs,
         device=args.device,
-        save_interval=5,
+        save_interval=args.save_interval,
         fixed_opponent=fixed_opponent,
         fixed_opponent_select_all=args.fixed_opponent_select_all,
         train_selection=args.train_selection,
