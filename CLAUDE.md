@@ -85,8 +85,30 @@ ReBeL addresses limitations of HypothesisMCTS by:
 - **[belief_state.py](src/rebel/belief_state.py)**: `PokemonBeliefState` tracks probability distributions over opponent's type hypotheses
 
   - `PokemonTypeHypothesis`: Frozen dataclass representing (moves, item, tera_type, nature, ability)
-  - Bayesian updates from observations (move used, item revealed, tera used)
+  - Bayesian updates from observations (move used, item revealed, tera used, ability revealed)
   - `sample_world()`: Sample one complete "world" from belief distribution
+
+  **信念状態で追跡している情報:**
+
+  | 情報 | 観測タイプ | 更新トリガー | 実装状況 |
+  |------|-----------|-------------|---------|
+  | 技構成 | `MOVE_USED` | 技使用時 | ✓ 実装済み |
+  | 持ち物 | `ITEM_REVEALED`, `FOCUS_SASH_ACTIVATED`, `LEFTOVERS_HEAL`, etc. | 持ち物発動時 | ✓ 実装済み |
+  | テラスタイプ | `TERASTALLIZED` | テラスタル使用時 | ✓ 実装済み |
+  | 特性 | `ABILITY_REVEALED` | 特性発動時（いかく、ひでり等） | ✓ 実装済み |
+  | 性格 | - | - | △ 仮説に含まれるが観測更新なし |
+  | EV配分 | - | - | △ 性格から推定、観測更新なし |
+
+  **検出可能な持ち物発動（11種）:**
+  - きあいのタスキ、たべのこし、くろいヘドロ、いのちのたま
+  - ゴツゴツメット、とつげきチョッキ、ブーストエナジー、ふうせん
+  - こだわり系（技固定検出）、各種きのみ
+
+  **検出可能な特性発動（70種以上）:**
+  - 場に出た時: いかく、ひでり、あめふらし、エレキメイカー、おみとおし等
+  - ダメージ時: がんじょう、ばけのかわ、マルチスケイル、もらいび等
+  - ターン終了時: かそく、ポイズンヒール、ムラっけ等
+  - パラドックス: こだいかっせい、クォークチャージ
 
 - **[public_state.py](src/rebel/public_state.py)**: `PublicGameState` and `PublicBeliefState`
 
@@ -301,6 +323,24 @@ uv run python scripts/train_rebel.py \
   --train-selection \
   --use-selection-bert \
   --selection-bert-pretrained models/pokemon_bert
+
+# 復帰
+uv run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_36.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --output models/rebel_v2 \
+  --num-iterations 100 \
+  --games-per-iteration 100 \
+  --cfr-iterations 50 \
+  --cfr-world-samples 30 \
+  --num-workers 2 \
+  --no-lightweight-cfr \
+  --device cpu \
+  --use-full-belief \
+  --train-selection \
+  --use-selection-bert \
+  --selection-bert-pretrained models/pokemon_bert \
+  --resume models/revel_full_state_selection_BERT/checkpoint_iter35
 ```
 
 ### ReBeL Training and Comparison

@@ -298,6 +298,7 @@ def main():
     if args.resume:
         print(f"Resuming from {args.resume}")
         trainer.load(Path(args.resume))
+        print(f"Will run {args.num_iterations} more iterations (from iter {trainer.current_iteration + 1} to {trainer.current_iteration + args.num_iterations})")
 
     # 学習
     print(f"\nStarting training for {args.num_iterations} iterations...")

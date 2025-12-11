@@ -28,6 +28,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
 
 from src.hypothesis.pokemon_usage_database import PokemonUsageDatabase
 from src.pokemon_battle_sim.battle import Battle
@@ -412,8 +413,8 @@ def _generate_game_worker(
     from .full_belief_state import FullBeliefState
     from .public_state import PublicBeliefState
 
-    # 初期化
-    Pokemon.init(usage_data_path=usage_data_path)
+    # 初期化（ワーカーではログ出力を抑制）
+    Pokemon.init(usage_data_path=usage_data_path, verbose=False)
     usage_db = PokemonUsageDatabase.from_json(usage_db_path)
 
     # CFRソルバー
@@ -818,6 +819,9 @@ class ReBeLTrainer:
 
         # 学習履歴
         self.training_history: list[dict] = []
+
+        # 現在のイテレーション（resume用）
+        self.current_iteration: int = 0
 
     def generate_game(self, game_id: str) -> GameResult:
         """
@@ -1475,7 +1479,12 @@ class ReBeLTrainer:
         with ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
             futures = [executor.submit(_generate_game_worker, args) for args in worker_args]
 
-            for future in as_completed(futures):
+            for future in tqdm(
+                as_completed(futures),
+                total=num_games,
+                desc=f"Iter {iteration} games (parallel)",
+                leave=False,
+            ):
                 try:
                     result_dict, pbs_data_list, selection_data_list = future.result()
 
@@ -1536,7 +1545,6 @@ class ReBeLTrainer:
             学習統計
         """
         # データ生成
-        print(f"Iteration {iteration}: Generating games...")
         start_time = time.time()
 
         all_examples = []
@@ -1554,7 +1562,7 @@ class ReBeLTrainer:
             )
         else:
             # 逐次実行（従来通り）
-            for i in range(num_games):
+            for i in tqdm(range(num_games), desc=f"Iter {iteration} games", leave=False):
                 game_id = f"iter{iteration}_game{i}"
                 result, pbs_data, selection_data = self._generate_game_with_pbs(game_id)
                 all_examples.extend(result.examples)
@@ -1800,7 +1808,17 @@ class ReBeLTrainer:
         # ログファイルのパス
         log_file_path = output_path / "training_log.jsonl"
 
-        for iteration in range(1, num_iterations + 1):
+        # 開始イテレーション（resumeの場合は復元した位置から）
+        start_iteration = self.current_iteration + 1
+        end_iteration = self.current_iteration + num_iterations
+
+        if start_iteration > 1:
+            print(f"Resuming from iteration {start_iteration} (target: {end_iteration})")
+
+        for iteration in range(start_iteration, end_iteration + 1):
+            # 現在のイテレーションを更新
+            self.current_iteration = iteration
+
             stats = self.train_iteration(iteration)
 
             # 各イテレーションの統計をログファイルに追記
@@ -1854,6 +1872,14 @@ class ReBeLTrainer:
         # Selection BERT の保存
         self._save_selection_bert(path)
 
+        # イテレーション番号と学習履歴を保存
+        checkpoint_meta = {
+            "current_iteration": self.current_iteration,
+            "training_history": self.training_history,
+        }
+        with open(path / "checkpoint_meta.json", "w", encoding="utf-8") as f:
+            json.dump(checkpoint_meta, f, ensure_ascii=False, indent=2)
+
     def load(self, path: Path) -> None:
         """モデルを読み込み"""
         self.value_network.load_state_dict(
@@ -1887,6 +1913,22 @@ class ReBeLTrainer:
 
         # Selection BERT の読み込み
         self._load_selection_bert(path)
+
+        # イテレーション番号と学習履歴を復元
+        checkpoint_meta_path = path / "checkpoint_meta.json"
+        if checkpoint_meta_path.exists():
+            with open(checkpoint_meta_path, "r", encoding="utf-8") as f:
+                checkpoint_meta = json.load(f)
+            self.current_iteration = checkpoint_meta.get("current_iteration", 0)
+            self.training_history = checkpoint_meta.get("training_history", [])
+            print(f"Restored iteration: {self.current_iteration}")
+        else:
+            # 古いチェックポイントの場合、パス名からイテレーション番号を推定
+            import re
+            match = re.search(r"iter(\d+)", str(path))
+            if match:
+                self.current_iteration = int(match.group(1))
+                print(f"Estimated iteration from path: {self.current_iteration}")
 
     def evaluate_against_baseline(
         self,

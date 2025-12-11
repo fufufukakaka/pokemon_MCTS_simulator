@@ -908,7 +908,7 @@ class Pokemon:
         p.update_status()
         return p.status
 
-    def init(season=None, usage_data_path: str | None = None):
+    def init(season=None, usage_data_path: str | None = None, verbose: bool = True):
         """ライブラリを初期化する
 
         Args:
@@ -917,6 +917,7 @@ class Pokemon:
                             対応形式:
                             - 旧形式: {"ポケモン名": {"move": [[技名...], [採用率...]], ...}}
                             - 新形式(pokedb): [{"pokemon_name": "...", "moves": {"技名": 採用率}, ...}]
+            verbose: True の場合、読み込みメッセージを表示する
         """
 
         # シーズンが指定されていなければ、最新のシーズンを取得する
@@ -1133,7 +1134,8 @@ class Pokemon:
             filename = usage_data_path
         else:
             filename = "src/battle_data/season22.json"
-        print(f"Loading usage data from: {filename}")
+        if verbose:
+            print(f"Loading usage data from: {filename}")
         with open(filename, encoding="utf-8") as fin:
             raw_data = json.load(fin)
 
