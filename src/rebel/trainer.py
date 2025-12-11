@@ -28,6 +28,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
 
 from src.hypothesis.pokemon_usage_database import PokemonUsageDatabase
 from src.pokemon_battle_sim.battle import Battle
@@ -37,6 +38,21 @@ from src.policy_value_network.team_selection_network import (
     TeamSelectionNetwork,
     TeamSelectionNetworkConfig,
 )
+
+# Selection BERT (optional import)
+try:
+    from src.selection_bert import (
+        PokemonBertConfig,
+        PokemonBertForMLM,
+        PokemonBertForTokenClassification,
+        PokemonSelectionDataset,
+        PokemonVocab,
+        SelectionBeliefPredictor,
+    )
+
+    SELECTION_BERT_AVAILABLE = True
+except ImportError:
+    SELECTION_BERT_AVAILABLE = False
 
 from .belief_state import Observation, ObservationType, PokemonBeliefState
 from .cfr_solver import CFRConfig, ReBeLSolver
@@ -74,6 +90,94 @@ BERRIES = [
     "ビアーのみ", "ナモのみ", "リリバのみ", "ホズのみ", "ハバンのみ",
     "カシブのみ", "レンブのみ", "ロゼルのみ",
 ]
+
+# 特性の検出パターン（特性名: 発動時のログキーワードリスト）
+# 各特性は発動時に特徴的なログ出力があるものを対象とする
+ABILITY_PATTERNS: dict[str, list[str]] = {
+    # 場に出た時に発動する特性
+    "いかく": ["いかく", "こうげきが下がった"],
+    "かたやぶり": ["かたやぶり"],
+    "ひでり": ["ひざしがつよくなった", "ひでり"],
+    "あめふらし": ["あめがふりはじめた", "あめふらし"],
+    "すなおこし": ["すなあらしになった", "すなおこし"],
+    "ゆきふらし": ["あられがふりはじめた", "ゆきふらし"],
+    "エレキメイカー": ["エレキフィールド", "エレキメイカー"],
+    "サイコメイカー": ["サイコフィールド", "サイコメイカー"],
+    "グラスメイカー": ["グラスフィールド", "グラスメイカー"],
+    "ミストメイカー": ["ミストフィールド", "ミストメイカー"],
+    "ダウンロード": ["ダウンロード"],
+    "トレース": ["トレース"],
+    "かわりもの": ["かわりもの", "へんしんした"],
+    "イリュージョン": ["イリュージョン"],
+    "おみとおし": ["おみとおし", "持ち物を見通した"],
+    "きんちょうかん": ["きんちょうかん"],
+    "プレッシャー": ["プレッシャー"],
+    "わるいてぐせ": ["わるいてぐせ", "奪った"],
+    "ゆうばく": ["ゆうばく", "まきこんだ"],
+    "てつのトゲ": ["てつのトゲ"],
+    "さめはだ": ["さめはだ"],
+    # ダメージ時に発動する特性
+    "がんじょう": ["がんじょう", "こらえた"],
+    "ばけのかわ": ["ばけのかわ"],
+    "マルチスケイル": ["マルチスケイル"],
+    "ファントムガード": ["ファントムガード"],
+    "ふしぎなまもり": ["ふしぎなまもり"],
+    "もらいび": ["もらいび"],
+    "ちょすい": ["ちょすい"],
+    "よびみず": ["よびみず"],
+    "ひらいしん": ["ひらいしん"],
+    "でんきエンジン": ["でんきエンジン"],
+    "そうしょく": ["そうしょく"],
+    "かんそうはだ": ["かんそうはだ"],
+    "ちくでん": ["ちくでん"],
+    # 攻撃後に発動する特性
+    "いのちがけ": ["いのちがけ"],
+    "がんじょうあご": ["がんじょうあご"],
+    "テクニシャン": ["テクニシャン"],
+    "てきおうりょく": ["てきおうりょく"],
+    "すてみ": ["すてみ"],
+    "ちからもち": ["ちからもち"],
+    "ヨガパワー": ["ヨガパワー"],
+    "フェアリースキン": ["フェアリースキン"],
+    # ターン終了時に発動する特性
+    "ポイズンヒール": ["ポイズンヒール"],
+    "あめうけざら": ["あめうけざら"],
+    "アイスボディ": ["アイスボディ"],
+    "サンパワー": ["サンパワー"],
+    "かそく": ["かそく", "すばやさが上がった"],
+    "スピードブースト": ["スピードブースト"],
+    "ムラっけ": ["ムラっけ"],
+    "じきゅうりょく": ["じきゅうりょく"],
+    # 状態異常関連
+    "めんえき": ["めんえき"],
+    "じゅうなん": ["じゅうなん"],
+    "ふみん": ["ふみん"],
+    "やるき": ["やるき"],
+    "マグマのよろい": ["マグマのよろい"],
+    "みずのベール": ["みずのベール"],
+    "しぜんかいふく": ["しぜんかいふく"],
+    "だっぴ": ["だっぴ"],
+    # その他よく見る特性
+    "せいでんき": ["せいでんき"],
+    "ほのおのからだ": ["ほのおのからだ"],
+    "どくのトゲ": ["どくのトゲ"],
+    "ほうし": ["ほうし"],
+    "メロメロボディ": ["メロメロボディ"],
+    "シンクロ": ["シンクロ"],
+    "クリアボディ": ["クリアボディ"],
+    "しろいけむり": ["しろいけむり"],
+    "すりぬけ": ["すりぬけ"],
+    "マジックガード": ["マジックガード"],
+    "てんねん": ["てんねん"],
+    "ふゆう": ["ふゆう"],
+    "きけんよち": ["きけんよち"],
+    "よちむ": ["よちむ"],
+    "いたずらごころ": ["いたずらごころ"],
+    "マジックミラー": ["マジックミラー"],
+    # パラドックス特性
+    "こだいかっせい": ["こだいかっせい"],
+    "クォークチャージ": ["クォークチャージ"],
+}
 
 
 def extract_item_observations_from_log(
@@ -132,6 +236,50 @@ def extract_item_observations_from_log(
                     details={"log_entry": entry},
                 )
             )
+
+    return observations
+
+
+def extract_ability_observations_from_log(
+    battle_log: list[str], pokemon_name: str
+) -> list[Observation]:
+    """
+    バトルログから特性発動の観測イベントを抽出
+
+    Args:
+        battle_log: バトルログ（battle.log[player]）
+        pokemon_name: 対象のポケモン名
+
+    Returns:
+        観測イベントのリスト
+    """
+    observations = []
+    detected_abilities: set[str] = set()  # 同じ特性を重複検出しないため
+
+    for entry in battle_log:
+        if not isinstance(entry, str):
+            continue
+
+        # ポケモン名がログエントリに含まれているかチェック
+        if pokemon_name not in entry:
+            continue
+
+        # 特性発動の検出
+        for ability, patterns in ABILITY_PATTERNS.items():
+            if ability in detected_abilities:
+                continue  # 既に検出済み
+
+            for pattern in patterns:
+                if pattern in entry:
+                    observations.append(
+                        Observation(
+                            type=ObservationType.ABILITY_REVEALED,
+                            pokemon_name=pokemon_name,
+                            details={"ability": ability, "log_entry": entry},
+                        )
+                    )
+                    detected_abilities.add(ability)
+                    break
 
     return observations
 
@@ -210,6 +358,14 @@ class TrainingConfig:
     selection_learning_rate: float = 1e-4
     selection_explore_prob: float = 0.3  # 探索時にランダム選出する確率
 
+    # Selection BERT の設定（train_selection=True かつ use_selection_bert=True で有効）
+    use_selection_bert: bool = False  # Selection BERT を使用するか
+    selection_bert_pretrained: Optional[str] = None  # 事前学習済みBERTモデルのパス
+    selection_bert_hidden_size: int = 256
+    selection_bert_num_layers: int = 4
+    selection_bert_num_heads: int = 4
+    selection_bert_epochs_per_iter: int = 5  # 各イテレーションでのエポック数
+
     # ポケモン統計データのパス
     usage_data_path: Optional[str] = None  # None の場合はデフォルト(season22.json)を使用
 
@@ -257,8 +413,8 @@ def _generate_game_worker(
     from .full_belief_state import FullBeliefState
     from .public_state import PublicBeliefState
 
-    # 初期化
-    Pokemon.init(usage_data_path=usage_data_path)
+    # 初期化（ワーカーではログ出力を抑制）
+    Pokemon.init(usage_data_path=usage_data_path, verbose=False)
     usage_db = PokemonUsageDatabase.from_json(usage_db_path)
 
     # CFRソルバー
@@ -400,15 +556,8 @@ def _generate_game_worker(
             except Exception:
                 continue
 
-            # PBS を簡易シリアライズして記録
-            pbs_dict = {
-                "perspective": pbs.public_state.perspective,
-                "turn": pbs.public_state.turn,
-                "my_pokemon_name": pbs.public_state.my_pokemon.name,
-                "my_hp_ratio": pbs.public_state.my_pokemon.hp_ratio,
-                "opp_pokemon_name": pbs.public_state.opp_pokemon.name,
-                "opp_hp_ratio": pbs.public_state.opp_pokemon.hp_ratio,
-            }
+            # PBS を完全にシリアライズして記録（from_dictで復元可能）
+            pbs_dict = pbs.to_dict()
             pbs_records.append((pbs_dict, player))
 
             # CFRで戦略計算
@@ -492,6 +641,16 @@ def _generate_game_worker(
                 # 持ち物観測を抽出
                 observations = extract_item_observations_from_log(new_entries, pokemon_name)
                 for obs in observations:
+                    belief.update(obs)
+                    # FullBeliefState にも反映
+                    if use_full_belief:
+                        fb = full_beliefs[player]
+                        if fb is not None:
+                            fb.update(obs)
+
+                # 特性観測を抽出
+                ability_observations = extract_ability_observations_from_log(new_entries, pokemon_name)
+                for obs in ability_observations:
                     belief.update(obs)
                     # FullBeliefState にも反映
                     if use_full_belief:
@@ -635,20 +794,34 @@ class ReBeLTrainer:
         self.selection_optimizer: Optional[optim.Optimizer] = None
         self.selection_encoder: Optional[TeamSelectionEncoder] = None
 
+        # Selection BERT（オプション）
+        self.selection_bert: Optional[PokemonBertForTokenClassification] = None
+        self.selection_bert_optimizer: Optional[optim.Optimizer] = None
+        self.selection_bert_vocab: Optional[PokemonVocab] = None
+        self.selection_bert_predictor: Optional["SelectionBeliefPredictor"] = None
+
         if self.config.train_selection:
-            self.selection_encoder = TeamSelectionEncoder()
-            self.selection_network = selection_network or TeamSelectionNetwork(
-                TeamSelectionNetworkConfig(pokemon_feature_dim=15)
-            )
-            self.selection_network.to(self.config.device)
-            self.selection_optimizer = optim.AdamW(
-                self.selection_network.parameters(),
-                lr=self.config.selection_learning_rate,
-                weight_decay=self.config.weight_decay,
-            )
+            if self.config.use_selection_bert and SELECTION_BERT_AVAILABLE:
+                # Selection BERT を使用
+                self._init_selection_bert()
+            else:
+                # 従来の TeamSelectionNetwork を使用
+                self.selection_encoder = TeamSelectionEncoder()
+                self.selection_network = selection_network or TeamSelectionNetwork(
+                    TeamSelectionNetworkConfig(pokemon_feature_dim=15)
+                )
+                self.selection_network.to(self.config.device)
+                self.selection_optimizer = optim.AdamW(
+                    self.selection_network.parameters(),
+                    lr=self.config.selection_learning_rate,
+                    weight_decay=self.config.weight_decay,
+                )
 
         # 学習履歴
         self.training_history: list[dict] = []
+
+        # 現在のイテレーション（resume用）
+        self.current_iteration: int = 0
 
     def generate_game(self, game_id: str) -> GameResult:
         """
@@ -818,19 +991,27 @@ class ReBeLTrainer:
 
         if self.config.use_full_belief:
             # 完全信念状態を使用（選出・先発の不確実性を含む）
+            # Selection BERT があれば使用して相手の選出を予測
+            trainer0_names = [p.get("name", "") for p in trainer0_team]
+            trainer1_names = [p.get("name", "") for p in trainer1_team]
+
             full_belief_0 = FullBeliefState(
-                team_preview_names=[p.get("name", "") for p in trainer1_team],
+                team_preview_names=trainer1_names,
                 team_preview_data=trainer1_team,
                 usage_db=self.usage_db,
-                selector=None,  # TODO: TeamSelectorを渡す
+                selector=None,
                 my_team_data=trainer0_team,
+                my_team_names=trainer0_names,
+                selection_bert_predictor=self.selection_bert_predictor,
             )
             full_belief_1 = FullBeliefState(
-                team_preview_names=[p.get("name", "") for p in trainer0_team],
+                team_preview_names=trainer0_names,
                 team_preview_data=trainer0_team,
                 usage_db=self.usage_db,
                 selector=None,
                 my_team_data=trainer1_team,
+                my_team_names=trainer1_names,
+                selection_bert_predictor=self.selection_bert_predictor,
             )
             full_beliefs = [full_belief_0, full_belief_1]
 
@@ -1077,7 +1258,7 @@ class ReBeLTrainer:
             my_tensor = my_tensor.unsqueeze(0).to(self.config.device)
             opp_tensor = opp_tensor.unsqueeze(0).to(self.config.device)
 
-            indices, _ = self.selection_network.select_team(
+            indices, _, _, _ = self.selection_network.select_team(
                 my_tensor, opp_tensor, num_select=3, deterministic=not explore
             )
 
@@ -1219,6 +1400,16 @@ class ReBeLTrainer:
                         if fb is not None:
                             fb.update(obs)
 
+                # 特性観測を抽出
+                ability_observations = extract_ability_observations_from_log(new_entries, pokemon_name)
+                for obs in ability_observations:
+                    belief.update(obs)
+                    # FullBeliefState にも反映
+                    if full_beliefs is not None:
+                        fb = full_beliefs[player]
+                        if fb is not None:
+                            fb.update(obs)
+
         return new_log_lengths
 
     def _generate_games_parallel(
@@ -1288,7 +1479,12 @@ class ReBeLTrainer:
         with ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
             futures = [executor.submit(_generate_game_worker, args) for args in worker_args]
 
-            for future in as_completed(futures):
+            for future in tqdm(
+                as_completed(futures),
+                total=num_games,
+                desc=f"Iter {iteration} games (parallel)",
+                leave=False,
+            ):
                 try:
                     result_dict, pbs_data_list, selection_data_list = future.result()
 
@@ -1349,7 +1545,6 @@ class ReBeLTrainer:
             学習統計
         """
         # データ生成
-        print(f"Iteration {iteration}: Generating games...")
         start_time = time.time()
 
         all_examples = []
@@ -1367,7 +1562,7 @@ class ReBeLTrainer:
             )
         else:
             # 逐次実行（従来通り）
-            for i in range(num_games):
+            for i in tqdm(range(num_games), desc=f"Iter {iteration} games", leave=False):
                 game_id = f"iter{iteration}_game{i}"
                 result, pbs_data, selection_data = self._generate_game_with_pbs(game_id)
                 all_examples.extend(result.examples)
@@ -1388,25 +1583,29 @@ class ReBeLTrainer:
             print("  No valid examples, skipping training")
             return {"iteration": iteration, "examples": 0}
 
-        # 並列実行時はPBSがdictになっているため、PublicBeliefStateに変換が必要
-        # 現在の実装では並列実行時にPBSオブジェクトを渡せないため、
-        # 逐次実行時のみ学習が正しく動作する
+        # 並列実行時はPBSがdictになっているため、PublicBeliefStateに変換
         if num_workers > 1:
-            # 並列実行時はPBSがdictのため、学習をスキップ
-            # TODO: dictからPBSを再構築する or dictから直接エンコードする
-            print(f"  Warning: Parallel execution returns dict instead of PBS objects.")
-            print(f"  Skipping value network training. Use --num-workers 1 for training.")
-            return {
-                "iteration": iteration,
-                "examples": len(all_examples),
-                "games": self.config.games_per_iteration,
-                "avg_loss": 0.0,
-                "selection_loss": 0.0,
-                "wins_p0": wins[0],
-                "wins_p1": wins[1],
-                "draws": wins[None],
-                "skipped_training": True,
-            }
+            print(f"  Converting {len(valid_data)} PBS dicts to objects...")
+            converted_data: list[tuple[PublicBeliefState, float, float]] = []
+            conversion_errors = 0
+            for pbs_or_dict, my_v, opp_v in valid_data:
+                if isinstance(pbs_or_dict, dict):
+                    try:
+                        # ワーカーからの戻り値は {"pbs_dict": {...}, "target_my": ..., ...} 形式
+                        # 内側の pbs_dict を取り出して変換する
+                        actual_pbs_dict = pbs_or_dict.get("pbs_dict", pbs_or_dict)
+                        pbs = PublicBeliefState.from_dict(actual_pbs_dict, self.usage_db)
+                        converted_data.append((pbs, my_v, opp_v))
+                    except Exception as e:
+                        conversion_errors += 1
+                        if conversion_errors <= 3:
+                            print(f"    Conversion error: {e}")
+                else:
+                    converted_data.append((pbs_or_dict, my_v, opp_v))
+            if conversion_errors > 0:
+                print(f"  Warning: {conversion_errors} PBS conversions failed")
+            valid_data = converted_data
+            print(f"  Converted {len(valid_data)} PBS objects successfully")
 
         # 学習
         print(f"  Training on {len(valid_data)} examples...")
@@ -1470,9 +1669,17 @@ class ReBeLTrainer:
 
         # 選出ネットワークの学習
         selection_loss = 0.0
+        selection_bert_loss = 0.0
         if self.config.train_selection and len(all_selection_data) > 0:
-            selection_loss = self._train_selection_network(all_selection_data)
-            print(f"  Selection Network Average loss: {selection_loss:.4f}")
+            if self.config.use_selection_bert and self.selection_bert is not None:
+                # Selection BERT を使用
+                bert_metrics = self._train_selection_bert(all_selection_data, iteration)
+                selection_bert_loss = bert_metrics.get("selection_bert_loss", 0.0)
+                print(f"  Selection BERT Average loss: {selection_bert_loss:.4f}")
+            else:
+                # 従来の TeamSelectionNetwork を使用
+                selection_loss = self._train_selection_network(all_selection_data)
+                print(f"  Selection Network Average loss: {selection_loss:.4f}")
 
         stats = {
             "iteration": iteration,
@@ -1480,6 +1687,7 @@ class ReBeLTrainer:
             "games": self.config.games_per_iteration,
             "avg_loss": avg_loss,
             "selection_loss": selection_loss,
+            "selection_bert_loss": selection_bert_loss,
             "wins_p0": wins[0],
             "wins_p1": wins[1],
             "draws": wins[None],
@@ -1600,7 +1808,17 @@ class ReBeLTrainer:
         # ログファイルのパス
         log_file_path = output_path / "training_log.jsonl"
 
-        for iteration in range(1, num_iterations + 1):
+        # 開始イテレーション（resumeの場合は復元した位置から）
+        start_iteration = self.current_iteration + 1
+        end_iteration = self.current_iteration + num_iterations
+
+        if start_iteration > 1:
+            print(f"Resuming from iteration {start_iteration} (target: {end_iteration})")
+
+        for iteration in range(start_iteration, end_iteration + 1):
+            # 現在のイテレーションを更新
+            self.current_iteration = iteration
+
             stats = self.train_iteration(iteration)
 
             # 各イテレーションの統計をログファイルに追記
@@ -1651,6 +1869,17 @@ class ReBeLTrainer:
             if self.selection_encoder is not None:
                 self.selection_encoder.save(path / "selection_encoder.json")
 
+        # Selection BERT の保存
+        self._save_selection_bert(path)
+
+        # イテレーション番号と学習履歴を保存
+        checkpoint_meta = {
+            "current_iteration": self.current_iteration,
+            "training_history": self.training_history,
+        }
+        with open(path / "checkpoint_meta.json", "w", encoding="utf-8") as f:
+            json.dump(checkpoint_meta, f, ensure_ascii=False, indent=2)
+
     def load(self, path: Path) -> None:
         """モデルを読み込み"""
         self.value_network.load_state_dict(
@@ -1681,6 +1910,25 @@ class ReBeLTrainer:
         selection_enc_path = path / "selection_encoder.json"
         if selection_enc_path.exists():
             self.selection_encoder = TeamSelectionEncoder.load(selection_enc_path)
+
+        # Selection BERT の読み込み
+        self._load_selection_bert(path)
+
+        # イテレーション番号と学習履歴を復元
+        checkpoint_meta_path = path / "checkpoint_meta.json"
+        if checkpoint_meta_path.exists():
+            with open(checkpoint_meta_path, "r", encoding="utf-8") as f:
+                checkpoint_meta = json.load(f)
+            self.current_iteration = checkpoint_meta.get("current_iteration", 0)
+            self.training_history = checkpoint_meta.get("training_history", [])
+            print(f"Restored iteration: {self.current_iteration}")
+        else:
+            # 古いチェックポイントの場合、パス名からイテレーション番号を推定
+            import re
+            match = re.search(r"iter(\d+)", str(path))
+            if match:
+                self.current_iteration = int(match.group(1))
+                print(f"Estimated iteration from path: {self.current_iteration}")
 
     def evaluate_against_baseline(
         self,
@@ -1794,3 +2042,182 @@ class ReBeLTrainer:
         print(f"  Avg turns:     {avg_turns:.1f}")
 
         return results
+
+    # ============================================================
+    # Selection BERT 関連メソッド
+    # ============================================================
+
+    def _init_selection_bert(self) -> None:
+        """Selection BERT を初期化"""
+        if not SELECTION_BERT_AVAILABLE:
+            print("Warning: Selection BERT not available, skipping initialization")
+            return
+
+        # 語彙読み込み
+        zukan_path = Path("data/zukan.txt")
+        if not zukan_path.exists():
+            print(f"Warning: {zukan_path} not found, skipping Selection BERT")
+            return
+
+        self.selection_bert_vocab = PokemonVocab.from_zukan(zukan_path)
+        print(f"  Selection BERT vocab size: {len(self.selection_bert_vocab)}")
+
+        # モデル設定
+        config = PokemonBertConfig(
+            vocab_size=len(self.selection_bert_vocab),
+            hidden_size=self.config.selection_bert_hidden_size,
+            num_hidden_layers=self.config.selection_bert_num_layers,
+            num_attention_heads=self.config.selection_bert_num_heads,
+            intermediate_size=self.config.selection_bert_hidden_size * 2,
+        )
+
+        # 事前学習済みモデルがあれば読み込み
+        if self.config.selection_bert_pretrained:
+            pretrained_path = Path(self.config.selection_bert_pretrained)
+            if pretrained_path.exists():
+                print(f"  Loading pretrained Selection BERT from {pretrained_path}")
+                # MLM モデルを読み込み
+                mlm_model = PokemonBertForMLM(config)
+                mlm_model.load_state_dict(
+                    torch.load(pretrained_path / "best_model.pt", map_location="cpu")
+                )
+                # Token Classification に変換
+                self.selection_bert = PokemonBertForTokenClassification.from_pretrained_mlm(
+                    mlm_model, config
+                )
+            else:
+                print(f"  Warning: Pretrained model not found at {pretrained_path}")
+                self.selection_bert = PokemonBertForTokenClassification(config)
+        else:
+            # 新規作成
+            self.selection_bert = PokemonBertForTokenClassification(config)
+
+        self.selection_bert.to(self.config.device)
+        self.selection_bert_optimizer = optim.AdamW(
+            self.selection_bert.parameters(),
+            lr=self.config.selection_learning_rate,
+            weight_decay=self.config.weight_decay,
+        )
+
+        # SelectionBeliefPredictor を作成（信念状態に使用）
+        self.selection_bert_predictor = SelectionBeliefPredictor(
+            model=self.selection_bert,
+            vocab=self.selection_bert_vocab,
+            device=self.config.device,
+        )
+        print(f"  Selection BERT initialized on {self.config.device}")
+        print(f"  SelectionBeliefPredictor ready for belief state integration")
+
+    def _train_selection_bert(
+        self, selection_data: list[SelectionExample], iteration: int
+    ) -> dict[str, float]:
+        """
+        Selection BERT を学習
+
+        Args:
+            selection_data: 選出データ
+            iteration: イテレーション番号
+
+        Returns:
+            学習メトリクス
+        """
+        if self.selection_bert is None or self.selection_bert_vocab is None:
+            return {}
+
+        # SelectionExample を PokemonSelectionDataset 形式に変換
+        matchups = []
+        for ex in selection_data:
+            # 勝者側のデータのみ使用（または全データ）
+            if ex.winner == ex.perspective or ex.winner is None:
+                matchups.append({
+                    "my_team": [p["name"] for p in ex.my_team_data],
+                    "opp_team": [p["name"] for p in ex.opp_team_data],
+                    "my_selection": ex.selected_indices,
+                    "opp_selection": [0, 1, 2],  # 相手の選出は不明なので仮
+                })
+
+        if not matchups:
+            return {"selection_bert_loss": 0.0}
+
+        dataset = PokemonSelectionDataset(matchups, self.selection_bert_vocab)
+        dataloader = DataLoader(
+            dataset, batch_size=self.config.batch_size, shuffle=True
+        )
+
+        self.selection_bert.train()
+        total_loss = 0.0
+        num_batches = 0
+
+        for epoch in range(self.config.selection_bert_epochs_per_iter):
+            epoch_loss = 0.0
+            for batch in dataloader:
+                input_ids = batch["input_ids"].to(self.config.device)
+                attention_mask = batch["attention_mask"].to(self.config.device)
+                token_type_ids = batch["token_type_ids"].to(self.config.device)
+                labels = batch["labels"].to(self.config.device)
+
+                self.selection_bert_optimizer.zero_grad()
+                output = self.selection_bert(
+                    input_ids, attention_mask, token_type_ids, labels=labels
+                )
+                loss = output["loss"]
+                loss.backward()
+                self.selection_bert_optimizer.step()
+
+                epoch_loss += loss.item()
+                num_batches += 1
+
+            total_loss += epoch_loss
+
+        avg_loss = total_loss / num_batches if num_batches > 0 else 0.0
+        return {"selection_bert_loss": avg_loss}
+
+    def _save_selection_bert(self, path: Path) -> None:
+        """Selection BERT を保存"""
+        if self.selection_bert is None or self.selection_bert_vocab is None:
+            return
+
+        torch.save(self.selection_bert.state_dict(), path / "selection_bert.pt")
+        if self.selection_bert_optimizer:
+            torch.save(
+                self.selection_bert_optimizer.state_dict(),
+                path / "selection_bert_optimizer.pt",
+            )
+        self.selection_bert_vocab.save(path / "selection_bert_vocab.json")
+
+    def _load_selection_bert(self, path: Path) -> None:
+        """Selection BERT を読み込み"""
+        if not SELECTION_BERT_AVAILABLE:
+            return
+
+        vocab_path = path / "selection_bert_vocab.json"
+        model_path = path / "selection_bert.pt"
+
+        if not vocab_path.exists() or not model_path.exists():
+            return
+
+        self.selection_bert_vocab = PokemonVocab.load(vocab_path)
+
+        config = PokemonBertConfig(
+            vocab_size=len(self.selection_bert_vocab),
+            hidden_size=self.config.selection_bert_hidden_size,
+            num_hidden_layers=self.config.selection_bert_num_layers,
+            num_attention_heads=self.config.selection_bert_num_heads,
+            intermediate_size=self.config.selection_bert_hidden_size * 2,
+        )
+
+        self.selection_bert = PokemonBertForTokenClassification(config)
+        self.selection_bert.load_state_dict(
+            torch.load(model_path, map_location=self.config.device)
+        )
+        self.selection_bert.to(self.config.device)
+
+        opt_path = path / "selection_bert_optimizer.pt"
+        if opt_path.exists() and self.selection_bert_optimizer is None:
+            self.selection_bert_optimizer = optim.AdamW(
+                self.selection_bert.parameters(),
+                lr=self.config.selection_learning_rate,
+            )
+            self.selection_bert_optimizer.load_state_dict(
+                torch.load(opt_path, map_location=self.config.device)
+            )

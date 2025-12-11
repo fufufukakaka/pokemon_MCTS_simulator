@@ -94,6 +94,12 @@ def main():
         help="デバイス (cpu/cuda)",
     )
     parser.add_argument(
+        "--save-interval",
+        type=int,
+        default=5,
+        help="チェックポイント保存間隔（イテレーション数）",
+    )
+    parser.add_argument(
         "--resume",
         type=str,
         default=None,
@@ -166,6 +172,42 @@ def main():
         action="store_true",
         help="完全信念状態を使用（選出・先発の不確実性を含む）",
     )
+    # Selection BERT options
+    parser.add_argument(
+        "--use-selection-bert",
+        action="store_true",
+        help="Selection BERTを使用して選出予測を学習",
+    )
+    parser.add_argument(
+        "--selection-bert-pretrained",
+        type=str,
+        default=None,
+        help="事前学習済みSelection BERTモデルのパス",
+    )
+    parser.add_argument(
+        "--selection-bert-hidden-size",
+        type=int,
+        default=256,
+        help="Selection BERTの隠れ層次元",
+    )
+    parser.add_argument(
+        "--selection-bert-num-layers",
+        type=int,
+        default=4,
+        help="Selection BERTのレイヤー数",
+    )
+    parser.add_argument(
+        "--selection-bert-num-heads",
+        type=int,
+        default=4,
+        help="Selection BERTのアテンションヘッド数",
+    )
+    parser.add_argument(
+        "--selection-bert-epochs",
+        type=int,
+        default=5,
+        help="各イテレーションでのSelection BERTエポック数",
+    )
     args = parser.parse_args()
 
     # データ読み込み
@@ -209,7 +251,7 @@ def main():
         learning_rate=args.learning_rate,
         num_epochs=args.num_epochs,
         device=args.device,
-        save_interval=5,
+        save_interval=args.save_interval,
         fixed_opponent=fixed_opponent,
         fixed_opponent_select_all=args.fixed_opponent_select_all,
         train_selection=args.train_selection,
@@ -218,6 +260,13 @@ def main():
         num_workers=args.num_workers,
         use_lightweight_cfr=use_lightweight_cfr,
         use_full_belief=args.use_full_belief,
+        # Selection BERT settings
+        use_selection_bert=args.use_selection_bert,
+        selection_bert_pretrained=args.selection_bert_pretrained,
+        selection_bert_hidden_size=args.selection_bert_hidden_size,
+        selection_bert_num_layers=args.selection_bert_num_layers,
+        selection_bert_num_heads=args.selection_bert_num_heads,
+        selection_bert_epochs_per_iter=args.selection_bert_epochs,
     )
 
     if args.train_selection:
@@ -227,6 +276,14 @@ def main():
     if args.num_workers > 1:
         print(f"Parallel game generation: {args.num_workers} workers")
     print(f"Lightweight CFR: {'ENABLED' if use_lightweight_cfr else 'DISABLED'}")
+    if args.use_selection_bert:
+        print("Selection BERT: ENABLED")
+        if args.selection_bert_pretrained:
+            print(f"  Pretrained model: {args.selection_bert_pretrained}")
+        print(f"  Hidden size: {args.selection_bert_hidden_size}")
+        print(f"  Layers: {args.selection_bert_num_layers}")
+        print(f"  Heads: {args.selection_bert_num_heads}")
+        print(f"  Epochs per iteration: {args.selection_bert_epochs}")
 
     # Value Network
     value_network = ReBeLValueNetwork(
@@ -247,6 +304,7 @@ def main():
     if args.resume:
         print(f"Resuming from {args.resume}")
         trainer.load(Path(args.resume))
+        print(f"Will run {args.num_iterations} more iterations (from iter {trainer.current_iteration + 1} to {trainer.current_iteration + args.num_iterations})")
 
     # 学習
     print(f"\nStarting training for {args.num_iterations} iterations...")

@@ -8,8 +8,8 @@ ReBeL では、両プレイヤーが観測可能な「公開情報」と
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Optional
+from dataclasses import asdict, dataclass, field
+from typing import TYPE_CHECKING, Any, Optional
 
 from src.hypothesis.selfplay import FieldCondition, PokemonState
 from src.pokemon_battle_sim.battle import Battle
@@ -127,6 +127,41 @@ class PublicPokemonState:
     revealed_moves: set[str] = field(default_factory=set)
     revealed_item: Optional[str] = None
     revealed_ability: Optional[str] = None
+
+    def to_dict(self) -> dict[str, Any]:
+        """シリアライズ可能な辞書に変換"""
+        return {
+            "name": self.name,
+            "hp_ratio": self.hp_ratio,
+            "ailment": self.ailment,
+            "rank": self.rank,
+            "types": self.types,
+            "terastallized": self.terastallized,
+            "tera_type": self.tera_type,
+            "bad_poison_counter": self.bad_poison_counter,
+            "sleep_counter": self.sleep_counter,
+            "revealed_moves": list(self.revealed_moves),
+            "revealed_item": self.revealed_item,
+            "revealed_ability": self.revealed_ability,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "PublicPokemonState":
+        """辞書から復元"""
+        return cls(
+            name=data["name"],
+            hp_ratio=data["hp_ratio"],
+            ailment=data["ailment"],
+            rank=data["rank"],
+            types=data["types"],
+            terastallized=data["terastallized"],
+            tera_type=data["tera_type"],
+            bad_poison_counter=data.get("bad_poison_counter", 0),
+            sleep_counter=data.get("sleep_counter", 0),
+            revealed_moves=set(data.get("revealed_moves", [])),
+            revealed_item=data.get("revealed_item"),
+            revealed_ability=data.get("revealed_ability"),
+        )
 
 
 @dataclass
@@ -269,6 +304,35 @@ class PublicGameState:
         """ディープコピー"""
         return deepcopy(self)
 
+    def to_dict(self) -> dict[str, Any]:
+        """シリアライズ可能な辞書に変換"""
+        return {
+            "perspective": self.perspective,
+            "my_pokemon": asdict(self.my_pokemon),
+            "my_bench": [asdict(p) for p in self.my_bench],
+            "my_tera_available": self.my_tera_available,
+            "opp_pokemon": self.opp_pokemon.to_dict(),
+            "opp_bench": [p.to_dict() for p in self.opp_bench],
+            "opp_tera_available": self.opp_tera_available,
+            "field": asdict(self.field),
+            "turn": self.turn,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "PublicGameState":
+        """辞書から復元"""
+        return cls(
+            perspective=data["perspective"],
+            my_pokemon=PokemonState(**data["my_pokemon"]),
+            my_bench=[PokemonState(**p) for p in data["my_bench"]],
+            my_tera_available=data["my_tera_available"],
+            opp_pokemon=PublicPokemonState.from_dict(data["opp_pokemon"]),
+            opp_bench=[PublicPokemonState.from_dict(p) for p in data["opp_bench"]],
+            opp_tera_available=data["opp_tera_available"],
+            field=FieldCondition(**data["field"]),
+            turn=data["turn"],
+        )
+
 
 @dataclass
 class PublicBeliefState:
@@ -377,6 +441,36 @@ class PublicBeliefState:
 
     def __repr__(self) -> str:
         return f"PBS(turn={self.public_state.turn}, my_value={self.values[0]:.3f})"
+
+    def to_dict(self) -> dict[str, Any]:
+        """シリアライズ可能な辞書に変換"""
+        return {
+            "public_state": self.public_state.to_dict(),
+            "belief": self.belief.to_dict(),
+            "my_strategy": {str(k): v for k, v in self.my_strategy.items()},
+            "opp_strategy": {str(k): v for k, v in self.opp_strategy.items()},
+            "values": list(self.values),
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict[str, Any], usage_db: "PokemonUsageDatabase"
+    ) -> "PublicBeliefState":
+        """辞書から復元
+
+        Args:
+            data: シリアライズされた辞書
+            usage_db: 信念状態の復元に必要な使用率データベース
+        """
+        from src.hypothesis.pokemon_usage_database import PokemonUsageDatabase
+
+        return cls(
+            public_state=PublicGameState.from_dict(data["public_state"]),
+            belief=PokemonBeliefState.from_dict(data["belief"], usage_db),
+            my_strategy={int(k): v for k, v in data.get("my_strategy", {}).items()},
+            opp_strategy={int(k): v for k, v in data.get("opp_strategy", {}).items()},
+            values=tuple(data.get("values", [0.5, 0.5])),
+        )
 
 
 def _apply_hypothesis_to_pokemon(

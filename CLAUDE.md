@@ -80,17 +80,53 @@ ReBeL addresses limitations of HypothesisMCTS by:
 1. Tracking beliefs over opponent's full type (moves + item + tera + nature), not just items
 2. Using CFR (Counterfactual Regret Minimization) to compute Nash equilibrium strategies
 3. Learning a value network on Public Belief States (PBS)
+4. **Selection BERT統合**: 相手の選出・先発を予測して信念状態に反映
 
 - **[belief_state.py](src/rebel/belief_state.py)**: `PokemonBeliefState` tracks probability distributions over opponent's type hypotheses
 
   - `PokemonTypeHypothesis`: Frozen dataclass representing (moves, item, tera_type, nature, ability)
-  - Bayesian updates from observations (move used, item revealed, tera used)
+  - Bayesian updates from observations (move used, item revealed, tera used, ability revealed)
   - `sample_world()`: Sample one complete "world" from belief distribution
+
+  **信念状態で追跡している情報:**
+
+  | 情報 | 観測タイプ | 更新トリガー | 実装状況 |
+  |------|-----------|-------------|---------|
+  | 技構成 | `MOVE_USED` | 技使用時 | ✓ 実装済み |
+  | 持ち物 | `ITEM_REVEALED`, `FOCUS_SASH_ACTIVATED`, `LEFTOVERS_HEAL`, etc. | 持ち物発動時 | ✓ 実装済み |
+  | テラスタイプ | `TERASTALLIZED` | テラスタル使用時 | ✓ 実装済み |
+  | 特性 | `ABILITY_REVEALED` | 特性発動時（いかく、ひでり等） | ✓ 実装済み |
+  | 性格 | - | - | △ 仮説に含まれるが観測更新なし |
+  | EV配分 | - | - | △ 性格から推定、観測更新なし |
+
+  **検出可能な持ち物発動（11種）:**
+  - きあいのタスキ、たべのこし、くろいヘドロ、いのちのたま
+  - ゴツゴツメット、とつげきチョッキ、ブーストエナジー、ふうせん
+  - こだわり系（技固定検出）、各種きのみ
+
+  **検出可能な特性発動（70種以上）:**
+  - 場に出た時: いかく、ひでり、あめふらし、エレキメイカー、おみとおし等
+  - ダメージ時: がんじょう、ばけのかわ、マルチスケイル、もらいび等
+  - ターン終了時: かそく、ポイズンヒール、ムラっけ等
+  - パラドックス: こだいかっせい、クォークチャージ
 
 - **[public_state.py](src/rebel/public_state.py)**: `PublicGameState` and `PublicBeliefState`
 
   - `PublicGameState`: Observable information only (HP ratios, revealed moves/items, field)
   - `PublicBeliefState` (PBS): Public state + belief + current strategies
+
+- **[team_composition_belief.py](src/rebel/team_composition_belief.py)**: 選出・先発に対する信念状態
+
+  - `TeamCompositionHypothesis`: 選出3匹と先発の仮説
+  - `TeamCompositionBelief`: 全組み合わせの確率分布を管理
+  - `from_selection_network()`: TeamSelectionNetworkから事前分布を設定
+  - `from_selection_bert()`: Selection BERTから事前分布を設定
+
+- **[full_belief_state.py](src/rebel/full_belief_state.py)**: 完全な信念状態
+
+  - `FullBeliefState`: チーム構成の信念 + 各ポケモンの型信念を統合
+  - Selection BERT / TeamSelectionNetwork と連携して相手の選出を予測
+  - バトル中の観測（先発判明、交代等）でベイズ更新
 
 - **[cfr_solver.py](src/rebel/cfr_solver.py)**: CFR subgame solving
 
@@ -112,6 +148,49 @@ ReBeL addresses limitations of HypothesisMCTS by:
 
 - **[trainer.py](src/rebel/trainer.py)**: Self-play training loop
   - `ReBeLTrainer`: Generate data via self-play, train value network
+  - Selection BERT統合: 自己対戦データから選出予測も同時に学習
+
+### 5.1. Selection BERT (`src/selection_bert/`)
+
+**Purpose**: ポケモンをトークンとして扱い、BERTアーキテクチャでチーム構成から選出を予測する。
+
+**2フェーズ学習:**
+1. **Phase 1: MLM事前学習** - パーティデータでポケモンの埋め込みを学習
+2. **Phase 2: Token Classification** - 選出予測（自分・相手両方）
+
+- **[dataset.py](src/selection_bert/dataset.py)**: データセットとポケモン語彙管理
+
+  - `PokemonVocab`: ポケモン名の語彙管理（`data/zukan.txt`を正とする）
+  - `POKEMON_NAME_ALIASES`: フォーム違いの名前マッピング（例: "ウーラオス" → "ウーラオス(いちげき)"）
+  - `FORM_TO_ZUKAN`: battle_dataのform値から図鑑名への変換
+  - `PokemonMLMDataset`: MLM事前学習用データセット
+  - `PokemonSelectionDataset`: 選出予測用データセット
+
+- **[model.py](src/selection_bert/model.py)**: BERTモデル実装
+
+  - `PokemonBertConfig`: モデル設定
+  - `PokemonBertModel`: ベースBERTモデル
+  - `PokemonBertForMLM`: MLM事前学習用ヘッド
+  - `PokemonBertForTokenClassification`: 選出予測用ヘッド（3クラス: NOT_SELECTED, SELECTED, LEAD）
+
+- **[selection_belief.py](src/selection_bert/selection_belief.py)**: ReBeL統合用
+
+  - `SelectionPrediction`: 選出予測結果（選出確率・先発確率）
+  - `SelectionBeliefPredictor`: モデルを使った予測器
+    - `predict(my_team, opp_team)`: 自分と相手の選出を予測
+    - `get_opponent_belief()`: 相手の選出信念を取得
+    - `select_team()`: 最適な選出を決定
+
+**ReBeL信念との統合:**
+```
+Selection BERT → SelectionBeliefPredictor
+                        ↓
+    TeamCompositionBelief.from_selection_bert()
+                        ↓
+    FullBeliefState（相手の選出確率分布を保持）
+                        ↓
+    CFRソルバー（選出の不確実性を考慮した戦略計算）
+```
 
 ### 6. LLM Training Pipeline (`src/llm/`)
 
@@ -200,6 +279,71 @@ uv run python scripts/run_reinforcement_loop.py \
   --training-epochs 10
 ```
 
+### Selection BERT Training (推奨)
+
+Selection BERTは2フェーズで学習します：
+
+```bash
+# Phase 1: MLM事前学習（ポケモン埋め込みの獲得）
+uv run python scripts/pretrain_pokemon_bert.py \
+  --seasons 34 35 36 \
+  --epochs 100 \
+  --augment-factor 20 \
+  --batch-size 32 \
+  --hidden-size 256 \
+  --num-layers 4 \
+  --output models/pokemon_bert
+
+# Phase 2: ReBeL学習と同時に選出予測を学習（推奨）
+uv run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_27.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --output models/rebel_with_selection \
+  --num-iterations 20 \
+  --games-per-iteration 50 \
+  --train-selection \
+  --use-selection-bert \
+  --selection-bert-pretrained models/pokemon_bert \
+  --use-full-belief \
+  --lightweight-cfr
+
+# フル機能有効（Selection BERT + Full Belief + 並列化）
+uv run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_36.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --output models/rebel_v2 \
+  --num-iterations 100 \
+  --games-per-iteration 100 \
+  --cfr-iterations 50 \
+  --cfr-world-samples 30 \
+  --num-workers 8 \
+  --no-lightweight-cfr \
+  --device cuda \
+  --use-full-belief \
+  --train-selection \
+  --use-selection-bert \
+  --selection-bert-pretrained models/pokemon_bert
+
+# 復帰
+uv run python scripts/train_rebel.py \
+  --trainer-json data/top_rankers/season_36.json \
+  --usage-db data/pokedb_usage/season_37_top150.json \
+  --output models/rebel_v2 \
+  --num-iterations 100 \
+  --games-per-iteration 100 \
+  --cfr-iterations 50 \
+  --cfr-world-samples 30 \
+  --num-workers 2 \
+  --no-lightweight-cfr \
+  --device cpu \
+  --use-full-belief \
+  --train-selection \
+  --use-selection-bert \
+  --selection-bert-pretrained models/pokemon_bert \
+  --resume models/revel_full_state_selection_BERT/checkpoint_iter35 \
+  --save-interval 1
+```
+
 ### ReBeL Training and Comparison
 
 ```bash
@@ -223,13 +367,18 @@ uv run python scripts/train_rebel.py \
 
 # High accuracy training (slower, more precise CFR)
 uv run python scripts/train_rebel.py \
-  --trainer-json data/top_rankers/season_27.json \
+  --trainer-json data/top_rankers/season_36.json \
   --usage-db data/pokedb_usage/season_37_top150.json \
-  --output models/rebel \
-  --num-iterations 20 \
+  --output models/rebel_v2 \
+  --num-iterations 100 \
+  --games-per-iteration 50 \
   --cfr-iterations 50 \
   --cfr-world-samples 30 \
-  --no-lightweight-cfr
+  --num-workers 8 \
+  --no-lightweight-cfr \
+  --device cuda \
+  --use-full-belief \
+  --train-selection
 
 # Training against fixed opponent (for debugging/testing)
 uv run python scripts/train_rebel.py \
@@ -271,6 +420,13 @@ uv run python scripts/compare_rebel_vs_mcts.py \
 | `--fixed-opponent` | 固定対戦相手のJSONパス | - |
 | `--fixed-opponent-index` | trainer-json内の対戦相手インデックス | - |
 | `--train-selection` | 選出ネットワークも同時に学習 | False |
+| `--use-selection-bert` | Selection BERTを使用 | False |
+| `--selection-bert-pretrained` | 事前学習済みSelection BERTモデルのパス | - |
+| `--selection-bert-hidden-size` | Selection BERTの隠れ層次元 | 256 |
+| `--selection-bert-num-layers` | Selection BERTのレイヤー数 | 4 |
+| `--selection-bert-num-heads` | Selection BERTのアテンションヘッド数 | 4 |
+| `--selection-bert-epochs` | 各イテレーションでのSelection BERTエポック数 | 5 |
+| `--use-full-belief` | 完全信念状態を使用（選出・先発の不確実性を含む） | False |
 
 **ログ出力:**
 - 各イテレーションの学習記録は `{output_dir}/training_log.jsonl` に保存されます
@@ -437,6 +593,79 @@ selected = selector.select(my_team, opp_team, num_select=3)
 # Baseline selectors
 random_selector = RandomTeamSelector()
 top_n_selector = TopNTeamSelector()  # Legacy: first N Pokémon
+```
+
+### Using Selection BERT
+
+```python
+from pathlib import Path
+from src.selection_bert import (
+    PokemonVocab,
+    PokemonBertConfig,
+    PokemonBertForTokenClassification,
+    SelectionBeliefPredictor,
+)
+
+# 語彙と設定
+vocab = PokemonVocab.from_zukan(Path("data/zukan.txt"))
+config = PokemonBertConfig(
+    vocab_size=len(vocab),
+    hidden_size=256,
+    num_hidden_layers=4,
+    num_attention_heads=4,
+    intermediate_size=512,
+)
+
+# モデル読み込み
+model = PokemonBertForTokenClassification(config)
+model.load_state_dict(torch.load("models/rebel/final/selection_bert.pt"))
+
+# Predictor作成
+predictor = SelectionBeliefPredictor(model, vocab, device="cpu")
+
+# 予測
+my_team = ["ハバタクカミ", "パオジアン", "ウーラオス(れんげき)", "カイリュー", "ランドロス(れいじゅう)", "サーフゴー"]
+opp_team = ["ゴリランダー", "イーユイ", "ウォッシュロトム", "ガブリアス", "ヒードラン", "サンダー"]
+
+my_pred, opp_pred = predictor.predict(my_team, opp_team)
+
+# 相手の選出予測
+print("相手の選出確率:", opp_pred.selection_probs)
+print("相手の先発確率:", opp_pred.lead_probs)
+print("上位3パターン:", opp_pred.top_k_selections(3))
+
+# 自分の最適選出
+selected, lead_idx = predictor.select_team(my_team, opp_team, deterministic=True)
+print(f"推奨選出: {[my_team[i] for i in selected]}, 先発: {my_team[lead_idx]}")
+```
+
+### Using Selection BERT with ReBeL Belief State
+
+```python
+from src.rebel.team_composition_belief import TeamCompositionBelief
+from src.rebel.full_belief_state import FullBeliefState
+
+# TeamCompositionBelief をSelection BERTから作成
+belief = TeamCompositionBelief.from_selection_bert(
+    team_preview_names=opp_team,
+    my_team_names=my_team,
+    predictor=predictor,
+)
+
+# 各ポケモンの選出・先発確率を取得
+for i, name in enumerate(opp_team):
+    sel_prob = belief.get_selection_probability(i)
+    lead_prob = belief.get_lead_probability(i)
+    print(f"{name}: 選出={sel_prob:.1%}, 先発={lead_prob:.1%}")
+
+# FullBeliefState で完全な信念管理（型情報も含む）
+full_belief = FullBeliefState(
+    team_preview_names=opp_team,
+    team_preview_data=[...],  # 相手の6匹のデータ
+    usage_db=usage_db,
+    my_team_names=my_team,
+    selection_bert_predictor=predictor,
+)
 ```
 
 ### Database Environment Variables

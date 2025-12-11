@@ -11,7 +11,7 @@ import random
 from copy import deepcopy
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Optional
+from typing import Any, Optional
 
 from src.hypothesis.pokemon_usage_database import PokemonUsageDatabase
 
@@ -45,6 +45,9 @@ class ObservationType(Enum):
 
     # === テラスタイプが判明する観測 ===
     TERASTALLIZED = auto()  # テラスタル使用
+
+    # === 特性が判明する観測 ===
+    ABILITY_REVEALED = auto()  # 特性発動
 
     # === 推測に使える観測 ===
     OUTSPED_UNEXPECTEDLY = auto()  # 予想外に先制 → スカーフ疑惑
@@ -107,6 +110,29 @@ class PokemonTypeHypothesis:
         """判明した技と矛盾しないか"""
         return revealed.issubset(set(self.moves))
 
+    def to_dict(self) -> dict[str, Any]:
+        """シリアライズ可能な辞書に変換"""
+        return {
+            "moves": list(self.moves),
+            "item": self.item,
+            "tera_type": self.tera_type,
+            "nature": self.nature,
+            "ability": self.ability,
+            "ev_spread_type": self.ev_spread_type.name,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "PokemonTypeHypothesis":
+        """辞書から復元"""
+        return cls(
+            moves=tuple(data["moves"]),
+            item=data["item"],
+            tera_type=data["tera_type"],
+            nature=data["nature"],
+            ability=data["ability"],
+            ev_spread_type=EVSpreadType[data["ev_spread_type"]],
+        )
+
     def get_evs(self) -> list[int]:
         """EV配分をリストで取得 [H, A, B, C, D, S]"""
         from .ev_template import EV_TEMPLATES
@@ -157,6 +183,9 @@ class PokemonBeliefState:
             name: None for name in opponent_pokemon_names
         }
         self.revealed_tera: dict[str, Optional[str]] = {
+            name: None for name in opponent_pokemon_names
+        }
+        self.revealed_abilities: dict[str, Optional[str]] = {
             name: None for name in opponent_pokemon_names
         }
 
@@ -457,6 +486,12 @@ class PokemonBeliefState:
             if tera_type:
                 self._confirm_tera(pokemon_name, tera_type)
 
+        # === 特性の確定 ===
+        elif obs_type == ObservationType.ABILITY_REVEALED:
+            ability = observation.details.get("ability")
+            if ability:
+                self._confirm_ability(pokemon_name, ability)
+
         # === 推測観測（確率更新） ===
         elif obs_type == ObservationType.OUTSPED_UNEXPECTEDLY:
             self._boost_item_probability(pokemon_name, "こだわりスカーフ", factor=3.0)
@@ -520,6 +555,14 @@ class PokemonBeliefState:
         self.revealed_tera[pokemon_name] = tera_type
         current = self.beliefs[pokemon_name]
         filtered = {h: p for h, p in current.items() if h.tera_type == tera_type}
+        if filtered:
+            self.beliefs[pokemon_name] = self._prune_and_normalize(filtered)
+
+    def _confirm_ability(self, pokemon_name: str, ability: str) -> None:
+        """特性を確定"""
+        self.revealed_abilities[pokemon_name] = ability
+        current = self.beliefs[pokemon_name]
+        filtered = {h: p for h, p in current.items() if h.ability == ability}
         if filtered:
             self.beliefs[pokemon_name] = self._prune_and_normalize(filtered)
 
@@ -592,6 +635,17 @@ class PokemonBeliefState:
                 prob += p
         return prob
 
+    def get_ability_distribution(self, pokemon_name: str) -> dict[str, float]:
+        """特性の周辺確率分布を取得"""
+        if pokemon_name not in self.beliefs:
+            return {}
+
+        distribution: dict[str, float] = {}
+        for hypothesis, prob in self.beliefs[pokemon_name].items():
+            ability = hypothesis.ability
+            distribution[ability] = distribution.get(ability, 0.0) + prob
+        return distribution
+
     # =========================================================================
     # ユーティリティ
     # =========================================================================
@@ -606,6 +660,7 @@ class PokemonBeliefState:
         new_state.revealed_moves = deepcopy(self.revealed_moves)
         new_state.revealed_items = deepcopy(self.revealed_items)
         new_state.revealed_tera = deepcopy(self.revealed_tera)
+        new_state.revealed_abilities = deepcopy(self.revealed_abilities)
         new_state.move_use_count = deepcopy(self.move_use_count)
         new_state.observation_history = list(self.observation_history)
         return new_state
@@ -667,6 +722,15 @@ class PokemonBeliefState:
                 tera_str = ", ".join(f"{t}({p:.1%})" for t, p in top_tera)
                 lines.append(f"  テラス: {tera_str}")
 
+            # 特性
+            if self.revealed_abilities.get(pokemon_name):
+                lines.append(f"  特性: {self.revealed_abilities[pokemon_name]} (確定)")
+            else:
+                ability_dist = self.get_ability_distribution(pokemon_name)
+                top_abilities = sorted(ability_dist.items(), key=lambda x: -x[1])[:3]
+                abilities_str = ", ".join(f"{a}({p:.1%})" for a, p in top_abilities)
+                lines.append(f"  特性: {abilities_str}")
+
             # 仮説数
             lines.append(f"  仮説数: {len(self.beliefs[pokemon_name])}")
 
@@ -675,3 +739,55 @@ class PokemonBeliefState:
     def __repr__(self) -> str:
         total_hypos = sum(len(b) for b in self.beliefs.values())
         return f"PokemonBeliefState(pokemon={len(self.beliefs)}, total_hypotheses={total_hypos})"
+
+    def to_dict(self) -> dict[str, Any]:
+        """シリアライズ可能な辞書に変換"""
+        # beliefs の変換: {pokemon_name: [(hypothesis_dict, probability), ...]}
+        beliefs_serialized = {}
+        for pokemon_name, hypo_dist in self.beliefs.items():
+            beliefs_serialized[pokemon_name] = [
+                (hypo.to_dict(), prob) for hypo, prob in hypo_dist.items()
+            ]
+
+        return {
+            "beliefs": beliefs_serialized,
+            "revealed_moves": {k: list(v) for k, v in self.revealed_moves.items()},
+            "revealed_items": self.revealed_items,
+            "revealed_tera": self.revealed_tera,
+            "revealed_abilities": self.revealed_abilities,
+            "move_use_count": self.move_use_count,
+            "max_hypotheses": self.max_hypotheses,
+            "min_probability": self.min_probability,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict[str, Any], usage_db: PokemonUsageDatabase
+    ) -> "PokemonBeliefState":
+        """辞書から復元"""
+        # まず空のポケモン名リストでインスタンスを作成
+        pokemon_names = list(data["beliefs"].keys())
+        instance = cls.__new__(cls)
+
+        # 基本属性を設定
+        instance.usage_db = usage_db
+        instance.max_hypotheses = data.get("max_hypotheses", 50)
+        instance.min_probability = data.get("min_probability", 0.01)
+        instance.observation_history = []
+
+        # revealed情報を復元
+        instance.revealed_moves = {k: set(v) for k, v in data["revealed_moves"].items()}
+        instance.revealed_items = data["revealed_items"]
+        instance.revealed_tera = data["revealed_tera"]
+        instance.revealed_abilities = data.get("revealed_abilities", {name: None for name in pokemon_names})
+        instance.move_use_count = data.get("move_use_count", {name: {} for name in pokemon_names})
+
+        # beliefs を復元
+        instance.beliefs = {}
+        for pokemon_name, hypo_list in data["beliefs"].items():
+            instance.beliefs[pokemon_name] = {
+                PokemonTypeHypothesis.from_dict(hypo_dict): prob
+                for hypo_dict, prob in hypo_list
+            }
+
+        return instance
