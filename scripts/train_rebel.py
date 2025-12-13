@@ -310,8 +310,62 @@ def main():
         if not args.resume:
             print("Error: --evaluate-only requires --resume to specify checkpoint path")
             return
-        print(f"Evaluate-only mode: loading from {args.resume}")
-        trainer.load(Path(args.resume))
+
+        checkpoint_path = Path(args.resume)
+
+        # チェックポイントから設定を自動検出
+        print(f"Evaluate-only mode: detecting settings from {args.resume}")
+
+        # checkpoint_meta.json から設定を読み込み
+        checkpoint_meta_path = checkpoint_path / "checkpoint_meta.json"
+        if checkpoint_meta_path.exists():
+            with open(checkpoint_meta_path, "r", encoding="utf-8") as f:
+                checkpoint_meta = json.load(f)
+            saved_config = checkpoint_meta.get("config", {})
+
+            # use_full_belief の自動検出
+            if saved_config.get("use_full_belief", False) and not args.use_full_belief:
+                print("  -> use_full_belief detected, enabling automatically")
+                config.use_full_belief = True
+
+            # use_selection_bert の自動検出
+            if saved_config.get("use_selection_bert", False) and not args.use_selection_bert:
+                print("  -> use_selection_bert detected, enabling automatically")
+                config.use_selection_bert = True
+                config.train_selection = True
+
+            # train_selection の自動検出
+            if saved_config.get("train_selection", False) and not args.train_selection:
+                print("  -> train_selection detected, enabling automatically")
+                config.train_selection = True
+
+        # ファイル存在による自動検出（checkpoint_meta.json がない古いチェックポイント用）
+        # Selection BERT の自動検出
+        selection_bert_path = checkpoint_path / "selection_bert.pt"
+        selection_bert_vocab_path = checkpoint_path / "selection_bert_vocab.json"
+        if selection_bert_path.exists() and selection_bert_vocab_path.exists():
+            if not config.use_selection_bert:
+                print("  -> Selection BERT files detected, enabling automatically")
+                config.train_selection = True
+                config.use_selection_bert = True
+
+        # TeamSelectionNetwork の自動検出
+        selection_network_path = checkpoint_path / "selection_network.pt"
+        if selection_network_path.exists() and not config.use_selection_bert:
+            if not config.train_selection:
+                print("  -> TeamSelectionNetwork detected, enabling automatically")
+                config.train_selection = True
+
+        # 設定が変更された場合は trainer を再作成
+        trainer = ReBeLTrainer(
+            usage_db=usage_db,
+            trainer_data=trainer_data,
+            config=config,
+            value_network=value_network,
+        )
+
+        print(f"Loading checkpoint from {args.resume}")
+        trainer.load(checkpoint_path)
         print(f"Model loaded from iteration {trainer.current_iteration}")
     else:
         # 再開
