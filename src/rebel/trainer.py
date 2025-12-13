@@ -1872,10 +1872,16 @@ class ReBeLTrainer:
         # Selection BERT の保存
         self._save_selection_bert(path)
 
-        # イテレーション番号と学習履歴を保存
+        # イテレーション番号、学習履歴、設定を保存
         checkpoint_meta = {
             "current_iteration": self.current_iteration,
             "training_history": self.training_history,
+            "config": {
+                "use_full_belief": self.config.use_full_belief,
+                "use_selection_bert": self.config.use_selection_bert,
+                "train_selection": self.config.train_selection,
+                "use_lightweight_cfr": self.config.use_lightweight_cfr,
+            },
         }
         with open(path / "checkpoint_meta.json", "w", encoding="utf-8") as f:
             json.dump(checkpoint_meta, f, ensure_ascii=False, indent=2)
@@ -1934,6 +1940,8 @@ class ReBeLTrainer:
         self,
         num_games: int = 50,
         baseline_type: str = "random",
+        rebel_selection: str = "learned",
+        baseline_selection: str = "random",
     ) -> dict:
         """
         ベースラインとの対戦評価
@@ -1941,6 +1949,8 @@ class ReBeLTrainer:
         Args:
             num_games: 評価試合数
             baseline_type: ベースラインの種類 ("random" or "cfr_only")
+            rebel_selection: ReBeL側の選出方法 ("random", "learned")
+            baseline_selection: ベースライン側の選出方法 ("random", "learned")
 
         Returns:
             評価結果
@@ -1949,6 +1959,7 @@ class ReBeLTrainer:
         from src.hypothesis.pokemon_usage_database import ItemPriorDatabaseAdapter
 
         print(f"Evaluating against {baseline_type} baseline ({num_games} games)...")
+        print(f"  ReBeL selection: {rebel_selection}, Baseline selection: {baseline_selection}")
 
         wins = {0: 0, 1: 0, None: 0}
         total_turns = 0
@@ -1961,41 +1972,104 @@ class ReBeLTrainer:
             battle = Battle()
             battle.reset_game()
 
-            self._setup_team(battle, 0, trainer0)
-            self._setup_team(battle, 1, trainer1)
+            # チームデータ取得
+            trainer0_team = trainer0.get("pokemon", [])[:6]
+            trainer1_team = trainer1.get("pokemon", [])[:6]
+
+            # ReBeL (Player 0) の選出
+            if rebel_selection == "learned":
+                selected_0 = self._select_team_for_eval(trainer0_team, trainer1_team)
+            else:
+                num_select = min(3, len(trainer0_team))
+                selected_0 = random.sample(range(len(trainer0_team)), num_select)
+            self._setup_team_with_indices(battle, 0, trainer0_team, selected_0)
+
+            # Baseline (Player 1) の選出
+            if baseline_selection == "learned":
+                selected_1 = self._select_team_for_eval(trainer1_team, trainer0_team)
+            else:
+                num_select = min(3, len(trainer1_team))
+                selected_1 = random.sample(range(len(trainer1_team)), num_select)
+            self._setup_team_with_indices(battle, 1, trainer1_team, selected_1)
+
             battle.proceed(commands=[Battle.SKIP, Battle.SKIP])
 
-            # ReBeL (Player 0) with trained network
-            belief0 = PokemonBeliefState(
-                [p.name for p in battle.selected[1]],
-                self.usage_db,
-            )
+            # 信念状態の初期化
+            full_beliefs: list[Optional[FullBeliefState]] = [None, None]
+            trainer0_names = [p.get("name", "") for p in trainer0_team]
+            trainer1_names = [p.get("name", "") for p in trainer1_team]
 
-            # ベースライン (Player 1)
-            if baseline_type == "random":
-                # ランダム行動
-                def get_baseline_action(battle, player):
-                    available = battle.available_commands(player)
-                    return random.choice(available) if available else Battle.SKIP
+            if self.config.use_full_belief:
+                # 完全信念状態を使用（選出・先発の不確実性を含む）
+                full_belief_0 = FullBeliefState(
+                    team_preview_names=trainer1_names,
+                    team_preview_data=trainer1_team,
+                    usage_db=self.usage_db,
+                    selector=None,
+                    my_team_data=trainer0_team,
+                    my_team_names=trainer0_names,
+                    selection_bert_predictor=self.selection_bert_predictor,
+                )
+                full_belief_1 = FullBeliefState(
+                    team_preview_names=trainer0_names,
+                    team_preview_data=trainer0_team,
+                    usage_db=self.usage_db,
+                    selector=None,
+                    my_team_data=trainer1_team,
+                    my_team_names=trainer1_names,
+                    selection_bert_predictor=self.selection_bert_predictor,
+                )
+                full_beliefs = [full_belief_0, full_belief_1]
+
+                # 先発が判明した状態で更新
+                lead_pokemon_0 = battle.pokemon[1]
+                lead_pokemon_1 = battle.pokemon[0]
+                if lead_pokemon_0:
+                    full_belief_0.update_lead_revealed(lead_pokemon_0.name)
+                if lead_pokemon_1:
+                    full_belief_1.update_lead_revealed(lead_pokemon_1.name)
+
+                # PokemonBeliefState に変換
+                belief0 = full_belief_0.to_pokemon_belief_state() or PokemonBeliefState(
+                    [p.name for p in battle.selected[1]],
+                    self.usage_db,
+                )
+                belief1 = full_belief_1.to_pokemon_belief_state() or PokemonBeliefState(
+                    [p.name for p in battle.selected[0]],
+                    self.usage_db,
+                )
             else:
-                # CFR only (no neural network)
-                baseline_solver = ReBeLSolver(
-                    value_network=None,
-                    cfr_config=CFRConfig(num_iterations=20, num_world_samples=10),
-                    use_simplified=True,
+                belief0 = PokemonBeliefState(
+                    [p.name for p in battle.selected[1]],
+                    self.usage_db,
                 )
                 belief1 = PokemonBeliefState(
                     [p.name for p in battle.selected[0]],
                     self.usage_db,
                 )
 
-                def get_baseline_action(battle, player):
-                    pbs = PublicBeliefState.from_battle(battle, player, belief1)
-                    return baseline_solver.get_action(pbs, battle, explore=True)
+            beliefs = [belief0, belief1]
+            log_lengths: dict[int, int] = {0: 0, 1: 0}
+
+            # ベースライン (Player 1) のソルバー設定
+            baseline_solver = None
+            if baseline_type != "random":
+                # CFR only (no neural network)
+                baseline_solver = ReBeLSolver(
+                    value_network=None,
+                    cfr_config=CFRConfig(num_iterations=20, num_world_samples=10),
+                    use_simplified=True,
+                )
 
             turn = 0
             while battle.winner() is None and turn < 100:
                 turn += 1
+
+                # 信念を更新
+                log_lengths = self._update_beliefs_from_battle(
+                    battle, beliefs, full_beliefs, log_lengths
+                )
+                belief0, belief1 = beliefs[0], beliefs[1]
 
                 # ReBeL action
                 try:
@@ -2007,7 +2081,12 @@ class ReBeLTrainer:
 
                 # Baseline action
                 try:
-                    action1 = get_baseline_action(battle, 1)
+                    if baseline_type == "random":
+                        available = battle.available_commands(1)
+                        action1 = random.choice(available) if available else Battle.SKIP
+                    else:
+                        pbs = PublicBeliefState.from_battle(battle, 1, belief1)
+                        action1 = baseline_solver.get_action(pbs, battle, explore=True)
                 except Exception:
                     available = battle.available_commands(1)
                     action1 = random.choice(available) if available else Battle.SKIP
@@ -2034,6 +2113,8 @@ class ReBeLTrainer:
             "win_rate": win_rate,
             "avg_turns": avg_turns,
             "baseline_type": baseline_type,
+            "rebel_selection": rebel_selection,
+            "baseline_selection": baseline_selection,
         }
 
         print(f"\nEvaluation Results:")
@@ -2042,6 +2123,45 @@ class ReBeLTrainer:
         print(f"  Avg turns:     {avg_turns:.1f}")
 
         return results
+
+    def _select_team_for_eval(
+        self, my_team_data: list[dict], opp_team_data: list[dict]
+    ) -> list[int]:
+        """
+        評価時に学習済み選出ネットワークを使ってチームを選出
+
+        Args:
+            my_team_data: 自分の6匹のデータ
+            opp_team_data: 相手の6匹のデータ
+
+        Returns:
+            選出するインデックスのリスト
+        """
+        num_select = min(3, len(my_team_data))
+
+        # Selection BERT が利用可能な場合
+        if self.selection_bert_predictor is not None:
+            try:
+                my_names = [p.get("name", "ピカチュウ") for p in my_team_data]
+                opp_names = [p.get("name", "ピカチュウ") for p in opp_team_data]
+                selected, _ = self.selection_bert_predictor.select_team(
+                    my_names, opp_names, deterministic=True
+                )
+                return selected[:num_select]
+            except Exception:
+                pass
+
+        # TeamSelectionNetwork が利用可能な場合
+        if self.selection_network is not None and self.selection_encoder is not None:
+            try:
+                return self._select_team_with_network(
+                    my_team_data, opp_team_data, explore=False
+                )
+            except Exception:
+                pass
+
+        # フォールバック: ランダム選出
+        return random.sample(range(len(my_team_data)), num_select)
 
     # ============================================================
     # Selection BERT 関連メソッド

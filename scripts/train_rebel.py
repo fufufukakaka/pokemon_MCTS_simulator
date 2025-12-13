@@ -111,6 +111,11 @@ def main():
         help="学習後に評価を実行",
     )
     parser.add_argument(
+        "--evaluate-only",
+        action="store_true",
+        help="学習をスキップして評価のみ実行（--resumeでチェックポイント指定必須）",
+    )
+    parser.add_argument(
         "--eval-games",
         type=int,
         default=30,
@@ -300,46 +305,151 @@ def main():
         value_network=value_network,
     )
 
-    # 再開
-    if args.resume:
-        print(f"Resuming from {args.resume}")
-        trainer.load(Path(args.resume))
-        print(f"Will run {args.num_iterations} more iterations (from iter {trainer.current_iteration + 1} to {trainer.current_iteration + args.num_iterations})")
+    # 評価のみモードのチェック
+    if args.evaluate_only:
+        if not args.resume:
+            print("Error: --evaluate-only requires --resume to specify checkpoint path")
+            return
 
-    # 学習
-    print(f"\nStarting training for {args.num_iterations} iterations...")
-    print(f"Config: {config}")
-    print("=" * 60)
+        checkpoint_path = Path(args.resume)
 
-    trainer.train(args.num_iterations, args.output)
+        # チェックポイントから設定を自動検出
+        print(f"Evaluate-only mode: detecting settings from {args.resume}")
 
-    print("\nTraining completed!")
-    print(f"Model saved to {args.output}")
+        # checkpoint_meta.json から設定を読み込み
+        checkpoint_meta_path = checkpoint_path / "checkpoint_meta.json"
+        if checkpoint_meta_path.exists():
+            with open(checkpoint_meta_path, "r", encoding="utf-8") as f:
+                checkpoint_meta = json.load(f)
+            saved_config = checkpoint_meta.get("config", {})
+
+            # use_full_belief の自動検出
+            if saved_config.get("use_full_belief", False) and not args.use_full_belief:
+                print("  -> use_full_belief detected, enabling automatically")
+                config.use_full_belief = True
+
+            # use_selection_bert の自動検出
+            if saved_config.get("use_selection_bert", False) and not args.use_selection_bert:
+                print("  -> use_selection_bert detected, enabling automatically")
+                config.use_selection_bert = True
+                config.train_selection = True
+
+            # train_selection の自動検出
+            if saved_config.get("train_selection", False) and not args.train_selection:
+                print("  -> train_selection detected, enabling automatically")
+                config.train_selection = True
+
+        # ファイル存在による自動検出（checkpoint_meta.json がない古いチェックポイント用）
+        # Selection BERT の自動検出
+        selection_bert_path = checkpoint_path / "selection_bert.pt"
+        selection_bert_vocab_path = checkpoint_path / "selection_bert_vocab.json"
+        if selection_bert_path.exists() and selection_bert_vocab_path.exists():
+            if not config.use_selection_bert:
+                print("  -> Selection BERT files detected, enabling automatically")
+                config.train_selection = True
+                config.use_selection_bert = True
+
+        # TeamSelectionNetwork の自動検出
+        selection_network_path = checkpoint_path / "selection_network.pt"
+        if selection_network_path.exists() and not config.use_selection_bert:
+            if not config.train_selection:
+                print("  -> TeamSelectionNetwork detected, enabling automatically")
+                config.train_selection = True
+
+        # 設定が変更された場合は trainer を再作成
+        trainer = ReBeLTrainer(
+            usage_db=usage_db,
+            trainer_data=trainer_data,
+            config=config,
+            value_network=value_network,
+        )
+
+        print(f"Loading checkpoint from {args.resume}")
+        trainer.load(checkpoint_path)
+        print(f"Model loaded from iteration {trainer.current_iteration}")
+    else:
+        # 再開
+        if args.resume:
+            print(f"Resuming from {args.resume}")
+            trainer.load(Path(args.resume))
+            print(f"Will run {args.num_iterations} more iterations (from iter {trainer.current_iteration + 1} to {trainer.current_iteration + args.num_iterations})")
+
+        # 学習
+        print(f"\nStarting training for {args.num_iterations} iterations...")
+        print(f"Config: {config}")
+        print("=" * 60)
+
+        trainer.train(args.num_iterations, args.output)
+
+        print("\nTraining completed!")
+        print(f"Model saved to {args.output}")
 
     # 評価
-    if args.evaluate:
+    if args.evaluate or args.evaluate_only:
         print("\n" + "=" * 60)
         print("Running evaluation...")
 
-        # vs Random
-        results_random = trainer.evaluate_against_baseline(
+        eval_results = {}
+
+        # 選出ネットワークが学習されているか確認
+        has_selection_model = (
+            trainer.selection_bert_predictor is not None
+            or trainer.selection_network is not None
+        )
+
+        # 評価パターン
+        # ReBeL側は常に学習済み選出を使用（利用可能な場合）
+        rebel_sel = "learned" if has_selection_model else "random"
+
+        # 1. vs Random action + Random selection
+        print("\n--- vs Random (random selection) ---")
+        eval_results["vs_random_randsel"] = trainer.evaluate_against_baseline(
             num_games=args.eval_games,
             baseline_type="random",
+            rebel_selection=rebel_sel,
+            baseline_selection="random",
         )
 
-        # vs CFR-only (no NN)
-        results_cfr = trainer.evaluate_against_baseline(
+        # 2. vs CFR-only + Random selection
+        print("\n--- vs CFR-only (random selection) ---")
+        eval_results["vs_cfr_randsel"] = trainer.evaluate_against_baseline(
             num_games=args.eval_games,
             baseline_type="cfr_only",
+            rebel_selection=rebel_sel,
+            baseline_selection="random",
         )
 
+        # 選出ネットワークがある場合は、相手も学習済み選出を使う評価を追加
+        if has_selection_model:
+            # 3. vs Random action + Learned selection
+            print("\n--- vs Random (learned selection) ---")
+            eval_results["vs_random_learnsel"] = trainer.evaluate_against_baseline(
+                num_games=args.eval_games,
+                baseline_type="random",
+                rebel_selection=rebel_sel,
+                baseline_selection="learned",
+            )
+
+            # 4. vs CFR-only + Learned selection
+            print("\n--- vs CFR-only (learned selection) ---")
+            eval_results["vs_cfr_learnsel"] = trainer.evaluate_against_baseline(
+                num_games=args.eval_games,
+                baseline_type="cfr_only",
+                rebel_selection=rebel_sel,
+                baseline_selection="learned",
+            )
+
         # 結果を保存
-        eval_results = {
-            "vs_random": results_random,
-            "vs_cfr_only": results_cfr,
-        }
         with open(Path(args.output) / "evaluation_results.json", "w") as f:
             json.dump(eval_results, f, indent=2)
+
+        # サマリー表示
+        print("\n" + "=" * 60)
+        print("Evaluation Summary:")
+        print("-" * 60)
+        for key, res in eval_results.items():
+            win_rate = res.get("win_rate", 0) * 100
+            print(f"  {key}: {win_rate:.1f}% win rate")
 
         print(f"\nEvaluation results saved to {args.output}/evaluation_results.json")
 
