@@ -1934,6 +1934,8 @@ class ReBeLTrainer:
         self,
         num_games: int = 50,
         baseline_type: str = "random",
+        rebel_selection: str = "learned",
+        baseline_selection: str = "random",
     ) -> dict:
         """
         ベースラインとの対戦評価
@@ -1941,6 +1943,8 @@ class ReBeLTrainer:
         Args:
             num_games: 評価試合数
             baseline_type: ベースラインの種類 ("random" or "cfr_only")
+            rebel_selection: ReBeL側の選出方法 ("random", "learned")
+            baseline_selection: ベースライン側の選出方法 ("random", "learned")
 
         Returns:
             評価結果
@@ -1949,6 +1953,7 @@ class ReBeLTrainer:
         from src.hypothesis.pokemon_usage_database import ItemPriorDatabaseAdapter
 
         print(f"Evaluating against {baseline_type} baseline ({num_games} games)...")
+        print(f"  ReBeL selection: {rebel_selection}, Baseline selection: {baseline_selection}")
 
         wins = {0: 0, 1: 0, None: 0}
         total_turns = 0
@@ -1961,8 +1966,26 @@ class ReBeLTrainer:
             battle = Battle()
             battle.reset_game()
 
-            self._setup_team(battle, 0, trainer0)
-            self._setup_team(battle, 1, trainer1)
+            # チームデータ取得
+            trainer0_team = trainer0.get("pokemon", [])[:6]
+            trainer1_team = trainer1.get("pokemon", [])[:6]
+
+            # ReBeL (Player 0) の選出
+            if rebel_selection == "learned":
+                selected_0 = self._select_team_for_eval(trainer0_team, trainer1_team)
+            else:
+                num_select = min(3, len(trainer0_team))
+                selected_0 = random.sample(range(len(trainer0_team)), num_select)
+            self._setup_team_with_indices(battle, 0, trainer0_team, selected_0)
+
+            # Baseline (Player 1) の選出
+            if baseline_selection == "learned":
+                selected_1 = self._select_team_for_eval(trainer1_team, trainer0_team)
+            else:
+                num_select = min(3, len(trainer1_team))
+                selected_1 = random.sample(range(len(trainer1_team)), num_select)
+            self._setup_team_with_indices(battle, 1, trainer1_team, selected_1)
+
             battle.proceed(commands=[Battle.SKIP, Battle.SKIP])
 
             # ReBeL (Player 0) with trained network
@@ -2034,6 +2057,8 @@ class ReBeLTrainer:
             "win_rate": win_rate,
             "avg_turns": avg_turns,
             "baseline_type": baseline_type,
+            "rebel_selection": rebel_selection,
+            "baseline_selection": baseline_selection,
         }
 
         print(f"\nEvaluation Results:")
@@ -2042,6 +2067,45 @@ class ReBeLTrainer:
         print(f"  Avg turns:     {avg_turns:.1f}")
 
         return results
+
+    def _select_team_for_eval(
+        self, my_team_data: list[dict], opp_team_data: list[dict]
+    ) -> list[int]:
+        """
+        評価時に学習済み選出ネットワークを使ってチームを選出
+
+        Args:
+            my_team_data: 自分の6匹のデータ
+            opp_team_data: 相手の6匹のデータ
+
+        Returns:
+            選出するインデックスのリスト
+        """
+        num_select = min(3, len(my_team_data))
+
+        # Selection BERT が利用可能な場合
+        if self.selection_bert_predictor is not None:
+            try:
+                my_names = [p.get("name", "ピカチュウ") for p in my_team_data]
+                opp_names = [p.get("name", "ピカチュウ") for p in opp_team_data]
+                selected, _ = self.selection_bert_predictor.select_team(
+                    my_names, opp_names, deterministic=True
+                )
+                return selected[:num_select]
+            except Exception:
+                pass
+
+        # TeamSelectionNetwork が利用可能な場合
+        if self.selection_network is not None and self.selection_encoder is not None:
+            try:
+                return self._select_team_with_network(
+                    my_team_data, opp_team_data, explore=False
+                )
+            except Exception:
+                pass
+
+        # フォールバック: ランダム選出
+        return random.sample(range(len(my_team_data)), num_select)
 
     # ============================================================
     # Selection BERT 関連メソッド
