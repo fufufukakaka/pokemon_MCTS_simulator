@@ -440,7 +440,16 @@ def main():
             )
 
         # 結果を保存
-        with open(Path(args.output) / "evaluation_results.json", "w") as f:
+        # evaluate-only の場合はチェックポイント名をファイル名に含める
+        if args.evaluate_only and args.resume:
+            checkpoint_name = Path(args.resume).name
+            output_filename = f"evaluation_results_{checkpoint_name}.json"
+            output_path = Path(args.resume).parent / output_filename
+        else:
+            output_filename = "evaluation_results.json"
+            output_path = Path(args.output) / output_filename
+
+        with open(output_path, "w") as f:
             json.dump(eval_results, f, indent=2)
 
         # サマリー表示
@@ -451,7 +460,7 @@ def main():
             win_rate = res.get("win_rate", 0) * 100
             print(f"  {key}: {win_rate:.1f}% win rate")
 
-        print(f"\nEvaluation results saved to {args.output}/evaluation_results.json")
+        print(f"\nEvaluation results saved to {output_path}")
 
 
 if __name__ == "__main__":
