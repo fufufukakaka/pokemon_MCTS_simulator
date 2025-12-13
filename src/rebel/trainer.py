@@ -1973,8 +1973,8 @@ class ReBeLTrainer:
             battle.reset_game()
 
             # チームデータ取得
-            trainer0_team = trainer0.get("pokemon", [])[:6]
-            trainer1_team = trainer1.get("pokemon", [])[:6]
+            trainer0_team = trainer0.get("pokemons", [])[:6]
+            trainer1_team = trainer1.get("pokemons", [])[:6]
 
             # ReBeL (Player 0) の選出
             if rebel_selection == "learned":
