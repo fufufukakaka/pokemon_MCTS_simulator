@@ -151,6 +151,9 @@ class Battle:
         # self.proceed()によってターンを再開(再現)する際、再開地点を追跡するために用いるフラグ。
         self.breakpoint = ["", ""]
 
+        # UI待機モード: Trueの場合、交代コマンドが不足したらbreakpointを維持して中断
+        self.interactive_mode = False
+
         self.reset_sim_parameters()
 
     def current_index(self, player: int) -> int:
@@ -1649,6 +1652,9 @@ class Battle:
         else:
             if self.reserved_change_commands[player]:
                 command = self.reserved_change_commands[player].pop(0)
+            elif self.interactive_mode:
+                # UI待機モード: コマンドがなければ中断（breakpoint維持）
+                return
             else:
                 command = self.change_command(player)
             self.change_command_history[player].append(command)

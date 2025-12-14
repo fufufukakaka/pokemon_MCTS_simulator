@@ -36,16 +36,191 @@ class ValueEstimator(Protocol):
         ...
 
 
+def can_deal_damage(battle: Battle, attacker: int) -> bool:
+    """
+    攻撃側が防御側にダメージを与える手段があるか判定
+
+    以下の状況を「ダメージ手段なし」と判定：
+    - 全ての攻撃技がタイプ相性で無効
+    - 状態異常技も効かない（はがねにどくどく等）
+
+    Args:
+        battle: バトル状態
+        attacker: 攻撃側のプレイヤー番号
+
+    Returns:
+        True: ダメージ手段がある, False: ない
+    """
+    from src.pokemon_battle_sim.pokemon import Pokemon
+
+    defender = 1 - attacker
+
+    # 攻撃側の全ポケモン
+    attacker_pokemon_list = [
+        p for p in battle.selected[attacker] if p is not None and p.hp > 0
+    ]
+    # 防御側の全ポケモン
+    defender_pokemon_list = [
+        p for p in battle.selected[defender] if p is not None and p.hp > 0
+    ]
+
+    if not attacker_pokemon_list or not defender_pokemon_list:
+        return False
+
+    # 攻撃側のいずれかのポケモンが、防御側のいずれかにダメージを与えられるか
+    for atk_poke in attacker_pokemon_list:
+        for def_poke in defender_pokemon_list:
+            for move in atk_poke.moves:
+                if move is None:
+                    continue
+                if _move_can_hit(atk_poke, def_poke, move, battle):
+                    return True
+
+    return False
+
+
+def _move_can_hit(
+    attacker: "Pokemon", defender: "Pokemon", move: str, battle: Battle
+) -> bool:
+    """
+    特定の技が相手に効くか判定
+
+    Args:
+        attacker: 攻撃側ポケモン
+        defender: 防御側ポケモン
+        move: 技名
+        battle: バトル状態
+
+    Returns:
+        True: ダメージを与えられる可能性がある
+    """
+    from src.pokemon_battle_sim.pokemon import Pokemon
+
+    # 技データを取得
+    move_data = Pokemon.all_moves.get(move)
+    if move_data is None:
+        return False
+
+    move_type = move_data.get("type", "ノーマル")
+    move_class = move_data.get("class", "phy")
+    power = move_data.get("power", 0)
+
+    # 変化技は基本的にダメージ手段とみなさない（一部例外あり）
+    if move_class == "status":
+        # どくどく、やどりぎのタネ等は定数ダメージを与える可能性
+        damaging_status_moves = {
+            "やどりぎのタネ",
+            "のろい",  # ゴーストタイプが使う場合
+        }
+        if move in damaging_status_moves:
+            # やどりぎのタネはくさタイプには効かない
+            if move == "やどりぎのタネ" and "くさ" in defender.types:
+                return False
+            return True
+
+        # どくどく系：はがね、どくタイプには効かない
+        if move in {"どくどく", "どくのこな", "どくガス"}:
+            if "はがね" in defender.types or "どく" in defender.types:
+                return False
+            return True
+
+        # その他の状態異常技はダメージ手段にならない
+        return False
+
+    # 威力0の技は特殊処理（固定ダメージ技など）
+    if power == 0:
+        # わるあがきはダメージを与える
+        if move == "わるあがき":
+            return True
+        # ちきゅうなげ、ナイトヘッド等の固定ダメージ技
+        fixed_damage_moves = {"ちきゅうなげ", "ナイトヘッド", "がんせきおとし"}
+        if move in fixed_damage_moves:
+            # ノーマル/かくとう技がゴーストに効かない
+            if move_type == "ノーマル" and "ゴースト" in defender.types:
+                return False
+            if move_type == "かくとう" and "ゴースト" in defender.types:
+                return False
+            return True
+        return False
+
+    # タイプ相性チェック
+    defender_types = list(defender.types)
+    if defender.terastal and defender.Ttype:
+        defender_types = [defender.Ttype]
+
+    type_effectiveness = 1.0
+    for def_type in defender_types:
+        atk_type_id = Pokemon.type_id.get(move_type, 0)
+        def_type_id = Pokemon.type_id.get(def_type, 0)
+        if atk_type_id < len(Pokemon.type_corrections) and def_type_id < len(
+            Pokemon.type_corrections[atk_type_id]
+        ):
+            type_effectiveness *= Pokemon.type_corrections[atk_type_id][def_type_id]
+
+    # じめん技は浮いているポケモンに効かない（タイプ相性より先にチェック）
+    if move_type == "じめん":
+        is_defender_floating = (
+            "ひこう" in defender.types
+            or defender.ability == "ふゆう"
+            or defender.item == "ふうせん"
+        )
+        if is_defender_floating:
+            return False
+
+    # 完全無効の場合
+    if type_effectiveness == 0:
+        # 特性「きもったま」等で無効化を貫通する場合があるがここでは簡略化
+        return False
+
+    return True
+
+
+def check_hopeless_situation(battle: Battle, player: int) -> bool:
+    """
+    プレイヤーが必敗状態かどうか判定
+
+    必敗状態の定義：
+    1. 相手にダメージを与える手段が一切ない
+    2. TOD（時間切れ勝ち）も見込めない状況
+
+    Args:
+        battle: バトル状態
+        player: 判定対象のプレイヤー
+
+    Returns:
+        True: 必敗状態, False: まだ勝ち筋がある
+    """
+    # 相手にダメージ手段がない場合は必敗
+    if not can_deal_damage(battle, player):
+        # 相手もダメージ手段がない場合は引き分けの可能性（PPなくなるまで続く）
+        opponent = 1 - player
+        if not can_deal_damage(battle, opponent):
+            # 両者ダメージ手段なし → PP切れまで粘れるが、最終的には引き分け
+            return False
+        return True
+
+    return False
+
+
 def default_value_estimator(battle: Battle, player: int) -> float:
     """
     デフォルトの価値推定関数
 
     勝敗が確定していれば 1.0/0.0、未決着なら HP 比率ベースの評価
+    必敗状態の検出も行う
     """
     winner = battle.winner()
 
     if winner is not None:
         return 1.0 if winner == player else 0.0
+
+    # 必敗状態チェック
+    if check_hopeless_situation(battle, player):
+        return 0.0  # 必敗
+
+    opponent = 1 - player
+    if check_hopeless_situation(battle, opponent):
+        return 1.0  # 相手が必敗 = こちらの勝ち
 
     # HP比率ベースの中間評価
     def calc_strength(p: int) -> float:
