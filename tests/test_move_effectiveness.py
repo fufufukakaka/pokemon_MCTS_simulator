@@ -335,5 +335,72 @@ class TestRealBattleScenario(unittest.TestCase):
         self.assertTrue(any(r.is_effective for r in results))
 
 
+class TestSurrenderMechanism(unittest.TestCase):
+    """降参メカニズムのテスト"""
+
+    def test_surrender_command_exists(self):
+        """降参コマンドが定義されている"""
+        from src.pokemon_battle_sim.battle import Battle
+        self.assertEqual(Battle.SURRENDER, 50)
+
+    def test_surrender_sets_winner(self):
+        """降参するとwinnerが相手になる"""
+        from src.pokemon_battle_sim.battle import Battle
+
+        battle = Battle()
+        battle.reset_game()
+
+        # ダミーのポケモンを設定
+        p1 = Pokemon("ピカチュウ")
+        p2 = Pokemon("ライチュウ")
+        battle.selected[0] = [p1]
+        battle.selected[1] = [p2]
+        battle.pokemon[0] = p1
+        battle.pokemon[1] = p2
+
+        # 初期状態では勝者なし
+        self.assertIsNone(battle.winner())
+
+        # プレイヤー0が降参
+        battle.surrender(0)
+
+        # プレイヤー1が勝者
+        self.assertEqual(battle.winner(), 1)
+
+    def test_hopeless_situation_detection(self):
+        """必敗状態の検出"""
+        from src.pokemon_battle_sim.battle import Battle
+        from src.rebel.cfr_solver import check_hopeless_situation, can_deal_damage
+
+        battle = Battle()
+        battle.reset_game()
+
+        # グライオン（まもる、みがわり、じしん、どくどく）
+        gliscor = Pokemon("グライオン")
+        gliscor.moves = ["まもる", "みがわり", "じしん", "どくどく"]
+        gliscor.ability = "ポイズンヒール"
+
+        # サーフゴー（おうごんのからだ、ふうせん）
+        gholdengo = Pokemon("サーフゴー")
+        gholdengo.moves = ["ゴールドラッシュ", "シャドーボール", "じこさいせい", "わるだくみ"]
+        gholdengo.ability = "おうごんのからだ"
+        gholdengo.item = "ふうせん"
+
+        battle.selected[0] = [gliscor]
+        battle.selected[1] = [gholdengo]
+        battle.pokemon[0] = gliscor
+        battle.pokemon[1] = gholdengo
+
+        # グライオンはダメージ手段がない
+        self.assertFalse(can_deal_damage(battle, 0))
+        # サーフゴーはダメージ手段がある
+        self.assertTrue(can_deal_damage(battle, 1))
+
+        # グライオンは必敗状態
+        self.assertTrue(check_hopeless_situation(battle, 0))
+        # サーフゴーは必敗状態ではない
+        self.assertFalse(check_hopeless_situation(battle, 1))
+
+
 if __name__ == "__main__":
     unittest.main()

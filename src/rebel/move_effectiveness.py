@@ -335,6 +335,42 @@ class MoveEffectivenessCalculator:
         return sum(1 for r in results if r.is_effective)
 
 
+def should_consider_surrender(
+    attacker_moves: list[str],
+    defender_types: list[str],
+    defender_ability: str | None = None,
+    defender_item: str | None = None,
+    gravity: bool = False,
+    can_switch: bool = False,
+) -> bool:
+    """
+    降参を検討すべき状況かどうかを判定
+
+    Args:
+        attacker_moves: 攻撃側の技リスト
+        defender_types: 防御側のタイプリスト
+        defender_ability: 防御側の特性（観測済みの場合）
+        defender_item: 防御側の持ち物（観測済みの場合）
+        gravity: 重力状態かどうか
+        can_switch: 交代可能かどうか
+
+    Returns:
+        True: 有効な技がなく、交代もできない場合（詰み状態）
+    """
+    # 交代可能なら降参は不要
+    if can_switch:
+        return False
+
+    calculator = MoveEffectivenessCalculator()
+    return not calculator.has_effective_move(
+        attacker_moves,
+        defender_types,
+        defender_ability,
+        defender_item,
+        gravity,
+    )
+
+
 def encode_move_effectiveness_flags(
     attacker_moves: list[str],
     defender_types: list[str],

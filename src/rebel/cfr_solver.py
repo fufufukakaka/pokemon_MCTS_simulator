@@ -279,6 +279,7 @@ class CFRSubgameSolver:
         self,
         pbs: PublicBeliefState,
         original_battle: Battle,
+        include_surrender: bool = True,
     ) -> tuple[dict[int, float], dict[int, float]]:
         """
         CFR でサブゲームを解く
@@ -286,6 +287,7 @@ class CFRSubgameSolver:
         Args:
             pbs: Public Belief State
             original_battle: 元の Battle オブジェクト
+            include_surrender: 降参を選択肢に含めるか
 
         Returns:
             (my_strategy, opp_strategy): 両プレイヤーの平均戦略
@@ -294,12 +296,19 @@ class CFRSubgameSolver:
         opponent = 1 - perspective
 
         # 利用可能なアクション
-        my_actions = original_battle.available_commands(perspective)
-        opp_actions = original_battle.available_commands(opponent)
+        my_actions = list(original_battle.available_commands(perspective))
+        opp_actions = list(original_battle.available_commands(opponent))
 
         if not my_actions or not opp_actions:
             # 行動がない場合
             return ({}, {})
+
+        # 必敗状態の場合、降参を選択肢に追加
+        if include_surrender:
+            if check_hopeless_situation(original_battle, perspective):
+                my_actions.append(Battle.SURRENDER)
+            if check_hopeless_situation(original_battle, opponent):
+                opp_actions.append(Battle.SURRENDER)
 
         # 累積リグレットと累積戦略
         # regrets[player][action] = cumulative regret
@@ -345,6 +354,11 @@ class CFRSubgameSolver:
                     action_values = {}
 
                     for action in actions:
+                        # 降参の場合は即座に敗北
+                        if action == Battle.SURRENDER:
+                            action_values[action] = 0.0
+                            continue
+
                         # 行動を実行
                         test_battle = deepcopy(battle)
                         if player == 0:
@@ -446,6 +460,7 @@ class SimplifiedCFRSolver:
         self,
         pbs: PublicBeliefState,
         original_battle: Battle,
+        include_surrender: bool = True,
     ) -> tuple[dict[int, float], dict[int, float]]:
         """
         簡略化 CFR で戦略を計算
@@ -456,13 +471,20 @@ class SimplifiedCFRSolver:
         perspective = pbs.public_state.perspective
         opponent = 1 - perspective
 
-        my_actions = original_battle.available_commands(perspective)
-        opp_actions = original_battle.available_commands(opponent)
+        my_actions = list(original_battle.available_commands(perspective))
+        opp_actions = list(original_battle.available_commands(opponent))
 
         if not my_actions:
             return ({}, {})
         if not opp_actions:
             return ({a: 1.0 / len(my_actions) for a in my_actions}, {})
+
+        # 必敗状態の場合、降参を選択肢に追加
+        if include_surrender:
+            if check_hopeless_situation(original_battle, perspective):
+                my_actions.append(Battle.SURRENDER)
+            if check_hopeless_situation(original_battle, opponent):
+                opp_actions.append(Battle.SURRENDER)
 
         # ワールドをサンプリング
         worlds = pbs.belief.sample_worlds(self.num_samples)
@@ -483,6 +505,16 @@ class SimplifiedCFRSolver:
 
             for my_action in my_actions:
                 for opp_action in opp_actions:
+                    # 降参の処理
+                    if my_action == Battle.SURRENDER:
+                        # 自分が降参 → 自分の価値は0
+                        payoff_matrix[my_action][opp_action].append(0.0)
+                        continue
+                    if opp_action == Battle.SURRENDER:
+                        # 相手が降参 → 自分の価値は1
+                        payoff_matrix[my_action][opp_action].append(1.0)
+                        continue
+
                     test_battle = deepcopy(battle)
 
                     # 相手の行動が仮説適用後も有効か確認

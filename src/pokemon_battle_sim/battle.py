@@ -88,6 +88,7 @@ class Battle:
     SKIP = -1
     STRUGGLE = 30
     NO_COMMAND = 40
+    SURRENDER = 50  # 降参コマンド
 
     def __init__(self, seed: int = None):
         self.seed = seed if seed is not None else int(time.time())
@@ -150,6 +151,9 @@ class Battle:
         # 対戦シミュレーションにおいて、交代コマンド入力時に処理を中断したところから
         # self.proceed()によってターンを再開(再現)する際、再開地点を追跡するために用いるフラグ。
         self.breakpoint = ["", ""]
+
+        # 降参フラグ: どちらかが降参したらそのプレイヤーのインデックスを格納
+        self.surrendered: int | None = None
 
         # UI待機モード: Trueの場合、交代コマンドが不足したらbreakpointを維持して中断
         self.interactive_mode = False
@@ -1780,6 +1784,14 @@ class Battle:
     def winner(self, is_timeup: bool = False, record=False) -> int:
         """試合に勝利したプレイヤーを返す。{is_timeup}=Trueなら時間切れによる判定を行う"""
         winner = None
+
+        # 降参チェック
+        if self.surrendered is not None:
+            winner = 1 - self.surrendered  # 降参した側の相手が勝ち
+            self.log[winner].append("勝ち")
+            self.log[self.surrendered].append("降参")
+            return winner
+
         TOD_scores = [self.TOD_score(player) for player in range(2)]
 
         if 0 in TOD_scores or is_timeup:
@@ -1792,6 +1804,10 @@ class Battle:
                 self.record_command()
 
         return winner
+
+    def surrender(self, player: int) -> None:
+        """プレイヤーが降参する"""
+        self.surrendered = player
 
     def choose_damage(self, player: int, damage_list: list[int]) -> int:
         """乱数により分岐したダメージの中から計算に用いるダメージを選択する"""
@@ -3453,6 +3469,11 @@ class Battle:
                     self.command[player] = self.battle_command(player)
                 else:
                     self.command[player] = commands[player]
+
+                # 降参コマンドの処理
+                if self.command[player] == Battle.SURRENDER:
+                    self.surrender(player)
+                    return
 
                 self.log[player].append(self.pokemon[player].name)
                 self.log[player].append(
