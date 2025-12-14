@@ -14,6 +14,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from .belief_state import PokemonBeliefState, PokemonTypeHypothesis
+from .move_effectiveness import MoveEffectivenessCalculator
 from .public_state import PublicBeliefState, PublicGameState, PublicPokemonState
 
 
@@ -84,6 +85,9 @@ class PBSEncoder(nn.Module):
         self._next_pokemon_id = 1
         self._next_move_id = 1
         self._next_item_id = 1
+
+        # 技有効性計算用
+        self.move_effectiveness_calculator = MoveEffectivenessCalculator()
 
         # 出力次元を計算
         # 自分のポケモン: 1体 * (name + hp + ailment + rank + types + item + moves + tera)
@@ -184,6 +188,10 @@ class PBSEncoder(nn.Module):
         # テラスタル可否
         tera_flags_dim = 2
 
+        # 技有効性情報（相手の場のポケモンに対する自分の技の有効性）
+        # [4技の有効フラグ + 4技のタイプ相性 + 有効技があるか + 相手の有効技数]
+        move_effectiveness_dim = 4 + 4 + 1 + 1
+
         self.output_dim = (
             my_active_dim
             + my_bench_dim
@@ -193,6 +201,7 @@ class PBSEncoder(nn.Module):
             + belief_dim
             + strategy_dim
             + tera_flags_dim
+            + move_effectiveness_dim
         )
 
     def get_output_dim(self) -> int:
@@ -413,6 +422,81 @@ class PBSEncoder(nn.Module):
                 features.append(0.0)
         return torch.tensor(features, device=device, dtype=torch.float)
 
+    def encode_move_effectiveness(
+        self,
+        my_pokemon: "PokemonState",
+        opp_pokemon: "PublicPokemonState",
+        gravity: bool,
+        device: torch.device,
+    ) -> torch.Tensor:
+        """
+        技の有効性をエンコード
+
+        自分の技が相手に有効かどうか、相手の技が自分に有効かどうかを計算。
+        これにより「詰み」状態を正しく認識できる。
+
+        Returns:
+            [my_move0_effective, my_move1_effective, my_move2_effective, my_move3_effective,
+             my_move0_effectiveness, my_move1_effectiveness, my_move2_effectiveness, my_move3_effectiveness,
+             my_has_effective_move, opp_effective_moves_ratio]
+        """
+        features = []
+
+        # 自分の技の有効性（相手に対して）
+        my_moves = my_pokemon.moves if my_pokemon.moves else []
+        opp_types = opp_pokemon.types if opp_pokemon.types else []
+        opp_ability = opp_pokemon.revealed_ability
+        opp_item = opp_pokemon.revealed_item
+
+        my_effective_flags = []
+        my_effectiveness_values = []
+        my_has_effective = False
+
+        for i in range(4):
+            if i < len(my_moves) and my_moves[i]:
+                result = self.move_effectiveness_calculator.check_move_effectiveness(
+                    my_moves[i],
+                    opp_types,
+                    opp_ability,
+                    opp_item,
+                    gravity,
+                )
+                my_effective_flags.append(1.0 if result.is_effective else 0.0)
+                # 有効性を正規化（4倍=1.0, 等倍=0.25, 無効=0.0）
+                normalized = min(result.effectiveness / 4.0, 1.0)
+                my_effectiveness_values.append(normalized)
+                if result.is_effective:
+                    my_has_effective = True
+            else:
+                my_effective_flags.append(0.0)
+                my_effectiveness_values.append(0.0)
+
+        features.extend(my_effective_flags)
+        features.extend(my_effectiveness_values)
+        features.append(1.0 if my_has_effective else 0.0)
+
+        # 相手の有効技数の推定（信念から）
+        # 簡略化: 相手の4技すべてが有効と仮定した場合の比率
+        # より正確には信念状態から各技の有効性を計算すべきだが、計算コストのため簡略化
+        # 代わりに「自分に有効な技がある相手かどうか」のシグナルを出力
+        my_types = my_pokemon.types if my_pokemon.types else []
+        my_ability = my_pokemon.ability if hasattr(my_pokemon, 'ability') else None
+        my_item = my_pokemon.item if hasattr(my_pokemon, 'item') else None
+
+        # 相手から見た自分への攻撃有効性（簡略化版）
+        # タイプ相性のみで判定（詳細は信念状態に依存するため）
+        opp_can_hit = 1.0  # デフォルトは有効と仮定
+        # 特定のケース（例: ふうせん持ちで相手がじめん単タイプ）の検出
+        if my_item == "ふうせん" and not gravity:
+            # 相手がじめん技しか持っていない可能性を考慮
+            # ここでは単純化して「相手の主タイプがじめんならやや不利」程度に
+            if opp_types and opp_types[0] == "じめん":
+                opp_can_hit = 0.5
+
+        features.append(opp_can_hit)
+
+        return torch.tensor(features, device=device, dtype=torch.float)
+
     def forward(self, pbs: PublicBeliefState) -> torch.Tensor:
         """PBS を固定長ベクトルにエンコード"""
         device = next(self.parameters()).device
@@ -465,6 +549,14 @@ class PBSEncoder(nn.Module):
             torch.tensor(
                 [float(ps.my_tera_available), float(ps.opp_tera_available)],
                 device=device,
+            )
+        )
+
+        # 技有効性情報
+        gravity = ps.field.gravity > 0 if hasattr(ps.field, 'gravity') else False
+        features.append(
+            self.encode_move_effectiveness(
+                ps.my_pokemon, ps.opp_pokemon, gravity, device
             )
         )
 

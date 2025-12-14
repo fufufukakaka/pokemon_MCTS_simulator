@@ -24,8 +24,9 @@ def main():
     parser.add_argument(
         "--trainer-json",
         type=str,
-        default="data/top_rankers/season_27.json",
-        help="トレーナーデータのパス",
+        nargs="+",
+        default=["data/top_rankers/season_27.json"],
+        help="トレーナーデータのパス（複数指定可能）",
     )
     parser.add_argument(
         "--usage-db",
@@ -217,12 +218,39 @@ def main():
 
     # データ読み込み
     print("Loading data...")
-    with open(args.trainer_json, "r", encoding="utf-8") as f:
-        trainer_data = json.load(f)
+    trainer_data = []
+    for trainer_json_path in args.trainer_json:
+        with open(trainer_json_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            trainer_data.extend(data)
+        print(f"  Loaded {len(data)} trainers from {trainer_json_path}")
+
+    # 重複除去（パーティ構成ベースで判定）
+    # 名前は「バイオレット」「スカーレット」など匿名が多いため、
+    # ポケモン6体の名前+持ち物+技構成で同一性を判定
+    def get_party_signature(trainer: dict) -> str:
+        """パーティのユニークな署名を生成"""
+        pokemons = trainer.get("pokemons", [])
+        parts = []
+        for p in pokemons[:6]:
+            name = p.get("name", "")
+            item = p.get("item", "")
+            moves = sorted(p.get("moves", []))
+            parts.append(f"{name}|{item}|{','.join(moves)}")
+        return "||".join(sorted(parts))
+
+    seen_signatures = set()
+    unique_trainers = []
+    for trainer in trainer_data:
+        sig = get_party_signature(trainer)
+        if sig not in seen_signatures:
+            seen_signatures.add(sig)
+            unique_trainers.append(trainer)
+    trainer_data = unique_trainers
 
     usage_db = PokemonUsageDatabase.from_json(args.usage_db)
 
-    print(f"Loaded {len(trainer_data)} trainers")
+    print(f"Total: {len(trainer_data)} unique trainers from {len(args.trainer_json)} files")
     print(f"Usage DB: {usage_db}")
 
     # 固定対戦相手の設定
