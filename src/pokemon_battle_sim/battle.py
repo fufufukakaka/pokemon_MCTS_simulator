@@ -2272,7 +2272,7 @@ class Battle:
         if not p1.hp:
             return
 
-        # 特性の発動
+        # 特性の発動（かがくへんかガスとトレースは両者をチェック）
         for pl in [player, not player]:
             if not self.pokemon[pl].has_protected_ability():
                 if (
@@ -2290,7 +2290,9 @@ class Battle:
                     self.pokemon[pl].ability = self.pokemon[not pl].ability
                     self.log[pl].append(f"トレース -> {self.pokemon[not pl].ability}")
 
-            self.release_ability(pl)
+        # release_abilityは着地したポケモンのみ発動
+        # （ひひいろのこどう、ハドロンエンジン等は場に出た時のみ発動）
+        self.release_ability(player)
 
         # 即時発動アイテムの判定 (着地時)
         for pl in range(2):

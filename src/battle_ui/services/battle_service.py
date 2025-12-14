@@ -18,17 +18,138 @@ logger = logging.getLogger(__name__)
 
 # データファイルパス
 DATA_DIR = Path(__file__).resolve().parent.parent.parent.parent / "data"
-TRAINER_FILE = DATA_DIR / "top_rankers" / "season_36.json"
 MODELS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "models"
+
+# トレーナーファイルのパス（環境変数でカンマ区切りで複数指定可能）
+# 例: TRAINER_FILES="data/top_rankers/season_35.json,data/top_rankers/season_36.json"
+_TRAINER_FILES_ENV = os.environ.get("TRAINER_FILES", None)
+if _TRAINER_FILES_ENV:
+    TRAINER_FILES = [Path(p.strip()) for p in _TRAINER_FILES_ENV.split(",")]
+else:
+    # デフォルト: season_35とseason_36を両方使用
+    TRAINER_FILES = [
+        DATA_DIR / "top_rankers" / "season_35.json",
+        DATA_DIR / "top_rankers" / "season_36.json",
+    ]
 
 # プレイヤーパーティのパス（環境変数から取得）
 PLAYER_PARTY_PATH = os.environ.get("PLAYER_PARTY_PATH", None)
+
+
+def _get_party_signature(trainer: dict) -> str:
+    """パーティのユニークな署名を生成（重複除去用）"""
+    pokemons = trainer.get("pokemons", [])
+    parts = []
+    for p in pokemons[:6]:
+        name = p.get("name", "")
+        item = p.get("item", "")
+        moves = sorted(p.get("moves", []))
+        parts.append(f"{name}|{item}|{','.join(moves)}")
+    return "||".join(sorted(parts))
+
+
+def _load_all_trainers() -> List[Dict[str, Any]]:
+    """全トレーナーファイルからデータを読み込み、重複除去"""
+    all_trainers = []
+    for trainer_file in TRAINER_FILES:
+        if trainer_file.exists():
+            with open(trainer_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                all_trainers.extend(data)
+                logger.info(f"Loaded {len(data)} trainers from {trainer_file}")
+        else:
+            logger.warning(f"Trainer file not found: {trainer_file}")
+
+    # パーティ構成ベースで重複除去
+    seen_signatures = set()
+    unique_trainers = []
+    for trainer in all_trainers:
+        sig = _get_party_signature(trainer)
+        if sig not in seen_signatures:
+            seen_signatures.add(sig)
+            unique_trainers.append(trainer)
+
+    logger.info(f"Total: {len(unique_trainers)} unique trainers from {len(TRAINER_FILES)} files")
+    return unique_trainers
+
+
+# キャッシュ
+_TRAINERS_CACHE: Optional[List[Dict[str, Any]]] = None
+
+
+def _get_trainers_data() -> List[Dict[str, Any]]:
+    """トレーナーデータを取得（キャッシュ付き）"""
+    global _TRAINERS_CACHE
+    if _TRAINERS_CACHE is None:
+        _TRAINERS_CACHE = _load_all_trainers()
+    return _TRAINERS_CACHE
 
 # チェックポイントディレクトリ（環境変数から取得）
 CHECKPOINT_DIR = os.environ.get(
     "REBEL_CHECKPOINT_DIR",
     str(MODELS_DIR / "revel_full_state_selection_BERT")
 )
+
+
+# 特定のアイテムが判明するバトルログのキーワード
+ITEM_LOG_PATTERNS = {
+    "ふうせん": ["ふうせん", "で浮いている"],
+    "きあいのタスキ": ["きあいのタスキ", "こらえた"],
+    "たべのこし": ["たべのこし", "回復"],
+    "くろいヘドロ": ["くろいヘドロ"],
+    "いのちのたま": ["いのちのたま"],
+    "ゴツゴツメット": ["ゴツゴツメット"],
+    "とつげきチョッキ": ["とつげきチョッキ"],
+    "ブーストエナジー": ["ブーストエナジー"],
+    "オボンのみ": ["オボンのみ"],
+    "ラムのみ": ["ラムのみ"],
+    "イバンのみ": ["イバンのみ"],
+    "カゴのみ": ["カゴのみ"],
+    "クリアチャーム": ["クリアチャーム"],
+    "おんみつマント": ["おんみつマント"],
+    "レッドカード": ["レッドカード"],
+    "だっしゅつボタン": ["だっしゅつボタン"],
+    "だっしゅつパック": ["だっしゅつパック"],
+    "じゃくてんほけん": ["じゃくてんほけん"],
+    "しろいハーブ": ["しろいハーブ"],
+}
+
+# 特性が判明するバトルログのキーワード
+ABILITY_LOG_PATTERNS = {
+    "いかく": ["いかく", "威嚇"],
+    "ひでり": ["ひでり", "日照り"],
+    "あめふらし": ["あめふらし"],
+    "すなおこし": ["すなおこし"],
+    "ゆきふらし": ["ゆきふらし"],
+    "エレキメイカー": ["エレキメイカー"],
+    "グラスメイカー": ["グラスメイカー"],
+    "サイコメイカー": ["サイコメイカー"],
+    "ミストメイカー": ["ミストメイカー"],
+    "ふゆう": ["ふゆう"],
+    "がんじょう": ["がんじょう"],
+    "ばけのかわ": ["ばけのかわ"],
+    "ひらいしん": ["ひらいしん"],
+    "よびみず": ["よびみず"],
+    "もらいび": ["もらいび"],
+    "ちょすい": ["ちょすい"],
+    "かんそうはだ": ["かんそうはだ"],
+    "そうしょく": ["そうしょく"],
+    "でんきエンジン": ["でんきエンジン"],
+    "ポイズンヒール": ["ポイズンヒール"],
+    "かそく": ["かそく"],
+    "てんねん": ["てんねん"],
+    "マルチスケイル": ["マルチスケイル"],
+    "ひひいろのこどう": ["ひひいろのこどう", "緋色の鼓動"],
+    "おわりのだいち": ["おわりのだいち"],
+    "こだいかっせい": ["こだいかっせい", "古代活性"],
+    "クォークチャージ": ["クォークチャージ"],
+    "おみとおし": ["おみとおし"],
+    "トレース": ["トレース"],
+    "かたやぶり": ["かたやぶり"],
+    "すりぬけ": ["すりぬけ"],
+    "てきおうりょく": ["てきおうりょく"],
+    "マジックガード": ["マジックガード"],
+}
 
 
 class BattleService:
@@ -72,25 +193,23 @@ class BattleService:
     @staticmethod
     def get_trainers() -> List[Dict[str, Any]]:
         """トレーナー一覧を取得"""
-        with open(TRAINER_FILE, "r", encoding="utf-8") as f:
-            trainers = json.load(f)
+        trainers = _get_trainers_data()
 
         return [
             {
                 "index": i,
                 "name": t["name"],
-                "rank": t["rank"],
-                "rating": t["rating"],
+                "rank": t.get("rank", i + 1),
+                "rating": t.get("rating", 0),
                 "pokemon_names": [p["name"] for p in t["pokemons"]],
             }
-            for i, t in enumerate(trainers[:20])  # 上位20人のみ
+            for i, t in enumerate(trainers[:50])  # 上位50人まで表示
         ]
 
     @staticmethod
     def get_trainer_party(trainer_index: int) -> List[Dict[str, Any]]:
         """指定トレーナーのパーティを取得"""
-        with open(TRAINER_FILE, "r", encoding="utf-8") as f:
-            trainers = json.load(f)
+        trainers = _get_trainers_data()
 
         if trainer_index < 0 or trainer_index >= len(trainers):
             raise ValueError(f"Invalid trainer index: {trainer_index}")
@@ -115,8 +234,7 @@ class BattleService:
                     raise ValueError(f"Invalid party file format: {party_path}")
 
         # デフォルト：2番目のトレーナーのパーティをプレイヤー用に
-        with open(TRAINER_FILE, "r", encoding="utf-8") as f:
-            trainers = json.load(f)
+        trainers = _get_trainers_data()
         return trainers[1]["pokemons"]
 
     @staticmethod
@@ -220,6 +338,12 @@ class BattleService:
         if session.rebel_ai is not None:
             session.rebel_ai.observe_battle_state(battle, ai_player=1)
 
+        # プレイヤー視点の観測情報を更新
+        BattleService._update_observations_from_battle(session)
+
+        # バトルログを累積
+        BattleService._accumulate_battle_log(session)
+
         session.phase = "battle"
 
     @staticmethod
@@ -252,6 +376,9 @@ class BattleService:
         with_tera: bool = False,
     ) -> None:
         """行動を実行"""
+        import time
+        start_time = time.time()
+
         battle = session.battle
 
         # プレイヤーのコマンドを決定
@@ -298,6 +425,12 @@ class BattleService:
         if session.rebel_ai is not None:
             session.rebel_ai.observe_battle_state(battle, ai_player=1)
 
+        # プレイヤー視点の観測情報を更新
+        BattleService._update_observations_from_battle(session)
+
+        # バトルログを累積
+        BattleService._accumulate_battle_log(session)
+
         # 勝敗チェック
         winner = battle.winner()
         if winner is not None:
@@ -315,11 +448,135 @@ class BattleService:
         else:
             session.phase = "battle"
 
+        elapsed = time.time() - start_time
+        if elapsed > 0.5:
+            logger.warning(f"perform_action took {elapsed:.2f}s (action={action_type}, index={action_index})")
+
     @staticmethod
     def surrender(session: BattleSession) -> None:
         """降参"""
         session.phase = "finished"
         session.winner = 1  # AI勝利
+
+    @staticmethod
+    def _update_observations_from_battle(session: BattleSession) -> None:
+        """
+        バトル状態から観測情報を更新
+
+        相手の場に出ているポケモン、およびバトルログから
+        持ち物・特性が判明した情報を記録
+        """
+        battle = session.battle
+
+        # 相手のポケモン（player=1）
+        opponent_pokemon = battle.pokemon[1]
+        if opponent_pokemon is None:
+            return
+
+        pokemon_name = opponent_pokemon.name
+
+        # 1. バトルログから持ち物・特性を検出
+        if hasattr(battle, "log") and battle.log:
+            # battle.log は [player0のログ, player1のログ] のリスト
+            for player_idx in range(2):
+                if player_idx >= len(battle.log) or not battle.log[player_idx]:
+                    continue
+
+                for msg in battle.log[player_idx]:
+                    if not isinstance(msg, str):
+                        continue
+
+                    # 持ち物の検出（相手のポケモン名がログに含まれている場合のみ）
+                    for item, patterns in ITEM_LOG_PATTERNS.items():
+                        if any(p in msg for p in patterns):
+                            # ログ中のポケモン名を特定（相手の選出全員をチェック）
+                            for p in battle.selected[1]:
+                                if p and p.name in msg:
+                                    session.observed_items[p.name] = item
+                                    break
+                            # ポケモン名が含まれない場合は記録しない
+                            # （プレイヤーのポケモンの情報を相手に誤って紐づけるのを防ぐ）
+
+                    # 特性の検出（相手のポケモン名がログに含まれている場合のみ）
+                    for ability, patterns in ABILITY_LOG_PATTERNS.items():
+                        if any(p in msg for p in patterns):
+                            # ログ中のポケモン名を特定（相手の選出全員をチェック）
+                            for p in battle.selected[1]:
+                                if p and p.name in msg:
+                                    session.observed_abilities[p.name] = ability
+                                    break
+                            # ポケモン名が含まれない場合は記録しない
+                            # （プレイヤーのポケモンの特性を相手に誤って紐づけるのを防ぐ）
+
+        # 2. 場に出ているポケモンを観測済みとして記録
+        if pokemon_name not in session.observed_pokemon:
+            session.observed_pokemon.append(pokemon_name)
+
+        # 3. 場に出ているポケモンの持ち物が公開されるケース
+        #    ふうせん、ブーストエナジーなど特定のアイテムは場に出た時点で判明
+        visible_on_entry_items = {"ふうせん", "ブーストエナジー"}
+        if opponent_pokemon.item in visible_on_entry_items:
+            session.observed_items[pokemon_name] = opponent_pokemon.item
+
+        # 4. テラスタル状態の観測（テラス使用済みなら判明）
+        if opponent_pokemon.terastal and opponent_pokemon.Ttype:
+            # テラスタイプも観測情報として保存可能（今回は省略、必要なら追加）
+            pass
+
+    # ログメッセージの変換マップ（分かりにくい表示を改善）
+    LOG_MESSAGE_TRANSFORMS = {
+        "行動スキップ": "（連続技継続中）",
+        "行動不能 交代": "（交代のため行動なし）",
+        "行動不能 反動": "（反動で動けない）",
+    }
+
+    # 表示から除外するログメッセージのパターン
+    LOG_FILTER_PATTERNS = [
+        "先手",
+        "後手",
+        "コマンド ",
+        "HP ",  # "HP +48" や "HP -48" などの内部情報
+    ]
+
+    @staticmethod
+    def _accumulate_battle_log(session: BattleSession) -> None:
+        """
+        バトルログを累積ログに追加
+
+        Battle.logはターンごとにリセットされるため、
+        ターン終了時にセッションの累積ログに追加する
+        """
+        battle = session.battle
+
+        if not hasattr(battle, "log") or not battle.log:
+            return
+
+        turn = battle.turn
+
+        # 現在のターンのログを追加
+        for player_idx in range(2):
+            if player_idx >= len(battle.log) or not battle.log[player_idx]:
+                continue
+
+            for msg in battle.log[player_idx]:
+                if isinstance(msg, str):
+                    # フィルタリング: 内部情報は除外
+                    should_skip = False
+                    for pattern in BattleService.LOG_FILTER_PATTERNS:
+                        if msg.startswith(pattern):
+                            should_skip = True
+                            break
+                    if should_skip:
+                        continue
+
+                    # メッセージ変換
+                    display_msg = BattleService.LOG_MESSAGE_TRANSFORMS.get(msg, msg)
+
+                    session.accumulated_log.append({
+                        "turn": turn,
+                        "player": player_idx,
+                        "message": display_msg,
+                    })
 
     @staticmethod
     def get_battle_state(
@@ -348,12 +605,20 @@ class BattleService:
                 for i, p in enumerate(session.player_team_data)
             ]
             state["opponent_preview"] = [
-                {"name": p["name"], "index": i}
+                {
+                    "name": p["name"],
+                    "index": i,
+                    "arceus_type": BattleService.ARCEUS_PLATE_TYPE.get(p.get("item", ""), "ノーマル") if p["name"] == "アルセウス" else None,
+                }
                 for i, p in enumerate(session.opponent_team_data)
             ]
             return state
 
         # バトルフェーズ以降
+        # 観測情報を取得
+        observed_items = session.observed_items
+        observed_abilities = session.observed_abilities
+
         if battle.pokemon[0] is not None:
             state["player_active"] = BattleService._pokemon_to_view(
                 battle.pokemon[0], is_player=True
@@ -361,27 +626,63 @@ class BattleService:
 
         if battle.pokemon[1] is not None:
             state["opponent_active"] = BattleService._pokemon_to_view(
-                battle.pokemon[1], is_player=False
+                battle.pokemon[1],
+                is_player=False,
+                observed_items=observed_items,
+                observed_abilities=observed_abilities,
             )
 
         # ベンチポケモン（アクティブなポケモンは除外）
         state["player_bench"] = []
         active_player = battle.pokemon[0]
         for i, p in enumerate(battle.selected[0]):
-            # アクティブポケモンと同一でない、かつHPが残っているポケモンのみ
-            if p is not None and p is not active_player and p.hp > 0:
-                state["player_bench"].append(
-                    BattleService._pokemon_to_view(p, is_player=True, bench_index=i)
-                )
+            # アクティブポケモンと同一でないポケモン
+            # finishedフェーズでは全ポケモンを表示（敗北したポケモンも含む）
+            # それ以外ではHPが残っているポケモンのみ
+            if p is not None and p is not active_player:
+                if session.phase == "finished" or p.hp > 0:
+                    state["player_bench"].append(
+                        BattleService._pokemon_to_view(p, is_player=True, bench_index=i)
+                    )
 
         state["opponent_bench"] = []
         active_opponent = battle.pokemon[1]
+        observed_pokemon = session.observed_pokemon
+
+        # 相手の控えポケモン数をカウント
+        total_opponent_bench = 0
         for i, p in enumerate(battle.selected[1]):
-            # アクティブポケモンと同一でない、かつHPが残っているポケモンのみ
-            if p is not None and p is not active_opponent and p.hp > 0:
-                state["opponent_bench"].append(
-                    BattleService._pokemon_to_view(p, is_player=False, bench_index=i)
-                )
+            if p is not None and p is not active_opponent:
+                # finishedフェーズでは全ポケモンを表示
+                if session.phase == "finished":
+                    total_opponent_bench += 1
+                    state["opponent_bench"].append(
+                        BattleService._pokemon_to_view(
+                            p,
+                            is_player=False,
+                            bench_index=i,
+                            observed_items=observed_items,
+                            observed_abilities=observed_abilities,
+                        )
+                    )
+                elif p.hp > 0:
+                    # バトル中は生存しているポケモンのみカウント
+                    total_opponent_bench += 1
+                    # 観測済みのポケモンのみ詳細を表示
+                    if p.name in observed_pokemon:
+                        state["opponent_bench"].append(
+                            BattleService._pokemon_to_view(
+                                p,
+                                is_player=False,
+                                bench_index=i,
+                                observed_items=observed_items,
+                                observed_abilities=observed_abilities,
+                            )
+                        )
+
+        # 未観測の控えポケモン数
+        state["opponent_bench_total"] = total_opponent_bench
+        state["opponent_bench_unknown"] = total_opponent_bench - len(state["opponent_bench"])
 
         # 利用可能なアクション
         if session.phase == "battle":
@@ -398,8 +699,8 @@ class BattleService:
         # フィールド状態
         state["field"] = BattleService._get_field_state(battle)
 
-        # ログ
-        state["log"] = BattleService._get_battle_log(battle)
+        # ログ（累積ログを使用）
+        state["log"] = session.accumulated_log
 
         # AI分析データ（ReBeL AIの場合のみ）
         if include_ai_analysis and session.rebel_ai is not None:
@@ -409,17 +710,47 @@ class BattleService:
 
         return state
 
+    # アルセウスのプレートとタイプの対応
+    ARCEUS_PLATE_TYPE = {
+        "ひのたまプレート": "ほのお",
+        "しずくプレート": "みず",
+        "みどりのプレート": "くさ",
+        "いかずちプレート": "でんき",
+        "つららのプレート": "こおり",
+        "こぶしのプレート": "かくとう",
+        "もうどくプレート": "どく",
+        "だいちのプレート": "じめん",
+        "あおぞらプレート": "ひこう",
+        "ふしぎのプレート": "エスパー",
+        "たまむしプレート": "むし",
+        "がんせきプレート": "いわ",
+        "もののけプレート": "ゴースト",
+        "りゅうのプレート": "ドラゴン",
+        "こわもてプレート": "あく",
+        "こうてつプレート": "はがね",
+        "せいれいプレート": "フェアリー",
+    }
+
     @staticmethod
     def _pokemon_data_to_view(data: Dict[str, Any], index: int) -> Dict[str, Any]:
         """パーティデータをビュー用に変換"""
+        name = data["name"]
+        item = data.get("item", "")
+
+        # アルセウスの場合、プレートによるタイプを計算
+        arceus_type = None
+        if name == "アルセウス":
+            arceus_type = BattleService.ARCEUS_PLATE_TYPE.get(item, "ノーマル")
+
         return {
             "index": index,
-            "name": data["name"],
-            "item": data.get("item", ""),
+            "name": name,
+            "item": item,
             "ability": data.get("ability", ""),
             "tera_type": data.get("Ttype", data.get("tera_type", "")),
             "moves": data.get("moves", []),
             "nature": data.get("nature", ""),
+            "arceus_type": arceus_type,  # アルセウスの場合のみ設定
         }
 
     @staticmethod
@@ -427,6 +758,8 @@ class BattleService:
         pokemon: Pokemon,
         is_player: bool,
         bench_index: Optional[int] = None,
+        observed_items: Optional[Dict[str, str]] = None,
+        observed_abilities: Optional[Dict[str, str]] = None,
     ) -> Dict[str, Any]:
         """PokemonインスタンスをビューMに変換"""
         max_hp = pokemon.status[0]  # status[0] = HP
@@ -459,9 +792,11 @@ class BattleService:
                 "speed": pokemon.rank[5],
             }
         else:
-            # 相手は観測済み情報のみ（簡略化：常に表示）
-            view["item"] = pokemon.item
-            view["ability"] = pokemon.ability
+            # 相手は観測済み情報のみ表示
+            observed_items = observed_items or {}
+            observed_abilities = observed_abilities or {}
+            view["item"] = observed_items.get(pokemon.name, "")
+            view["ability"] = observed_abilities.get(pokemon.name, "")
 
         return view
 

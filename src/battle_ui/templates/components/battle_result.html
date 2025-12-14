@@ -43,6 +43,22 @@
         {% endif %}
     </div>
 
+    <!-- エクスポートボタン -->
+    <div class="max-w-2xl mx-auto mt-4 flex justify-center gap-3">
+        <a href="/api/battle/{{ session_id }}/export?format=json"
+           download
+           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2">
+            <span>📥</span>
+            <span>JSON形式でエクスポート</span>
+        </a>
+        <a href="/api/battle/{{ session_id }}/export?format=txt"
+           download
+           class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2">
+            <span>📄</span>
+            <span>テキスト形式でエクスポート</span>
+        </a>
+    </div>
+
     <!-- バトルサマリー -->
     <div class="max-w-4xl mx-auto mt-8">
         <div class="bg-white rounded-lg shadow p-6">

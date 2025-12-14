@@ -29,7 +29,12 @@
                             <div class="text-xs text-gray-500">
                                 <div>{{ pokemon.ability }}</div>
                                 <div>{{ pokemon.item }}</div>
-                                <div class="flex items-center gap-1 mt-1">
+                                <div class="flex items-center gap-1 mt-1 flex-wrap">
+                                    {% if pokemon.arceus_type %}
+                                    <span class="type-badge type-{{ pokemon.arceus_type }}">
+                                        タイプ: {{ pokemon.arceus_type }}
+                                    </span>
+                                    {% endif %}
                                     <span class="type-badge type-{{ pokemon.tera_type }}">
                                         テラス: {{ pokemon.tera_type }}
                                     </span>
@@ -69,9 +74,17 @@
                 {% for pokemon in state.opponent_preview %}
                 <div class="bg-gray-50 rounded-lg p-3 pokemon-card">
                     <div class="font-bold text-gray-800">{{ pokemon.name }}</div>
+                    {% if pokemon.arceus_type %}
+                    <div class="text-xs mt-1">
+                        <span class="type-badge type-{{ pokemon.arceus_type }}">
+                            タイプ: {{ pokemon.arceus_type }}
+                        </span>
+                    </div>
+                    {% else %}
                     <div class="text-xs text-gray-400 mt-1">
                         （詳細は不明）
                     </div>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>

@@ -24,12 +24,16 @@ class BattleSession:
     ai_selected_indices: Optional[List[int]] = None
     created_at: datetime = field(default_factory=datetime.now)
     winner: Optional[int] = None
-    log: List[Dict[str, Any]] = field(default_factory=list)
+    accumulated_log: List[Dict[str, Any]] = field(default_factory=list)  # バトル全体の累積ログ
     ai_mode: str = "random"  # random, rebel
     checkpoint_path: Optional[str] = None
     rebel_ai: Optional[Any] = None  # ReBeL AI instance
     ai_analysis_always_on: bool = False  # AI分析を常に表示
     ai_surrendered: bool = False  # AIが降参したか
+    # プレイヤー視点の観測情報（相手ポケモンの観測済み持ち物・特性）
+    observed_items: Dict[str, str] = field(default_factory=dict)  # pokemon_name -> item
+    observed_abilities: Dict[str, str] = field(default_factory=dict)  # pokemon_name -> ability
+    observed_pokemon: List[str] = field(default_factory=list)  # 観測済みの相手ポケモン名リスト
 
 
 class SessionManager:

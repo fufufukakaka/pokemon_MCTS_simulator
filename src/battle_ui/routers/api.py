@@ -3,10 +3,11 @@ APIルーター - HTMX用のHTMLフラグメントを返すエンドポイント
 """
 
 from fastapi import APIRouter, Request, Form, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 from typing import Optional
+from datetime import datetime
 import json
 
 from src.battle_ui.services.session_manager import session_manager
@@ -225,3 +226,174 @@ async def get_ai_analysis(request: Request, session_id: str):
         "components/ai_analysis.html",
         {"request": request, "session_id": session_id, "state": state}
     )
+
+
+@router.get("/battle/{session_id}/export")
+async def export_battle_log(session_id: str, format: str = "json"):
+    """バトルログをエクスポート"""
+    session = session_manager.get_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    battle = session.battle
+    state = BattleService.get_battle_state(session)
+
+    # エクスポートデータを構築
+    export_data = {
+        "session_id": session_id,
+        "exported_at": datetime.now().isoformat(),
+        "result": {
+            "winner": "player" if session.winner == 0 else "ai",
+            "turn": battle.turn,
+            "ai_surrendered": session.ai_surrendered,
+        },
+        "teams": {
+            "player": {
+                "selection": session.selected_indices,
+                "pokemon": [
+                    {
+                        "name": p["name"],
+                        "item": p.get("item", ""),
+                        "ability": p.get("ability", ""),
+                        "tera_type": p.get("Ttype", p.get("tera_type", "")),
+                        "moves": p.get("moves", []),
+                        "nature": p.get("nature", ""),
+                    }
+                    for i, p in enumerate(session.player_team_data)
+                    if session.selected_indices and i in session.selected_indices
+                ],
+            },
+            "opponent": {
+                "selection": session.ai_selected_indices,
+                "pokemon": [
+                    {
+                        "name": p["name"],
+                        "item": p.get("item", ""),
+                        "ability": p.get("ability", ""),
+                        "tera_type": p.get("Ttype", p.get("tera_type", "")),
+                        "moves": p.get("moves", []),
+                        "nature": p.get("nature", ""),
+                    }
+                    for i, p in enumerate(session.opponent_team_data)
+                    if session.ai_selected_indices and i in session.ai_selected_indices
+                ],
+            },
+        },
+        "final_state": {
+            "player_pokemon": [],
+            "opponent_pokemon": [],
+        },
+        "battle_log": [],
+    }
+
+    # 最終状態のポケモン情報
+    if state.get("player_active"):
+        export_data["final_state"]["player_pokemon"].append({
+            "name": state["player_active"]["name"],
+            "hp_percent": state["player_active"]["hp_percent"],
+            "status": "active",
+        })
+    for p in state.get("player_bench", []):
+        export_data["final_state"]["player_pokemon"].append({
+            "name": p["name"],
+            "hp_percent": p["hp_percent"],
+            "status": "bench",
+        })
+
+    if state.get("opponent_active"):
+        export_data["final_state"]["opponent_pokemon"].append({
+            "name": state["opponent_active"]["name"],
+            "hp_percent": state["opponent_active"]["hp_percent"],
+            "status": "active",
+        })
+    for p in state.get("opponent_bench", []):
+        export_data["final_state"]["opponent_pokemon"].append({
+            "name": p["name"],
+            "hp_percent": p["hp_percent"],
+            "status": "bench",
+        })
+
+    # バトルログ（累積ログを使用）
+    for log_entry in session.accumulated_log:
+        export_data["battle_log"].append({
+            "turn": log_entry.get("turn", 0),
+            "player": "player" if log_entry["player"] == 0 else "ai",
+            "message": log_entry["message"],
+        })
+
+    # フォーマットに応じて出力
+    if format == "txt":
+        # テキスト形式
+        lines = []
+        lines.append("=" * 60)
+        lines.append("バトルログ")
+        lines.append("=" * 60)
+        lines.append(f"日時: {export_data['exported_at']}")
+        lines.append(f"結果: {'プレイヤー勝利' if session.winner == 0 else 'AI勝利'}")
+        lines.append(f"ターン数: {battle.turn}")
+        if session.ai_surrendered:
+            lines.append("※AIが降参")
+        lines.append("")
+
+        lines.append("-" * 40)
+        lines.append("【プレイヤーチーム】")
+        for p in export_data["teams"]["player"]["pokemon"]:
+            lines.append(f"  {p['name']} @ {p['item']}")
+            lines.append(f"    特性: {p['ability']}, テラス: {p['tera_type']}")
+            lines.append(f"    技: {', '.join(p['moves'])}")
+        lines.append("")
+
+        lines.append("-" * 40)
+        lines.append("【相手チーム】")
+        for p in export_data["teams"]["opponent"]["pokemon"]:
+            lines.append(f"  {p['name']} @ {p['item']}")
+            lines.append(f"    特性: {p['ability']}, テラス: {p['tera_type']}")
+            lines.append(f"    技: {', '.join(p['moves'])}")
+        lines.append("")
+
+        lines.append("-" * 40)
+        lines.append("【最終状態】")
+        lines.append("プレイヤー:")
+        for p in export_data["final_state"]["player_pokemon"]:
+            status = "場" if p["status"] == "active" else "控え"
+            lines.append(f"  {p['name']}: HP {p['hp_percent']}% ({status})")
+        lines.append("相手:")
+        for p in export_data["final_state"]["opponent_pokemon"]:
+            status = "場" if p["status"] == "active" else "控え"
+            lines.append(f"  {p['name']}: HP {p['hp_percent']}% ({status})")
+        lines.append("")
+
+        if export_data["battle_log"]:
+            lines.append("-" * 40)
+            lines.append("【バトルログ】")
+            current_turn = -1
+            for log in export_data["battle_log"]:
+                turn = log.get("turn", 0)
+                if turn != current_turn:
+                    lines.append(f"\n  --- ターン {turn} ---")
+                    current_turn = turn
+                prefix = "[自]" if log["player"] == "player" else "[相]"
+                lines.append(f"  {prefix} {log['message']}")
+
+        lines.append("=" * 60)
+
+        content = "\n".join(lines)
+        filename = f"battle_log_{session_id[:8]}.txt"
+
+        return Response(
+            content=content,
+            media_type="text/plain; charset=utf-8",
+            headers={
+                "Content-Disposition": f'attachment; filename="{filename}"'
+            }
+        )
+    else:
+        # JSON形式（デフォルト）
+        filename = f"battle_log_{session_id[:8]}.json"
+        return Response(
+            content=json.dumps(export_data, ensure_ascii=False, indent=2),
+            media_type="application/json",
+            headers={
+                "Content-Disposition": f'attachment; filename="{filename}"'
+            }
+        )

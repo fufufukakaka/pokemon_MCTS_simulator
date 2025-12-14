@@ -45,7 +45,6 @@
                     hx-target="#battle-container"
                     hx-indicator="#loading"
                     hx-vals='{"action_type": "switch", "action_index": {{ action.index }}}'
-                    hx-confirm="{{ action.name }}に交代しますか？"
                     {% if action.disabled %}disabled{% endif %}
                     class="action-btn bg-green-500 hover:bg-green-600 disabled:bg-gray-300
                            text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors">

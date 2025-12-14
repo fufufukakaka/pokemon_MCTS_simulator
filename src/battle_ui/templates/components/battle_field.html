@@ -113,12 +113,50 @@
                 {% include "components/pokemon_card.html" %}
                 {% endif %}
 
-                <!-- 控えポケモン（名前のみ、詳細は非公開） -->
-                <div class="mt-3 text-sm text-gray-400">
-                    <div class="flex items-center gap-2">
-                        <span>控え:</span>
-                        <span>{{ state.opponent_bench | length }}匹</span>
+                <!-- 控えポケモン（観測済み情報を表示） -->
+                <div class="mt-3">
+                    <div class="text-xs text-gray-500 mb-2">
+                        控え ({{ state.opponent_bench_total }}匹)
+                        {% if state.opponent_bench_unknown > 0 %}
+                        <span class="text-gray-400">- {{ state.opponent_bench_unknown }}匹未確認</span>
+                        {% endif %}
                     </div>
+                    {% if state.opponent_bench %}
+                    <div class="grid grid-cols-2 gap-2">
+                        {% for bench_pokemon in state.opponent_bench %}
+                        <div class="bg-gray-50 rounded p-2 text-xs">
+                            <div class="font-medium text-gray-700">{{ bench_pokemon.name }}</div>
+                            <div class="mt-1">
+                                <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                    <div class="bg-green-500 h-1.5 rounded-full" style="width: {{ bench_pokemon.hp_percent }}%"></div>
+                                </div>
+                                <div class="text-gray-400 text-[10px] mt-0.5">HP: {{ bench_pokemon.hp_percent }}%</div>
+                            </div>
+                            {% if bench_pokemon.item %}
+                            <div class="text-gray-500 mt-1">📦 {{ bench_pokemon.item }}</div>
+                            {% endif %}
+                            {% if bench_pokemon.ability %}
+                            <div class="text-gray-500">⚡ {{ bench_pokemon.ability }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        {% for _ in range(state.opponent_bench_unknown) %}
+                        <div class="bg-gray-100 rounded p-2 text-xs border-2 border-dashed border-gray-300">
+                            <div class="font-medium text-gray-400">???</div>
+                            <div class="mt-1 text-gray-400 text-[10px]">未確認</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% elif state.opponent_bench_unknown > 0 %}
+                    <div class="grid grid-cols-2 gap-2">
+                        {% for _ in range(state.opponent_bench_unknown) %}
+                        <div class="bg-gray-100 rounded p-2 text-xs border-2 border-dashed border-gray-300">
+                            <div class="font-medium text-gray-400">???</div>
+                            <div class="mt-1 text-gray-400 text-[10px]">未確認</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 

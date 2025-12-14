@@ -39,7 +39,6 @@ from src.rebel import (
 from src.rebel.belief_state import Observation, ObservationType
 from src.rebel.cfr_solver import default_value_estimator
 
-
 # ============================================================
 # Custom Battle Class for Interactive Play
 # ============================================================
