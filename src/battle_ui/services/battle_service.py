@@ -490,12 +490,14 @@ class BattleService:
             elif 0 <= cmd <= 3:
                 # 通常技
                 move_name = pokemon.moves[cmd] if cmd < len(pokemon.moves) else "???"
+                # テラスタル可能かどうか: チーム全体でまだテラスタルしていない
+                can_tera = battle.can_terastal(player)
                 actions.append({
                     "type": "move",
                     "index": cmd,
                     "name": move_name,
                     "disabled": False,
-                    "can_tera": not pokemon.terastal,
+                    "can_tera": can_tera,
                 })
             elif 10 <= cmd <= 13:
                 # テラスタル技（既に通常技として追加済みなのでスキップ）

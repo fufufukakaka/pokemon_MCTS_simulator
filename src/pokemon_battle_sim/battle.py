@@ -7005,6 +7005,16 @@ class Battle:
             if not players:
                 break
 
+            # interactive_mode: 交代コマンドがなければ中断
+            if self.interactive_mode:
+                for player in players:
+                    if (
+                        change_commands[player] is None
+                        and not self.reserved_change_commands[player]
+                    ):
+                        # 交代コマンドがない→中断してUIで待機
+                        return
+
             # 交代
             for player in players:
                 self.change_pokemon(
