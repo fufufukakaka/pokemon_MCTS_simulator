@@ -31,6 +31,7 @@ STATIC_DIR = BASE_DIR / "static"
 USAGE_DATA_PATH = os.environ.get("POKEMON_USAGE_DATA_PATH", None)
 SEASON = os.environ.get("POKEMON_SEASON", None)
 PLAYER_PARTY_PATH = os.environ.get("PLAYER_PARTY_PATH", None)
+DEBUG_OPPONENT = os.environ.get("DEBUG_OPPONENT", None)  # "gliscor" 等で固定対戦相手を有効化
 
 
 @asynccontextmanager

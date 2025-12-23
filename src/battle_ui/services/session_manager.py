@@ -18,7 +18,7 @@ class BattleSession:
     battle: Battle
     player_team_data: List[Dict[str, Any]]  # 元のパーティデータ
     opponent_team_data: List[Dict[str, Any]]
-    opponent_trainer_index: int
+    opponent_trainer_index: int | str  # intまたはデバッグ用ID（"debug_gliscor"等）
     phase: str = "selection"  # selection, battle, change, finished
     selected_indices: Optional[List[int]] = None
     ai_selected_indices: Optional[List[int]] = None
@@ -46,7 +46,7 @@ class SessionManager:
         self,
         player_team: List[Dict[str, Any]],
         opponent_team: List[Dict[str, Any]],
-        opponent_trainer_index: int,
+        opponent_trainer_index: int | str,  # intまたはデバッグ用ID（"debug_gliscor"等）
         ai_mode: str = "random",
         checkpoint_path: Optional[str] = None,
         ai_analysis_always_on: bool = False,

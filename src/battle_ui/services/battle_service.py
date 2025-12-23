@@ -35,6 +35,133 @@ else:
 # プレイヤーパーティのパス（環境変数から取得）
 PLAYER_PARTY_PATH = os.environ.get("PLAYER_PARTY_PATH", None)
 
+# デバッグ用対戦相手（環境変数から取得）
+DEBUG_OPPONENT = os.environ.get("DEBUG_OPPONENT", None)
+
+# デバッグ用対戦相手の定義
+DEBUG_OPPONENTS = {
+    "gliscor": {
+        "name": "【デバッグ】グライオン軸",
+        "lead_pokemon": "グライオン",  # 必ず先発にするポケモン
+        "pokemons": [
+            {
+                "name": "グライオン",
+                "item": "どくどくだま",
+                "ability": "ポイズンヒール",
+                "Ttype": "みず",
+                "nature": "わんぱく",
+                "moves": ["じしん", "どくづき", "まもる", "みがわり"],
+                "effort": [244, 0, 188, 0, 0, 76],
+            },
+            {
+                "name": "ドヒドイデ",
+                "item": "くろいヘドロ",
+                "ability": "さいせいりょく",
+                "Ttype": "みず",
+                "nature": "ずぶとい",
+                "moves": ["ねっとう", "どくどく", "じこさいせい", "くろいきり"],
+                "effort": [252, 0, 252, 0, 4, 0],
+            },
+            {
+                "name": "ラッキー",
+                "item": "しんかのきせき",
+                "ability": "しぜんかいふく",
+                "Ttype": "ゴースト",
+                "nature": "ずぶとい",
+                "moves": ["タマゴうみ", "でんじは", "ちきゅうなげ", "ステルスロック"],
+                "effort": [4, 0, 252, 0, 252, 0],
+            },
+            {
+                "name": "エアームド",
+                "item": "ゴツゴツメット",
+                "ability": "がんじょう",
+                "Ttype": "ひこう",
+                "nature": "わんぱく",
+                "moves": ["ボディプレス", "はねやすめ", "てっぺき", "まきびし"],
+                "effort": [252, 0, 252, 0, 4, 0],
+            },
+            {
+                "name": "ヘイラッシャ",
+                "item": "たべのこし",
+                "ability": "てんねん",
+                "Ttype": "ドラゴン",
+                "nature": "わんぱく",
+                "moves": ["ウェーブタックル", "じしん", "ゆきなだれ", "ねむる"],
+                "effort": [252, 0, 252, 0, 4, 0],
+            },
+            {
+                "name": "ドオー",
+                "item": "オボンのみ",
+                "ability": "ちょすい",
+                "Ttype": "どく",
+                "nature": "しんちょう",
+                "moves": ["どくづき", "じしん", "ステルスロック", "じこさいせい"],
+                "effort": [252, 0, 4, 0, 252, 0],
+            },
+        ],
+    },
+    "stall": {
+        "name": "【デバッグ】受けループ",
+        "lead_pokemon": "ドヒドイデ",
+        "pokemons": [
+            {
+                "name": "ドヒドイデ",
+                "item": "くろいヘドロ",
+                "ability": "さいせいりょく",
+                "Ttype": "みず",
+                "nature": "ずぶとい",
+                "moves": ["ねっとう", "どくどく", "じこさいせい", "くろいきり"],
+                "effort": [252, 0, 252, 0, 4, 0],
+            },
+            {
+                "name": "ラッキー",
+                "item": "しんかのきせき",
+                "ability": "しぜんかいふく",
+                "Ttype": "ゴースト",
+                "nature": "ずぶとい",
+                "moves": ["タマゴうみ", "でんじは", "ちきゅうなげ", "ステルスロック"],
+                "effort": [4, 0, 252, 0, 252, 0],
+            },
+            {
+                "name": "キョジオーン",
+                "item": "たべのこし",
+                "ability": "きよめのしお",
+                "Ttype": "ゴースト",
+                "nature": "わんぱく",
+                "moves": ["しおづけ", "じこさいせい", "ステルスロック", "がんせきふうじ"],
+                "effort": [252, 0, 252, 0, 4, 0],
+            },
+            {
+                "name": "ヘイラッシャ",
+                "item": "オボンのみ",
+                "ability": "てんねん",
+                "Ttype": "ドラゴン",
+                "nature": "わんぱく",
+                "moves": ["ウェーブタックル", "じしん", "ゆきなだれ", "ねむる"],
+                "effort": [252, 0, 252, 0, 4, 0],
+            },
+            {
+                "name": "アーマーガア",
+                "item": "ゴツゴツメット",
+                "ability": "ミラーアーマー",
+                "Ttype": "ひこう",
+                "nature": "わんぱく",
+                "moves": ["ブレイブバード", "ボディプレス", "はねやすめ", "てっぺき"],
+                "effort": [252, 0, 252, 0, 4, 0],
+            },
+            {
+                "name": "ドオー",
+                "item": "くろいヘドロ",
+                "ability": "ちょすい",
+                "Ttype": "どく",
+                "nature": "しんちょう",
+                "moves": ["どくづき", "じしん", "ステルスロック", "じこさいせい"],
+                "effort": [252, 0, 4, 0, 252, 0],
+            },
+        ],
+    },
+}
+
 
 def _get_party_signature(trainer: dict) -> str:
     """パーティのユニークな署名を生成（重複除去用）"""
@@ -193,22 +320,49 @@ class BattleService:
     @staticmethod
     def get_trainers() -> List[Dict[str, Any]]:
         """トレーナー一覧を取得"""
-        trainers = _get_trainers_data()
+        result = []
 
-        return [
-            {
+        # デバッグ用対戦相手を先頭に追加（環境変数が設定されている場合）
+        if DEBUG_OPPONENT:
+            for key, opponent in DEBUG_OPPONENTS.items():
+                result.append({
+                    "index": f"debug_{key}",  # 特別なインデックス
+                    "name": opponent["name"],
+                    "rank": 0,
+                    "rating": 0,
+                    "pokemon_names": [p["name"] for p in opponent["pokemons"]],
+                    "is_debug": True,
+                })
+
+        # 通常のトレーナー
+        trainers = _get_trainers_data()
+        for i, t in enumerate(trainers[:50]):  # 上位50人まで表示
+            result.append({
                 "index": i,
                 "name": t["name"],
                 "rank": t.get("rank", i + 1),
                 "rating": t.get("rating", 0),
                 "pokemon_names": [p["name"] for p in t["pokemons"]],
-            }
-            for i, t in enumerate(trainers[:50])  # 上位50人まで表示
-        ]
+                "is_debug": False,
+            })
+
+        return result
 
     @staticmethod
-    def get_trainer_party(trainer_index: int) -> List[Dict[str, Any]]:
-        """指定トレーナーのパーティを取得"""
+    def get_trainer_party(trainer_index: int | str) -> List[Dict[str, Any]]:
+        """指定トレーナーのパーティを取得
+
+        Args:
+            trainer_index: トレーナーインデックス（int）またはデバッグ用ID（"debug_gliscor"等）
+        """
+        # デバッグ用対戦相手の場合
+        if isinstance(trainer_index, str) and trainer_index.startswith("debug_"):
+            debug_key = trainer_index.replace("debug_", "")
+            if debug_key in DEBUG_OPPONENTS:
+                return DEBUG_OPPONENTS[debug_key]["pokemons"]
+            raise ValueError(f"Unknown debug opponent: {debug_key}")
+
+        # 通常のトレーナー
         trainers = _get_trainers_data()
 
         if trainer_index < 0 or trainer_index >= len(trainers):
@@ -287,7 +441,32 @@ class BattleService:
         BattleService._init_rebel_ai(session)
 
         # AIの選出
-        if session.rebel_ai is not None:
+        # デバッグ対戦相手の場合は固定選出（lead_pokemonを必ず先頭）
+        trainer_index = session.opponent_trainer_index
+        if isinstance(trainer_index, str) and trainer_index.startswith("debug_"):
+            debug_key = trainer_index.replace("debug_", "")
+            if debug_key in DEBUG_OPPONENTS:
+                debug_config = DEBUG_OPPONENTS[debug_key]
+                lead_pokemon_name = debug_config["lead_pokemon"]
+                # lead_pokemonのインデックスを見つける
+                lead_idx = None
+                for i, p in enumerate(session.opponent_team_data):
+                    if p["name"] == lead_pokemon_name:
+                        lead_idx = i
+                        break
+                # lead_pokemonを先頭に、残りはランダムに2匹選ぶ
+                if lead_idx is not None:
+                    other_indices = [i for i in range(6) if i != lead_idx]
+                    selected_others = random.sample(other_indices, 2)
+                    ai_indices = [lead_idx] + selected_others
+                    logger.info(f"Debug opponent ({debug_key}) selected: {ai_indices}, lead: {lead_pokemon_name}")
+                else:
+                    # lead_pokemonが見つからない場合はランダム
+                    ai_indices = random.sample(range(6), 3)
+                    logger.warning(f"Lead pokemon {lead_pokemon_name} not found, using random selection")
+            else:
+                ai_indices = random.sample(range(6), 3)
+        elif session.rebel_ai is not None:
             # Selection BERTを使用
             my_team_names = [p["name"] for p in session.player_team_data]
             opp_team_names = [p["name"] for p in session.opponent_team_data]

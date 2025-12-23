@@ -2154,8 +2154,9 @@ class Battle:
             case "ルームサービス":
                 self.add_rank(player, 5, -1)
             case "レッドカード":
-                if p2.is_blowable():
-                    self.change_pokemon(player2)
+                # レッドカードによる交代はbreakpoint設定後に別途処理される
+                # ここでは何もしない（ログ出力はconsume_item呼び出し元で行われる）
+                pass
             case "じゅうでんち" | "ゆきだま":
                 self.add_rank(player, 1, +1)
             case "きゅうこん" | "ひかりごけ":
@@ -6356,7 +6357,12 @@ class Battle:
                 if self.damage[player] and self.pokemon[player2].hp:
                     match self.pokemon[player2].item:
                         case "レッドカード":
-                            if self.available_commands(player, phase="change"):
+                            # レッドカード: 攻撃側(player)を強制交代させる
+                            if (
+                                self.pokemon[player].is_blowable()
+                                and self.changeable_indexes(player)
+                            ):
+                                self.breakpoint[player] = "redcard"
                                 self.consume_item(player2)
                         case "アッキのみ":
                             if Pokemon.all_moves[move]["class"] == "phy":
@@ -6403,6 +6409,13 @@ class Battle:
                 self.change_pokemon(player2, command=change_commands[player2])
                 change_commands[player2] = None  # コマンド破棄
                 ejectbutton_triggered = True
+
+            # レッドカードによる交代（攻撃側playerが交代させられる）
+            redcard_triggered = False
+            if self.breakpoint[player] == "redcard":
+                self.change_pokemon(player, command=change_commands[player])
+                change_commands[player] = None  # コマンド破棄
+                redcard_triggered = True
 
             if not any(self.breakpoint):
                 # 技の効果 (追加効果ではない)

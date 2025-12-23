@@ -52,16 +52,24 @@ async def get_checkpoints(request: Request):
 @router.post("/battle/create", response_class=HTMLResponse)
 async def create_battle(
     request: Request,
-    trainer_index: int = Form(...),
+    trainer_index: str = Form(...),  # "debug_gliscor" などのデバッグIDも受け付ける
     ai_mode: str = Form("random"),
     checkpoint_path: Optional[str] = Form(None),
     ai_analysis_always_on: Optional[str] = Form(None),
 ):
     """バトルセッションを作成"""
     try:
+        # trainer_indexを適切な型に変換
+        # デバッグ用ID（"debug_*"）はそのまま文字列、それ以外は整数に変換
+        parsed_trainer_index: int | str
+        if trainer_index.startswith("debug_"):
+            parsed_trainer_index = trainer_index
+        else:
+            parsed_trainer_index = int(trainer_index)
+
         # プレイヤーパーティとAIトレーナーのパーティを取得
         player_party = BattleService.get_player_party()
-        ai_party = BattleService.get_trainer_party(trainer_index)
+        ai_party = BattleService.get_trainer_party(parsed_trainer_index)
 
         # チェックボックスの値を処理（"true" or None）
         analysis_always_on = ai_analysis_always_on == "true"
@@ -70,7 +78,7 @@ async def create_battle(
         session = session_manager.create_session(
             player_team=player_party,
             opponent_team=ai_party,
-            opponent_trainer_index=trainer_index,
+            opponent_trainer_index=parsed_trainer_index,
             ai_mode=ai_mode,
             checkpoint_path=checkpoint_path,
             ai_analysis_always_on=analysis_always_on,
