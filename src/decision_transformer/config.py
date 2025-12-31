@@ -139,6 +139,12 @@ class TrainingConfig:
     # === 統計データ ===
     usage_data_path: str | None = None  # 統計データのパス (e.g., data/pokedb_usage/season_37_top150.json)
 
+    # === MCTS設定 (Expert Iteration) ===
+    use_mcts: bool = False  # MCTSを使用するか
+    mcts_simulations: int = 100  # MCTSシミュレーション回数
+    mcts_max_depth: int = 6  # 最大探索深度
+    mcts_c_puct: float = 1.5  # 探索バランスパラメータ
+
     # === モデル設定 ===
     model_config: Optional[PokemonBattleTransformerConfig] = None
 

@@ -81,6 +81,13 @@ class GeneratorConfig:
     # 統計データ
     usage_data_path: str | None = None  # 統計データのパス（None なら Pokemon.init のデフォルト）
 
+    # MCTS設定 (Expert Iteration)
+    use_mcts: bool = False  # MCTSを使用するか
+    mcts_simulations: int = 100  # MCTSシミュレーション回数
+    mcts_max_depth: int = 6  # 最大探索深度
+    mcts_c_puct: float = 1.5  # 探索バランスパラメータ
+    device: str = "cpu"  # デバイス
+
 
 def _pokemon_to_state(pokemon: Pokemon | None) -> PokemonState:
     """Pokemon オブジェクトを PokemonState に変換"""
@@ -365,6 +372,98 @@ class EpsilonGreedyPolicy:
         return action_id
 
 
+class MCTSPolicy:
+    """MCTS を使ったポリシー（Expert Iteration 用）"""
+
+    def __init__(
+        self,
+        model: "PokemonBattleTransformer",
+        tokenizer: "BattleSequenceTokenizer",
+        epsilon: float = 0.1,
+        temperature: float = 1.0,
+        mcts_simulations: int = 100,
+        mcts_max_depth: int = 6,
+        mcts_c_puct: float = 1.5,
+        device: str = "cpu",
+    ):
+        from .dt_guided_mcts import DTGuidedMCTS, DTGuidedMCTSConfig
+
+        self.model = model
+        self.tokenizer = tokenizer
+        self.epsilon = epsilon
+        self.temperature = temperature
+        self.random_policy = RandomPolicy()
+
+        # MCTSを初期化
+        mcts_config = DTGuidedMCTSConfig(
+            n_simulations=mcts_simulations,
+            max_depth=mcts_max_depth,
+            c_puct=mcts_c_puct,
+            temperature=temperature,
+            device=device,
+        )
+        self.mcts = DTGuidedMCTS(
+            model=model,
+            tokenizer=tokenizer,
+            config=mcts_config,
+        )
+
+    def get_selection(
+        self,
+        my_team: list[str],
+        opp_team: list[str],
+    ) -> list[int]:
+        """選出を決定（MCTSは選出には使わない）"""
+        if random.random() < self.epsilon:
+            return self.random_policy.get_selection(len(my_team))
+
+        selected, _ = self.model.get_selection(
+            my_team=my_team,
+            opp_team=opp_team,
+            tokenizer=self.tokenizer,
+            target_return=1.0,
+            deterministic=False,
+            temperature=self.temperature,
+        )
+        return selected
+
+    def get_action(
+        self,
+        battle: "Battle",
+        player: int,
+        available_actions: list[int],
+    ) -> int:
+        """MCTSを使って行動を決定"""
+        if random.random() < self.epsilon:
+            return self.random_policy.get_action(available_actions)
+
+        # MCTS探索
+        policy, _, _ = self.mcts.search(
+            battle=battle,
+            player=player,
+            target_return=1.0,
+        )
+
+        if not policy:
+            return self.random_policy.get_action(available_actions)
+
+        # 温度に基づいて行動選択
+        if self.temperature == 0:
+            action_id = max(policy.items(), key=lambda x: x[1])[0]
+        else:
+            actions = list(policy.keys())
+            probs = [p ** (1 / self.temperature) for p in policy.values()]
+            prob_sum = sum(probs)
+            probs = [p / prob_sum for p in probs]
+            action_id = random.choices(actions, weights=probs)[0]
+
+        return action_id
+
+    def reset(self):
+        """MCTSのコンテキストをリセット"""
+        self.mcts.reset()
+
+
 class TrajectoryGenerator:
     """
     バトル軌跡の生成器
@@ -390,18 +489,36 @@ class TrajectoryGenerator:
         self.config = config or GeneratorConfig()
         self.model = model
         self.tokenizer = tokenizer
+        self.use_mcts = self.config.use_mcts and model is not None
 
         # Pokemon データの初期化
         Pokemon.init(usage_data_path=self.config.usage_data_path)
 
         # ポリシーの設定
         if model is not None and tokenizer is not None:
-            self.policy = EpsilonGreedyPolicy(
-                model=model,
-                tokenizer=tokenizer,
-                epsilon=self.config.epsilon,
-                temperature=self.config.temperature,
-            )
+            if self.config.use_mcts:
+                # MCTSベースのポリシー（Expert Iteration）
+                self.policy = MCTSPolicy(
+                    model=model,
+                    tokenizer=tokenizer,
+                    epsilon=self.config.epsilon,
+                    temperature=self.config.temperature,
+                    mcts_simulations=self.config.mcts_simulations,
+                    mcts_max_depth=self.config.mcts_max_depth,
+                    mcts_c_puct=self.config.mcts_c_puct,
+                    device=self.config.device,
+                )
+                logger.info(
+                    f"Using MCTS policy: {self.config.mcts_simulations} sims, "
+                    f"depth={self.config.mcts_max_depth}"
+                )
+            else:
+                self.policy = EpsilonGreedyPolicy(
+                    model=model,
+                    tokenizer=tokenizer,
+                    epsilon=self.config.epsilon,
+                    temperature=self.config.temperature,
+                )
         else:
             self.policy = RandomPolicy()
 
@@ -501,8 +618,14 @@ class TrajectoryGenerator:
             available0 = battle.available_commands(0, phase="battle")
             available1 = battle.available_commands(1, phase="battle")
 
-            if isinstance(self.policy, EpsilonGreedyPolicy):
-                # モデルベースの行動選択（簡略化：ランダムで代用）
+            if isinstance(self.policy, MCTSPolicy):
+                # MCTSベースの行動選択
+                action0 = self.policy.get_action(battle, 0, available0) if available0 else Battle.SKIP
+                action1 = self.policy.get_action(battle, 1, available1) if available1 else Battle.SKIP
+            elif isinstance(self.policy, EpsilonGreedyPolicy):
+                # モデルベースの行動選択
+                # NOTE: 本来はコンテキストをエンコードすべきだが、簡略化のためランダム
+                # （選出予測のみモデルを使用し、行動はランダム探索で多様性を確保）
                 action0 = random.choice(available0) if available0 else Battle.SKIP
                 action1 = random.choice(available1) if available1 else Battle.SKIP
             else:

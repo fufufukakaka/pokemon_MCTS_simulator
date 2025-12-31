@@ -303,6 +303,12 @@ class DecisionTransformerTrainer:
             temperature=temperature,
             num_workers=self.config.num_workers,
             usage_data_path=self.config.usage_data_path,
+            # MCTS設定
+            use_mcts=self.config.use_mcts,
+            mcts_simulations=self.config.mcts_simulations,
+            mcts_max_depth=self.config.mcts_max_depth,
+            mcts_c_puct=self.config.mcts_c_puct,
+            device=self.config.device,
         )
 
         # 初期イテレーションはランダムポリシー

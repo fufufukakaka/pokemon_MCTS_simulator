@@ -214,6 +214,31 @@ def main():
         help="Number of games to generate in --generate-only mode (default: 1000)",
     )
 
+    # MCTS設定（Expert Iteration: 学習時にMCTSで先読みして良い行動を選択）
+    parser.add_argument(
+        "--use-mcts",
+        action="store_true",
+        help="Use MCTS for action selection during self-play (Expert Iteration)",
+    )
+    parser.add_argument(
+        "--mcts-simulations",
+        type=int,
+        default=100,
+        help="Number of MCTS simulations per action (default: 100)",
+    )
+    parser.add_argument(
+        "--mcts-depth",
+        type=int,
+        default=6,
+        help="Maximum MCTS search depth in turns (default: 6)",
+    )
+    parser.add_argument(
+        "--mcts-c-puct",
+        type=float,
+        default=1.5,
+        help="MCTS exploration parameter (default: 1.5)",
+    )
+
     args = parser.parse_args()
 
     # トレーナーデータをロード（複数ファイル対応）
@@ -276,6 +301,11 @@ def main():
         num_workers=args.num_workers,
         trajectory_pool_size=args.pool_size,
         usage_data_path=args.usage_db,
+        # MCTS設定
+        use_mcts=args.use_mcts,
+        mcts_simulations=args.mcts_simulations,
+        mcts_max_depth=args.mcts_depth,
+        mcts_c_puct=args.mcts_c_puct,
         model_config=model_config,
     )
 
@@ -286,6 +316,8 @@ def main():
     logger.info(f"Model config: hidden_size={args.hidden_size}, layers={args.num_layers}, heads={args.num_heads}")
     logger.info(f"Training config: iterations={args.num_iterations}, games/iter={args.games_per_iteration}")
     logger.info(f"Usage data: {args.usage_db or 'default (src/battle_data/season22.json)'}")
+    if args.use_mcts:
+        logger.info(f"MCTS enabled: simulations={args.mcts_simulations}, depth={args.mcts_depth}, c_puct={args.mcts_c_puct}")
 
     # 学習実行
     result = trainer.train(
