@@ -302,6 +302,7 @@ class DecisionTransformerTrainer:
             epsilon=epsilon,
             temperature=temperature,
             num_workers=self.config.num_workers,
+            usage_data_path=self.config.usage_data_path,
         )
 
         # 初期イテレーションはランダムポリシー
@@ -446,7 +447,11 @@ class DecisionTransformerTrainer:
         # 現在のモデル vs ランダム
         generator = TrajectoryGenerator(
             trainer_data=trainer_data,
-            config=GeneratorConfig(epsilon=0.0, temperature=0.1),
+            config=GeneratorConfig(
+                epsilon=0.0,
+                temperature=0.1,
+                usage_data_path=self.config.usage_data_path,
+            ),
             model=self.model,
             tokenizer=self.tokenizer,
         )

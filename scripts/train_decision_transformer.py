@@ -81,6 +81,12 @@ def main():
         default=None,
         help="Resume from checkpoint directory",
     )
+    parser.add_argument(
+        "--usage-db",
+        type=str,
+        default=None,
+        help="Path to usage statistics JSON file (e.g., data/pokedb_usage/season_37_top150.json)",
+    )
 
     # 学習設定
     parser.add_argument(
@@ -225,11 +231,12 @@ def main():
 
     # データ生成のみモード
     if args.generate_only:
-        from src.decision_transformer.data_generator import TrajectoryGenerator
+        from src.decision_transformer.data_generator import GeneratorConfig, TrajectoryGenerator
         from src.decision_transformer.dataset import save_trajectories_to_jsonl
 
         logger.info(f"Generating {args.num_games} random trajectories...")
-        generator = TrajectoryGenerator(trainer_data=trainer_data)
+        gen_config = GeneratorConfig(usage_data_path=args.usage_db)
+        generator = TrajectoryGenerator(trainer_data=trainer_data, config=gen_config)
         trajectories = generator.generate_batch(args.num_games)
 
         # 保存
@@ -268,6 +275,7 @@ def main():
         device=args.device,
         num_workers=args.num_workers,
         trajectory_pool_size=args.pool_size,
+        usage_data_path=args.usage_db,
         model_config=model_config,
     )
 
@@ -277,6 +285,7 @@ def main():
     logger.info("Starting training...")
     logger.info(f"Model config: hidden_size={args.hidden_size}, layers={args.num_layers}, heads={args.num_heads}")
     logger.info(f"Training config: iterations={args.num_iterations}, games/iter={args.games_per_iteration}")
+    logger.info(f"Usage data: {args.usage_db or 'default (src/battle_data/season22.json)'}")
 
     # 学習実行
     result = trainer.train(

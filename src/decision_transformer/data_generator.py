@@ -46,7 +46,10 @@ def _parallel_game_worker(args: tuple) -> dict | None:
     """
     game_id, trainer_data, config_dict = args
     try:
-        Pokemon.init()
+        # 統計データパスを取得
+        usage_data_path = config_dict.get("usage_data_path") if config_dict else None
+        Pokemon.init(usage_data_path=usage_data_path, verbose=False)
+
         config = GeneratorConfig(**config_dict) if config_dict else GeneratorConfig()
         gen = TrajectoryGenerator(
             trainer_data=trainer_data,
@@ -72,6 +75,9 @@ class GeneratorConfig:
 
     # 並列化
     num_workers: int = 1
+
+    # 統計データ
+    usage_data_path: str | None = None  # 統計データのパス（None なら Pokemon.init のデフォルト）
 
 
 def _pokemon_to_state(pokemon: Pokemon | None) -> PokemonState:
@@ -306,7 +312,7 @@ class TrajectoryGenerator:
         self.tokenizer = tokenizer
 
         # Pokemon データの初期化
-        Pokemon.init()
+        Pokemon.init(usage_data_path=self.config.usage_data_path)
 
         # ポリシーの設定
         if model is not None and tokenizer is not None:
@@ -533,6 +539,7 @@ class TrajectoryGenerator:
             "temperature": self.config.temperature,
             "max_turns": self.config.max_turns,
             "num_workers": 1,  # ワーカー内では並列化しない
+            "usage_data_path": self.config.usage_data_path,
         }
 
         # 引数リストを作成

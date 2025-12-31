@@ -136,6 +136,9 @@ class TrainingConfig:
     device: str = "cpu"
     num_workers: int = 1  # 並列ワーカー数
 
+    # === 統計データ ===
+    usage_data_path: str | None = None  # 統計データのパス (e.g., data/pokedb_usage/season_37_top150.json)
+
     # === モデル設定 ===
     model_config: Optional[PokemonBattleTransformerConfig] = None
 
