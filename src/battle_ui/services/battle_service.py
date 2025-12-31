@@ -872,6 +872,8 @@ class BattleService:
             state["available_actions"] = BattleService._get_available_actions(
                 battle, player=0, phase="change"
             )
+            # 交代理由を追加（breakpointの値で判断）
+            state["change_reason"] = battle.breakpoint[0] if battle.breakpoint[0] else "faint"
         else:
             state["available_actions"] = []
 

@@ -6411,9 +6411,13 @@ class Battle:
                 ejectbutton_triggered = True
 
             # レッドカードによる交代（攻撃側playerが交代させられる）
+            # レッドカードはランダム交代なので、コマンドをランダムに決定
             redcard_triggered = False
             if self.breakpoint[player] == "redcard":
-                self.change_pokemon(player, command=change_commands[player])
+                random_change_cmd = self._random.choice(
+                    self.available_commands(player, phase="change")
+                )
+                self.change_pokemon(player, command=random_change_cmd)
                 change_commands[player] = None  # コマンド破棄
                 redcard_triggered = True
 

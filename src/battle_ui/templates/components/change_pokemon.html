@@ -6,7 +6,17 @@
                 次のポケモンを選んでください
             </h2>
             <p class="text-yellow-700 mb-6">
+                {% if state.change_reason == "faint" or not state.change_reason %}
                 ポケモンが倒れました。控えから次のポケモンを出してください。
+                {% elif state.change_reason == "ejectbutton" %}
+                だっしゅつボタンが発動しました！控えから次のポケモンを出してください。
+                {% elif state.change_reason == "ejectpack" or state.change_reason.startswith("ejectpack_") %}
+                だっしゅつパックが発動しました！控えから次のポケモンを出してください。
+                {% elif state.change_reason == "uturn" %}
+                控えから次のポケモンを出してください。
+                {% else %}
+                控えから次のポケモンを出してください。
+                {% endif %}
             </p>
 
             <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
