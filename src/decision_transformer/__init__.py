@@ -16,6 +16,15 @@ Usage:
     action = ai.get_battle_command(battle, player)
     analysis = ai.get_analysis(battle, player)
 
+    # MCTS統合による数ターン先読み（安定択を選択）
+    ai_with_mcts = load_decision_transformer_ai(
+        "models/decision_transformer/final",
+        use_mcts=True,
+        mcts_simulations=200,
+        mcts_max_depth=10,
+    )
+    action = ai_with_mcts.get_battle_command(battle, player)
+
     # 学習
     from src.decision_transformer import (
         PokemonBattleTransformerConfig,
@@ -33,6 +42,11 @@ from .ai_service import (
     DecisionTransformerAIConfig,
     clear_dt_ai_cache,
     load_decision_transformer_ai,
+)
+from .dt_guided_mcts import (
+    DTGuidedMCTS,
+    DTGuidedMCTSConfig,
+    DTGuidedMCTSNode,
 )
 from .config import (
     PokemonBattleTransformerConfig,
@@ -117,4 +131,8 @@ __all__ = [
     "DecisionTransformerAIConfig",
     "load_decision_transformer_ai",
     "clear_dt_ai_cache",
+    # DT-Guided MCTS (数ターン先読み)
+    "DTGuidedMCTS",
+    "DTGuidedMCTSConfig",
+    "DTGuidedMCTSNode",
 ]

@@ -22,7 +22,7 @@ from .tokenizer import BattleSequenceTokenizer
 
 @dataclass
 class PokemonState:
-    """ポケモンの状態スナップショット"""
+    """自分のポケモンの状態（完全情報）"""
 
     name: str
     hp_ratio: float  # 0.0 - 1.0
@@ -32,7 +32,7 @@ class PokemonState:
     terastallized: bool = False
     tera_type: str = ""
 
-    # オプション（観測できる場合）
+    # 自分の情報は全て見える
     item: str = ""
     ability: str = ""
     moves: list[str] = field(default_factory=list)
@@ -54,6 +54,138 @@ class PokemonState:
     sub_hp: int = 0  # みがわり残りHP
     fixed_move: str = ""  # こだわっている技
     inaccessible: int = 0  # そらをとぶ等で隠れ中
+
+
+@dataclass
+class ObservedPokemonState:
+    """相手ポケモンの観測済み状態（不完全情報）
+
+    観測された情報のみを保持し、未観測の情報は空/None のまま。
+    """
+
+    name: str
+    hp_ratio: float = 1.0  # 常に観測可能
+    ailment: str = ""  # 常に観測可能
+    rank: list[int] = field(default_factory=lambda: [0] * 8)  # 常に観測可能
+    types: list[str] = field(default_factory=list)  # 現在のタイプ（テラスタル含む）
+    terastallized: bool = False  # テラスタルしたか
+    tera_type: str = ""  # テラスタル時のみ判明
+
+    # 観測済み情報（累積）
+    revealed_moves: list[str] = field(default_factory=list)  # 使用された技
+    revealed_item: str | None = None  # 発動/消費で判明した持ち物
+    revealed_ability: str | None = None  # 発動で判明した特性
+
+    # 状態変化（これらは観測可能）
+    confusion: int = 0
+    critical_rank: int = 0
+    aquaring: bool = False
+    healblock: int = 0
+    magnetrise: int = 0
+    noroi: bool = False
+    horobi: int = 0
+    yadorigi: bool = False
+    encore: int = 0
+    chohatsu: int = 0
+    change_block: bool = False
+    meromero: bool = False
+    bind: int = 0
+    sub_hp: int = 0
+    inaccessible: int = 0
+
+    # このポケモンが場に出たことがあるか
+    is_revealed: bool = False  # 場に出るまで False
+
+
+@dataclass
+class ObservationTracker:
+    """相手チームの観測情報を追跡
+
+    バトル中に得られた情報を累積的に記録する。
+    """
+
+    # 相手の6匹それぞれの観測状態
+    # キー: ポケモン名, 値: 観測情報
+    pokemon_observations: dict[str, ObservedPokemonState] = field(default_factory=dict)
+
+    # 相手の選出で判明したポケモン（場に出た順）
+    revealed_selection: list[str] = field(default_factory=list)
+
+    def get_or_create(self, name: str) -> ObservedPokemonState:
+        """ポケモンの観測状態を取得または作成"""
+        if name not in self.pokemon_observations:
+            self.pokemon_observations[name] = ObservedPokemonState(name=name)
+        return self.pokemon_observations[name]
+
+    def reveal_pokemon(self, name: str) -> None:
+        """ポケモンが場に出たことを記録"""
+        obs = self.get_or_create(name)
+        obs.is_revealed = True
+        if name not in self.revealed_selection:
+            self.revealed_selection.append(name)
+
+    def reveal_move(self, name: str, move: str) -> None:
+        """技が使用されたことを記録"""
+        obs = self.get_or_create(name)
+        if move and move not in obs.revealed_moves:
+            obs.revealed_moves.append(move)
+
+    def reveal_item(self, name: str, item: str) -> None:
+        """持ち物が判明したことを記録"""
+        obs = self.get_or_create(name)
+        if item:
+            obs.revealed_item = item
+
+    def reveal_ability(self, name: str, ability: str) -> None:
+        """特性が判明したことを記録"""
+        obs = self.get_or_create(name)
+        if ability:
+            obs.revealed_ability = ability
+
+    def reveal_tera(self, name: str, tera_type: str) -> None:
+        """テラスタルしたことを記録"""
+        obs = self.get_or_create(name)
+        obs.terastallized = True
+        obs.tera_type = tera_type
+
+    def update_battle_state(
+        self,
+        name: str,
+        hp_ratio: float,
+        ailment: str = "",
+        rank: list[int] | None = None,
+        types: list[str] | None = None,
+    ) -> None:
+        """バトル中に観測可能な状態を更新"""
+        obs = self.get_or_create(name)
+        obs.hp_ratio = hp_ratio
+        obs.ailment = ailment
+        if rank is not None:
+            obs.rank = rank
+        if types is not None:
+            obs.types = types
+
+    def get_observed_state(self, name: str) -> ObservedPokemonState:
+        """ポケモンの観測状態を取得"""
+        return self.get_or_create(name)
+
+    def to_dict(self) -> dict:
+        """シリアライズ用"""
+        return {
+            "pokemon_observations": {
+                name: asdict(obs) for name, obs in self.pokemon_observations.items()
+            },
+            "revealed_selection": self.revealed_selection,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "ObservationTracker":
+        """デシリアライズ"""
+        tracker = cls()
+        for name, obs_dict in data.get("pokemon_observations", {}).items():
+            tracker.pokemon_observations[name] = ObservedPokemonState(**obs_dict)
+        tracker.revealed_selection = data.get("revealed_selection", [])
+        return tracker
 
 
 @dataclass
@@ -89,19 +221,24 @@ class FieldState:
 
 @dataclass
 class TurnState:
-    """ターンの状態"""
+    """ターンの状態（不完全情報を考慮）"""
 
     turn: int
     player: int  # 視点 (0 or 1)
 
-    # ポケモン状態
+    # 自分のポケモン状態（完全情報）
     my_active: PokemonState
     my_bench: list[PokemonState]
-    opp_active: PokemonState
-    opp_bench: list[PokemonState]
+
+    # 相手のポケモン状態（観測済み情報のみ）
+    opp_active: ObservedPokemonState
+    opp_bench: list[ObservedPokemonState]  # 場に出たことがあるポケモンのみ
+
+    # 相手の未公開ポケモン数（6 - len(revealed_selection)）
+    opp_unrevealed_count: int = 0
 
     # フィールド
-    field: FieldState
+    field_state: FieldState = field(default_factory=FieldState)
 
     # 利用可能な行動
     available_actions: list[int] = field(default_factory=list)
@@ -134,6 +271,10 @@ class BattleTrajectory:
     # バトル履歴（各プレイヤー視点）
     player0_turns: list[TurnRecord] = field(default_factory=list)
     player1_turns: list[TurnRecord] = field(default_factory=list)
+
+    # 観測履歴（各プレイヤー視点での相手の情報）
+    player0_observations: ObservationTracker = field(default_factory=ObservationTracker)
+    player1_observations: ObservationTracker = field(default_factory=ObservationTracker)
 
     # 結果
     winner: Optional[int] = None  # 0, 1, or None (ongoing)
@@ -199,6 +340,8 @@ class BattleTrajectory:
                 }
                 for t in self.player1_turns
             ],
+            "player0_observations": self.player0_observations.to_dict(),
+            "player1_observations": self.player1_observations.to_dict(),
             "winner": self.winner,
             "total_turns": self.total_turns,
         }
@@ -214,9 +357,10 @@ class BattleTrajectory:
                 player=state_dict["player"],
                 my_active=PokemonState(**state_dict["my_active"]),
                 my_bench=[PokemonState(**p) for p in state_dict["my_bench"]],
-                opp_active=PokemonState(**state_dict["opp_active"]),
-                opp_bench=[PokemonState(**p) for p in state_dict["opp_bench"]],
-                field=FieldState(**state_dict["field"]),
+                opp_active=ObservedPokemonState(**state_dict["opp_active"]),
+                opp_bench=[ObservedPokemonState(**p) for p in state_dict["opp_bench"]],
+                opp_unrevealed_count=state_dict.get("opp_unrevealed_count", 0),
+                field_state=FieldState(**state_dict.get("field_state", state_dict.get("field", {}))),
                 available_actions=state_dict.get("available_actions", []),
             )
             return TurnRecord(
@@ -226,6 +370,10 @@ class BattleTrajectory:
                 reward=d.get("reward", 0.0),
             )
 
+        # ObservationTracker をパース
+        p0_obs_data = data.get("player0_observations", {})
+        p1_obs_data = data.get("player1_observations", {})
+
         return cls(
             game_id=data["game_id"],
             player0_team=data["player0_team"],
@@ -234,6 +382,8 @@ class BattleTrajectory:
             player1_selection=data["player1_selection"],
             player0_turns=[parse_turn_record(t) for t in data.get("player0_turns", [])],
             player1_turns=[parse_turn_record(t) for t in data.get("player1_turns", [])],
+            player0_observations=ObservationTracker.from_dict(p0_obs_data),
+            player1_observations=ObservationTracker.from_dict(p1_obs_data),
             winner=data.get("winner"),
             total_turns=data.get("total_turns", 0),
         )

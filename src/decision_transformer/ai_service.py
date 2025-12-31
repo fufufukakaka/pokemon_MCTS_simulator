@@ -2,6 +2,7 @@
 Decision Transformer AI サービス
 
 RebelAI と同じインターフェースを提供する UI 統合用ラッパー。
+MCTS統合により数ターン先を読んだ安定択を選択可能。
 """
 
 from __future__ import annotations
@@ -11,16 +12,22 @@ import logging
 import random
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import torch
 import torch.nn.functional as F
 
 from src.pokemon_battle_sim.battle import Battle
+from src.pokemon_battle_sim.pokemon import Pokemon
 
 from .config import PokemonBattleTransformerConfig
-from .data_generator import _battle_to_field_state, _get_turn_state, _pokemon_to_state
-from .dataset import FieldState, PokemonState, TurnState
+from .data_generator import (
+    _battle_to_field_state,
+    _get_turn_state,
+    _pokemon_to_state,
+)
+from .dataset import FieldState, ObservationTracker, PokemonState, TurnState
+from .dt_guided_mcts import BattleContext, DTGuidedMCTS, DTGuidedMCTSConfig
 from .model import PokemonBattleTransformer, load_model
 from .tokenizer import BattleSequenceTokenizer
 
@@ -38,14 +45,24 @@ class DecisionTransformerAIConfig:
     deterministic: bool = True  # 決定的行動選択
     surrender_threshold: float = 0.05  # この勝率以下で降参を検討
 
+    # MCTS設定（use_mcts=Trueで有効化）
+    use_mcts: bool = False  # MCTSを使用するか
+    mcts_simulations: int = 200  # MCTSシミュレーション回数
+    mcts_max_depth: int = 10  # 最大探索深度
+    mcts_c_puct: float = 1.5  # 探索バランスパラメータ
+    mcts_nn_value_weight: float = 0.8  # NN評価 vs Rolloutの重み
+
 
 @dataclass
-class BattleContext:
+class LocalBattleContext:
     """
-    バトル履歴を追跡するコンテキスト
+    バトル履歴を追跡するコンテキスト（ローカル用）
 
     Decision Transformerはシーケンスモデルなので、
     過去のターン履歴を保持する必要がある。
+    また、相手ポケモンの観測情報を追跡する。
+
+    Note: DTGuidedMCTSと共通のBattleContextはdt_guided_mcts.pyで定義
     """
 
     my_team: list[str] = field(default_factory=list)
@@ -54,6 +71,10 @@ class BattleContext:
     lead_idx: int = 0
     turns: list[TurnState] = field(default_factory=list)
     actions: list[int] = field(default_factory=list)
+    # 相手ポケモンの観測情報
+    opp_observation: ObservationTracker = field(default_factory=ObservationTracker)
+    # 前のターンで場にいたポケモン名（変化検出用）
+    prev_opp_active_name: str = ""
 
 
 class DecisionTransformerAI:
@@ -61,6 +82,7 @@ class DecisionTransformerAI:
     Decision Transformer AIインスタンス
 
     RebelAI と同じインターフェースを提供する。
+    use_mcts=True で数ターン先を読んだ安定択を選択。
     """
 
     def __init__(self, config: DecisionTransformerAIConfig):
@@ -74,7 +96,28 @@ class DecisionTransformerAI:
         self.tokenizer = self._load_tokenizer()
 
         # バトルコンテキスト（プレイヤーごと）
-        self.contexts: dict[int, BattleContext] = {}
+        self.contexts: dict[int, LocalBattleContext] = {}
+
+        # MCTS（オプション）
+        self.mcts: Optional[DTGuidedMCTS] = None
+        if config.use_mcts:
+            mcts_config = DTGuidedMCTSConfig(
+                n_simulations=config.mcts_simulations,
+                max_depth=config.mcts_max_depth,
+                c_puct=config.mcts_c_puct,
+                nn_value_weight=config.mcts_nn_value_weight,
+                temperature=config.temperature,
+                device=config.device,
+            )
+            self.mcts = DTGuidedMCTS(
+                model=self.model,
+                tokenizer=self.tokenizer,
+                config=mcts_config,
+            )
+            logger.info(
+                f"MCTS enabled: {config.mcts_simulations} simulations, "
+                f"depth={config.mcts_max_depth}"
+            )
 
         logger.info("Decision Transformer AI initialized successfully")
 
@@ -97,6 +140,8 @@ class DecisionTransformerAI:
     def reset(self) -> None:
         """状態をリセット"""
         self.contexts.clear()
+        if self.mcts:
+            self.mcts.reset()
 
     def get_selection(
         self,
@@ -135,7 +180,7 @@ class DecisionTransformerAI:
 
             # コンテキストを初期化
             for player in [0, 1]:
-                self.contexts[player] = BattleContext(
+                self.contexts[player] = LocalBattleContext(
                     my_team=my_team_names if player == 0 else opponent_team_names,
                     opp_team=opponent_team_names if player == 0 else my_team_names,
                     selection=selected,
@@ -211,41 +256,141 @@ class DecisionTransformerAI:
             return available[0]
 
         try:
-            # コンテキストを更新
-            context = self._get_or_create_context(battle, player)
+            # MCTSを使用する場合
+            if self.mcts is not None:
+                return self._get_battle_command_mcts(battle, player, available)
 
-            # 行動マスクを作成
-            action_mask = self._create_action_mask(available)
-
-            # バトル状態をエンコード
-            turn_state = self._extract_turn_state(battle, player)
-            encoded = self._encode_context(context, turn_state)
-
-            # 行動選択
-            action_id, win_prob = self.model.get_action(
-                context=encoded,
-                action_mask=action_mask,
-                deterministic=self.config.deterministic,
-                temperature=self.config.temperature,
-            )
-
-            # 有効な行動かチェック
-            if action_id in available:
-                # コンテキストを更新
-                context.turns.append(turn_state)
-                context.actions.append(action_id)
-                return action_id
-            else:
-                # フォールバック：利用可能な行動から選択
-                logger.warning(
-                    f"Model predicted unavailable action {action_id}, "
-                    f"available: {available}"
-                )
-                return random.choice(available)
+            # 通常のDT推論
+            return self._get_battle_command_direct(battle, player, available)
 
         except Exception as e:
             logger.error(f"Decision Transformer action selection failed: {e}")
             return random.choice(available)
+
+    def _get_battle_command_mcts(
+        self, battle: Battle, player: int, available: list[int]
+    ) -> int:
+        """MCTSを使って行動を選択（数ターン先読み）"""
+        # MCTSコンテキストを作成
+        mcts_context = self._create_mcts_context(battle, player)
+
+        # MCTS探索
+        policy, value, analysis = self.mcts.search(
+            battle=battle,
+            player=player,
+            context=mcts_context,
+            target_return=self.config.target_return,
+        )
+
+        if not policy:
+            return random.choice(available)
+
+        # 探索結果をログ
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug(f"MCTS search result: value={value:.3f}")
+            for action, info in analysis.items():
+                action_name = self._get_action_name(battle, player, action)
+                logger.debug(
+                    f"  {action_name}: visits={info['visits']}, "
+                    f"Q={info['q_value']:.3f}, prior={info['prior']:.3f}"
+                )
+
+        # 温度に基づいて行動選択
+        if self.config.deterministic:
+            action_id = max(policy.items(), key=lambda x: x[1])[0]
+        else:
+            actions = list(policy.keys())
+            probs = list(policy.values())
+            action_id = random.choices(actions, weights=probs)[0]
+
+        # ローカルコンテキストも更新
+        context = self._get_or_create_context(battle, player)
+        turn_state = self._extract_turn_state(battle, player, context)
+        context.turns.append(turn_state)
+        context.actions.append(action_id)
+
+        return action_id
+
+    def _get_battle_command_direct(
+        self, battle: Battle, player: int, available: list[int]
+    ) -> int:
+        """通常のDT推論で行動を選択（先読みなし）"""
+        # コンテキストを更新
+        context = self._get_or_create_context(battle, player)
+
+        # 行動マスクを作成
+        action_mask = self._create_action_mask(available)
+
+        # バトル状態をエンコード（観測情報のみ）
+        turn_state = self._extract_turn_state(battle, player, context)
+        encoded = self._encode_context(context, turn_state)
+
+        # 行動選択
+        action_id, win_prob = self.model.get_action(
+            context=encoded,
+            action_mask=action_mask,
+            deterministic=self.config.deterministic,
+            temperature=self.config.temperature,
+        )
+
+        # 有効な行動かチェック
+        if action_id in available:
+            # コンテキストを更新
+            context.turns.append(turn_state)
+            context.actions.append(action_id)
+            return action_id
+        else:
+            # フォールバック：利用可能な行動から選択
+            logger.warning(
+                f"Model predicted unavailable action {action_id}, "
+                f"available: {available}"
+            )
+            return random.choice(available)
+
+    def _create_mcts_context(
+        self, battle: Battle, player: int
+    ) -> BattleContext:
+        """MCTS用のコンテキストを作成"""
+        local_ctx = self._get_or_create_context(battle, player)
+
+        # LocalBattleContextからBattleContext（MCTS用）へ変換
+        mcts_ctx = BattleContext(
+            my_team=local_ctx.my_team,
+            opp_team=local_ctx.opp_team,
+            selection=local_ctx.selection,
+            lead_idx=local_ctx.lead_idx,
+            turns=local_ctx.turns.copy(),
+            actions=local_ctx.actions.copy(),
+            opp_observation=local_ctx.opp_observation,
+            prev_opp_active_name=local_ctx.prev_opp_active_name,
+        )
+        return mcts_ctx
+
+    def _get_action_name(self, battle: Battle, player: int, action: int) -> str:
+        """行動IDから名前を取得"""
+        pokemon = battle.pokemon[player]
+        if pokemon is None:
+            return f"Action_{action}"
+
+        if 0 <= action <= 3:
+            if action < len(pokemon.moves):
+                return pokemon.moves[action]
+            return f"Move_{action}"
+        elif 10 <= action <= 13:
+            move_idx = action - 10
+            if move_idx < len(pokemon.moves):
+                return f"Tera+{pokemon.moves[move_idx]}"
+            return f"Tera+Move_{move_idx}"
+        elif 20 <= action <= 25:
+            idx = action - 20
+            if idx < len(battle.selected[player]):
+                p = battle.selected[player][idx]
+                if p:
+                    return f"Switch→{p.name}"
+            return f"Switch_{idx}"
+        elif action == Battle.STRUGGLE:
+            return "Struggle"
+        return f"Action_{action}"
 
     def get_change_command(self, battle: Battle, player: int) -> int:
         """
@@ -267,10 +412,25 @@ class DecisionTransformerAI:
             return available[0]
 
         try:
-            # 交代先をモデルで選択
+            # MCTSを使用する場合（交代も先読み）
+            if self.mcts is not None:
+                mcts_context = self._create_mcts_context(battle, player)
+                policy, _, _ = self.mcts.search(
+                    battle=battle,
+                    player=player,
+                    context=mcts_context,
+                    target_return=self.config.target_return,
+                )
+                if policy:
+                    # 交代は常に決定的に選択
+                    action_id = max(policy.items(), key=lambda x: x[1])[0]
+                    if action_id in available:
+                        return action_id
+
+            # 通常のモデル推論
             context = self._get_or_create_context(battle, player)
             action_mask = self._create_action_mask(available)
-            turn_state = self._extract_turn_state(battle, player)
+            turn_state = self._extract_turn_state(battle, player, context)
             encoded = self._encode_context(context, turn_state)
 
             action_id, _ = self.model.get_action(
@@ -306,6 +466,7 @@ class DecisionTransformerAI:
             "policy": {},
             "value": 0.5,
             "action_names": {},
+            "mcts_analysis": {},  # MCTS使用時の詳細分析
         }
 
         try:
@@ -314,23 +475,37 @@ class DecisionTransformerAI:
             if not available or available == [Battle.NO_COMMAND]:
                 return analysis
 
-            # コンテキストを取得
+            # MCTSを使用する場合
+            if self.mcts is not None:
+                mcts_context = self._create_mcts_context(battle, player)
+                policy, value, mcts_detail = self.mcts.search(
+                    battle=battle,
+                    player=player,
+                    context=mcts_context,
+                    target_return=self.config.target_return,
+                )
+                action_names = self._get_action_names(battle, player, policy.keys())
+
+                analysis = {
+                    "available": True,
+                    "policy": policy,
+                    "value": value,
+                    "action_names": action_names,
+                    "mcts_analysis": mcts_detail,
+                    "search_method": "mcts",
+                }
+                return analysis
+
+            # 通常のDT推論
             context = self._get_or_create_context(battle, player)
-
-            # 行動マスクを作成
             action_mask = self._create_action_mask(available)
-
-            # バトル状態をエンコード
-            turn_state = self._extract_turn_state(battle, player)
+            turn_state = self._extract_turn_state(battle, player, context)
             encoded = self._encode_context(context, turn_state)
 
-            # ポリシーと価値を取得
             policy, value = self.model.get_policy_and_value(
                 context=encoded,
                 action_mask=action_mask,
             )
-
-            # 行動名のマッピング
             action_names = self._get_action_names(battle, player, policy.keys())
 
             analysis = {
@@ -338,6 +513,8 @@ class DecisionTransformerAI:
                 "policy": policy,
                 "value": value,
                 "action_names": action_names,
+                "mcts_analysis": {},
+                "search_method": "direct",
             }
 
         except Exception as e:
@@ -347,17 +524,59 @@ class DecisionTransformerAI:
 
     def _get_or_create_context(
         self, battle: Battle, player: int
-    ) -> BattleContext:
+    ) -> LocalBattleContext:
         """コンテキストを取得または作成"""
+        opponent = 1 - player
+
         if player not in self.contexts:
             # 新規作成
             my_team = [p.name for p in battle.selected[player] if p]
-            opp_team = [p.name for p in battle.selected[1 - player] if p]
-            self.contexts[player] = BattleContext(
+            opp_team = [p.name for p in battle.selected[opponent] if p]
+
+            # 観測トラッカーを初期化
+            opp_observation = ObservationTracker()
+
+            # 現在場に出ている相手ポケモンを記録
+            opp_active = battle.pokemon[opponent]
+            prev_opp_active_name = ""
+            if opp_active:
+                opp_observation.reveal_pokemon(opp_active.name)
+                self._detect_initial_ability(opp_active, opp_observation)
+                prev_opp_active_name = opp_active.name
+
+            self.contexts[player] = LocalBattleContext(
                 my_team=my_team,
                 opp_team=opp_team,
+                opp_observation=opp_observation,
+                prev_opp_active_name=prev_opp_active_name,
             )
+        else:
+            # 既存のコンテキストを更新
+            context = self.contexts[player]
+            opp_active = battle.pokemon[opponent]
+
+            # 相手の場のポケモンが変わったかチェック
+            if opp_active and opp_active.name != context.prev_opp_active_name:
+                context.opp_observation.reveal_pokemon(opp_active.name)
+                self._detect_initial_ability(opp_active, context.opp_observation)
+                context.prev_opp_active_name = opp_active.name
+
         return self.contexts[player]
+
+    def _detect_initial_ability(
+        self, pokemon: Pokemon, tracker: ObservationTracker
+    ) -> None:
+        """場に出た時に発動する特性を検出"""
+        instant_abilities = {
+            "いかく", "ひでり", "あめふらし", "すなおこし", "ゆきふらし",
+            "エレキメイカー", "グラスメイカー", "ミストメイカー", "サイコメイカー",
+            "おみとおし", "かたやぶり", "ダウンロード", "トレース", "よちむ",
+            "こだいかっせい", "クォークチャージ", "ひひいろのこどう",
+            "わざわいのうつわ", "わざわいのつるぎ", "わざわいのおふだ", "わざわいのたま",
+        }
+        ability = pokemon.ability or ""
+        if ability in instant_abilities:
+            tracker.reveal_ability(pokemon.name, ability)
 
     def _create_action_mask(self, available: list[int]) -> torch.Tensor:
         """行動マスクを作成"""
@@ -367,9 +586,11 @@ class DecisionTransformerAI:
                 mask[cmd] = 1.0
         return mask
 
-    def _extract_turn_state(self, battle: Battle, player: int) -> TurnState:
-        """バトルからTurnStateを抽出（data_generatorの関数を再利用）"""
-        return _get_turn_state(battle, player)
+    def _extract_turn_state(
+        self, battle: Battle, player: int, context: BattleContext
+    ) -> TurnState:
+        """バトルからTurnStateを抽出（観測情報のみ）"""
+        return _get_turn_state(battle, player, context.opp_observation)
 
     def _encode_context(
         self, context: BattleContext, current_turn: TurnState
@@ -491,6 +712,9 @@ def load_decision_transformer_ai(
     target_return: float = 1.0,
     temperature: float = 0.5,
     deterministic: bool = True,
+    use_mcts: bool = False,
+    mcts_simulations: int = 200,
+    mcts_max_depth: int = 10,
 ) -> DecisionTransformerAI:
     """
     Decision Transformer AIをロード（キャッシュ付き）
@@ -501,11 +725,17 @@ def load_decision_transformer_ai(
         target_return: 目標リターン（1.0 = 勝利を目指す）
         temperature: サンプリング温度
         deterministic: 決定的行動選択
+        use_mcts: MCTSを使用するか（数ターン先読み）
+        mcts_simulations: MCTSシミュレーション回数
+        mcts_max_depth: MCTS最大探索深度
 
     Returns:
         DecisionTransformerAI インスタンス
     """
-    cache_key = f"{checkpoint_path}:{device}:{target_return}:{temperature}:{deterministic}"
+    cache_key = (
+        f"{checkpoint_path}:{device}:{target_return}:{temperature}:"
+        f"{deterministic}:{use_mcts}:{mcts_simulations}:{mcts_max_depth}"
+    )
 
     if cache_key not in _dt_ai_cache:
         config = DecisionTransformerAIConfig(
@@ -514,6 +744,9 @@ def load_decision_transformer_ai(
             target_return=target_return,
             temperature=temperature,
             deterministic=deterministic,
+            use_mcts=use_mcts,
+            mcts_simulations=mcts_simulations,
+            mcts_max_depth=mcts_max_depth,
         )
         _dt_ai_cache[cache_key] = DecisionTransformerAI(config)
 

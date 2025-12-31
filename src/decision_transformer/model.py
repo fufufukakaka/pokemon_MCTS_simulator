@@ -272,18 +272,20 @@ class PokemonBattleTransformer(nn.Module):
             (selected_indices, lead_index): 選出3匹と先発インデックス
         """
         self.eval()
+        device = next(self.parameters()).device
+
         with torch.no_grad():
             # チームプレビューをエンコード
             encoded = tokenizer.encode_team_preview(my_team, opp_team, rtg=target_return)
 
-            # バッチ次元を追加
-            input_ids = encoded["input_ids"].unsqueeze(0)
-            position_ids = encoded["position_ids"].unsqueeze(0)
-            timestep_ids = encoded["timestep_ids"].unsqueeze(0)
-            segment_ids = encoded["segment_ids"].unsqueeze(0)
-            rtg_values = encoded["rtg_values"].unsqueeze(0)
-            attention_mask = encoded["attention_mask"].unsqueeze(0)
-            team_token_positions = encoded["team_token_positions"].unsqueeze(0)
+            # バッチ次元を追加してデバイスに移動
+            input_ids = encoded["input_ids"].unsqueeze(0).to(device)
+            position_ids = encoded["position_ids"].unsqueeze(0).to(device)
+            timestep_ids = encoded["timestep_ids"].unsqueeze(0).to(device)
+            segment_ids = encoded["segment_ids"].unsqueeze(0).to(device)
+            rtg_values = encoded["rtg_values"].unsqueeze(0).to(device)
+            attention_mask = encoded["attention_mask"].unsqueeze(0).to(device)
+            team_token_positions = encoded["team_token_positions"].unsqueeze(0).to(device)
 
             # Forward
             outputs = self.forward(
@@ -325,19 +327,21 @@ class PokemonBattleTransformer(nn.Module):
             (action_id, win_probability)
         """
         self.eval()
+        device = next(self.parameters()).device
+
         with torch.no_grad():
-            # バッチ次元を追加
-            input_ids = context["input_ids"].unsqueeze(0)
-            position_ids = context["position_ids"].unsqueeze(0)
-            timestep_ids = context["timestep_ids"].unsqueeze(0)
-            segment_ids = context["segment_ids"].unsqueeze(0)
-            rtg_values = context["rtg_values"].unsqueeze(0)
-            attention_mask = context["attention_mask"].unsqueeze(0)
-            action_mask_batch = action_mask.unsqueeze(0)
+            # バッチ次元を追加してデバイスに移動
+            input_ids = context["input_ids"].unsqueeze(0).to(device)
+            position_ids = context["position_ids"].unsqueeze(0).to(device)
+            timestep_ids = context["timestep_ids"].unsqueeze(0).to(device)
+            segment_ids = context["segment_ids"].unsqueeze(0).to(device)
+            rtg_values = context["rtg_values"].unsqueeze(0).to(device)
+            attention_mask = context["attention_mask"].unsqueeze(0).to(device)
+            action_mask_batch = action_mask.unsqueeze(0).to(device)
 
             state_features = None
             if "state_features" in context:
-                state_features = context["state_features"].unsqueeze(0)
+                state_features = context["state_features"].unsqueeze(0).to(device)
 
             # Forward
             outputs = self.forward(
@@ -382,19 +386,21 @@ class PokemonBattleTransformer(nn.Module):
             (policy_dict, win_probability)
         """
         self.eval()
+        device = next(self.parameters()).device
+
         with torch.no_grad():
-            # バッチ次元を追加
-            input_ids = context["input_ids"].unsqueeze(0)
-            position_ids = context["position_ids"].unsqueeze(0)
-            timestep_ids = context["timestep_ids"].unsqueeze(0)
-            segment_ids = context["segment_ids"].unsqueeze(0)
-            rtg_values = context["rtg_values"].unsqueeze(0)
-            attention_mask = context["attention_mask"].unsqueeze(0)
-            action_mask_batch = action_mask.unsqueeze(0)
+            # バッチ次元を追加してデバイスに移動
+            input_ids = context["input_ids"].unsqueeze(0).to(device)
+            position_ids = context["position_ids"].unsqueeze(0).to(device)
+            timestep_ids = context["timestep_ids"].unsqueeze(0).to(device)
+            segment_ids = context["segment_ids"].unsqueeze(0).to(device)
+            rtg_values = context["rtg_values"].unsqueeze(0).to(device)
+            attention_mask = context["attention_mask"].unsqueeze(0).to(device)
+            action_mask_batch = action_mask.unsqueeze(0).to(device)
 
             state_features = None
             if "state_features" in context:
-                state_features = context["state_features"].unsqueeze(0)
+                state_features = context["state_features"].unsqueeze(0).to(device)
 
             # Forward
             outputs = self.forward(
@@ -414,7 +420,7 @@ class PokemonBattleTransformer(nn.Module):
             probs = F.softmax(action_logits, dim=-1)
 
             policy = {}
-            for i, p in enumerate(probs.tolist()):
+            for i, p in enumerate(probs.cpu().tolist()):
                 if action_mask[i] > 0:
                     policy[i] = p
 

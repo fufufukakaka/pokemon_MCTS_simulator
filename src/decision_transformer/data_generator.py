@@ -22,6 +22,8 @@ from src.pokemon_battle_sim.pokemon import Pokemon
 from .dataset import (
     BattleTrajectory,
     FieldState,
+    ObservationTracker,
+    ObservedPokemonState,
     PokemonState,
     TurnRecord,
     TurnState,
@@ -122,6 +124,63 @@ def _pokemon_to_state(pokemon: Pokemon | None) -> PokemonState:
     )
 
 
+def _pokemon_to_observed_state(
+    pokemon: Pokemon | None,
+    tracker: ObservationTracker,
+) -> ObservedPokemonState:
+    """
+    Pokemon オブジェクトを ObservedPokemonState に変換
+
+    tracker に記録された観測情報のみを使用し、未観測情報は隠す。
+    """
+    if pokemon is None:
+        return ObservedPokemonState(name="", hp_ratio=0.0, is_revealed=False)
+
+    name = pokemon.name
+    obs = tracker.get_or_create(name)
+
+    # HP、状態異常、ランクは常に観測可能
+    max_hp = pokemon.status[0] if pokemon.status else 1
+    hp_ratio = pokemon.hp / max_hp if max_hp > 0 else 0.0
+
+    # pokemon.condition から状態変化を取得
+    condition = getattr(pokemon, "condition", {})
+
+    # 現在のタイプ（テラスタル時は変化）
+    current_types = list(pokemon.types) if pokemon.types else []
+
+    return ObservedPokemonState(
+        name=name,
+        hp_ratio=hp_ratio,
+        ailment=pokemon.ailment or "",
+        rank=list(pokemon.rank[:8]) if pokemon.rank else [0] * 8,
+        types=current_types,
+        terastallized=obs.terastallized,  # tracker から
+        tera_type=obs.tera_type,  # tracker から
+        # 観測済み情報（tracker から）
+        revealed_moves=list(obs.revealed_moves),
+        revealed_item=obs.revealed_item,
+        revealed_ability=obs.revealed_ability,
+        # 状態変化
+        confusion=condition.get("confusion", 0),
+        critical_rank=condition.get("critical", 0),
+        aquaring=bool(condition.get("aquaring", 0)),
+        healblock=condition.get("healblock", 0),
+        magnetrise=condition.get("magnetrise", 0),
+        noroi=bool(condition.get("noroi", 0)),
+        horobi=condition.get("horobi", 0),
+        yadorigi=bool(condition.get("yadorigi", 0)),
+        encore=condition.get("encore", 0),
+        chohatsu=condition.get("chohatsu", 0),
+        change_block=bool(condition.get("change_block", 0)),
+        meromero=bool(condition.get("meromero", 0)),
+        bind=int(condition.get("bind", 0)),
+        sub_hp=getattr(pokemon, "sub_hp", 0),
+        inaccessible=getattr(pokemon, "inaccessible", 0),
+        is_revealed=obs.is_revealed,
+    )
+
+
 def _battle_to_field_state(battle: Battle) -> FieldState:
     """Battle の condition を FieldState に変換"""
     condition = battle.condition
@@ -179,23 +238,43 @@ def _battle_to_field_state(battle: Battle) -> FieldState:
     )
 
 
-def _get_turn_state(battle: Battle, player: int) -> TurnState:
-    """現在のターン状態を取得"""
+def _get_turn_state(
+    battle: Battle,
+    player: int,
+    opp_tracker: ObservationTracker,
+) -> TurnState:
+    """現在のターン状態を取得（不完全情報を考慮）
+
+    Args:
+        battle: バトル状態
+        player: 視点のプレイヤー番号
+        opp_tracker: 相手の観測トラッカー
+
+    Returns:
+        TurnState（相手情報は観測済み情報のみ）
+    """
     opponent = 1 - player
 
-    # 自分のポケモン
+    # 自分のポケモン（完全情報）
     my_active = _pokemon_to_state(battle.pokemon[player])
     my_bench = []
     for p in battle.selected[player]:
         if p is not None and p is not battle.pokemon[player]:
             my_bench.append(_pokemon_to_state(p))
 
-    # 相手のポケモン
-    opp_active = _pokemon_to_state(battle.pokemon[opponent])
+    # 相手のポケモン（観測済み情報のみ）
+    opp_active = _pokemon_to_observed_state(battle.pokemon[opponent], opp_tracker)
     opp_bench = []
     for p in battle.selected[opponent]:
         if p is not None and p is not battle.pokemon[opponent]:
-            opp_bench.append(_pokemon_to_state(p))
+            # 場に出たことがあるポケモンのみベンチに表示
+            obs = opp_tracker.get_or_create(p.name)
+            if obs.is_revealed:
+                opp_bench.append(_pokemon_to_observed_state(p, opp_tracker))
+
+    # 未公開の相手ポケモン数
+    opp_unrevealed = 3 - len(opp_tracker.revealed_selection)
+    opp_unrevealed = max(0, opp_unrevealed)
 
     # フィールド
     field = _battle_to_field_state(battle)
@@ -210,7 +289,8 @@ def _get_turn_state(battle: Battle, player: int) -> TurnState:
         my_bench=my_bench,
         opp_active=opp_active,
         opp_bench=opp_bench,
-        field=field,
+        opp_unrevealed_count=opp_unrevealed,
+        field_state=field,
         available_actions=available_actions,
     )
 
@@ -383,21 +463,39 @@ class TrajectoryGenerator:
             self._create_pokemon(team1_data[i]) for i in selection1
         ]
 
+        # 観測トラッカーを初期化
+        # player0 は player1 の情報を追跡、player1 は player0 の情報を追跡
+        tracker0 = ObservationTracker()  # player0 視点（player1 を追跡）
+        tracker1 = ObservationTracker()  # player1 視点（player0 を追跡）
+
         # バトル開始
         battle.proceed(commands=[None, None])
+
+        # 初期の先発ポケモンを公開情報として記録
+        if battle.pokemon[0]:
+            tracker1.reveal_pokemon(battle.pokemon[0].name)
+            # 先発ポケモンの特性発動を検出（いかく、ひでり、あめふらし等）
+            self._detect_ability_reveal(battle.pokemon[0], tracker1)
+        if battle.pokemon[1]:
+            tracker0.reveal_pokemon(battle.pokemon[1].name)
+            self._detect_ability_reveal(battle.pokemon[1], tracker0)
 
         # ターン記録
         player0_turns = []
         player1_turns = []
+
+        # 行動前のポケモン状態を記録（技使用検出用）
+        prev_pokemon0 = battle.pokemon[0]
+        prev_pokemon1 = battle.pokemon[1]
 
         # バトルループ
         for turn in range(self.config.max_turns):
             if battle.winner() is not None:
                 break
 
-            # 各プレイヤーの状態を記録
-            state0 = _get_turn_state(battle, 0)
-            state1 = _get_turn_state(battle, 1)
+            # 各プレイヤーの状態を記録（観測情報のみ）
+            state0 = _get_turn_state(battle, 0, tracker0)
+            state1 = _get_turn_state(battle, 1, tracker1)
 
             # 行動を決定
             available0 = battle.available_commands(0, phase="battle")
@@ -425,12 +523,27 @@ class TrajectoryGenerator:
                 reward=0.0,
             ))
 
+            # 技使用を記録（行動前に記録）
+            self._record_move_usage(action0, prev_pokemon0, tracker1)
+            self._record_move_usage(action1, prev_pokemon1, tracker0)
+
+            # テラスタルを記録
+            self._record_terastallization(action0, prev_pokemon0, tracker1)
+            self._record_terastallization(action1, prev_pokemon1, tracker0)
+
             # バトルを進行
             try:
                 battle.proceed(commands=[action0, action1])
             except Exception as e:
                 logger.warning(f"Battle error: {e}")
                 break
+
+            # ターン後の情報更新
+            self._update_observations_after_turn(battle, tracker0, tracker1, prev_pokemon0, prev_pokemon1)
+
+            # 次のターン用に現在のポケモンを記録
+            prev_pokemon0 = battle.pokemon[0]
+            prev_pokemon1 = battle.pokemon[1]
 
             # 交代が必要な場合
             for player in [0, 1]:
@@ -440,6 +553,16 @@ class TrajectoryGenerator:
                         change_cmd = random.choice(change_available)
                         battle.reserved_change_commands[player].append(change_cmd)
                         battle.proceed()
+
+                        # 交代後のポケモンを公開情報として記録
+                        if player == 0 and battle.pokemon[0]:
+                            tracker1.reveal_pokemon(battle.pokemon[0].name)
+                            self._detect_ability_reveal(battle.pokemon[0], tracker1)
+                            prev_pokemon0 = battle.pokemon[0]
+                        elif player == 1 and battle.pokemon[1]:
+                            tracker0.reveal_pokemon(battle.pokemon[1].name)
+                            self._detect_ability_reveal(battle.pokemon[1], tracker0)
+                            prev_pokemon1 = battle.pokemon[1]
 
         # 勝者を決定
         winner = battle.winner()
@@ -462,9 +585,145 @@ class TrajectoryGenerator:
             player1_selection=selection1,
             player0_turns=player0_turns,
             player1_turns=player1_turns,
+            player0_observations=tracker0,
+            player1_observations=tracker1,
             winner=winner,
             total_turns=battle.turn,
         )
+
+    def _record_move_usage(
+        self,
+        action: int,
+        pokemon: Pokemon | None,
+        tracker: ObservationTracker,
+    ) -> None:
+        """技使用を観測トラッカーに記録"""
+        if pokemon is None:
+            return
+
+        # 技アクション (0-3) またはテラスタル技 (10-13)
+        move_idx = -1
+        if 0 <= action <= 3:
+            move_idx = action
+        elif 10 <= action <= 13:
+            move_idx = action - 10
+
+        if move_idx >= 0 and move_idx < len(pokemon.moves):
+            move_name = pokemon.moves[move_idx]
+            tracker.reveal_move(pokemon.name, move_name)
+
+    def _record_terastallization(
+        self,
+        action: int,
+        pokemon: Pokemon | None,
+        tracker: ObservationTracker,
+    ) -> None:
+        """テラスタルを観測トラッカーに記録"""
+        if pokemon is None:
+            return
+
+        # テラスタル技 (10-13)
+        if 10 <= action <= 13:
+            tera_type = getattr(pokemon, "Ttype", "")
+            if tera_type:
+                tracker.reveal_tera(pokemon.name, tera_type)
+
+    def _detect_ability_reveal(
+        self,
+        pokemon: Pokemon | None,
+        tracker: ObservationTracker,
+    ) -> None:
+        """場に出た時に発動する特性を検出"""
+        if pokemon is None:
+            return
+
+        # 場に出た時に即座に発動する特性
+        instant_abilities = {
+            "いかく", "ひでり", "あめふらし", "すなおこし", "ゆきふらし",
+            "エレキメイカー", "グラスメイカー", "ミストメイカー", "サイコメイカー",
+            "おみとおし", "かたやぶり", "ダウンロード", "トレース", "よちむ",
+            "こだいかっせい", "クォークチャージ", "ひひいろのこどう",
+            "わざわいのうつわ", "わざわいのつるぎ", "わざわいのおふだ", "わざわいのたま",
+        }
+
+        ability = pokemon.ability or ""
+        if ability in instant_abilities:
+            tracker.reveal_ability(pokemon.name, ability)
+
+    def _update_observations_after_turn(
+        self,
+        battle: Battle,
+        tracker0: ObservationTracker,
+        tracker1: ObservationTracker,
+        prev_pokemon0: Pokemon | None,
+        prev_pokemon1: Pokemon | None,
+    ) -> None:
+        """ターン終了後の観測更新（持ち物・特性の発動検出）"""
+        # 持ち物の発動を検出
+        self._detect_item_reveal(battle.pokemon[0], prev_pokemon0, tracker1)
+        self._detect_item_reveal(battle.pokemon[1], prev_pokemon1, tracker0)
+
+        # ターン終了時に発動する特性を検出
+        self._detect_end_turn_ability(battle.pokemon[0], tracker1)
+        self._detect_end_turn_ability(battle.pokemon[1], tracker0)
+
+        # 新しいポケモンが場に出ていれば記録
+        if battle.pokemon[0] and prev_pokemon0 and battle.pokemon[0].name != prev_pokemon0.name:
+            tracker1.reveal_pokemon(battle.pokemon[0].name)
+            self._detect_ability_reveal(battle.pokemon[0], tracker1)
+        if battle.pokemon[1] and prev_pokemon1 and battle.pokemon[1].name != prev_pokemon1.name:
+            tracker0.reveal_pokemon(battle.pokemon[1].name)
+            self._detect_ability_reveal(battle.pokemon[1], tracker0)
+
+    def _detect_item_reveal(
+        self,
+        pokemon: Pokemon | None,
+        prev_pokemon: Pokemon | None,
+        tracker: ObservationTracker,
+    ) -> None:
+        """持ち物の発動を検出"""
+        if pokemon is None:
+            return
+
+        # 持ち物が消費された場合
+        prev_item = getattr(prev_pokemon, "item", "") if prev_pokemon and prev_pokemon.name == pokemon.name else ""
+        current_item = pokemon.item or ""
+
+        # 消費されて判明
+        if prev_item and not current_item:
+            tracker.reveal_item(pokemon.name, prev_item)
+
+        # 特定の持ち物は効果発動時に判明
+        detectable_items = {
+            "きあいのタスキ", "たべのこし", "くろいヘドロ", "いのちのたま",
+            "ゴツゴツメット", "とつげきチョッキ", "ブーストエナジー", "ふうせん",
+            "オボンのみ", "ラムのみ", "カゴのみ", "ヤチェのみ", "シュカのみ",
+            "ハバンのみ", "ホズのみ", "リンドのみ", "ソクノのみ", "ヨプのみ",
+            "こだわりハチマキ", "こだわりメガネ", "こだわりスカーフ",
+        }
+        if current_item in detectable_items:
+            # 持ち物が変化したか、HP変動があった場合に発動とみなす
+            # （簡略化：持ち物があれば記録）
+            pass  # 実際の発動検出は複雑なのでスキップ
+
+    def _detect_end_turn_ability(
+        self,
+        pokemon: Pokemon | None,
+        tracker: ObservationTracker,
+    ) -> None:
+        """ターン終了時に発動する特性を検出"""
+        if pokemon is None:
+            return
+
+        end_turn_abilities = {
+            "かそく", "ポイズンヒール", "ムラっけ", "サンパワー",
+            "あめうけざら", "かんそうはだ", "スロースタート",
+        }
+
+        ability = pokemon.ability or ""
+        if ability in end_turn_abilities:
+            # 実際の発動確認は複雑なのでスキップ（モデルが学習で吸収）
+            pass
 
     def _action_to_name(self, battle: Battle, player: int, action: int) -> str:
         """行動IDを名前に変換"""
