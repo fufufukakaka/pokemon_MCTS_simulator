@@ -287,7 +287,7 @@ class PokemonBattleTransformer(nn.Module):
             attention_mask = encoded["attention_mask"].unsqueeze(0).to(device)
             team_token_positions = encoded["team_token_positions"].unsqueeze(0).to(device)
 
-            # Forward
+            # Forward（hidden_statesを取得するために return_hidden_states=True）
             outputs = self.forward(
                 input_ids=input_ids,
                 position_ids=position_ids,
@@ -297,11 +297,12 @@ class PokemonBattleTransformer(nn.Module):
                 attention_mask=attention_mask,
                 team_token_positions=team_token_positions,
                 use_causal_mask=True,
+                return_hidden_states=True,
             )
 
             # 選出を予測
             return self.selection_head.predict(
-                outputs.get("hidden_states", None) or self._get_hidden_for_selection(outputs),
+                outputs["hidden_states"],
                 team_token_positions,
                 deterministic=deterministic,
                 temperature=temperature,

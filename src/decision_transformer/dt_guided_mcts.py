@@ -24,7 +24,6 @@ from src.pokemon_battle_sim.battle import Battle
 from src.pokemon_battle_sim.pokemon import Pokemon
 
 from .config import PokemonBattleTransformerConfig
-from .data_generator import _get_turn_state
 from .dataset import ObservationTracker, TurnState
 
 if TYPE_CHECKING:
@@ -354,11 +353,15 @@ class DTGuidedMCTS:
         # 観測情報を更新
         self._update_observation(state, player, context)
 
-        # TurnStateを作成
-        turn_state = _get_turn_state(state, player, context.opp_observation)
-
-        # エンコード
-        encoded = self._encode_context(context, turn_state, target_return)
+        # エンコード（Battle オブジェクトを直接使用）
+        turn_number = len(context.actions)
+        encoded = self._encode_context_from_battle(
+            battle=state,
+            player=player,
+            context=context,
+            turn=turn_number,
+            target_return=target_return,
+        )
 
         # 行動マスクを作成
         action_mask = torch.zeros(self.model.config.num_action_outputs)
@@ -424,11 +427,15 @@ class DTGuidedMCTS:
         # 観測情報を更新
         self._update_observation(state, player, context)
 
-        # TurnStateを作成
-        turn_state = _get_turn_state(state, player, context.opp_observation)
-
-        # エンコード
-        encoded = self._encode_context(context, turn_state, target_return)
+        # エンコード（Battle オブジェクトを直接使用）
+        turn_number = len(context.actions)
+        encoded = self._encode_context_from_battle(
+            battle=state,
+            player=player,
+            context=context,
+            turn=turn_number,
+            target_return=target_return,
+        )
 
         with torch.no_grad():
             # バッチ次元を追加
@@ -623,39 +630,47 @@ class DTGuidedMCTS:
         if ability in instant_abilities:
             tracker.reveal_ability(pokemon.name, ability)
 
-    def _encode_context(
+    def _encode_context_from_battle(
         self,
+        battle: Battle,
+        player: int,
         context: BattleContext,
-        current_turn: TurnState,
+        turn: int,
         target_return: float,
     ) -> dict[str, torch.Tensor]:
-        """コンテキストをトークン化"""
-        # チームプレビュー
+        """
+        Battle オブジェクトから直接コンテキストをエンコード
+
+        tokenizer の正しいインターフェースを使用:
+        - encode_team_preview(my_team, opp_team, rtg)
+        - encode_selection(selected_indices, lead_index, context, rtg)
+        - encode_turn_state(battle, player, turn, rtg, context)
+        """
+        # 1. チームプレビュー
         encoded = self.tokenizer.encode_team_preview(
             my_team=context.my_team,
             opp_team=context.opp_team,
             rtg=target_return,
         )
 
-        # 選出があれば追加
+        # 2. 選出があれば追加
         if context.selection:
-            selection_encoded = self.tokenizer.encode_selection(
-                selection=context.selection,
-                lead_idx=context.lead_idx,
+            encoded = self.tokenizer.encode_selection(
+                selected_indices=context.selection,
+                lead_index=context.lead_idx,
+                context=encoded,
+                rtg=target_return,
             )
-            encoded = self._concat_encoded(encoded, selection_encoded)
 
-        # 過去のターン履歴を追加
-        for turn_state, action in zip(context.turns, context.actions):
-            turn_encoded = self.tokenizer.encode_turn_state(turn_state)
-            encoded = self._concat_encoded(encoded, turn_encoded)
-
-            action_encoded = self.tokenizer.encode_action(action)
-            encoded = self._concat_encoded(encoded, action_encoded)
-
-        # 現在のターン状態を追加
-        current_encoded = self.tokenizer.encode_turn_state(current_turn)
-        encoded = self._concat_encoded(encoded, current_encoded)
+        # 3. 現在のターン状態を追加
+        # (過去の履歴はバトル状態に暗黙的に含まれている)
+        encoded = self.tokenizer.encode_turn_state(
+            battle=battle,
+            player=player,
+            turn=turn,
+            rtg=target_return,
+            context=encoded,
+        )
 
         return encoded
 
