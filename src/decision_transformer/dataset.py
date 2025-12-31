@@ -436,6 +436,9 @@ class BattleTrajectoryDataset(Dataset):
         # ラベル
         current_turn = turns[turn_idx] if turn_idx < len(turns) else None
         action_label = current_turn.action if current_turn else 0
+        # SKIP (-1) などの無効なアクションは 0 に置き換え
+        if action_label < 0 or action_label >= self.config.num_action_outputs:
+            action_label = 0
         value_label = 1.0 if traj.winner == player else 0.0
 
         # 選出ラベル

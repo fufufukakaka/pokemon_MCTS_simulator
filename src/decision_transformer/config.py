@@ -66,8 +66,8 @@ class PokemonBattleTransformerConfig:
     total_vocab_size: int = 920
 
     # === 出力設定 ===
-    # 行動コマンド: MOVE 0-3, TERA+MOVE 10-13, SWITCH 20-25, STRUGGLE 30
-    num_action_outputs: int = 35  # 行動の種類数
+    # 行動コマンド: MOVE 0-3, TERA+MOVE 10-13, SWITCH 20-25, STRUGGLE 30, NO_COMMAND 40
+    num_action_outputs: int = 41  # 行動の種類数 (0-40)
     num_selection_labels: int = 3  # 選出ラベル (NOT_SELECTED=0, SELECTED=1, LEAD=2)
 
     # === 状態特徴量の次元 ===
