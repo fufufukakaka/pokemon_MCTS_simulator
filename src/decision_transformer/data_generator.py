@@ -561,7 +561,7 @@ class TrajectoryGenerator:
         team1_names = [p["name"] for p in team1_data]
 
         # 選出を決定
-        if isinstance(self.policy, EpsilonGreedyPolicy):
+        if isinstance(self.policy, (EpsilonGreedyPolicy, MCTSPolicy)):
             selection0 = self.policy.get_selection(team0_names, team1_names)
             selection1 = self.policy.get_selection(team1_names, team0_names)
         else:
