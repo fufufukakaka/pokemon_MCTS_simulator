@@ -34,6 +34,31 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+def _parallel_game_worker(args: tuple) -> dict | None:
+    """
+    並列ゲーム生成のワーカー関数（モジュールレベルで定義してpickle可能にする）
+
+    Args:
+        args: (game_id, trainer_data, config_dict) のタプル
+
+    Returns:
+        BattleTrajectory の辞書表現、または失敗時は None
+    """
+    game_id, trainer_data, config_dict = args
+    try:
+        Pokemon.init()
+        config = GeneratorConfig(**config_dict) if config_dict else GeneratorConfig()
+        gen = TrajectoryGenerator(
+            trainer_data=trainer_data,
+            config=config,
+        )
+        traj = gen.generate_trajectory(game_id=game_id)
+        return traj.to_dict()
+    except Exception as e:
+        logger.error(f"Worker failed for {game_id}: {e}")
+        return None
+
+
 @dataclass
 class GeneratorConfig:
     """データ生成の設定"""
@@ -502,30 +527,35 @@ class TrajectoryGenerator:
         """並列でゲームを生成（ランダムポリシーのみ）"""
         trajectories = []
 
-        # ワーカー関数
-        def worker(game_id: str, trainer_data: list) -> dict:
-            Pokemon.init()
-            gen = TrajectoryGenerator(
-                trainer_data=trainer_data,
-                config=self.config,
-            )
-            traj = gen.generate_trajectory(game_id=game_id)
-            return traj.to_dict()
+        # 設定を辞書化（pickle可能にするため）
+        config_dict = {
+            "epsilon": self.config.epsilon,
+            "temperature": self.config.temperature,
+            "max_turns": self.config.max_turns,
+            "num_workers": 1,  # ワーカー内では並列化しない
+        }
+
+        # 引数リストを作成
+        args_list = [
+            (f"game_{i}", self.trainer_data, config_dict)
+            for i in range(num_games)
+        ]
 
         with ProcessPoolExecutor(max_workers=num_workers) as executor:
             futures = {
-                executor.submit(worker, f"game_{i}", self.trainer_data): i
-                for i in range(num_games)
+                executor.submit(_parallel_game_worker, args): i
+                for i, args in enumerate(args_list)
             }
 
             for future in as_completed(futures):
                 try:
                     traj_dict = future.result()
-                    traj = BattleTrajectory.from_dict(traj_dict)
-                    trajectories.append(traj)
+                    if traj_dict is not None:
+                        traj = BattleTrajectory.from_dict(traj_dict)
+                        trajectories.append(traj)
 
-                    if len(trajectories) % 10 == 0:
-                        logger.info(f"Generated {len(trajectories)}/{num_games} games")
+                        if len(trajectories) % 10 == 0:
+                            logger.info(f"Generated {len(trajectories)}/{num_games} games")
                 except Exception as e:
                     logger.error(f"Game generation failed: {e}")
 

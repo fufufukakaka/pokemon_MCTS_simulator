@@ -237,6 +237,11 @@ class DecisionTransformerTrainer:
         Returns:
             各エポックの統計リスト
         """
+        # 空の軌跡リストの場合はスキップ
+        if not trajectories:
+            logger.warning("No trajectories to train on, skipping training")
+            return []
+
         num_epochs = num_epochs or self.config.training_epochs_per_iteration
 
         # Dataset と DataLoader を作成
