@@ -320,6 +320,10 @@ class BattleSequenceTokenizer:
         rtg_values.append(rtg)
         pos += 1
 
+        # state_features: チームプレビュー段階ではすべてゼロ
+        state_dim = config.pokemon_state_dim + config.field_state_dim
+        state_features = [[0.0] * state_dim for _ in range(len(tokens))]
+
         return {
             "input_ids": torch.tensor(tokens, dtype=torch.long),
             "position_ids": torch.tensor(positions, dtype=torch.long),
@@ -328,6 +332,7 @@ class BattleSequenceTokenizer:
             "rtg_values": torch.tensor(rtg_values, dtype=torch.float),
             "attention_mask": torch.ones(len(tokens), dtype=torch.long),
             "team_token_positions": torch.tensor(my_team_positions, dtype=torch.long),
+            "state_features": torch.tensor(state_features, dtype=torch.float),
         }
 
     def encode_selection(
@@ -352,6 +357,13 @@ class BattleSequenceTokenizer:
         segments = context["segment_ids"].tolist()
         rtg_values_list = context["rtg_values"].tolist()
 
+        # state_features も引き継ぐ
+        state_dim = config.pokemon_state_dim + config.field_state_dim
+        if "state_features" in context:
+            state_features_list = context["state_features"].tolist()
+        else:
+            state_features_list = [[0.0] * state_dim for _ in range(len(tokens))]
+
         pos = len(tokens)
         turn = 0
 
@@ -361,6 +373,7 @@ class BattleSequenceTokenizer:
         timesteps.append(turn)
         segments.append(config.segment_selection)
         rtg_values_list.append(rtg)
+        state_features_list.append([0.0] * state_dim)
         pos += 1
 
         # 選出した Pokemon（先発を最初に）
@@ -378,6 +391,7 @@ class BattleSequenceTokenizer:
             timesteps.append(turn)
             segments.append(config.segment_selection)
             rtg_values_list.append(rtg)
+            state_features_list.append([0.0] * state_dim)
             pos += 1
 
         # [SEP]
@@ -386,6 +400,7 @@ class BattleSequenceTokenizer:
         timesteps.append(turn)
         segments.append(config.segment_selection)
         rtg_values_list.append(rtg)
+        state_features_list.append([0.0] * state_dim)
         pos += 1
 
         # 選出ラベルを作成
@@ -405,6 +420,7 @@ class BattleSequenceTokenizer:
             "attention_mask": torch.ones(len(tokens), dtype=torch.long),
             "team_token_positions": context["team_token_positions"],
             "selection_labels": selection_labels,
+            "state_features": torch.tensor(state_features_list, dtype=torch.float),
         }
 
         return result
