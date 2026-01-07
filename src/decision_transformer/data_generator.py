@@ -53,14 +53,50 @@ def _parallel_game_worker(args: tuple) -> dict | None:
         Pokemon.init(usage_data_path=usage_data_path, verbose=False)
 
         config = GeneratorConfig(**config_dict) if config_dict else GeneratorConfig()
+
+        # モデルとトークナイザをロード（MCTS使用時）
+        model = None
+        tokenizer = None
+        if config.use_mcts and config.model_checkpoint_path:
+            from pathlib import Path
+
+            from .model import load_model
+            from .tokenizer import BattleSequenceTokenizer
+
+            checkpoint_path = Path(config.model_checkpoint_path)
+            if checkpoint_path.exists():
+                # 並列ワーカーでは GPU を使わない（メモリ共有の問題を避ける）
+                worker_device = "cpu"
+                model = load_model(
+                    checkpoint_path=str(checkpoint_path),
+                    device=worker_device,
+                )
+
+                tokenizer_path = checkpoint_path / "tokenizer"
+                if tokenizer_path.exists():
+                    tokenizer = BattleSequenceTokenizer.load(tokenizer_path, model.config)
+                else:
+                    tokenizer = BattleSequenceTokenizer(model.config)
+
+                # ワーカー用にdeviceをCPUに設定
+                config.device = worker_device
+
+                logger.debug(f"Worker {game_id}: Loaded model from {checkpoint_path}")
+            else:
+                logger.warning(f"Worker {game_id}: Checkpoint not found at {checkpoint_path}, using RandomPolicy")
+
         gen = TrajectoryGenerator(
             trainer_data=trainer_data,
             config=config,
+            model=model,
+            tokenizer=tokenizer,
         )
         traj = gen.generate_trajectory(game_id=game_id)
         return traj.to_dict()
     except Exception as e:
         logger.error(f"Worker failed for {game_id}: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 
@@ -87,6 +123,10 @@ class GeneratorConfig:
     mcts_max_depth: int = 6  # 最大探索深度
     mcts_c_puct: float = 1.5  # 探索バランスパラメータ
     device: str = "cpu"  # デバイス
+
+    # 並列ワーカー用: モデルチェックポイントパス
+    # 並列処理でMCTSを使う場合、各ワーカーがこのパスからモデルをロードする
+    model_checkpoint_path: str | None = None
 
 
 def _pokemon_to_state(pokemon: Pokemon | None) -> PokemonState:
@@ -916,7 +956,7 @@ class TrajectoryGenerator:
         num_games: int,
         num_workers: int,
     ) -> list[BattleTrajectory]:
-        """並列でゲームを生成（ランダムポリシーのみ）"""
+        """並列でゲームを生成（MCTSも対応）"""
         trajectories = []
 
         # 設定を辞書化（pickle可能にするため）
@@ -926,7 +966,21 @@ class TrajectoryGenerator:
             "max_turns": self.config.max_turns,
             "num_workers": 1,  # ワーカー内では並列化しない
             "usage_data_path": self.config.usage_data_path,
+            # MCTS設定
+            "use_mcts": self.config.use_mcts,
+            "mcts_simulations": self.config.mcts_simulations,
+            "mcts_max_depth": self.config.mcts_max_depth,
+            "mcts_c_puct": self.config.mcts_c_puct,
+            "device": self.config.device,
+            "model_checkpoint_path": self.config.model_checkpoint_path,
         }
+
+        if self.config.use_mcts and self.config.model_checkpoint_path:
+            logger.info(
+                f"Parallel MCTS enabled: {num_workers} workers, "
+                f"{self.config.mcts_simulations} sims, "
+                f"checkpoint={self.config.model_checkpoint_path}"
+            )
 
         # 引数リストを作成
         args_list = [

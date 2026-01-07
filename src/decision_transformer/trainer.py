@@ -277,6 +277,7 @@ class DecisionTransformerTrainer:
         self,
         trainer_data: list[dict[str, Any]],
         iteration: int,
+        output_dir: Path | None = None,
     ) -> dict[str, Any]:
         """
         1イテレーションの自己対戦と学習
@@ -284,6 +285,7 @@ class DecisionTransformerTrainer:
         Args:
             trainer_data: トレーナーデータ
             iteration: イテレーション番号
+            output_dir: 出力ディレクトリ（並列MCTS用の一時保存先）
 
         Returns:
             イテレーションの統計
@@ -297,6 +299,19 @@ class DecisionTransformerTrainer:
             f"epsilon={epsilon:.3f}, temperature={temperature:.3f}"
         )
 
+        # 並列MCTS用にモデルを一時保存（iteration > 0 かつ num_workers > 1 の場合）
+        temp_checkpoint_path = None
+        if (
+            iteration > 0
+            and self.config.num_workers > 1
+            and self.config.use_mcts
+        ):
+            # 一時チェックポイントを保存
+            temp_checkpoint_path = output_dir / "_temp_checkpoint" if output_dir else Path("./_temp_checkpoint")
+            temp_checkpoint_path.mkdir(parents=True, exist_ok=True)
+            self.save_checkpoint(temp_checkpoint_path)
+            logger.info(f"Saved temporary checkpoint for parallel MCTS: {temp_checkpoint_path}")
+
         # 自己対戦でデータ生成
         generator_config = GeneratorConfig(
             epsilon=epsilon,
@@ -309,6 +324,8 @@ class DecisionTransformerTrainer:
             mcts_max_depth=self.config.mcts_max_depth,
             mcts_c_puct=self.config.mcts_c_puct,
             device=self.config.device,
+            # 並列ワーカー用のチェックポイントパス
+            model_checkpoint_path=str(temp_checkpoint_path) if temp_checkpoint_path else None,
         )
 
         # 初期イテレーションはランダムポリシー
@@ -404,7 +421,7 @@ class DecisionTransformerTrainer:
             logger.info(f"{'='*50}")
 
             # 自己対戦と学習
-            stats = self.run_self_play_iteration(trainer_data, iteration)
+            stats = self.run_self_play_iteration(trainer_data, iteration, output_dir)
 
             # チェックポイント保存
             if (iteration + 1) % self.config.save_interval == 0:
