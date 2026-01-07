@@ -752,6 +752,65 @@ class BattleSequenceTokenizer:
 
         return torch.tensor(features, dtype=torch.float)
 
+    def encode_field_state_from_state(self, field_state: "FieldState") -> torch.Tensor:
+        """
+        FieldState データクラスからフィールド状態をエンコード
+
+        Args:
+            field_state: FieldState データクラス
+
+        Returns:
+            [field_state_dim] のテンソル (24 dims)
+        """
+        from .dataset import FieldState
+
+        features = []
+
+        # Weather (4): sunny, rainy, snow, sandstorm (normalized by 5)
+        weather_map = {"sunny": 0, "rainy": 1, "snow": 2, "sandstorm": 3}
+        weather_features = [0.0, 0.0, 0.0, 0.0]
+        if field_state.weather in weather_map:
+            idx = weather_map[field_state.weather]
+            weather_features[idx] = min(field_state.weather_turns / 5.0, 1.0)
+        features.extend(weather_features)
+
+        # Terrain (4): electric, grass, psychic, mist
+        terrain_map = {"electric": 0, "grass": 1, "psychic": 2, "mist": 3}
+        terrain_features = [0.0, 0.0, 0.0, 0.0]
+        if field_state.terrain in terrain_map:
+            idx = terrain_map[field_state.terrain]
+            terrain_features[idx] = 1.0
+        features.extend(terrain_features)
+
+        # Misc (2): gravity, trick room
+        features.append(1.0 if field_state.gravity > 0 else 0.0)
+        features.append(1.0 if field_state.trick_room > 0 else 0.0)
+
+        # Screens for both players (4): reflector, light_screen
+        features.append(1.0 if field_state.reflector[0] > 0 else 0.0)
+        features.append(1.0 if field_state.light_screen[0] > 0 else 0.0)
+        features.append(1.0 if field_state.reflector[1] > 0 else 0.0)
+        features.append(1.0 if field_state.light_screen[1] > 0 else 0.0)
+
+        # Tailwind (2)
+        features.append(1.0 if field_state.tailwind[0] > 0 else 0.0)
+        features.append(1.0 if field_state.tailwind[1] > 0 else 0.0)
+
+        # Entry hazards for both players (8)
+        # Player 0
+        features.append(1.0 if field_state.stealth_rock[0] else 0.0)
+        features.append(field_state.spikes[0] / 3.0)  # 0-3 layers
+        features.append(field_state.toxic_spikes[0] / 2.0)  # 0-2 layers
+        features.append(1.0 if field_state.sticky_web[0] else 0.0)
+
+        # Player 1
+        features.append(1.0 if field_state.stealth_rock[1] else 0.0)
+        features.append(field_state.spikes[1] / 3.0)
+        features.append(field_state.toxic_spikes[1] / 2.0)
+        features.append(1.0 if field_state.sticky_web[1] else 0.0)
+
+        return torch.tensor(features, dtype=torch.float)
+
     def encode_turn_state(
         self,
         battle: "Battle",

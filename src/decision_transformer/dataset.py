@@ -611,6 +611,31 @@ class BattleTrajectoryDataset(Dataset):
                 if 0 <= cmd < self.config.num_action_outputs:
                     action_mask[cmd] = 1.0
 
+        # state_features をエンコード (59 + 59 + 24 = 142 dims)
+        state_dim = self.config.pokemon_state_dim * 2 + self.config.field_state_dim
+        if current_turn and current_turn.state:
+            state = current_turn.state
+            # 自分のポケモン状態 (59 dims)
+            my_state_features = self.tokenizer.encode_pokemon_state(
+                state.my_active,
+                is_opponent=False,
+            )
+            # 相手のポケモン状態 (59 dims) - 観測情報のみ使用
+            opp_state_features = self.tokenizer.encode_pokemon_state(
+                state.opp_active,
+                revealed_moves=list(state.opp_active.revealed_moves) if hasattr(state.opp_active, 'revealed_moves') else None,
+                revealed_item=state.opp_active.revealed_item if hasattr(state.opp_active, 'revealed_item') else None,
+                revealed_ability=state.opp_active.revealed_ability if hasattr(state.opp_active, 'revealed_ability') else None,
+                is_opponent=True,
+            )
+            # フィールド状態 (24 dims)
+            field_features = self.tokenizer.encode_field_state_from_state(state.field_state)
+            # 結合
+            state_features = torch.cat([my_state_features, opp_state_features, field_features])
+        else:
+            # 状態がない場合はゼロで埋める
+            state_features = torch.zeros(state_dim, dtype=torch.float)
+
         # パディング
         seq_len = len(context["input_ids"])
         if seq_len < self.max_length:
@@ -656,6 +681,7 @@ class BattleTrajectoryDataset(Dataset):
             "action_label": torch.tensor(action_label, dtype=torch.long),
             "value_label": torch.tensor(value_label, dtype=torch.float),
             "action_mask": action_mask,
+            "state_features": state_features,
         }
 
 
