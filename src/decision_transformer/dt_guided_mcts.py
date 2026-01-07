@@ -663,13 +663,29 @@ class DTGuidedMCTS:
             )
 
         # 3. 現在のターン状態を追加
-        # (過去の履歴はバトル状態に暗黙的に含まれている)
+        # 相手の観測情報を取得
+        opp_pokemon = battle.pokemon[1 - player]
+        opp_revealed_moves = None
+        opp_revealed_item = None
+        opp_revealed_ability = None
+
+        if opp_pokemon and context.opp_observation:
+            opp_name = opp_pokemon.name
+            if opp_name in context.opp_observation.pokemon_observations:
+                obs = context.opp_observation.pokemon_observations[opp_name]
+                opp_revealed_moves = obs.revealed_moves if obs.revealed_moves else None
+                opp_revealed_item = obs.revealed_item if obs.revealed_item else None
+                opp_revealed_ability = obs.revealed_ability if obs.revealed_ability else None
+
         encoded = self.tokenizer.encode_turn_state(
             battle=battle,
             player=player,
             turn=turn,
             rtg=target_return,
             context=encoded,
+            opp_revealed_moves=opp_revealed_moves,
+            opp_revealed_item=opp_revealed_item,
+            opp_revealed_ability=opp_revealed_ability,
         )
 
         return encoded

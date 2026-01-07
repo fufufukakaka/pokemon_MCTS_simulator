@@ -32,6 +32,9 @@ class PokemonState:
     terastallized: bool = False
     tera_type: str = ""
 
+    # 実ステータス [H, A, B, C, D, S] - 観戦可能な自分の情報
+    status: list[int] = field(default_factory=lambda: [0] * 6)
+
     # 自分の情報は全て見える
     item: str = ""
     ability: str = ""

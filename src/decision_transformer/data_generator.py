@@ -100,6 +100,9 @@ def _pokemon_to_state(pokemon: Pokemon | None) -> PokemonState:
     # pokemon.condition から状態変化を取得
     condition = getattr(pokemon, "condition", {})
 
+    # ステータス [H, A, B, C, D, S]
+    status = list(pokemon.status) if pokemon.status else [0] * 6
+
     return PokemonState(
         name=pokemon.name,
         hp_ratio=hp_ratio,
@@ -108,6 +111,7 @@ def _pokemon_to_state(pokemon: Pokemon | None) -> PokemonState:
         types=list(pokemon.types) if pokemon.types else [],
         terastallized=pokemon.terastal if hasattr(pokemon, "terastal") else False,
         tera_type=pokemon.Ttype if hasattr(pokemon, "Ttype") else "",
+        status=status,
         item=pokemon.item or "",
         ability=pokemon.ability or "",
         moves=list(pokemon.moves) if pokemon.moves else [],

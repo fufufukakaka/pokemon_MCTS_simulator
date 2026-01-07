@@ -613,15 +613,25 @@ class DecisionTransformerAI:
 
         # 過去のターン履歴を追加
         for turn_state, action in zip(context.turns, context.actions):
-            turn_encoded = self.tokenizer.encode_turn_state(turn_state)
-            encoded = self._concat_encoded(encoded, turn_encoded)
+            encoded = self.tokenizer.encode_turn_state_from_data(
+                turn_state=turn_state,
+                context=encoded,
+                rtg=self.config.target_return,
+            )
 
-            action_encoded = self.tokenizer.encode_action(action)
-            encoded = self._concat_encoded(encoded, action_encoded)
+            encoded = self.tokenizer.encode_action(
+                action_id=action,
+                context=encoded,
+                turn=turn_state.turn,
+                rtg=self.config.target_return,
+            )
 
         # 現在のターン状態を追加
-        current_encoded = self.tokenizer.encode_turn_state(current_turn)
-        encoded = self._concat_encoded(encoded, current_encoded)
+        encoded = self.tokenizer.encode_turn_state_from_data(
+            turn_state=current_turn,
+            context=encoded,
+            rtg=self.config.target_return,
+        )
 
         return encoded
 

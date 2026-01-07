@@ -61,9 +61,9 @@ class PokemonBattleEmbeddings(nn.Module):
             nn.Tanh(),
         )
 
-        # 状態特徴量埋め込み (HP, ランク, フィールド等の連続値)
-        # pokemon_state_dim + field_state_dim = 18 + 24 = 42
-        state_input_dim = config.pokemon_state_dim + config.field_state_dim
+        # 状態特徴量埋め込み (HP, ランク, タイプ, ステータス, 状態変化, 技詳細, フィールド等の連続値)
+        # my_state + opp_state + field_state = 59 + 59 + 24 = 142
+        state_input_dim = config.pokemon_state_dim * 2 + config.field_state_dim
         self.state_embed = nn.Sequential(
             nn.Linear(state_input_dim, config.hidden_size),
             nn.GELU(),

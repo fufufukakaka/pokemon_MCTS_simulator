@@ -72,7 +72,9 @@ class PokemonBattleTransformerConfig:
 
     # === 状態特徴量の次元 ===
     # HP ratio (1) + ailment one-hot (7) + rank (8) + terastal (1) + tera_type (1)
-    pokemon_state_dim: int = 18
+    # + types (2) + stats (5) + conditions (10)
+    # + moves (4*2=8) + move_details (4*3=12) + item (2) + ability (2) = 59
+    pokemon_state_dim: int = 59
 
     # フィールド状態: weather(4) + terrain(4) + misc(2) + screens(4) + tailwind(2) + hazards(8)
     field_state_dim: int = 24
