@@ -116,9 +116,13 @@ class DecisionTransformerTrainer:
         action_mask = batch["action_mask"].to(self.device)
 
         # state_features があれば使用
+        # データセットは [batch, state_dim] を返すが、モデルは [batch, seq_len, state_dim] を期待
         state_features = None
         if "state_features" in batch:
-            state_features = batch["state_features"].to(self.device)
+            sf = batch["state_features"].to(self.device)  # [batch, state_dim]
+            seq_len = input_ids.shape[1]
+            # シーケンス全体に同じ状態を適用（現在ターンの状態を全位置にブロードキャスト）
+            state_features = sf.unsqueeze(1).expand(-1, seq_len, -1)  # [batch, seq_len, state_dim]
 
         # Forward
         outputs = self.model(
