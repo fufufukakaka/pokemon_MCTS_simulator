@@ -150,6 +150,12 @@ class TrainingConfig:
     # === モデル設定 ===
     model_config: Optional[PokemonBattleTransformerConfig] = None
 
+    # === wandb設定 ===
+    use_wandb: bool = False  # wandb を使用するか
+    wandb_project: str = "pokemon-decision-transformer"  # wandb プロジェクト名
+    wandb_run_name: Optional[str] = None  # wandb 実行名（None なら自動生成）
+    wandb_tags: list[str] = field(default_factory=list)  # wandb タグ
+
     def __post_init__(self):
         if self.model_config is None:
             self.model_config = PokemonBattleTransformerConfig()

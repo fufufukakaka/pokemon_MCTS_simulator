@@ -13,6 +13,13 @@ from pathlib import Path
 from typing import Any, Optional
 
 import torch
+
+try:
+    import wandb
+
+    WANDB_AVAILABLE = True
+except ImportError:
+    WANDB_AVAILABLE = False
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -88,6 +95,63 @@ class DecisionTransformerTrainer:
 
         # データプール
         self.trajectory_pool = TrajectoryPool(max_size=config.trajectory_pool_size)
+
+        # wandb 関連
+        self._wandb_initialized = False
+        self._global_step = 0  # 全体のステップ数（エポック単位）
+
+    def _init_wandb(self, output_dir: Path | None = None) -> None:
+        """wandb を初期化"""
+        if not self.config.use_wandb:
+            return
+
+        if not WANDB_AVAILABLE:
+            logger.warning("wandb is not installed. Skipping wandb initialization.")
+            return
+
+        if self._wandb_initialized:
+            return
+
+        # wandb 設定を準備
+        wandb_config = {
+            "model": asdict(self.model.config),
+            "training": {
+                k: v
+                for k, v in asdict(self.config).items()
+                if k not in ("model_config", "wandb_tags")
+                and not k.startswith("wandb_")
+            },
+        }
+
+        wandb.init(
+            project=self.config.wandb_project,
+            name=self.config.wandb_run_name,
+            tags=self.config.wandb_tags if self.config.wandb_tags else None,
+            config=wandb_config,
+            dir=str(output_dir) if output_dir else None,
+            resume="allow",
+        )
+
+        # モデルを監視
+        wandb.watch(self.model, log="gradients", log_freq=100)
+
+        self._wandb_initialized = True
+        logger.info("wandb initialized successfully")
+
+    def _log_wandb(self, metrics: dict[str, Any], step: int | None = None) -> None:
+        """wandb にメトリクスをログ"""
+        if not self._wandb_initialized:
+            return
+
+        wandb.log(metrics, step=step)
+
+    def _finish_wandb(self) -> None:
+        """wandb を終了"""
+        if not self._wandb_initialized:
+            return
+
+        wandb.finish()
+        self._wandb_initialized = False
 
     def compute_loss(
         self,
@@ -218,13 +282,28 @@ class DecisionTransformerTrainer:
 
         self.scheduler.step()
 
-        return {
+        stats = {
             "loss": total_loss / num_batches,
             "selection_loss": total_selection_loss / num_batches,
             "action_loss": total_action_loss / num_batches,
             "value_loss": total_value_loss / num_batches,
             "lr": self.scheduler.get_last_lr()[0],
         }
+
+        # wandb にエポックメトリクスをログ
+        self._global_step += 1
+        self._log_wandb(
+            {
+                "train/loss": stats["loss"],
+                "train/selection_loss": stats["selection_loss"],
+                "train/action_loss": stats["action_loss"],
+                "train/value_loss": stats["value_loss"],
+                "train/lr": stats["lr"],
+            },
+            step=self._global_step,
+        )
+
+        return stats
 
     def train_on_trajectories(
         self,
@@ -387,6 +466,26 @@ class DecisionTransformerTrainer:
             "final_value_loss": epoch_stats[-1]["value_loss"] if epoch_stats else 0.0,
         }
 
+        # wandb にイテレーションメトリクスをログ
+        self._log_wandb(
+            {
+                "iteration/epsilon": epsilon,
+                "iteration/temperature": temperature,
+                "iteration/games_generated": len(trajectories),
+                "iteration/wins_p0": wins_p0,
+                "iteration/wins_p1": wins_p1,
+                "iteration/draws": draws,
+                "iteration/win_rate_p0": wins_p0 / len(trajectories) if trajectories else 0.0,
+                "iteration/pool_size": len(self.trajectory_pool),
+                "iteration/train_trajectories": len(train_trajectories),
+                "iteration/final_loss": iteration_stats["final_loss"],
+                "iteration/final_selection_loss": iteration_stats["final_selection_loss"],
+                "iteration/final_action_loss": iteration_stats["final_action_loss"],
+                "iteration/final_value_loss": iteration_stats["final_value_loss"],
+            },
+            step=self._global_step,
+        )
+
         self.training_history.append(iteration_stats)
         self.current_iteration = iteration + 1
 
@@ -412,6 +511,9 @@ class DecisionTransformerTrainer:
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
 
+        # wandb を初期化
+        self._init_wandb(output_dir)
+
         # チェックポイントから再開
         if resume_from:
             self.load_checkpoint(Path(resume_from))
@@ -419,40 +521,44 @@ class DecisionTransformerTrainer:
 
         start_iteration = self.current_iteration
 
-        for iteration in range(start_iteration, self.config.num_iterations):
-            logger.info(f"\n{'='*50}")
-            logger.info(f"Starting iteration {iteration + 1}/{self.config.num_iterations}")
-            logger.info(f"{'='*50}")
+        try:
+            for iteration in range(start_iteration, self.config.num_iterations):
+                logger.info(f"\n{'='*50}")
+                logger.info(f"Starting iteration {iteration + 1}/{self.config.num_iterations}")
+                logger.info(f"{'='*50}")
 
-            # 自己対戦と学習
-            stats = self.run_self_play_iteration(trainer_data, iteration, output_dir)
+                # 自己対戦と学習
+                stats = self.run_self_play_iteration(trainer_data, iteration, output_dir)
 
-            # チェックポイント保存
-            if (iteration + 1) % self.config.save_interval == 0:
-                checkpoint_path = output_dir / f"checkpoint_iter{iteration + 1}"
-                self.save_checkpoint(checkpoint_path)
-                logger.info(f"Saved checkpoint to {checkpoint_path}")
+                # チェックポイント保存
+                if (iteration + 1) % self.config.save_interval == 0:
+                    checkpoint_path = output_dir / f"checkpoint_iter{iteration + 1}"
+                    self.save_checkpoint(checkpoint_path)
+                    logger.info(f"Saved checkpoint to {checkpoint_path}")
 
-            # 評価（オプション）
-            if (iteration + 1) % self.config.eval_interval == 0:
-                eval_result = self.evaluate(trainer_data)
-                logger.info(f"Evaluation: {eval_result}")
+                # 評価（オプション）
+                if (iteration + 1) % self.config.eval_interval == 0:
+                    eval_result = self.evaluate(trainer_data)
+                    logger.info(f"Evaluation: {eval_result}")
 
-        # 最終モデルを保存
-        final_path = output_dir / "final"
-        self.save_checkpoint(final_path)
-        logger.info(f"Saved final model to {final_path}")
+            # 最終モデルを保存
+            final_path = output_dir / "final"
+            self.save_checkpoint(final_path)
+            logger.info(f"Saved final model to {final_path}")
 
-        # 学習履歴を保存
-        history_path = output_dir / "training_history.json"
-        with open(history_path, "w", encoding="utf-8") as f:
-            json.dump(self.training_history, f, ensure_ascii=False, indent=2)
+            # 学習履歴を保存
+            history_path = output_dir / "training_history.json"
+            with open(history_path, "w", encoding="utf-8") as f:
+                json.dump(self.training_history, f, ensure_ascii=False, indent=2)
 
-        return {
-            "total_iterations": self.current_iteration,
-            "final_pool_size": len(self.trajectory_pool),
-            "history": self.training_history,
-        }
+            return {
+                "total_iterations": self.current_iteration,
+                "final_pool_size": len(self.trajectory_pool),
+                "history": self.training_history,
+            }
+        finally:
+            # wandb を終了
+            self._finish_wandb()
 
     def evaluate(
         self,
@@ -491,13 +597,27 @@ class DecisionTransformerTrainer:
 
         win_rate = wins / len(trajectories) if trajectories else 0.0
 
-        return {
+        result = {
             "games": len(trajectories),
             "wins": wins,
             "losses": losses,
             "draws": draws,
             "win_rate": win_rate,
         }
+
+        # wandb に評価メトリクスをログ
+        self._log_wandb(
+            {
+                "eval/games": result["games"],
+                "eval/wins": result["wins"],
+                "eval/losses": result["losses"],
+                "eval/draws": result["draws"],
+                "eval/win_rate": result["win_rate"],
+            },
+            step=self._global_step,
+        )
+
+        return result
 
     def save_checkpoint(self, path: Path) -> None:
         """チェックポイントを保存"""

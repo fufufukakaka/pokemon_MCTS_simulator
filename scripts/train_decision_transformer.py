@@ -31,6 +31,17 @@ Usage:
         --output data/dt_trajectories.jsonl \
         --generate-only \
         --num-games 1000
+
+    # Training with wandb logging
+    uv run python scripts/train_decision_transformer.py \
+        --trainer-json data/top_rankers/season_36.json \
+        --output models/decision_transformer \
+        --num-iterations 50 \
+        --games-per-iteration 100 \
+        --wandb \
+        --wandb-project pokemon-decision-transformer \
+        --wandb-run-name experiment-v1 \
+        --wandb-tags mcts baseline
 """
 
 import argparse
@@ -239,6 +250,32 @@ def main():
         help="MCTS exploration parameter (default: 1.5)",
     )
 
+    # wandb設定
+    parser.add_argument(
+        "--wandb",
+        action="store_true",
+        help="Enable wandb logging",
+    )
+    parser.add_argument(
+        "--wandb-project",
+        type=str,
+        default="pokemon-decision-transformer",
+        help="wandb project name (default: pokemon-decision-transformer)",
+    )
+    parser.add_argument(
+        "--wandb-run-name",
+        type=str,
+        default=None,
+        help="wandb run name (default: auto-generated)",
+    )
+    parser.add_argument(
+        "--wandb-tags",
+        type=str,
+        nargs="*",
+        default=[],
+        help="wandb tags (e.g., --wandb-tags experiment1 mcts)",
+    )
+
     args = parser.parse_args()
 
     # トレーナーデータをロード（複数ファイル対応）
@@ -307,6 +344,11 @@ def main():
         mcts_max_depth=args.mcts_depth,
         mcts_c_puct=args.mcts_c_puct,
         model_config=model_config,
+        # wandb設定
+        use_wandb=args.wandb,
+        wandb_project=args.wandb_project,
+        wandb_run_name=args.wandb_run_name,
+        wandb_tags=args.wandb_tags,
     )
 
     # トレーナーを作成
@@ -318,6 +360,8 @@ def main():
     logger.info(f"Usage data: {args.usage_db or 'default (src/battle_data/season22.json)'}")
     if args.use_mcts:
         logger.info(f"MCTS enabled: simulations={args.mcts_simulations}, depth={args.mcts_depth}, c_puct={args.mcts_c_puct}")
+    if args.wandb:
+        logger.info(f"wandb enabled: project={args.wandb_project}, run_name={args.wandb_run_name or 'auto'}")
 
     # 学習実行
     result = trainer.train(
