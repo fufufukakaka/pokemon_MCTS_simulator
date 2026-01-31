@@ -1,0 +1,350 @@
+{
+  "match_id": 13,
+  "timestamp": "2026-01-30T14:58:47.178043",
+  "result": {
+    "match_id": 13,
+    "winner": "rebel",
+    "total_turns": 10,
+    "dt_team_name": "まりえ",
+    "rebel_team_name": "しもつかれ",
+    "dt_remaining": 0,
+    "rebel_remaining": 2,
+    "dt_think_time": 5.56732177734375,
+    "rebel_think_time": 6.655838251113892,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "まりえ",
+      "selection": [
+        1,
+        5,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "イダイトウ(オス)",
+          "item": "きあいのタスキ",
+          "ability": "てきおうりょく",
+          "tera_type": "ひこう",
+          "moves": [
+            "アクアブレイク",
+            "アクアジェット",
+            "おはかまいり",
+            "みがわり"
+          ],
+          "nature": "ゆうかん"
+        },
+        {
+          "name": "パオジアン",
+          "item": "いのちのたま",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "でんき",
+          "moves": [
+            "つららおとし",
+            "かみくだく",
+            "テラバースト",
+            "ふいうち"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ミライドン",
+          "item": "だっしゅつパック",
+          "ability": "ハドロンエンジン",
+          "tera_type": "ほのお",
+          "moves": [
+            "りゅうせいぐん",
+            "オーバーヒート",
+            "イナズマドライブ",
+            "ちょうはつ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "しもつかれ",
+      "selection": [
+        3,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "きあいのタスキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ゴースト",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アクアジェット",
+            "きしかいせい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(はくば)",
+          "item": "いかさまダイス",
+          "ability": "じんばいったい",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ブリザードランス",
+            "タネマシンガン",
+            "10まんばりき",
+            "トリックルーム"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "カイオーガ",
+          "item": "こだわりメガネ",
+          "ability": "あめふらし",
+          "tera_type": "じめん",
+          "moves": [
+            "なみのり",
+            "かみなり",
+            "れいとうビーム",
+            "テラバースト"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "イダイトウ(オス)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "パオジアン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(はくば)",
+        "hp_percent": 34,
+        "status": "active"
+      },
+      {
+        "name": "カイオーガ",
+        "hp_percent": 36,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: イダイトウ(オス), パオジアン, ミライドン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), バドレックス(はくば), カイオーガ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→パオジアン",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "イダイトウ(オス)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "イダイトウ(オス)",
+        "dt_hp": "201/201",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+アクアブレイク",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "イダイトウ(オス)",
+        "dt_hp_pct": 38,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "イダイトウ(オス)",
+        "dt_hp": "77/201",
+        "dt_hp_pct": 38,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "138/175",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: アクアブレイク",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "イダイトウ(オス)",
+        "dt_hp_pct": 5,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 30
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "イダイトウ(オス)",
+        "dt_hp": "11/201",
+        "dt_hp_pct": 5,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "54/175",
+        "rebel_hp_pct": 30
+      },
+      "dt_action": "技: アクアブレイク",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 30
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "205/205",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "54/175",
+        "rebel_hp_pct": 30
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "交代→バドレックス(はくば)",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "159/159",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "72/207",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "交代→カイオーガ",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 90,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 70
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "144/159",
+        "dt_hp_pct": 90,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "145/207",
+        "rebel_hp_pct": 70
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 36
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "205/205",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "75/207",
+        "rebel_hp_pct": 36
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "205/205",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "72/207",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: ブリザードランス",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 0,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 9,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "ミライドン"
+    }
+  ]
+}

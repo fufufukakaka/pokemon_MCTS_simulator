@@ -1,0 +1,530 @@
+{
+  "match_id": 44,
+  "timestamp": "2026-01-30T15:15:55.112409",
+  "result": {
+    "match_id": 44,
+    "winner": "dt",
+    "total_turns": 19,
+    "dt_team_name": "モヤスタル",
+    "rebel_team_name": "喜多 郁代",
+    "dt_remaining": 1,
+    "rebel_remaining": 0,
+    "dt_think_time": 13.260629892349243,
+    "rebel_think_time": 9.492643594741821,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "モヤスタル",
+      "selection": [
+        2,
+        3,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "パオジアン",
+          "item": "きあいのタスキ",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "あく",
+          "moves": [
+            "つららおとし",
+            "かみくだく",
+            "ふいうち",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ガチグマ(アカツキ)",
+          "item": "おんみつマント",
+          "ability": "しんがん",
+          "tera_type": "ひこう",
+          "moves": [
+            "ブラッドムーン",
+            "ハイパーボイス",
+            "つきのひかり",
+            "めいそう"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "カタストロフィ",
+            "じわれ",
+            "テラバースト"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "喜多 郁代",
+      "selection": [
+        1,
+        0,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "ガチグマ(アカツキ)",
+          "item": "ゴツゴツメット",
+          "ability": "しんがん",
+          "tera_type": "フェアリー",
+          "moves": [
+            "あくび",
+            "ブラッドムーン",
+            "つきのひかり",
+            "まもる"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ブラッキー",
+          "item": "たべのこし",
+          "ability": "せいしんりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "どくどく",
+            "ねがいごと",
+            "まもる",
+            "イカサマ"
+          ],
+          "nature": "おだやか"
+        },
+        {
+          "name": "ホウオウ",
+          "item": "こだわりハチマキ",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "せいなるほのお",
+            "ブレイブバード",
+            "じしん",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "パオジアン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ガチグマ(アカツキ)",
+        "hp_percent": 50,
+        "status": "active"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ガチグマ(アカツキ)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ブラッキー",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "ホウオウ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: パオジアン, ガチグマ(アカツキ), ディンルー"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ガチグマ(アカツキ), ブラッキー, ホウオウ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ガチグマ(アカツキ)",
+      "rebel_action": "交代→ガチグマ(アカツキ)",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "220/220",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+つららおとし",
+      "rebel_action": "技: ブラッドムーン",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 37
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "82/220",
+        "rebel_hp_pct": 37
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "テラス+つきのひかり",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "6/220",
+        "rebel_hp_pct": 2
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "6/220",
+        "rebel_hp_pct": 2
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "交代→ホウオウ",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 41
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "83/198",
+        "rebel_hp_pct": 41
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: とんぼがえり",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "6/220",
+        "rebel_hp_pct": 2
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "6/220",
+        "rebel_hp_pct": 2
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "交代→ブラッキー",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 53
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "109/202",
+        "rebel_hp_pct": 53
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 11
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "251/251",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "24/202",
+        "rebel_hp_pct": 11
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 17
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "251/251",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "36/202",
+        "rebel_hp_pct": 17
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→ホウオウ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "251/251",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "66/198",
+        "rebel_hp_pct": 33
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 47,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "119/251",
+        "dt_hp_pct": 47,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "66/198",
+        "rebel_hp_pct": 33
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp": "219/219",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "66/198",
+        "rebel_hp_pct": 33
+      },
+      "dt_action": "技: ブラッドムーン",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 50,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp": "111/219",
+        "dt_hp_pct": 50,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "6/220",
+        "rebel_hp_pct": 2
+      },
+      "dt_action": "技: ハイパーボイス",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 50,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp": "111/219",
+        "dt_hp_pct": 50,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "6/220",
+        "rebel_hp_pct": 2
+      },
+      "dt_action": "技: ブラッドムーン",
+      "rebel_action": "技: あくび",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 17
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp": "111/219",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "36/202",
+        "rebel_hp_pct": 17
+      },
+      "dt_action": "技: ハイパーボイス",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 23
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp": "111/219",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "48/202",
+        "rebel_hp_pct": 23
+      },
+      "dt_action": "技: ブラッドムーン",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 18,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "ブラッキー"
+    }
+  ]
+}

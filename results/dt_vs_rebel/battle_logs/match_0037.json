@@ -1,0 +1,429 @@
+{
+  "match_id": 37,
+  "timestamp": "2026-01-30T15:11:34.270897",
+  "result": {
+    "match_id": 37,
+    "winner": "rebel",
+    "total_turns": 14,
+    "dt_team_name": "chaso",
+    "rebel_team_name": "あたか",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 10.993740558624268,
+    "rebel_think_time": 6.014972925186157,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "chaso",
+      "selection": [
+        3,
+        1,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ブリジュラス",
+          "item": "ゴツゴツメット",
+          "ability": "じきゅうりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "りゅうせいぐん",
+            "ボディプレス",
+            "バークアウト",
+            "でんじは"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "カイオーガ",
+          "item": "とつげきチョッキ",
+          "ability": "あめふらし",
+          "tera_type": "フェアリー",
+          "moves": [
+            "こんげんのはどう",
+            "れいとうビーム",
+            "かみなり",
+            "テラバースト"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ミミズズ",
+          "item": "オボンのみ",
+          "ability": "どしょく",
+          "tera_type": "ゴースト",
+          "moves": [
+            "しっぽきり",
+            "てっぺき",
+            "ボディプレス",
+            "じならし"
+          ],
+          "nature": "のんき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "あたか",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "こだわりハチマキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "ストーンエッジ",
+            "テラバースト",
+            "じごくづき"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "くさ",
+          "moves": [
+            "アストラルビット",
+            "わるだくみ",
+            "くさむすび",
+            "アンコール"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "シルクのスカーフ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "シャドークロー",
+            "すてみタックル",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ブリジュラス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "カイオーガ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミミズズ",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 54,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 1,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ブリジュラス, カイオーガ, ミミズズ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, バドレックス(こくば), アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→カイオーガ",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "231/231",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+りゅうせいぐん",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 83,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 70
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "164/197",
+        "dt_hp_pct": 83,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "162/231",
+        "rebel_hp_pct": 70
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 71,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "140/197",
+        "dt_hp_pct": 71,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "125/231",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "テラス+じごくづき",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 63,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "125/197",
+        "dt_hp_pct": 63,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "125/231",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 39,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "77/197",
+        "dt_hp_pct": 39,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "125/231",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 32,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "65/197",
+        "dt_hp_pct": 32,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "125/231",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 28,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "56/197",
+        "dt_hp_pct": 28,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "125/231",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 24,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "48/197",
+        "dt_hp_pct": 24,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "125/231",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 20,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "40/197",
+        "dt_hp_pct": 20,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "125/231",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: ボディプレス",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 20,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "40/197",
+        "dt_hp_pct": 20,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ボディプレス",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "カイオーガ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイオーガ",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: こんげんのはどう",
+      "rebel_action": "技: くさむすび",
+      "after": {
+        "dt_active": "カイオーガ",
+        "dt_hp_pct": 39,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 1
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイオーガ",
+        "dt_hp": "81/207",
+        "dt_hp_pct": 39,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "3/175",
+        "rebel_hp_pct": 1
+      },
+      "dt_action": "技: こんげんのはどう",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ミミズズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 1
+      }
+    },
+    {
+      "turn": 14,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

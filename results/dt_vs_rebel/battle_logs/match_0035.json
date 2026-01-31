@@ -1,0 +1,1590 @@
+{
+  "match_id": 35,
+  "timestamp": "2026-01-30T15:10:59.253137",
+  "result": {
+    "match_id": 35,
+    "winner": "dt",
+    "total_turns": 72,
+    "dt_team_name": "ナマクラ",
+    "rebel_team_name": "イマクニ",
+    "dt_remaining": 2,
+    "rebel_remaining": 0,
+    "dt_think_time": 132.92441773414612,
+    "rebel_think_time": 73.0039792060852,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "ナマクラ",
+      "selection": [
+        4,
+        0,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "フェアリー",
+          "moves": [
+            "みがわり",
+            "まもる",
+            "どくどく",
+            "じしん"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "どく",
+          "moves": [
+            "さばきのつぶて",
+            "ヘドロばくだん",
+            "でんじは",
+            "じこさいせい"
+          ],
+          "nature": "おだやか"
+        },
+        {
+          "name": "アーマーガア",
+          "item": "おんみつマント",
+          "ability": "プレッシャー",
+          "tera_type": "ゴースト",
+          "moves": [
+            "はねやすめ",
+            "ちょうはつ",
+            "きりばらい",
+            "ラスターカノン"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "イマクニ",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "どくどく",
+            "まもる",
+            "みがわり"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "コライドン",
+          "item": "いかさまダイス",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "スケイルショット",
+            "フレアドライブ",
+            "ニトロチャージ",
+            "ちょうはつ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "だいちのプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "はがね",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "でんじは",
+            "じこさいせい"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "グライオン",
+        "hp_percent": 32,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アーマーガア",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "グライオン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: グライオン, アルセウス, アーマーガア"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: グライオン, コライドン, アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→グライオン",
+      "rebel_action": "交代→グライオン",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "157/179",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "157/179",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "157/179",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "157/179",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "157/179",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "157/179",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "157/179",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "157/179",
+        "dt_hp_pct": 87,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: みがわり",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 22,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 23,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 24,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 25,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 26,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 27,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 28,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 29,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 30,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 31,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 32,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 33,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 34,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 35,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "交代→アルセウス",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 36,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "テラス+まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 92
+      }
+    },
+    {
+      "turn": 37,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "165/179",
+        "rebel_hp_pct": 92
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 38,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 92
+      }
+    },
+    {
+      "turn": 39,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "165/179",
+        "rebel_hp_pct": 92
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 40,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 88
+      }
+    },
+    {
+      "turn": 41,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "159/179",
+        "rebel_hp_pct": 88
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 42,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 88
+      }
+    },
+    {
+      "turn": 43,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "158/179",
+        "rebel_hp_pct": 88
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 44,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 89
+      }
+    },
+    {
+      "turn": 45,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "160/179",
+        "rebel_hp_pct": 89
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 46,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 91
+      }
+    },
+    {
+      "turn": 47,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "163/179",
+        "rebel_hp_pct": 91
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 48,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 90
+      }
+    },
+    {
+      "turn": 49,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "162/179",
+        "rebel_hp_pct": 90
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 50,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 67
+      }
+    },
+    {
+      "turn": 51,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "154/227",
+        "rebel_hp_pct": 67
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 70
+      }
+    },
+    {
+      "turn": 52,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "161/227",
+        "rebel_hp_pct": 70
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 92
+      }
+    },
+    {
+      "turn": 53,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "210/227",
+        "rebel_hp_pct": 92
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: れいとうビーム",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 54,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "192/227",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "164/227",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 79
+      }
+    },
+    {
+      "turn": 55,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "192/227",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "180/227",
+        "rebel_hp_pct": 79
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 80
+      }
+    },
+    {
+      "turn": 56,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "192/227",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "183/227",
+        "rebel_hp_pct": 80
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 79
+      }
+    },
+    {
+      "turn": 57,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "192/227",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "181/227",
+        "rebel_hp_pct": 79
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 80
+      }
+    },
+    {
+      "turn": 58,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "192/227",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "183/227",
+        "rebel_hp_pct": 80
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 80
+      }
+    },
+    {
+      "turn": 59,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "192/227",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "182/227",
+        "rebel_hp_pct": 80
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 79
+      }
+    },
+    {
+      "turn": 60,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "192/227",
+        "dt_hp_pct": 84,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "181/227",
+        "rebel_hp_pct": 79
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 52,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 60
+      }
+    },
+    {
+      "turn": 61,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "120/227",
+        "dt_hp_pct": 52,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "137/227",
+        "rebel_hp_pct": 60
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 20,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 40
+      }
+    },
+    {
+      "turn": 62,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "47/227",
+        "dt_hp_pct": 20,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "92/227",
+        "rebel_hp_pct": 40
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: れいとうビーム",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 5,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 63,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "13/227",
+        "dt_hp_pct": 5,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "46/227",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: ヘドロばくだん",
+      "rebel_action": "技: れいとうビーム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 7
+      }
+    },
+    {
+      "turn": 64,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "18/227",
+        "rebel_hp_pct": 7
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→グライオン",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 65,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "105/179",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 66,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "154/203",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→グライオン",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 22
+      }
+    },
+    {
+      "turn": 67,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "41/179",
+        "rebel_hp_pct": 22
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: みがわり",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 68,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "154/203",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 47
+      }
+    },
+    {
+      "turn": 69,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "97/203",
+        "rebel_hp_pct": 47
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 70,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "42/203",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 7
+      }
+    },
+    {
+      "turn": 71,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "18/227",
+        "rebel_hp_pct": 7
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 32,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 71,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "アルセウス"
+    }
+  ]
+}

@@ -1,0 +1,329 @@
+{
+  "match_id": 9,
+  "timestamp": "2026-01-30T14:57:48.225627",
+  "result": {
+    "match_id": 9,
+    "winner": "rebel",
+    "total_turns": 9,
+    "dt_team_name": "モヤスタル",
+    "rebel_team_name": "みにしゅな",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 1.8445255756378174,
+    "rebel_think_time": 3.7599639892578125,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "モヤスタル",
+      "selection": [
+        2,
+        3,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "パオジアン",
+          "item": "きあいのタスキ",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "あく",
+          "moves": [
+            "つららおとし",
+            "かみくだく",
+            "ふいうち",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ガチグマ(アカツキ)",
+          "item": "おんみつマント",
+          "ability": "しんがん",
+          "tera_type": "ひこう",
+          "moves": [
+            "ブラッドムーン",
+            "ハイパーボイス",
+            "つきのひかり",
+            "めいそう"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "カタストロフィ",
+            "じわれ",
+            "テラバースト"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "みにしゅな",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "ほのお",
+          "moves": [
+            "じしん",
+            "ふきとばし",
+            "ステルスロック",
+            "まきびし"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ザシアン(けんのおう)",
+          "item": "くちたけん",
+          "ability": "ふとうのけん",
+          "tera_type": "かくとう",
+          "moves": [
+            "きょじゅうざん",
+            "くさわけ",
+            "インファイト",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "でんき",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "パラボラチャージ",
+            "とんぼがえり"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "パオジアン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ガチグマ(アカツキ)",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 3,
+        "status": "bench"
+      },
+      {
+        "name": "ザシアン(けんのおう)",
+        "hp_percent": 19,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 13,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: パオジアン, ガチグマ(アカツキ), ディンルー"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, ザシアン(けんのおう), ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ガチグマ(アカツキ)",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "261/261",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+つららおとし",
+      "rebel_action": "テラス+じしん",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 49,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 83
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "76/155",
+        "dt_hp_pct": 49,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "219/261",
+        "rebel_hp_pct": 83
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 67
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "251/251",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "177/261",
+        "rebel_hp_pct": 67
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 79,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "199/251",
+        "dt_hp_pct": 79,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "126/261",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 79,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 13
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "199/251",
+        "dt_hp_pct": 79,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "28/202",
+        "rebel_hp_pct": 13
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: とんぼがえり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 57,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 3
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "145/251",
+        "dt_hp_pct": 57,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "10/261",
+        "rebel_hp_pct": 3
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→ザシアン(けんのおう)",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 57,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 19
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "145/251",
+        "dt_hp_pct": 57,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp": "33/171",
+        "rebel_hp_pct": 19
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 19
+      }
+    },
+    {
+      "turn": 9,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

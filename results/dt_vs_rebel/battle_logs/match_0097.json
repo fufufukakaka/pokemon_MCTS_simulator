@@ -1,0 +1,390 @@
+{
+  "match_id": 97,
+  "timestamp": "2026-01-30T15:32:04.315091",
+  "result": {
+    "match_id": 97,
+    "winner": "dt",
+    "total_turns": 12,
+    "dt_team_name": "グレープグミ",
+    "rebel_team_name": "だいすけ",
+    "dt_remaining": 1,
+    "rebel_remaining": 0,
+    "dt_think_time": 0.911137580871582,
+    "rebel_think_time": 3.286067485809326,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "グレープグミ",
+      "selection": [
+        3,
+        5,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "しっぺがえし",
+            "ヘビーボンバー",
+            "じわれ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "あく",
+          "moves": [
+            "じしん",
+            "どくびし",
+            "まもる",
+            "じこさいせい"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "グライオン",
+          "item": "きあいのタスキ",
+          "ability": "ポイズンヒール",
+          "tera_type": "ステラ",
+          "moves": [
+            "じしん",
+            "ダブルウイング",
+            "はたきおとす",
+            "ストーンエッジ"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "だいすけ",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "かくとう",
+          "moves": [
+            "アストラルビット",
+            "テラバースト",
+            "わるだくみ",
+            "アンコール"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "バンギラス",
+          "item": "とつげきチョッキ",
+          "ability": "すなおこし",
+          "tera_type": "フェアリー",
+          "moves": [
+            "はたきおとす",
+            "ストーンエッジ",
+            "けたぐり",
+            "テラバースト"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "フレアドライブ",
+            "げきりん",
+            "インファイト",
+            "とんぼがえり"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 19,
+        "status": "active"
+      },
+      {
+        "name": "グライオン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "バンギラス",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, ドオー, グライオン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(こくば), バンギラス, コライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ドオー",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+アストラルビット",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 73,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 46
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "175/239",
+        "dt_hp_pct": 73,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "82/175",
+        "rebel_hp_pct": 46
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 40,
+        "rebel_active": "バンギラス",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "97/239",
+        "dt_hp_pct": 40,
+        "rebel_active": "バンギラス",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: けたぐり",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バンギラス",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "バンギラス",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ストーンエッジ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 48,
+        "rebel_active": "バンギラス",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "73/151",
+        "dt_hp_pct": 48,
+        "rebel_active": "バンギラス",
+        "rebel_hp": "23/191",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 48,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "73/151",
+        "dt_hp_pct": 48,
+        "rebel_active": "コライドン",
+        "rebel_hp": "96/175",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: げきりん",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "96/175",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "SKIP",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 28
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "50/175",
+        "rebel_hp_pct": 28
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "SKIP",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "5/175",
+        "rebel_hp_pct": 2
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "SKIP",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "バンギラス",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "バンギラス",
+        "rebel_hp": "23/191",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: はたきおとす",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 19,
+        "rebel_active": "バンギラス",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 11,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "バンギラス"
+    }
+  ]
+}

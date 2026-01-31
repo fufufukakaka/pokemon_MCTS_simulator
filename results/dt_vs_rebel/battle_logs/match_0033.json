@@ -1,0 +1,590 @@
+{
+  "match_id": 33,
+  "timestamp": "2026-01-30T15:07:26.653054",
+  "result": {
+    "match_id": 33,
+    "winner": "rebel",
+    "total_turns": 22,
+    "dt_team_name": "カナタ",
+    "rebel_team_name": "りっぱりーん",
+    "dt_remaining": 0,
+    "rebel_remaining": 2,
+    "dt_think_time": 29.538336277008057,
+    "rebel_think_time": 15.144578456878662,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "カナタ",
+      "selection": [
+        1,
+        4,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ソウブレイズ",
+          "item": "たべのこし",
+          "ability": "もらいび",
+          "tera_type": "フェアリー",
+          "moves": [
+            "むねんのつるぎ",
+            "かげうち",
+            "みがわり",
+            "ビルドアップ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "もうどくプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "ちょうはつ",
+            "アシッドボム",
+            "ねっさのだいち",
+            "でんじは"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "カラミンゴ",
+          "item": "きあいのタスキ",
+          "ability": "きもったま",
+          "tera_type": "ゴースト",
+          "moves": [
+            "おいかぜ",
+            "らいめいげり",
+            "ちょうはつ",
+            "はたきおとす"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "りっぱりーん",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "トドロクツキ",
+          "item": "おんみつマント",
+          "ability": "こだいかっせい",
+          "tera_type": "ひこう",
+          "moves": [
+            "くらいつく",
+            "ちょうはつ",
+            "りゅうのまい",
+            "はねやすめ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "カイオーガ",
+          "item": "とつげきチョッキ",
+          "ability": "あめふらし",
+          "tera_type": "フェアリー",
+          "moves": [
+            "しおふき",
+            "なみのり",
+            "かみなり",
+            "テラバースト"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "モモワロウ",
+          "item": "たべのこし",
+          "ability": "どくくぐつ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じゃどくのくさり",
+            "じこさいせい",
+            "イカサマ",
+            "のろい"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ソウブレイズ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "カラミンゴ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "トドロクツキ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "カイオーガ",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "モモワロウ",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ソウブレイズ, アルセウス, カラミンゴ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: トドロクツキ, カイオーガ, モモワロウ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アルセウス",
+      "rebel_action": "交代→トドロクツキ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "212/212",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+むねんのつるぎ",
+      "rebel_action": "技: くらいつく",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 96,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 80
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "174/181",
+        "dt_hp_pct": 96,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "170/212",
+        "rebel_hp_pct": 80
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: はねやすめ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 71
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "152/212",
+        "rebel_hp_pct": 71
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: はねやすめ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 80
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "171/212",
+        "rebel_hp_pct": 80
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: はねやすめ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 81
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "173/212",
+        "rebel_hp_pct": 81
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: はねやすめ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 80
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "170/212",
+        "rebel_hp_pct": 80
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: はねやすめ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "158/212",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: はねやすめ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 81
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "173/212",
+        "rebel_hp_pct": 81
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: はねやすめ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 82
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "174/212",
+        "rebel_hp_pct": 82
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: くらいつく",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 96,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 62
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "175/181",
+        "dt_hp_pct": 96,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "133/212",
+        "rebel_hp_pct": 62
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: はねやすめ",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 80
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "170/212",
+        "rebel_hp_pct": 80
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: くらいつく",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 96,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 60
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "175/181",
+        "dt_hp_pct": 96,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "129/212",
+        "rebel_hp_pct": 60
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: くらいつく",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 91,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 41
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "166/181",
+        "dt_hp_pct": 91,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "87/212",
+        "rebel_hp_pct": 41
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: くらいつく",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 89,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 21
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "162/181",
+        "dt_hp_pct": 89,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "45/212",
+        "rebel_hp_pct": 21
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: くらいつく",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 85,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp_pct": 4
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "155/181",
+        "dt_hp_pct": 85,
+        "rebel_active": "トドロクツキ",
+        "rebel_hp": "9/212",
+        "rebel_hp_pct": 4
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: くらいつく",
+      "after": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp_pct": 71,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ソウブレイズ",
+        "dt_hp": "129/181",
+        "dt_hp_pct": 71,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: むねんのつるぎ",
+      "rebel_action": "技: しおふき",
+      "after": {
+        "dt_active": "カラミンゴ",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カラミンゴ",
+        "dt_hp": "157/157",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: おいかぜ",
+      "rebel_action": "テラス+しおふき",
+      "after": {
+        "dt_active": "カラミンゴ",
+        "dt_hp_pct": 0,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カラミンゴ",
+        "dt_hp": "1/157",
+        "dt_hp_pct": 0,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: おいかぜ",
+      "rebel_action": "技: しおふき",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "219/219",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ちょうはつ",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 46,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "102/219",
+        "dt_hp_pct": 46,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ちょうはつ",
+      "rebel_action": "技: しおふき",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 0,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 21,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "アルセウス"
+    }
+  ]
+}

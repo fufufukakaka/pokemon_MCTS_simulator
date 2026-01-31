@@ -1,0 +1,348 @@
+{
+  "match_id": 29,
+  "timestamp": "2026-01-30T15:03:33.373556",
+  "result": {
+    "match_id": 29,
+    "winner": "rebel",
+    "total_turns": 10,
+    "dt_team_name": "パンタローネ",
+    "rebel_team_name": "和栗薰子",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 9.630671501159668,
+    "rebel_think_time": 5.673858642578125,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "パンタローネ",
+      "selection": [
+        3,
+        4,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ガチグマ",
+          "item": "かえんだま",
+          "ability": "こんじょう",
+          "tera_type": "フェアリー",
+          "moves": [
+            "からげんき",
+            "じしん",
+            "なげつける",
+            "くさわけ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ママンボウ",
+          "item": "きあいのタスキ",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じゃれつく",
+            "アクアジェット",
+            "ミラーコート"
+          ],
+          "nature": "のうてんき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "エレキシード",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "マジカルシャイン",
+            "こうそくいどう",
+            "ちょうはつ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "和栗薰子",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "どく",
+          "moves": [
+            "じわれ",
+            "カタストロフィ",
+            "まきびし",
+            "ふきとばし"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ルナアーラ",
+          "item": "ゴツゴツメット",
+          "ability": "ファントムガード",
+          "tera_type": "みず",
+          "moves": [
+            "シャドーレイ",
+            "おにび",
+            "トリックルーム",
+            "つきのひかり"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "でんき",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "パラボラチャージ",
+            "とんぼがえり"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ガチグマ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ママンボウ",
+        "hp_percent": 33,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 40,
+        "status": "bench"
+      },
+      {
+        "name": "ルナアーラ",
+        "hp_percent": 94,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 78,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ガチグマ, ママンボウ, ミライドン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, ルナアーラ, ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ママンボウ",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "205/205",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "261/261",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+からげんき",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "103/205",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "204/261",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: からげんき",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 19,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 40
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "40/205",
+        "dt_hp_pct": 19,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "106/261",
+        "rebel_hp_pct": 40
+      },
+      "dt_action": "技: からげんき",
+      "rebel_action": "交代→ルナアーラ",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 13,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "28/205",
+        "dt_hp_pct": 13,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "244/244",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: からげんき",
+      "rebel_action": "技: シャドーレイ",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ママンボウ",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "244/244",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: シャドーレイ",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 94
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ママンボウ",
+        "dt_hp": "90/261",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "230/244",
+        "rebel_hp_pct": 94
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "テラス+シャドーレイ",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 94
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "230/244",
+        "rebel_hp_pct": 94
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 89
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "182/203",
+        "rebel_hp_pct": 89
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: りゅうせいぐん",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 33,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 10,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

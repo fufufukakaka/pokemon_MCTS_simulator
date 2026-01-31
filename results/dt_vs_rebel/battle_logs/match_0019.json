@@ -1,0 +1,430 @@
+{
+  "match_id": 19,
+  "timestamp": "2026-01-30T15:01:00.416495",
+  "result": {
+    "match_id": 19,
+    "winner": "dt",
+    "total_turns": 14,
+    "dt_team_name": "まこムラサキ",
+    "rebel_team_name": "なるせ",
+    "dt_remaining": 1,
+    "rebel_remaining": 0,
+    "dt_think_time": 6.381001710891724,
+    "rebel_think_time": 7.6889259815216064,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "まこムラサキ",
+      "selection": [
+        2,
+        3,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "ちょうはつ",
+            "ステルスロック"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ガオガエン",
+          "item": "とつげきチョッキ",
+          "ability": "いかく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "フレアドライブ",
+            "はたきおとす",
+            "とんぼがえり",
+            "ねこだまし"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "いかずちプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "じこさいせい",
+            "ちょうはつ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "なるせ",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "テツノワダチ",
+          "item": "ブーストエナジー",
+          "ability": "クォークチャージ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じしん",
+            "はたきおとす",
+            "ステルスロック",
+            "がむしゃら"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりハチマキ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "フレアドライブ",
+            "ニトロチャージ",
+            "インファイト",
+            "ドラゴンクロー"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "いやしのねがい",
+            "おいかぜ",
+            "ちょうはつ"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ガオガエン",
+        "hp_percent": 17,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ランドロス(れいじゅう), ガオガエン, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: テツノワダチ, コライドン, アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ガオガエン",
+      "rebel_action": "交代→テツノワダチ",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "189/189",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+はたきおとす",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 93,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "183/195",
+        "dt_hp_pct": 93,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "105/189",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 73,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "144/195",
+        "dt_hp_pct": 73,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "35/189",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 73,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "144/195",
+        "dt_hp_pct": 73,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "166/227",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 18,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 46
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "36/195",
+        "dt_hp_pct": 18,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "105/227",
+        "rebel_hp_pct": 46
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 46
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "105/227",
+        "rebel_hp_pct": 46
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 59
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "113/191",
+        "rebel_hp_pct": 59
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 12,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 23
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "29/227",
+        "dt_hp_pct": 12,
+        "rebel_active": "コライドン",
+        "rebel_hp": "44/191",
+        "rebel_hp_pct": 23
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 12,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 11
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "29/227",
+        "dt_hp_pct": 12,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "27/227",
+        "rebel_hp_pct": 11
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 12,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "29/227",
+        "dt_hp_pct": 12,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "35/189",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 12,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "29/227",
+        "dt_hp_pct": 12,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "35/189",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "201/201",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "35/189",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: フレアドライブ",
+      "rebel_action": "技: がむしゃら",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 17,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 13,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "テツノワダチ"
+    }
+  ]
+}

@@ -1,0 +1,310 @@
+{
+  "match_id": 59,
+  "timestamp": "2026-01-30T15:19:41.260935",
+  "result": {
+    "match_id": 59,
+    "winner": "dt",
+    "total_turns": 8,
+    "dt_team_name": "カオリオス",
+    "rebel_team_name": "スカーレット",
+    "dt_remaining": 2,
+    "rebel_remaining": 0,
+    "dt_think_time": 1.0258071422576904,
+    "rebel_think_time": 3.0827815532684326,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "カオリオス",
+      "selection": [
+        4,
+        0,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "とつげきチョッキ",
+          "ability": "いかく",
+          "tera_type": "あく",
+          "moves": [
+            "じしん",
+            "かみくだく",
+            "とんぼがえり",
+            "じわれ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ミライドン",
+          "item": "だっしゅつパック",
+          "ability": "ハドロンエンジン",
+          "tera_type": "ほのお",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "オーバーヒート",
+            "まもる"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ノーマル",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アクアジェット",
+            "からげんき"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "スカーレット",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "キラフロル",
+          "item": "レッドカード",
+          "ability": "どくげしょう",
+          "tera_type": "フェアリー",
+          "moves": [
+            "キラースピン",
+            "ステルスロック",
+            "マジカルシャイン",
+            "こらえる"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりメガネ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "テラバースト",
+            "サイコキネシス"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "だいちのプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "じしん",
+            "りゅうのまい",
+            "じこさいせい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 52,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 94,
+        "status": "active"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "キラフロル",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ランドロス(れいじゅう), ミライドン, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: キラフロル, バドレックス(こくば), アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ミライドン",
+      "rebel_action": "交代→キラフロル",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "189/189",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+マジカルシャイン",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 87,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 52
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "171/195",
+        "dt_hp_pct": 87,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "99/189",
+        "rebel_hp_pct": 52
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: こらえる",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 75,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "147/195",
+        "dt_hp_pct": 75,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "1/189",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 63,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "123/195",
+        "dt_hp_pct": 63,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "215/215",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "191/191",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "1/189",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: こらえる",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 94,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "180/191",
+        "dt_hp_pct": 94,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "1/189",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: キラースピン",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 94,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 7,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "キラフロル"
+    }
+  ]
+}

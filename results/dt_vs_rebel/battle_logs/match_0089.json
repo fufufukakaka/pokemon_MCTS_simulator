@@ -1,0 +1,370 @@
+{
+  "match_id": 89,
+  "timestamp": "2026-01-30T15:30:51.862417",
+  "result": {
+    "match_id": 89,
+    "winner": "dt",
+    "total_turns": 11,
+    "dt_team_name": "ふらぐまん",
+    "rebel_team_name": "my_fixed_party",
+    "dt_remaining": 1,
+    "rebel_remaining": 0,
+    "dt_think_time": 1.2811503410339355,
+    "rebel_think_time": 4.547370910644531,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "ふらぐまん",
+      "selection": [
+        3,
+        4,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(けしん)",
+          "item": "ゴツゴツメット",
+          "ability": "すなのちから",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "ステルスロック",
+            "ちょうはつ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ウーラオス(いちげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "どく",
+          "moves": [
+            "あんこくきょうだ",
+            "インファイト",
+            "どくづき",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "シルクのスカーフ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "じしん",
+            "すてみタックル",
+            "りゅうのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "my_fixed_party",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "イーユイ",
+          "item": "こだわりスカーフ",
+          "ability": "わざわいのたま",
+          "tera_type": "ほのお",
+          "moves": [
+            "オーバーヒート",
+            "かえんほうしゃ",
+            "あくのはどう",
+            "サイコキネシス"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "アルセウス",
+          "item": "シルクのスカーフ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "サンダーダイブ",
+            "しんそく",
+            "つるぎのまい",
+            "からげんき"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりハチマキ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "フェアリー",
+          "moves": [
+            "けたぐり",
+            "スケイルショット",
+            "フレアドライブ",
+            "テラバースト"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ランドロス(けしん)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(いちげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 62,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "イーユイ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ランドロス(けしん), ウーラオス(いちげき), アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: イーユイ, アルセウス, コライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ランドロス(けしん)",
+      "rebel_action": "交代→イーユイ",
+      "after": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp_pct": 100,
+        "rebel_active": "イーユイ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp": "196/196",
+        "dt_hp_pct": 100,
+        "rebel_active": "イーユイ",
+        "rebel_hp": "131/131",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 70
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp": "196/196",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "144/204",
+        "rebel_hp_pct": 70
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: サンダーダイブ",
+      "after": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp_pct": 50,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 24
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp": "98/196",
+        "dt_hp_pct": 50,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "50/204",
+        "rebel_hp_pct": 24
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "テラス+しんそく",
+      "after": {
+        "dt_active": "ウーラオス(いちげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(いちげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "25/204",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: あんこくきょうだ",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "ウーラオス(いちげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(いちげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "103/175",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: あんこくきょうだ",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "217/217",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "103/175",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 62,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "136/217",
+        "dt_hp_pct": 62,
+        "rebel_active": "コライドン",
+        "rebel_hp": "22/175",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "交代→イーユイ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 62,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "136/217",
+        "dt_hp_pct": 62,
+        "rebel_active": "コライドン",
+        "rebel_hp": "22/175",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: けたぐり",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 62,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "136/217",
+        "dt_hp_pct": 62,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "25/204",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: サンダーダイブ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 62,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 10,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "アルセウス"
+    }
+  ]
+}

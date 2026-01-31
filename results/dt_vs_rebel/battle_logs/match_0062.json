@@ -1,0 +1,389 @@
+{
+  "match_id": 62,
+  "timestamp": "2026-01-30T15:20:08.441079",
+  "result": {
+    "match_id": 62,
+    "winner": "rebel",
+    "total_turns": 12,
+    "dt_team_name": "いろはす",
+    "rebel_team_name": "ものま",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 10.704578876495361,
+    "rebel_think_time": 6.024935007095337,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "いろはす",
+      "selection": [
+        2,
+        4,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "まきびし",
+            "ステルスロック",
+            "ふきとばし"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "こわいかお",
+            "ちょうはつ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ノーマル",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "とんぼがえり",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "ものま",
+      "selection": [
+        1,
+        2,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりスカーフ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "ドレインキッス",
+            "トリック"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ホウオウ",
+          "item": "あつぞこブーツ",
+          "ability": "さいせいりょく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "せいなるほのお",
+            "まもる",
+            "ふきとばし",
+            "じこさいせい"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "あく",
+          "moves": [
+            "ヘドロばくだん",
+            "どくびし",
+            "まもる",
+            "じこさいせい"
+          ],
+          "nature": "おだやか"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ホウオウ",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, ランドロス(れいじゅう), ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(こくば), ホウオウ, ドオー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ランドロス(れいじゅう)",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "197/197",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "交代→ホウオウ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 67,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "176/261",
+        "dt_hp_pct": 67,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 61,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "160/261",
+        "dt_hp_pct": 61,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 8,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "22/261",
+        "dt_hp_pct": 8,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "交代→ドオー",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "237/237",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 61,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "119/195",
+        "dt_hp_pct": 61,
+        "rebel_active": "ドオー",
+        "rebel_hp": "237/237",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 22,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "43/195",
+        "dt_hp_pct": 22,
+        "rebel_active": "ドオー",
+        "rebel_hp": "237/237",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

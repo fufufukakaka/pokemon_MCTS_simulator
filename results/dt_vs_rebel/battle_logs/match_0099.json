@@ -1,0 +1,309 @@
+{
+  "match_id": 99,
+  "timestamp": "2026-01-30T15:32:22.320805",
+  "result": {
+    "match_id": 99,
+    "winner": "rebel",
+    "total_turns": 8,
+    "dt_team_name": "Tôyôsâkï Àkï",
+    "rebel_team_name": "CosmicStates",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 4.449554204940796,
+    "rebel_think_time": 5.197967529296875,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "Tôyôsâkï Àkï",
+      "selection": [
+        3,
+        0,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "テツノワダチ",
+          "item": "ジャポのみ",
+          "ability": "クォークチャージ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "アイアンヘッド",
+            "じならし",
+            "こうそくスピン",
+            "ステルスロック"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりメガネ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "ボルトチェンジ",
+            "りゅうせいぐん",
+            "マジカルシャイン"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "きあいのタスキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ゴースト",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アクアジェット",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "CosmicStates",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "ちょうはつ",
+            "ステルスロック"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ザシアン(けんのおう)",
+          "item": "くちたけん",
+          "ability": "ふとうのけん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "きょじゅうざん",
+            "こおりのキバ",
+            "ワイルドボルト",
+            "インファイト"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "エレキシード",
+          "ability": "ハドロンエンジン",
+          "tera_type": "みず",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうのはどう",
+            "テラバースト",
+            "こうそくいどう"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 38,
+        "status": "bench"
+      },
+      {
+        "name": "ザシアン(けんのおう)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 45,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: テツノワダチ, ミライドン, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ランドロス(れいじゅう), ザシアン(けんのおう), ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→テツノワダチ",
+      "rebel_action": "交代→ランドロス(れいじゅう)",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "195/195",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+アイアンヘッド",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 53,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 70
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "105/195",
+        "dt_hp_pct": 53,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "137/195",
+        "rebel_hp_pct": 70
+      },
+      "dt_action": "技: アイアンヘッド",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 2,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "5/195",
+        "dt_hp_pct": 2,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "106/195",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: アイアンヘッド",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 38
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "76/195",
+        "rebel_hp_pct": 38
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "143/195",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: りゅうのはどう",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 0,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 45
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "1/175",
+        "dt_hp_pct": 0,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "88/195",
+        "rebel_hp_pct": 45
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: りゅうのはどう",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 45
+      }
+    },
+    {
+      "turn": 8,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

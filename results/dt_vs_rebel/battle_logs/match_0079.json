@@ -1,0 +1,589 @@
+{
+  "match_id": 79,
+  "timestamp": "2026-01-30T15:24:59.959885",
+  "result": {
+    "match_id": 79,
+    "winner": "rebel",
+    "total_turns": 22,
+    "dt_team_name": "スズ",
+    "rebel_team_name": "アカソ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 33.36638426780701,
+    "rebel_think_time": 15.006011009216309,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "スズ",
+      "selection": [
+        3,
+        4,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ハバタクカミ",
+          "item": "きあいのタスキ",
+          "ability": "こだいかっせい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "ムーンフォース",
+            "たたりめ",
+            "でんじは",
+            "いたみわけ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "どく",
+          "moves": [
+            "じしん",
+            "ステルスロック",
+            "ふきとばし",
+            "ちょうはつ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "イーユイ",
+          "item": "こだわりスカーフ",
+          "ability": "わざわいのたま",
+          "tera_type": "ほのお",
+          "moves": [
+            "かえんほうしゃ",
+            "あくのはどう",
+            "オーバーヒート",
+            "バークアウト"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "アカソ",
+      "selection": [
+        1,
+        0,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "ネクロズマ(たそがれ)",
+          "item": "ゴツゴツメット",
+          "ability": "プリズムアーマー",
+          "tera_type": "ほのお",
+          "moves": [
+            "メテオドライブ",
+            "じしん",
+            "つきのひかり",
+            "りゅうのまい"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりメガネ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "マジカルシャイン",
+            "ボルトチェンジ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "チオンジェン",
+          "item": "たべのこし",
+          "ability": "わざわいのおふだ",
+          "tera_type": "みず",
+          "moves": [
+            "まもる",
+            "みがわり",
+            "イカサマ",
+            "やどりぎのタネ"
+          ],
+          "nature": "おだやか"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ハバタクカミ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 54,
+        "status": "active"
+      },
+      {
+        "name": "イーユイ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ネクロズマ(たそがれ)",
+        "hp_percent": 33,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 26,
+        "status": "bench"
+      },
+      {
+        "name": "チオンジェン",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ハバタクカミ, ディンルー, イーユイ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ネクロズマ(たそがれ), ミライドン, チオンジェン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ディンルー",
+      "rebel_action": "交代→ネクロズマ(たそがれ)",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "133/133",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "203/203",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+ムーンフォース",
+      "rebel_action": "技: メテオドライブ",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 0,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "1/133",
+        "dt_hp_pct": 0,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "149/203",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: ムーンフォース",
+      "rebel_action": "技: メテオドライブ",
+      "after": {
+        "dt_active": "イーユイ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "イーユイ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "102/203",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: かえんほうしゃ",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "イーユイ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 68
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "イーユイ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "133/193",
+        "rebel_hp_pct": 68
+      },
+      "dt_action": "技: かえんほうしゃ",
+      "rebel_action": "技: りゅうせいぐん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 26
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "51/193",
+        "rebel_hp_pct": 26
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→ネクロズマ(たそがれ)",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "26/203",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 24
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "49/203",
+        "rebel_hp_pct": 24
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "テラス+つきのひかり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "68/203",
+        "rebel_hp_pct": 33
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 41
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "84/203",
+        "rebel_hp_pct": 41
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "71/203",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 41
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "85/203",
+        "rebel_hp_pct": 41
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "99/203",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "118/203",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: メテオドライブ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 73,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "191/261",
+        "dt_hp_pct": 73,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "42/203",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 73,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "191/261",
+        "dt_hp_pct": 73,
+        "rebel_active": "ネクロズマ(たそがれ)",
+        "rebel_hp": "67/203",
+        "rebel_hp_pct": 33
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→チオンジェン",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 73,
+        "rebel_active": "チオンジェン",
+        "rebel_hp_pct": 94
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "191/261",
+        "dt_hp_pct": 73,
+        "rebel_active": "チオンジェン",
+        "rebel_hp": "180/191",
+        "rebel_hp_pct": 94
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 73,
+        "rebel_active": "チオンジェン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "191/261",
+        "dt_hp_pct": 73,
+        "rebel_active": "チオンジェン",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 66,
+        "rebel_active": "チオンジェン",
+        "rebel_hp_pct": 94
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "173/261",
+        "dt_hp_pct": 66,
+        "rebel_active": "チオンジェン",
+        "rebel_hp": "181/191",
+        "rebel_hp_pct": 94
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 66,
+        "rebel_active": "チオンジェン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "173/261",
+        "dt_hp_pct": 66,
+        "rebel_active": "チオンジェン",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: やどりぎのタネ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 60,
+        "rebel_active": "チオンジェン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "157/261",
+        "dt_hp_pct": 60,
+        "rebel_active": "チオンジェン",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 54,
+        "rebel_active": "チオンジェン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 22,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "match_id": 54,
+  "timestamp": "2026-01-30T15:18:20.269147",
+  "result": {
+    "match_id": 54,
+    "winner": "dt",
+    "total_turns": 7,
+    "dt_team_name": "わさわさび",
+    "rebel_team_name": "かに",
+    "dt_remaining": 3,
+    "rebel_remaining": 0,
+    "dt_think_time": 0.7339684963226318,
+    "rebel_think_time": 2.7482595443725586,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "わさわさび",
+      "selection": [
+        3,
+        2,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ガチグマ",
+          "item": "かえんだま",
+          "ability": "こんじょう",
+          "tera_type": "ノーマル",
+          "moves": [
+            "からげんき",
+            "じしん",
+            "れいとうパンチ",
+            "ほえる"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "パオジアン",
+          "item": "いのちのたま",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "あく",
+          "moves": [
+            "つららおとし",
+            "かみくだく",
+            "ふいうち",
+            "こおりのつぶて"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ママンボウ",
+          "item": "ゴツゴツメット",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "クイックターン",
+            "アクアジェット",
+            "ねがいごと",
+            "まもる"
+          ],
+          "nature": "のんき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "かに",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ブリムオン",
+          "item": "おんみつマント",
+          "ability": "マジックミラー",
+          "tera_type": "ひこう",
+          "moves": [
+            "ドレインキッス",
+            "サイコノイズ",
+            "ほっぺすりすり",
+            "めいそう"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "こだわりハチマキ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "すてみタックル",
+            "じしん",
+            "シャドークロー"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "きあいのタスキ",
+          "ability": "プレッシャー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じこさいせい",
+            "ダイマックスほう",
+            "ヘドロばくだん",
+            "どくびし"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ガチグマ",
+        "hp_percent": 63,
+        "status": "active"
+      },
+      {
+        "name": "パオジアン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ママンボウ",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ブリムオン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ガチグマ, パオジアン, ママンボウ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ブリムオン, アルセウス, ムゲンダイナ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→パオジアン",
+      "rebel_action": "交代→ブリムオン",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "223/223",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+からげんき",
+      "rebel_action": "テラス+ドレインキッス",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 80,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 69
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "180/223",
+        "dt_hp_pct": 80,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "114/164",
+        "rebel_hp_pct": 69
+      },
+      "dt_action": "技: からげんき",
+      "rebel_action": "交代→ムゲンダイナ",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 74,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "167/223",
+        "dt_hp_pct": 74,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "1/215",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: からげんき",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 69,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "154/223",
+        "dt_hp_pct": 69,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "1/215",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: からげんき",
+      "rebel_action": "交代→ブリムオン",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 63,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "141/223",
+        "dt_hp_pct": 63,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "1/215",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: からげんき",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 63,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 6,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "ムゲンダイナ"
+    }
+  ]
+}

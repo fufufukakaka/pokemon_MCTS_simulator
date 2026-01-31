@@ -1,0 +1,349 @@
+{
+  "match_id": 90,
+  "timestamp": "2026-01-30T15:31:08.939581",
+  "result": {
+    "match_id": 90,
+    "winner": "rebel",
+    "total_turns": 10,
+    "dt_team_name": "コジオーン",
+    "rebel_team_name": "たくみ",
+    "dt_remaining": 0,
+    "rebel_remaining": 3,
+    "dt_think_time": 11.570831537246704,
+    "rebel_think_time": 2.911684989929199,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "コジオーン",
+      "selection": [
+        5,
+        4,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "フェアリー",
+          "moves": [
+            "まもる",
+            "みがわり",
+            "どくどく",
+            "ちょうはつ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ヘイラッシャ",
+          "item": "たべのこし",
+          "ability": "てんねん",
+          "tera_type": "フェアリー",
+          "moves": [
+            "ねむる",
+            "まもる",
+            "ウェーブタックル",
+            "じわれ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "アルセウス",
+          "item": "こわもてプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "どく",
+          "moves": [
+            "さばきのつぶて",
+            "ヘドロばくだん",
+            "でんじは",
+            "じこさいせい"
+          ],
+          "nature": "おだやか"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "たくみ",
+      "selection": [
+        0,
+        1,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "キラフロル",
+          "item": "パワフルハーブ",
+          "ability": "どくげしょう",
+          "tera_type": "フェアリー",
+          "moves": [
+            "メテオビーム",
+            "マジカルシャイン",
+            "だいちのちから"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "バドレックス(はくば)",
+          "item": "こだわりハチマキ",
+          "ability": "じんばいったい",
+          "tera_type": "こおり",
+          "moves": [
+            "ブリザードランス",
+            "つららばり",
+            "タネばくだん",
+            "10まんばりき"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "いかずちプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ひこう",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "トリックルーム",
+            "いやしのねがい"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "グライオン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ヘイラッシャ",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "キラフロル",
+        "hp_percent": 30,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(はくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: グライオン, ヘイラッシャ, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: キラフロル, バドレックス(はくば), アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ヘイラッシャ",
+      "rebel_action": "交代→キラフロル",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "158/158",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+まもる",
+      "rebel_action": "テラス+メテオビーム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "158/158",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: マジカルシャイン",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 46,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "83/179",
+        "dt_hp_pct": 46,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "158/158",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: マジカルシャイン",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 58,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "105/179",
+        "dt_hp_pct": 58,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "158/158",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: マジカルシャイン",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "158/158",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: マジカルシャイン",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 47,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 65
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "107/227",
+        "dt_hp_pct": 47,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "104/158",
+        "rebel_hp_pct": 65
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: マジカルシャイン",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 30
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "48/158",
+        "rebel_hp_pct": 30
+      },
+      "dt_action": "技: ねむる",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "227/227",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ねむる",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 0,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "ヘイラッシャ"
+    }
+  ]
+}

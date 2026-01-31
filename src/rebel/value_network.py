@@ -59,6 +59,10 @@ class PBSEncoder(nn.Module):
         max_item_vocab: int = 300,
         num_types: int = 19,  # 18タイプ + ステラ
         num_belief_samples: int = 10,  # 信念状態で考慮するサンプル数
+        pokemon_to_id: Optional[dict[str, int]] = None,
+        move_to_id: Optional[dict[str, int]] = None,
+        item_to_id: Optional[dict[str, int]] = None,
+        use_move_effectiveness: bool = True,  # チェックポイント互換性用
     ):
         super().__init__()
 
@@ -67,6 +71,7 @@ class PBSEncoder(nn.Module):
         self.item_dim = item_dim
         self.tera_dim = tera_dim
         self.num_belief_samples = num_belief_samples
+        self.use_move_effectiveness = use_move_effectiveness
 
         # 埋め込み層
         self.pokemon_embed = nn.Embedding(
@@ -76,18 +81,21 @@ class PBSEncoder(nn.Module):
         self.item_embed = nn.Embedding(max_item_vocab, item_dim, padding_idx=0)
         self.type_embed = nn.Embedding(num_types + 1, tera_dim, padding_idx=0)
 
-        # ID 変換辞書（動的に構築）
-        self.pokemon_to_id: dict[str, int] = {}
-        self.move_to_id: dict[str, int] = {}
-        self.item_to_id: dict[str, int] = {}
+        # ID 変換辞書（動的に構築、または事前設定）
+        self.pokemon_to_id: dict[str, int] = pokemon_to_id or {}
+        self.move_to_id: dict[str, int] = move_to_id or {}
+        self.item_to_id: dict[str, int] = item_to_id or {}
         self.type_to_id: dict[str, int] = self._default_type_to_id()
 
-        self._next_pokemon_id = 1
-        self._next_move_id = 1
-        self._next_item_id = 1
+        # 次のIDは既存辞書の最大値+1から開始
+        self._next_pokemon_id = max(self.pokemon_to_id.values(), default=0) + 1
+        self._next_move_id = max(self.move_to_id.values(), default=0) + 1
+        self._next_item_id = max(self.item_to_id.values(), default=0) + 1
 
         # 技有効性計算用
-        self.move_effectiveness_calculator = MoveEffectivenessCalculator()
+        self.move_effectiveness_calculator = (
+            MoveEffectivenessCalculator() if use_move_effectiveness else None
+        )
 
         # 出力次元を計算
         # 自分のポケモン: 1体 * (name + hp + ailment + rank + types + item + moves + tera)
@@ -100,10 +108,25 @@ class PBSEncoder(nn.Module):
 
     def _default_type_to_id(self) -> dict[str, int]:
         types = [
-            "ノーマル", "ほのお", "みず", "でんき", "くさ",
-            "こおり", "かくとう", "どく", "じめん", "ひこう",
-            "エスパー", "むし", "いわ", "ゴースト", "ドラゴン",
-            "あく", "はがね", "フェアリー", "ステラ",
+            "ノーマル",
+            "ほのお",
+            "みず",
+            "でんき",
+            "くさ",
+            "こおり",
+            "かくとう",
+            "どく",
+            "じめん",
+            "ひこう",
+            "エスパー",
+            "むし",
+            "いわ",
+            "ゴースト",
+            "ドラゴン",
+            "あく",
+            "はがね",
+            "フェアリー",
+            "ステラ",
         ]
         return {t: i + 1 for i, t in enumerate(types)}
 
@@ -190,7 +213,7 @@ class PBSEncoder(nn.Module):
 
         # 技有効性情報（相手の場のポケモンに対する自分の技の有効性）
         # [4技の有効フラグ + 4技のタイプ相性 + 有効技があるか + 相手の有効技数]
-        move_effectiveness_dim = 4 + 4 + 1 + 1
+        move_effectiveness_dim = (4 + 4 + 1 + 1) if self.use_move_effectiveness else 0
 
         self.output_dim = (
             my_active_dim
@@ -214,9 +237,7 @@ class PBSEncoder(nn.Module):
         features = []
 
         # ポケモン名埋め込み
-        pokemon_id = torch.tensor(
-            [self._get_pokemon_id(pokemon.name)], device=device
-        )
+        pokemon_id = torch.tensor([self._get_pokemon_id(pokemon.name)], device=device)
         features.append(self.pokemon_embed(pokemon_id).squeeze(0))
 
         # HP比率
@@ -224,17 +245,26 @@ class PBSEncoder(nn.Module):
 
         # 状態異常 (one-hot)
         ailment_map = {
-            "": 0, "どく": 1, "もうどく": 2, "やけど": 3,
-            "まひ": 4, "ねむり": 5, "こおり": 6,
+            "": 0,
+            "どく": 1,
+            "もうどく": 2,
+            "やけど": 3,
+            "まひ": 4,
+            "ねむり": 5,
+            "こおり": 6,
         }
         ailment_idx = ailment_map.get(pokemon.ailment, 0)
         ailment = F.one_hot(torch.tensor(ailment_idx, device=device), num_classes=7)
         features.append(ailment.float())
 
         # 状態異常詳細（もうどくカウンター、ねむりカウンター）
-        bad_poison_counter = getattr(pokemon, 'bad_poison_counter', 0) / 16.0  # 最大16で正規化
-        sleep_counter = getattr(pokemon, 'sleep_counter', 0) / 3.0  # 最大3で正規化
-        features.append(torch.tensor([bad_poison_counter, sleep_counter], device=device))
+        bad_poison_counter = (
+            getattr(pokemon, "bad_poison_counter", 0) / 16.0
+        )  # 最大16で正規化
+        sleep_counter = getattr(pokemon, "sleep_counter", 0) / 3.0  # 最大3で正規化
+        features.append(
+            torch.tensor([bad_poison_counter, sleep_counter], device=device)
+        )
 
         # ランク変化
         rank = torch.tensor(pokemon.rank[:8], device=device, dtype=torch.float) / 6.0
@@ -260,12 +290,14 @@ class PBSEncoder(nn.Module):
             features.append(self.move_embed(move_id).squeeze(0))
 
         # PP情報（各技のPP残量比率、最大PPを仮定して正規化）
-        pp_list = getattr(pokemon, 'pp', []) or []
+        pp_list = getattr(pokemon, "pp", []) or []
         pp_ratios = []
         for i in range(4):
             if i < len(pp_list) and i < len(pokemon.moves):
                 # PP残量を正規化（最大PPは技によって異なるが、一般的に5-40程度）
-                pp_ratios.append(min(pp_list[i] / 32.0, 1.0))  # 32で正規化（平均的な最大PP）
+                pp_ratios.append(
+                    min(pp_list[i] / 32.0, 1.0)
+                )  # 32で正規化（平均的な最大PP）
             else:
                 pp_ratios.append(1.0)  # 不明な場合は満タンと仮定
         features.append(torch.tensor(pp_ratios, device=device, dtype=torch.float))
@@ -288,9 +320,7 @@ class PBSEncoder(nn.Module):
         features = []
 
         # ポケモン名埋め込み
-        pokemon_id = torch.tensor(
-            [self._get_pokemon_id(pokemon.name)], device=device
-        )
+        pokemon_id = torch.tensor([self._get_pokemon_id(pokemon.name)], device=device)
         features.append(self.pokemon_embed(pokemon_id).squeeze(0))
 
         # HP比率
@@ -298,17 +328,24 @@ class PBSEncoder(nn.Module):
 
         # 状態異常
         ailment_map = {
-            "": 0, "どく": 1, "もうどく": 2, "やけど": 3,
-            "まひ": 4, "ねむり": 5, "こおり": 6,
+            "": 0,
+            "どく": 1,
+            "もうどく": 2,
+            "やけど": 3,
+            "まひ": 4,
+            "ねむり": 5,
+            "こおり": 6,
         }
         ailment_idx = ailment_map.get(pokemon.ailment, 0)
         ailment = F.one_hot(torch.tensor(ailment_idx, device=device), num_classes=7)
         features.append(ailment.float())
 
         # 状態異常詳細（もうどくカウンター、ねむりカウンター）- 相手も観測可能
-        bad_poison_counter = getattr(pokemon, 'bad_poison_counter', 0) / 16.0
-        sleep_counter = getattr(pokemon, 'sleep_counter', 0) / 3.0
-        features.append(torch.tensor([bad_poison_counter, sleep_counter], device=device))
+        bad_poison_counter = getattr(pokemon, "bad_poison_counter", 0) / 16.0
+        sleep_counter = getattr(pokemon, "sleep_counter", 0) / 3.0
+        features.append(
+            torch.tensor([bad_poison_counter, sleep_counter], device=device)
+        )
 
         # ランク変化
         rank = torch.tensor(pokemon.rank[:8], device=device, dtype=torch.float) / 6.0
@@ -340,27 +377,40 @@ class PBSEncoder(nn.Module):
         """場の状態をエンコード（28次元）"""
         features = [
             # 天候 (4)
-            field.sunny / 5.0, field.rainy / 5.0, field.snow / 5.0, field.sandstorm / 5.0,
+            field.sunny / 5.0,
+            field.rainy / 5.0,
+            field.snow / 5.0,
+            field.sandstorm / 5.0,
             # フィールド (4)
-            field.electric_field / 5.0, field.grass_field / 5.0,
-            field.psychic_field / 5.0, field.mist_field / 5.0,
+            field.electric_field / 5.0,
+            field.grass_field / 5.0,
+            field.psychic_field / 5.0,
+            field.mist_field / 5.0,
             # その他場の効果 (2)
-            field.gravity / 5.0, field.trick_room / 5.0,
+            field.gravity / 5.0,
+            field.trick_room / 5.0,
             # 壁 (4)
-            field.reflector[0] / 5.0, field.light_screen[0] / 5.0,
-            field.reflector[1] / 5.0, field.light_screen[1] / 5.0,
+            field.reflector[0] / 5.0,
+            field.light_screen[0] / 5.0,
+            field.reflector[1] / 5.0,
+            field.light_screen[1] / 5.0,
             # おいかぜ (2)
-            field.tailwind[0] / 4.0, field.tailwind[1] / 4.0,
+            field.tailwind[0] / 4.0,
+            field.tailwind[1] / 4.0,
             # しんぴのまもり・しろいきり (4)
-            field.safeguard[0] / 5.0 if hasattr(field, 'safeguard') else 0.0,
-            field.safeguard[1] / 5.0 if hasattr(field, 'safeguard') else 0.0,
-            field.mist[0] / 5.0 if hasattr(field, 'mist') else 0.0,
-            field.mist[1] / 5.0 if hasattr(field, 'mist') else 0.0,
+            field.safeguard[0] / 5.0 if hasattr(field, "safeguard") else 0.0,
+            field.safeguard[1] / 5.0 if hasattr(field, "safeguard") else 0.0,
+            field.mist[0] / 5.0 if hasattr(field, "mist") else 0.0,
+            field.mist[1] / 5.0 if hasattr(field, "mist") else 0.0,
             # 設置技 (8)
-            field.spikes[0] / 3.0, field.toxic_spikes[0] / 2.0,
-            float(field.stealth_rock[0]), float(field.sticky_web[0]),
-            field.spikes[1] / 3.0, field.toxic_spikes[1] / 2.0,
-            float(field.stealth_rock[1]), float(field.sticky_web[1]),
+            field.spikes[0] / 3.0,
+            field.toxic_spikes[0] / 2.0,
+            float(field.stealth_rock[0]),
+            float(field.sticky_web[0]),
+            field.spikes[1] / 3.0,
+            field.toxic_spikes[1] / 2.0,
+            float(field.stealth_rock[1]),
+            float(field.sticky_web[1]),
         ]
         return torch.tensor(features, device=device, dtype=torch.float)
 
@@ -480,8 +530,8 @@ class PBSEncoder(nn.Module):
         # より正確には信念状態から各技の有効性を計算すべきだが、計算コストのため簡略化
         # 代わりに「自分に有効な技がある相手かどうか」のシグナルを出力
         my_types = my_pokemon.types if my_pokemon.types else []
-        my_ability = my_pokemon.ability if hasattr(my_pokemon, 'ability') else None
-        my_item = my_pokemon.item if hasattr(my_pokemon, 'item') else None
+        my_ability = my_pokemon.ability if hasattr(my_pokemon, "ability") else None
+        my_item = my_pokemon.item if hasattr(my_pokemon, "item") else None
 
         # 相手から見た自分への攻撃有効性（簡略化版）
         # タイプ相性のみで判定（詳細は信念状態に依存するため）
@@ -513,9 +563,7 @@ class PBSEncoder(nn.Module):
                 features.append(self.encode_my_pokemon(ps.my_bench[i], device))
             else:
                 # ゼロパディング
-                features.append(
-                    torch.zeros(features[0].shape[0], device=device)
-                )
+                features.append(torch.zeros(features[0].shape[0], device=device))
 
         # 相手の場のポケモン
         features.append(self.encode_opp_pokemon(ps.opp_pokemon, device))
@@ -530,9 +578,7 @@ class PBSEncoder(nn.Module):
                 features.append(self.pokemon_embed(pokemon_id).squeeze(0))
                 features.append(torch.tensor([bench.hp_ratio], device=device))
             else:
-                features.append(
-                    torch.zeros(self.pokemon_name_dim, device=device)
-                )
+                features.append(torch.zeros(self.pokemon_name_dim, device=device))
                 features.append(torch.zeros(1, device=device))
 
         # 場の状態
@@ -553,12 +599,13 @@ class PBSEncoder(nn.Module):
         )
 
         # 技有効性情報
-        gravity = ps.field.gravity > 0 if hasattr(ps.field, 'gravity') else False
-        features.append(
-            self.encode_move_effectiveness(
-                ps.my_pokemon, ps.opp_pokemon, gravity, device
+        if self.use_move_effectiveness:
+            gravity = ps.field.gravity > 0 if hasattr(ps.field, "gravity") else False
+            features.append(
+                self.encode_move_effectiveness(
+                    ps.my_pokemon, ps.opp_pokemon, gravity, device
+                )
             )
-        )
 
         return torch.cat(features)
 
@@ -576,11 +623,13 @@ class ReBeLValueNetwork(nn.Module):
         num_res_blocks: int = 4,
         dropout: float = 0.1,
         encoder_config: Optional[dict] = None,
+        use_move_effectiveness: bool = True,
     ):
         super().__init__()
 
         # PBS エンコーダー
         encoder_config = encoder_config or {}
+        encoder_config["use_move_effectiveness"] = use_move_effectiveness
         self.encoder = PBSEncoder(**encoder_config)
         input_dim = self.encoder.get_output_dim()
 

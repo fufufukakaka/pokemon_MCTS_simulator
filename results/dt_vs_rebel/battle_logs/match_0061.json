@@ -1,0 +1,269 @@
+{
+  "match_id": 61,
+  "timestamp": "2026-01-30T15:19:51.616353",
+  "result": {
+    "match_id": 61,
+    "winner": "rebel",
+    "total_turns": 6,
+    "dt_team_name": "仇遠",
+    "rebel_team_name": "ホウキボシ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 2.7490570545196533,
+    "rebel_think_time": 2.6373937129974365,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "仇遠",
+      "selection": [
+        4,
+        2,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アクアジェット",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ガオガエン",
+          "item": "とつげきチョッキ",
+          "ability": "いかく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "フレアドライブ",
+            "はたきおとす",
+            "じならし",
+            "とんぼがえり"
+          ],
+          "nature": "なまいき"
+        },
+        {
+          "name": "キョジオーン",
+          "item": "たべのこし",
+          "ability": "きよめのしお",
+          "tera_type": "くさ",
+          "moves": [
+            "しおづけ",
+            "まもる",
+            "みがわり",
+            "じこさいせい"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "ホウキボシ",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "テツノコウベ",
+          "item": "ブーストエナジー",
+          "ability": "クォークチャージ",
+          "tera_type": "じめん",
+          "moves": [
+            "あくのはどう",
+            "エアスラッシュ",
+            "だいちのちから",
+            "ちょうはつ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "パワフルハーブ",
+          "ability": "マルチタイプ",
+          "tera_type": "じめん",
+          "moves": [
+            "さばきのつぶて",
+            "メテオビーム",
+            "だいちのちから",
+            "あくのはどう"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "バドレックス(はくば)",
+          "item": "いかさまダイス",
+          "ability": "じんばいったい",
+          "tera_type": "ほのお",
+          "moves": [
+            "つららばり",
+            "タネマシンガン",
+            "10まんばりき",
+            "トリックルーム"
+          ],
+          "nature": "ゆうかん"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ガオガエン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "キョジオーン",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "テツノコウベ",
+        "hp_percent": 13,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(はくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ウーラオス(れんげき), ガオガエン, キョジオーン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: テツノコウベ, アルセウス, バドレックス(はくば)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→キョジオーン",
+      "rebel_action": "交代→テツノコウベ",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp": "169/169",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+すいりゅうれんだ",
+      "rebel_action": "技: エアスラッシュ",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 46,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "84/181",
+        "dt_hp_pct": 46,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp": "169/169",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "テラス+だいちのちから",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "201/201",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp": "169/169",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: フレアドライブ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 18,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp_pct": 13
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "38/201",
+        "dt_hp_pct": 18,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp": "22/169",
+        "rebel_hp_pct": 13
+      },
+      "dt_action": "技: フレアドライブ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノコウベ",
+        "rebel_hp_pct": 13
+      }
+    },
+    {
+      "turn": 6,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

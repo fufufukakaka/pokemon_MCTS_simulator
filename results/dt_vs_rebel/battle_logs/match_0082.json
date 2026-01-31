@@ -1,0 +1,289 @@
+{
+  "match_id": 82,
+  "timestamp": "2026-01-30T15:25:20.242386",
+  "result": {
+    "match_id": 82,
+    "winner": "rebel",
+    "total_turns": 7,
+    "dt_team_name": "ユーライザ",
+    "rebel_team_name": "ヤだね",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 4.479727506637573,
+    "rebel_think_time": 3.494173288345337,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "ユーライザ",
+      "selection": [
+        2,
+        5,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ストリンダー(ハイ)",
+          "item": "きあいのタスキ",
+          "ability": "パンクロック",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ばくおんぱ",
+            "がむしゃら",
+            "どくびし",
+            "ほっぺすりすり"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "テツノカイナ",
+          "item": "とつげきチョッキ",
+          "ability": "クォークチャージ",
+          "tera_type": "ほのお",
+          "moves": [
+            "サンダーダイブ",
+            "ドレインパンチ",
+            "じしん",
+            "ねこだまし"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ほのお",
+          "moves": [
+            "さばきのつぶて",
+            "ちょうはつ",
+            "めいそう",
+            "じこさいせい"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "ヤだね",
+      "selection": [
+        0,
+        1,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "じめん",
+          "moves": [
+            "アストラルビット",
+            "テラバースト",
+            "くさむすび",
+            "アンコール"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "みず",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "テラバースト",
+            "ボルトチェンジ"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "かみくだく",
+            "ちょうはつ"
+          ],
+          "nature": "のんき"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ストリンダー(ハイ)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "テツノカイナ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 41,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 53,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ストリンダー(ハイ), テツノカイナ, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(こくば), ミライドン, ランドロス(れいじゅう)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→テツノカイナ",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ストリンダー(ハイ)",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ストリンダー(ハイ)",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+ばくおんぱ",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "ストリンダー(ハイ)",
+        "dt_hp_pct": 56,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ストリンダー(ハイ)",
+        "dt_hp": "85/151",
+        "dt_hp_pct": 56,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ばくおんぱ",
+      "rebel_action": "テラス+テラバースト",
+      "after": {
+        "dt_active": "テツノカイナ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノカイナ",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: サンダーダイブ",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "テツノカイナ",
+        "dt_hp_pct": 36,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノカイナ",
+        "dt_hp": "87/239",
+        "dt_hp_pct": 36,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: サンダーダイブ",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 41,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 53
+      }
+    },
+    {
+      "turn": 7,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

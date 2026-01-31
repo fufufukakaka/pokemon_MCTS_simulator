@@ -1,0 +1,249 @@
+{
+  "match_id": 71,
+  "timestamp": "2026-01-30T15:22:31.979503",
+  "result": {
+    "match_id": 71,
+    "winner": "rebel",
+    "total_turns": 5,
+    "dt_team_name": "けいと",
+    "rebel_team_name": "あい",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 1.0195364952087402,
+    "rebel_think_time": 1.7904744148254395,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "けいと",
+      "selection": [
+        3,
+        1,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "しっぺがえし",
+            "ヘビーボンバー",
+            "カタストロフィ"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "カイオーガ",
+          "item": "ゴツゴツメット",
+          "ability": "あめふらし",
+          "tera_type": "フェアリー",
+          "moves": [
+            "なみのり",
+            "かみなり",
+            "れいとうビーム",
+            "ねむる"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ゴチルゼル",
+          "item": "カゴのみ",
+          "ability": "かげふみ",
+          "tera_type": "ひこう",
+          "moves": [
+            "ちょうはつ",
+            "みがわり",
+            "ねむる",
+            "いやしのはどう"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "あい",
+      "selection": [
+        1,
+        0,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "コライドン",
+          "item": "こだわりハチマキ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "けたぐり",
+            "スケイルショット",
+            "フレアドライブ",
+            "ニトロチャージ"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "こおり",
+          "moves": [
+            "イナズマドライブ",
+            "ボルトチェンジ",
+            "テラバースト",
+            "りゅうのはどう"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ベトベトン",
+          "item": "くろいヘドロ",
+          "ability": "どくしゅ",
+          "tera_type": "ひこう",
+          "moves": [
+            "はたきおとす",
+            "どくどくのキバ",
+            "かげうち",
+            "まもる"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "カイオーガ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ゴチルゼル",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "コライドン",
+        "hp_percent": 43,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ベトベトン",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, カイオーガ, ゴチルゼル"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: コライドン, ミライドン, ベトベトン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→カイオーガ",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "技: けたぐり",
+      "after": {
+        "dt_active": "カイオーガ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイオーガ",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: なみのり",
+      "rebel_action": "技: けたぐり",
+      "after": {
+        "dt_active": "カイオーガ",
+        "dt_hp_pct": 33,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイオーガ",
+        "dt_hp": "69/207",
+        "dt_hp_pct": 33,
+        "rebel_active": "コライドン",
+        "rebel_hp": "97/175",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: なみのり",
+      "rebel_action": "技: けたぐり",
+      "after": {
+        "dt_active": "ゴチルゼル",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 43
+      }
+    },
+    {
+      "turn": 5,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

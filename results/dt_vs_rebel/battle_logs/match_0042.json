@@ -1,0 +1,610 @@
+{
+  "match_id": 42,
+  "timestamp": "2026-01-30T15:15:23.626025",
+  "result": {
+    "match_id": 42,
+    "winner": "rebel",
+    "total_turns": 23,
+    "dt_team_name": "喜多 郁代",
+    "rebel_team_name": "けいと",
+    "dt_remaining": 0,
+    "rebel_remaining": 3,
+    "dt_think_time": 22.05807375907898,
+    "rebel_think_time": 15.715911149978638,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "喜多 郁代",
+      "selection": [
+        1,
+        5,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "ガチグマ(アカツキ)",
+          "item": "ゴツゴツメット",
+          "ability": "しんがん",
+          "tera_type": "フェアリー",
+          "moves": [
+            "あくび",
+            "ブラッドムーン",
+            "つきのひかり",
+            "まもる"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "とつげきチョッキ",
+          "ability": "いかく",
+          "tera_type": "くさ",
+          "moves": [
+            "じしん",
+            "くさむすび",
+            "とんぼがえり",
+            "がんせきふうじ"
+          ],
+          "nature": "ゆうかん"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "きあいのタスキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ステラ",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アクアジェット",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "けいと",
+      "selection": [
+        1,
+        0,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "カイオーガ",
+          "item": "ゴツゴツメット",
+          "ability": "あめふらし",
+          "tera_type": "フェアリー",
+          "moves": [
+            "なみのり",
+            "かみなり",
+            "れいとうビーム",
+            "ねむる"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "たべのこし",
+          "ability": "プレッシャー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "まもる",
+            "みがわり",
+            "じこさいせい",
+            "ヘドロばくだん"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "てんねん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "まもる",
+            "じしん",
+            "カウンター",
+            "じこさいせい"
+          ],
+          "nature": "わんぱく"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ガチグマ(アカツキ)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "カイオーガ",
+        "hp_percent": 20,
+        "status": "bench"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 31,
+        "status": "active"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ガチグマ(アカツキ), ランドロス(れいじゅう), ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: カイオーガ, ムゲンダイナ, ドオー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ガチグマ(アカツキ)",
+      "rebel_action": "交代→カイオーガ",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp": "220/220",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+あくび",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 26,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp": "58/220",
+        "dt_hp_pct": 26,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: あくび",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "185/185",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 60
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "185/185",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "125/207",
+        "rebel_hp_pct": 60
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "185/185",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "43/207",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→ムゲンダイナ",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 21
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "185/185",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "52/241",
+        "rebel_hp_pct": 21
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "テラス+じこさいせい",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 37
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "185/185",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "91/241",
+        "rebel_hp_pct": 37
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "185/185",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "135/241",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 66
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "185/185",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "160/241",
+        "rebel_hp_pct": 66
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 65
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "185/185",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "159/241",
+        "rebel_hp_pct": 65
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 87,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "161/185",
+        "dt_hp_pct": 87,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "80/241",
+        "rebel_hp_pct": 33
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 87,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "161/185",
+        "dt_hp_pct": 87,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "118/241",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: くさむすび",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 87,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 81
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "161/185",
+        "dt_hp_pct": 87,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "197/241",
+        "rebel_hp_pct": 81
+      },
+      "dt_action": "技: くさむすび",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 73,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 64
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "136/185",
+        "dt_hp_pct": 73,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "156/241",
+        "rebel_hp_pct": 64
+      },
+      "dt_action": "技: くさむすび",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 73,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 70
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "136/185",
+        "dt_hp_pct": 73,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "171/241",
+        "rebel_hp_pct": 70
+      },
+      "dt_action": "技: くさむすび",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 73,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "136/185",
+        "dt_hp_pct": 73,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "186/241",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: くさむすび",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 47,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 61
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "88/185",
+        "dt_hp_pct": 47,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "149/241",
+        "rebel_hp_pct": 61
+      },
+      "dt_action": "技: くさむすび",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 35,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 85
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "65/185",
+        "dt_hp_pct": 35,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "206/241",
+        "rebel_hp_pct": 85
+      },
+      "dt_action": "技: くさむすび",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 8,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 67
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "16/185",
+        "dt_hp_pct": 8,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "162/241",
+        "rebel_hp_pct": 67
+      },
+      "dt_action": "技: くさむすび",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "177/241",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 32,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 31
+      }
+    },
+    {
+      "turn": 22,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "57/175",
+        "dt_hp_pct": 32,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "77/241",
+        "rebel_hp_pct": 31
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 0,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 31
+      }
+    },
+    {
+      "turn": 22,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "ウーラオス(れんげき)"
+    }
+  ]
+}

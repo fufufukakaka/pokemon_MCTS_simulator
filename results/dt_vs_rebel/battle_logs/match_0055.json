@@ -1,0 +1,369 @@
+{
+  "match_id": 55,
+  "timestamp": "2026-01-30T15:18:41.445359",
+  "result": {
+    "match_id": 55,
+    "winner": "rebel",
+    "total_turns": 11,
+    "dt_team_name": "chaso",
+    "rebel_team_name": "みにしゅな",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 14.938140153884888,
+    "rebel_think_time": 6.164501190185547,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "chaso",
+      "selection": [
+        3,
+        1,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ブリジュラス",
+          "item": "ゴツゴツメット",
+          "ability": "じきゅうりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "りゅうせいぐん",
+            "ボディプレス",
+            "バークアウト",
+            "でんじは"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "カイオーガ",
+          "item": "とつげきチョッキ",
+          "ability": "あめふらし",
+          "tera_type": "フェアリー",
+          "moves": [
+            "こんげんのはどう",
+            "れいとうビーム",
+            "かみなり",
+            "テラバースト"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ミミズズ",
+          "item": "オボンのみ",
+          "ability": "どしょく",
+          "tera_type": "ゴースト",
+          "moves": [
+            "しっぽきり",
+            "てっぺき",
+            "ボディプレス",
+            "じならし"
+          ],
+          "nature": "のんき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "みにしゅな",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "ほのお",
+          "moves": [
+            "じしん",
+            "ふきとばし",
+            "ステルスロック",
+            "まきびし"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ザシアン(けんのおう)",
+          "item": "くちたけん",
+          "ability": "ふとうのけん",
+          "tera_type": "かくとう",
+          "moves": [
+            "きょじゅうざん",
+            "くさわけ",
+            "インファイト",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "でんき",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "パラボラチャージ",
+            "とんぼがえり"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ブリジュラス",
+        "hp_percent": 17,
+        "status": "active"
+      },
+      {
+        "name": "カイオーガ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミミズズ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 67,
+        "status": "bench"
+      },
+      {
+        "name": "ザシアン(けんのおう)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ブリジュラス, カイオーガ, ミミズズ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, ザシアン(けんのおう), ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ブリジュラス",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "261/261",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+りゅうせいぐん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 79,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "157/197",
+        "dt_hp_pct": 79,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "261/261",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "テラス+じしん",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 65,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "129/197",
+        "dt_hp_pct": 65,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "194/261",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 35,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 60
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "69/197",
+        "dt_hp_pct": 35,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "157/261",
+        "rebel_hp_pct": 60
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 25,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "50/197",
+        "dt_hp_pct": 25,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "194/261",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 17,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 67
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "34/197",
+        "dt_hp_pct": 17,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "175/261",
+        "rebel_hp_pct": 67
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: ふきとばし",
+      "after": {
+        "dt_active": "カイオーガ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 67
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイオーガ",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "175/261",
+        "rebel_hp_pct": 67
+      },
+      "dt_action": "技: こんげんのはどう",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "カイオーガ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイオーガ",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "148/202",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: こんげんのはどう",
+      "rebel_action": "技: イナズマドライブ",
+      "after": {
+        "dt_active": "ミミズズ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミズズ",
+        "dt_hp": "176/176",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "148/202",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: しっぽきり",
+      "rebel_action": "技: パラボラチャージ",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 17,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

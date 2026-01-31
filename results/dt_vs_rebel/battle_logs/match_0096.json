@@ -1,0 +1,350 @@
+{
+  "match_id": 96,
+  "timestamp": "2026-01-30T15:32:00.091427",
+  "result": {
+    "match_id": 96,
+    "winner": "rebel",
+    "total_turns": 10,
+    "dt_team_name": "すい",
+    "rebel_team_name": "しょー",
+    "dt_remaining": 0,
+    "rebel_remaining": 2,
+    "dt_think_time": 4.147095441818237,
+    "rebel_think_time": 3.123258352279663,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "すい",
+      "selection": [
+        4,
+        2,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ママンボウ",
+          "item": "ゴツゴツメット",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "クイックターン",
+            "アクアジェット",
+            "まもる",
+            "ねがいごと"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "テツノワダチ",
+          "item": "こだわりハチマキ",
+          "ability": "クォークチャージ",
+          "tera_type": "じめん",
+          "moves": [
+            "じしん",
+            "アイアンヘッド",
+            "ストーンエッジ",
+            "アイススピナー"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "ボルトチェンジ",
+            "マジカルシャイン"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "しょー",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "キラフロル",
+          "item": "ふうせん",
+          "ability": "どくげしょう",
+          "tera_type": "じめん",
+          "moves": [
+            "パワージェム",
+            "キラースピン",
+            "だいちのちから",
+            "マッドショット"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりハチマキ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "げきりん",
+            "インファイト",
+            "フレアドライブ",
+            "とんぼがえり"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "カイオーガ",
+          "item": "とつげきチョッキ",
+          "ability": "あめふらし",
+          "tera_type": "でんき",
+          "moves": [
+            "しおふき",
+            "かみなり",
+            "なみのり",
+            "れいとうビーム"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ママンボウ",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "キラフロル",
+        "hp_percent": 23,
+        "status": "active"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "カイオーガ",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ママンボウ, テツノワダチ, ミライドン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: キラフロル, コライドン, カイオーガ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→テツノワダチ",
+      "rebel_action": "交代→キラフロル",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ママンボウ",
+        "dt_hp": "272/272",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "171/171",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+クイックターン",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 96
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "169/175",
+        "rebel_hp_pct": 96
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "テラス+インファイト",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 96
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "169/175",
+        "rebel_hp_pct": 96
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "171/171",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 27,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "49/179",
+        "dt_hp_pct": 27,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "171/171",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ママンボウ",
+        "dt_hp": "272/272",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "171/171",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: クイックターン",
+      "rebel_action": "技: キラースピン",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 77,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ママンボウ",
+        "dt_hp": "212/272",
+        "dt_hp_pct": 77,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "96/171",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: クイックターン",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 16,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 23
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ママンボウ",
+        "dt_hp": "46/272",
+        "dt_hp_pct": 16,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "40/171",
+        "rebel_hp_pct": 23
+      },
+      "dt_action": "技: クイックターン",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 0,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 23
+      }
+    },
+    {
+      "turn": 9,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "ママンボウ"
+    }
+  ]
+}

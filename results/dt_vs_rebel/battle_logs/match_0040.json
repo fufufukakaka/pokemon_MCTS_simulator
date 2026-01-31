@@ -1,0 +1,529 @@
+{
+  "match_id": 40,
+  "timestamp": "2026-01-30T15:14:24.054404",
+  "result": {
+    "match_id": 40,
+    "winner": "rebel",
+    "total_turns": 19,
+    "dt_team_name": "いろはす",
+    "rebel_team_name": "まよそび",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 20.080024003982544,
+    "rebel_think_time": 13.133275747299194,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "いろはす",
+      "selection": [
+        2,
+        4,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "まきびし",
+            "ステルスロック",
+            "ふきとばし"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "こわいかお",
+            "ちょうはつ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ノーマル",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "とんぼがえり",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "まよそび",
+      "selection": [
+        2,
+        0,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "フェアリー",
+          "moves": [
+            "まもる",
+            "みがわり",
+            "どくどく",
+            "じしん"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ホウオウ",
+          "item": "こだわりハチマキ",
+          "ability": "プレッシャー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "せいなるほのお",
+            "ブレイブバード",
+            "じしん",
+            "テラバースト"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "ゴースト",
+          "moves": [
+            "どくどく",
+            "だいちのちから",
+            "じこさいせい",
+            "まもる"
+          ],
+          "nature": "おだやか"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 82,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "グライオン",
+        "hp_percent": 41,
+        "status": "active"
+      },
+      {
+        "name": "ホウオウ",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, ランドロス(れいじゅう), ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: グライオン, ホウオウ, ドオー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ディンルー",
+      "rebel_action": "交代→グライオン",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 60,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "159/261",
+        "dt_hp_pct": 60,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 60,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "159/261",
+        "dt_hp_pct": 60,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 49,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "128/261",
+        "dt_hp_pct": 49,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 49,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "128/261",
+        "dt_hp_pct": 49,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 49,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "128/261",
+        "dt_hp_pct": 49,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 49,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "128/261",
+        "dt_hp_pct": 49,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 12,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "32/261",
+        "dt_hp_pct": 12,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 12,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "32/261",
+        "dt_hp_pct": 12,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "196/196",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 93,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "184/196",
+        "dt_hp_pct": 93,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 81,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "160/196",
+        "dt_hp_pct": 81,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 63,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "124/196",
+        "dt_hp_pct": 63,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 38,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "75/196",
+        "dt_hp_pct": 38,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 7,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "14/196",
+        "dt_hp_pct": 7,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "テラス+じしん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 82,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 41
+      }
+    },
+    {
+      "turn": 19,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

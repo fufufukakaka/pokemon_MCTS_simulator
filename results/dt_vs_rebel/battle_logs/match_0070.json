@@ -1,0 +1,370 @@
+{
+  "match_id": 70,
+  "timestamp": "2026-01-30T15:22:28.828376",
+  "result": {
+    "match_id": 70,
+    "winner": "dt",
+    "total_turns": 11,
+    "dt_team_name": "GU",
+    "rebel_team_name": "U",
+    "dt_remaining": 1,
+    "rebel_remaining": 0,
+    "dt_think_time": 9.500100135803223,
+    "rebel_think_time": 6.2892906665802,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "GU",
+      "selection": [
+        2,
+        3,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "キラフロル",
+          "item": "きあいのタスキ",
+          "ability": "どくげしょう",
+          "tera_type": "ノーマル",
+          "moves": [
+            "キラースピン",
+            "マッドショット",
+            "どくびし",
+            "まきびし"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "てんねん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じしん",
+            "どくどく",
+            "カウンター",
+            "じこさいせい"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "パオジアン",
+          "item": "いのちのたま",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "ステラ",
+          "moves": [
+            "つららおとし",
+            "こおりのつぶて",
+            "ふいうち",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "U",
+      "selection": [
+        0,
+        1,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "キラフロル",
+          "item": "きあいのタスキ",
+          "ability": "どくげしょう",
+          "tera_type": "ゴースト",
+          "moves": [
+            "キラースピン",
+            "マッドショット",
+            "ステルスロック",
+            "どくびし"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "だいちのプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "じしん",
+            "りゅうのまい",
+            "ちょうはつ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ルナアーラ",
+          "item": "パワフルハーブ",
+          "ability": "ファントムガード",
+          "tera_type": "フェアリー",
+          "moves": [
+            "シャドーレイ",
+            "ムーンフォース",
+            "メテオビーム",
+            "トリックルーム"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "キラフロル",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "パオジアン",
+        "hp_percent": 46,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "キラフロル",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ルナアーラ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: キラフロル, ドオー, パオジアン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: キラフロル, アルセウス, ルナアーラ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→キラフロル",
+      "rebel_action": "交代→キラフロル",
+      "after": {
+        "dt_active": "キラフロル",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キラフロル",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+キラースピン",
+      "rebel_action": "交代→ルナアーラ",
+      "after": {
+        "dt_active": "キラフロル",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 86
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キラフロル",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "210/243",
+        "rebel_hp_pct": 86
+      },
+      "dt_action": "技: キラースピン",
+      "rebel_action": "技: メテオビーム",
+      "after": {
+        "dt_active": "キラフロル",
+        "dt_hp_pct": 21,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 71
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キラフロル",
+        "dt_hp": "37/175",
+        "dt_hp_pct": 21,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "174/243",
+        "rebel_hp_pct": 71
+      },
+      "dt_action": "技: キラースピン",
+      "rebel_action": "テラス+ムーンフォース",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "118/243",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: シャドーレイ",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 37,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "89/237",
+        "dt_hp_pct": 37,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "31/243",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ムーンフォース",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 21,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "51/237",
+        "dt_hp_pct": 21,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: マッドショット",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: キラースピン",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 68,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 26
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "106/155",
+        "dt_hp_pct": 68,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "46/175",
+        "rebel_hp_pct": 26
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 46,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 26
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "72/155",
+        "dt_hp_pct": 46,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "46/175",
+        "rebel_hp_pct": 26
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: マッドショット",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 46,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 10,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "キラフロル"
+    }
+  ]
+}

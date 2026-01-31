@@ -1,0 +1,409 @@
+{
+  "match_id": 45,
+  "timestamp": "2026-01-30T15:16:20.014813",
+  "result": {
+    "match_id": 45,
+    "winner": "rebel",
+    "total_turns": 13,
+    "dt_team_name": "ホウキボシ",
+    "rebel_team_name": "モヤスタル",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 17.403874158859253,
+    "rebel_think_time": 7.301495790481567,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "ホウキボシ",
+      "selection": [
+        4,
+        5,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ミミッキュ",
+          "item": "ゴツゴツメット",
+          "ability": "ばけのかわ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じゃれつく",
+            "かげうち",
+            "のろい",
+            "こらえる"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "テツノコウベ",
+          "item": "ブーストエナジー",
+          "ability": "クォークチャージ",
+          "tera_type": "じめん",
+          "moves": [
+            "あくのはどう",
+            "エアスラッシュ",
+            "だいちのちから",
+            "ちょうはつ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "パワフルハーブ",
+          "ability": "マルチタイプ",
+          "tera_type": "じめん",
+          "moves": [
+            "さばきのつぶて",
+            "メテオビーム",
+            "だいちのちから",
+            "あくのはどう"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "モヤスタル",
+      "selection": [
+        4,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "カタストロフィ",
+            "じわれ",
+            "テラバースト"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりメガネ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "テラバースト",
+            "トリック"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "たべのこし",
+          "ability": "プレッシャー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "どくどく",
+            "かえんほうしゃ",
+            "じこさいせい",
+            "まもる"
+          ],
+          "nature": "おだやか"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ミミッキュ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "テツノコウベ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 10,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 25,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ミミッキュ, テツノコウベ, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, バドレックス(こくば), ムゲンダイナ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ミミッキュ",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "135/135",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "251/251",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じゃれつく",
+      "rebel_action": "テラス+じしん",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 88,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 76
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "119/135",
+        "dt_hp_pct": 88,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "191/251",
+        "rebel_hp_pct": 76
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 44,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 53
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "60/135",
+        "dt_hp_pct": 44,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "134/251",
+        "rebel_hp_pct": 53
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 17,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 31
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "24/135",
+        "dt_hp_pct": 17,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "80/251",
+        "rebel_hp_pct": 31
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 8,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 10
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "12/135",
+        "dt_hp_pct": 8,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "26/251",
+        "rebel_hp_pct": 10
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "テツノコウベ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 10
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノコウベ",
+        "dt_hp": "169/169",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "26/251",
+        "rebel_hp_pct": 10
+      },
+      "dt_action": "技: あくのはどう",
+      "rebel_action": "交代→ムゲンダイナ",
+      "after": {
+        "dt_active": "テツノコウベ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 84
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノコウベ",
+        "dt_hp": "169/169",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "208/247",
+        "rebel_hp_pct": 84
+      },
+      "dt_action": "技: あくのはどう",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "テツノコウベ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 90
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノコウベ",
+        "dt_hp": "169/169",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "223/247",
+        "rebel_hp_pct": 90
+      },
+      "dt_action": "技: あくのはどう",
+      "rebel_action": "技: かえんほうしゃ",
+      "after": {
+        "dt_active": "テツノコウベ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノコウベ",
+        "dt_hp": "169/169",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "180/247",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: あくのはどう",
+      "rebel_action": "技: かえんほうしゃ",
+      "after": {
+        "dt_active": "テツノコウベ",
+        "dt_hp_pct": 51,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 57
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノコウベ",
+        "dt_hp": "87/169",
+        "dt_hp_pct": 51,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "143/247",
+        "rebel_hp_pct": 57
+      },
+      "dt_action": "技: あくのはどう",
+      "rebel_action": "技: かえんほうしゃ",
+      "after": {
+        "dt_active": "テツノコウベ",
+        "dt_hp_pct": 17,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 40
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノコウベ",
+        "dt_hp": "30/169",
+        "dt_hp_pct": 17,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "100/247",
+        "rebel_hp_pct": 40
+      },
+      "dt_action": "技: あくのはどう",
+      "rebel_action": "技: かえんほうしゃ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 25
+      }
+    },
+    {
+      "turn": 13,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

@@ -1,0 +1,549 @@
+{
+  "match_id": 66,
+  "timestamp": "2026-01-30T15:21:12.851767",
+  "result": {
+    "match_id": 66,
+    "winner": "rebel",
+    "total_turns": 20,
+    "dt_team_name": "なるせ",
+    "rebel_team_name": "和栗薰子",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 24.723007917404175,
+    "rebel_think_time": 13.476521015167236,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "なるせ",
+      "selection": [
+        5,
+        3,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "オオニューラ",
+          "item": "きあいのタスキ",
+          "ability": "かるわざ",
+          "tera_type": "じめん",
+          "moves": [
+            "つららおとし",
+            "つじぎり",
+            "じごくづき",
+            "はやてがえし"
+          ],
+          "nature": "やんちゃ"
+        },
+        {
+          "name": "ミミッキュ",
+          "item": "メンタルハーブ",
+          "ability": "ばけのかわ",
+          "tera_type": "ステラ",
+          "moves": [
+            "じゃれつく",
+            "かげうち",
+            "のろい",
+            "まもる"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "いやしのねがい",
+            "おいかぜ",
+            "ちょうはつ"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "和栗薰子",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "どく",
+          "moves": [
+            "じわれ",
+            "カタストロフィ",
+            "まきびし",
+            "ふきとばし"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ルナアーラ",
+          "item": "ゴツゴツメット",
+          "ability": "ファントムガード",
+          "tera_type": "みず",
+          "moves": [
+            "シャドーレイ",
+            "おにび",
+            "トリックルーム",
+            "つきのひかり"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "でんき",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "パラボラチャージ",
+            "とんぼがえり"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "オオニューラ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミミッキュ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 75,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ルナアーラ",
+        "hp_percent": 92,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: オオニューラ, ミミッキュ, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, ルナアーラ, ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→オオニューラ",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "261/261",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+つららおとし",
+      "rebel_action": "交代→ルナアーラ",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 90
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "220/244",
+        "rebel_hp_pct": 90
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "テラス+つきのひかり",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 76
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "186/244",
+        "rebel_hp_pct": 76
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "244/244",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: シャドーレイ",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 95
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "53/155",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "232/244",
+        "rebel_hp_pct": 95
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "53/155",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "244/244",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: シャドーレイ",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 95
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "53/155",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "233/244",
+        "rebel_hp_pct": 95
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "53/155",
+        "dt_hp_pct": 34,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "244/244",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: シャドーレイ",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "131/131",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "244/244",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: おにび",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 81,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 89
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "107/131",
+        "dt_hp_pct": 81,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "219/244",
+        "rebel_hp_pct": 89
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 63,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "83/131",
+        "dt_hp_pct": 63,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "244/244",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: おにび",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 45,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 95
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "59/131",
+        "dt_hp_pct": 45,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "232/244",
+        "rebel_hp_pct": 95
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: おにび",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 26,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 84
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "35/131",
+        "dt_hp_pct": 26,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "205/244",
+        "rebel_hp_pct": 84
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 8,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "11/131",
+        "dt_hp_pct": 8,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "244/244",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: おにび",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 95
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "233/244",
+        "rebel_hp_pct": 95
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: おにび",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 93,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 63
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "213/227",
+        "dt_hp_pct": 93,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "154/244",
+        "rebel_hp_pct": 63
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 87,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 57
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "199/227",
+        "dt_hp_pct": 87,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "140/244",
+        "rebel_hp_pct": 57
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 81,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "185/227",
+        "dt_hp_pct": 81,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "184/244",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: つきのひかり",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 75,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 92
+      }
+    },
+    {
+      "turn": 20,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

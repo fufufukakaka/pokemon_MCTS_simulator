@@ -1,0 +1,729 @@
+{
+  "match_id": 32,
+  "timestamp": "2026-01-30T15:06:41.945540",
+  "result": {
+    "match_id": 32,
+    "winner": "rebel",
+    "total_turns": 29,
+    "dt_team_name": "平均值",
+    "rebel_team_name": "みかげ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 60.72957110404968,
+    "rebel_think_time": 93.64763760566711,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "平均值",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "アラブルタケ",
+          "item": "いかさまダイス",
+          "ability": "こだいかっせい",
+          "tera_type": "どく",
+          "moves": [
+            "タネマシンガン",
+            "ふいうち",
+            "クリアスモッグ",
+            "こうごうせい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "だいちのプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "れいとうビーム",
+            "りゅうのまい",
+            "ちょうはつ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "キラフロル",
+          "item": "パワフルハーブ",
+          "ability": "どくげしょう",
+          "tera_type": "じめん",
+          "moves": [
+            "メテオビーム",
+            "だいちのちから",
+            "ニードルガード",
+            "パワージェム"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "みかげ",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "ゴースト",
+          "moves": [
+            "じこさいせい",
+            "どくどく",
+            "まもる",
+            "だいちのちから"
+          ],
+          "nature": "なまいき"
+        },
+        {
+          "name": "アルセウス",
+          "item": "あつぞこブーツ",
+          "ability": "マルチタイプ",
+          "tera_type": "はがね",
+          "moves": [
+            "しんそく",
+            "ヘビーボンバー",
+            "バークアウト",
+            "じこさいせい"
+          ],
+          "nature": "なまいき"
+        },
+        {
+          "name": "ホウオウ",
+          "item": "ゴツゴツメット",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "せいなるほのお",
+            "リフレクター",
+            "ひかりのかべ",
+            "じこさいせい"
+          ],
+          "nature": "わんぱく"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "アラブルタケ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "キラフロル",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ドオー",
+        "hp_percent": 19,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 24,
+        "status": "bench"
+      },
+      {
+        "name": "ホウオウ",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: アラブルタケ, アルセウス, キラフロル"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ドオー, アルセウス, ホウオウ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アラブルタケ",
+      "rebel_action": "交代→ドオー",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 92
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "209/225",
+        "rebel_hp_pct": 92
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 83
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "188/225",
+        "rebel_hp_pct": 83
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "167/225",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "174/225",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 83
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "187/225",
+        "rebel_hp_pct": 83
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "165/225",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 79
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "179/225",
+        "rebel_hp_pct": 79
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 13
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "ドオー",
+        "rebel_hp": "30/225",
+        "rebel_hp_pct": 13
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 19
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "ドオー",
+        "rebel_hp": "44/225",
+        "rebel_hp_pct": 19
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 51
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "118/227",
+        "rebel_hp_pct": 51
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 64
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "146/227",
+        "rebel_hp_pct": 64
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 53
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "122/227",
+        "rebel_hp_pct": 53
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 60
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "137/227",
+        "rebel_hp_pct": 60
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 60
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "138/227",
+        "rebel_hp_pct": 60
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 53
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "122/227",
+        "rebel_hp_pct": 53
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 57
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "131/227",
+        "rebel_hp_pct": 57
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 61
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "140/227",
+        "rebel_hp_pct": 61
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 62
+      }
+    },
+    {
+      "turn": 22,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "149/211",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "143/227",
+        "rebel_hp_pct": 62
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "テラス+ヘビーボンバー",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 27,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 42
+      }
+    },
+    {
+      "turn": 23,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "59/211",
+        "dt_hp_pct": 27,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "96/227",
+        "rebel_hp_pct": 42
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: しんそく",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 2,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 24
+      }
+    },
+    {
+      "turn": 24,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "5/211",
+        "dt_hp_pct": 2,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "56/227",
+        "rebel_hp_pct": 24
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: しんそく",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 24
+      }
+    },
+    {
+      "turn": 25,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "56/227",
+        "rebel_hp_pct": 24
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→ホウオウ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 26,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 61,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 27,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "128/207",
+        "dt_hp_pct": 61,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 23,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 28,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "49/207",
+        "dt_hp_pct": 23,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "213/213",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "キラフロル",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 29,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

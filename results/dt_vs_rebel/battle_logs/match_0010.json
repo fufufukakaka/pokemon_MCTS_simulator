@@ -1,0 +1,589 @@
+{
+  "match_id": 10,
+  "timestamp": "2026-01-30T14:58:23.522440",
+  "result": {
+    "match_id": 10,
+    "winner": "rebel",
+    "total_turns": 22,
+    "dt_team_name": "チホ",
+    "rebel_team_name": "ラメロボーロ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 27.080787897109985,
+    "rebel_think_time": 8.128228902816772,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "チホ",
+      "selection": [
+        2,
+        4,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "みず",
+          "moves": [
+            "まもる",
+            "ちょうはつ",
+            "どくどく",
+            "とんぼがえり"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "オーロンゲ",
+          "item": "たべのこし",
+          "ability": "いたずらごころ",
+          "tera_type": "じめん",
+          "moves": [
+            "ソウルクラッシュ",
+            "ふいうち",
+            "でんじは",
+            "すてゼリフ"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりスカーフ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "とんぼがえり",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "ラメロボーロ",
+      "selection": [
+        4,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "キラフロル",
+          "item": "レッドカード",
+          "ability": "どくげしょう",
+          "tera_type": "くさ",
+          "moves": [
+            "パワージェム",
+            "パワージェム",
+            "マッドショット",
+            "こらえる"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "めいそう",
+            "じこさいせい"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "コライドン",
+          "item": "いかさまダイス",
+          "ability": "ひひいろのこどう",
+          "tera_type": "はがね",
+          "moves": [
+            "アイアンヘッド",
+            "アクセルブレイク",
+            "みがわり",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "グライオン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "オーロンゲ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "キラフロル",
+        "hp_percent": 49,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: グライオン, オーロンゲ, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: キラフロル, アルセウス, コライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→オーロンゲ",
+      "rebel_action": "交代→キラフロル",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+まもる",
+      "rebel_action": "テラス+パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 78,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "141/179",
+        "dt_hp_pct": 78,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 91,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "163/179",
+        "dt_hp_pct": 91,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 68,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "122/179",
+        "dt_hp_pct": 68,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 80,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "144/179",
+        "dt_hp_pct": 80,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 59,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "106/179",
+        "dt_hp_pct": 59,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 71,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "128/179",
+        "dt_hp_pct": 71,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 49,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "89/179",
+        "dt_hp_pct": 49,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 62,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "111/179",
+        "dt_hp_pct": 62,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 42,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "76/179",
+        "dt_hp_pct": 42,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 54,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "98/179",
+        "dt_hp_pct": 54,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 35,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "63/179",
+        "dt_hp_pct": 35,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 47,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "85/179",
+        "dt_hp_pct": 47,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 24,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "44/179",
+        "dt_hp_pct": 24,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 36,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "66/179",
+        "dt_hp_pct": 36,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 18,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "34/179",
+        "dt_hp_pct": 18,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ちょうはつ",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "184/184",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "オーロンゲ",
+        "dt_hp_pct": 59,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オーロンゲ",
+        "dt_hp": "115/193",
+        "dt_hp_pct": 59,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "136/184",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: ソウルクラッシュ",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "オーロンゲ",
+        "dt_hp_pct": 11,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オーロンゲ",
+        "dt_hp": "22/193",
+        "dt_hp_pct": 11,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "91/184",
+        "rebel_hp_pct": 49
+      },
+      "dt_action": "技: ソウルクラッシュ",
+      "rebel_action": "技: パワージェム",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 22,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

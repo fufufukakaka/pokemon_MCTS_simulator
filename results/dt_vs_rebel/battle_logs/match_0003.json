@@ -1,0 +1,410 @@
+{
+  "match_id": 3,
+  "timestamp": "2026-01-30T14:56:35.022206",
+  "result": {
+    "match_id": 3,
+    "winner": "rebel",
+    "total_turns": 13,
+    "dt_team_name": "さな",
+    "rebel_team_name": "ジャンゴ",
+    "dt_remaining": 0,
+    "rebel_remaining": 1,
+    "dt_think_time": 2.47253155708313,
+    "rebel_think_time": 6.602442741394043,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "さな",
+      "selection": [
+        4,
+        5,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "ちょうはつ",
+            "こわいかお"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "テツノワダチ",
+          "item": "とつげきチョッキ",
+          "ability": "クォークチャージ",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "はたきおとす",
+            "アイアンヘッド",
+            "こうそくスピン"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "ノーマル",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "くさむすび",
+            "アンコール"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "ジャンゴ",
+      "selection": [
+        4,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "テツノワダチ",
+          "item": "ブーストエナジー",
+          "ability": "クォークチャージ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "キラースピン",
+            "はたきおとす",
+            "がむしゃら",
+            "ステルスロック"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "コライドン",
+          "item": "いかさまダイス",
+          "ability": "ひひいろのこどう",
+          "tera_type": "はがね",
+          "moves": [
+            "スケイルショット",
+            "アイアンヘッド",
+            "つるぎのまい",
+            "みがわり"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "ノーマル",
+          "moves": [
+            "アシストパワー",
+            "くさむすび",
+            "アンコール",
+            "わるだくみ"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 6,
+        "status": "active"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ランドロス(れいじゅう), テツノワダチ, バドレックス(こくば)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: テツノワダチ, コライドン, バドレックス(こくば)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→テツノワダチ",
+      "rebel_action": "交代→テツノワダチ",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "196/196",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "197/197",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+はたきおとす",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 87,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "171/196",
+        "dt_hp_pct": 87,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "107/197",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ステルスロック",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 87,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "171/196",
+        "dt_hp_pct": 87,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "37/197",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 87,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 61
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "171/196",
+        "dt_hp_pct": 87,
+        "rebel_active": "コライドン",
+        "rebel_hp": "128/207",
+        "rebel_hp_pct": 61
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 16,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 6
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "33/196",
+        "dt_hp_pct": 16,
+        "rebel_active": "コライドン",
+        "rebel_hp": "13/207",
+        "rebel_hp_pct": 6
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: アイアンヘッド",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 2,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 6
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "5/196",
+        "dt_hp_pct": 2,
+        "rebel_active": "コライドン",
+        "rebel_hp": "13/207",
+        "rebel_hp_pct": 6
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 88,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 6
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "154/175",
+        "dt_hp_pct": 88,
+        "rebel_active": "コライドン",
+        "rebel_hp": "13/207",
+        "rebel_hp_pct": 6
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 88,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "154/175",
+        "dt_hp_pct": 88,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "1/175",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "技: くさむすび",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 51,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "90/175",
+        "dt_hp_pct": 51,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "37/197",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "技: はたきおとす",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 97,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "182/187",
+        "dt_hp_pct": 97,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "37/197",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: がむしゃら",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 19,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 6
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "37/187",
+        "dt_hp_pct": 19,
+        "rebel_active": "コライドン",
+        "rebel_hp": "13/207",
+        "rebel_hp_pct": 6
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 0,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 6
+      }
+    },
+    {
+      "turn": 12,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "テツノワダチ"
+    }
+  ]
+}

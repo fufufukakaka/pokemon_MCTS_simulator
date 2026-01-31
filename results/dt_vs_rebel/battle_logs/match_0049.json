@@ -1,0 +1,229 @@
+{
+  "match_id": 49,
+  "timestamp": "2026-01-30T15:17:33.368493",
+  "result": {
+    "match_id": 49,
+    "winner": "rebel",
+    "total_turns": 4,
+    "dt_team_name": "ユウキ",
+    "rebel_team_name": "あたか",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 3.2494492530822754,
+    "rebel_think_time": 1.511375904083252,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "ユウキ",
+      "selection": [
+        2,
+        3,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ガチグマ",
+          "item": "かえんだま",
+          "ability": "こんじょう",
+          "tera_type": "ほのお",
+          "moves": [
+            "からげんき",
+            "じしん",
+            "ほえる",
+            "まもる"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "テツノワダチ",
+          "item": "ブーストエナジー",
+          "ability": "クォークチャージ",
+          "tera_type": "じめん",
+          "moves": [
+            "じしん",
+            "はたきおとす",
+            "こうそくスピン",
+            "ステルスロック"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "でんき",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "とんぼがえり",
+            "ボルトチェンジ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "あたか",
+      "selection": [
+        3,
+        0,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "しんぴのしずく",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "カウンター",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "くさ",
+          "moves": [
+            "アストラルビット",
+            "アンコール",
+            "くさむすび",
+            "わるだくみ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ディンルー",
+          "item": "こだわりハチマキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "じしん",
+            "ヘビーボンバー",
+            "ストーンエッジ"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ガチグマ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 65,
+        "status": "active"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ガチグマ, テツノワダチ, ミライドン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), バドレックス(こくば), ディンルー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→テツノワダチ",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "ガチグマ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガチグマ",
+        "dt_hp": "223/223",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+からげんき",
+      "rebel_action": "テラス+すいりゅうれんだ",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "191/191",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 65
+      }
+    },
+    {
+      "turn": 4,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

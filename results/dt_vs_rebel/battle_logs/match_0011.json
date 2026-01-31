@@ -1,0 +1,289 @@
+{
+  "match_id": 11,
+  "timestamp": "2026-01-30T14:58:30.617937",
+  "result": {
+    "match_id": 11,
+    "winner": "rebel",
+    "total_turns": 7,
+    "dt_team_name": "もぶ",
+    "rebel_team_name": "まこムラサキ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 4.45687198638916,
+    "rebel_think_time": 2.594245433807373,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "もぶ",
+      "selection": [
+        4,
+        3,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "ヘビーボンバー",
+            "しっぺがえし",
+            "カタストロフィ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "オオニューラ",
+          "item": "レッドカード",
+          "ability": "かるわざ",
+          "tera_type": "ゴースト",
+          "moves": [
+            "インファイト",
+            "フェイタルクロー",
+            "シャドークロー",
+            "こらえる"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ほのお",
+          "moves": [
+            "すいりゅうれんだ",
+            "アクアジェット",
+            "インファイト",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "まこムラサキ",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "ちょうはつ",
+            "ステルスロック"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "インファイト",
+            "げきりん",
+            "フレアドライブ",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "いかずちプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "じこさいせい",
+            "ちょうはつ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "オオニューラ",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 26,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 82,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, オオニューラ, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ランドロス(れいじゅう), コライドン, アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→オオニューラ",
+      "rebel_action": "交代→ランドロス(れいじゅう)",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "195/195",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 43,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "105/239",
+        "dt_hp_pct": 43,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "195/195",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "183/183",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "195/195",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "テラス+じしん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 30,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 26
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "56/183",
+        "dt_hp_pct": 30,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "52/195",
+        "rebel_hp_pct": 26
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 30,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 82
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "56/183",
+        "dt_hp_pct": 30,
+        "rebel_active": "コライドン",
+        "rebel_hp": "160/195",
+        "rebel_hp_pct": 82
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: げきりん",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 82
+      }
+    },
+    {
+      "turn": 7,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

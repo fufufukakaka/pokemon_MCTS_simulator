@@ -1,0 +1,1230 @@
+{
+  "match_id": 86,
+  "timestamp": "2026-01-30T15:30:37.315459",
+  "result": {
+    "match_id": 86,
+    "winner": "rebel",
+    "total_turns": 54,
+    "dt_team_name": "ユウト",
+    "rebel_team_name": "みかげ",
+    "dt_remaining": 0,
+    "rebel_remaining": 3,
+    "dt_think_time": 100.03314757347107,
+    "rebel_think_time": 73.66377925872803,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "ユウト",
+      "selection": [
+        2,
+        5,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "ギラティナ(アナザー)",
+          "item": "だいはっきんだま",
+          "ability": "プレッシャー",
+          "tera_type": "はがね",
+          "moves": [
+            "たたりめ",
+            "りゅうせいぐん",
+            "かげうち",
+            "おにび"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ラウドボーン",
+          "item": "オボンのみ",
+          "ability": "てんねん",
+          "tera_type": "くさ",
+          "moves": [
+            "フレアソング",
+            "あくび",
+            "まもる",
+            "なまける"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "キョジオーン",
+          "item": "たべのこし",
+          "ability": "きよめのしお",
+          "tera_type": "フェアリー",
+          "moves": [
+            "しおづけ",
+            "ステルスロック",
+            "まもる",
+            "じこさいせい"
+          ],
+          "nature": "わんぱく"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "みかげ",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "ゴースト",
+          "moves": [
+            "じこさいせい",
+            "どくどく",
+            "まもる",
+            "だいちのちから"
+          ],
+          "nature": "なまいき"
+        },
+        {
+          "name": "アルセウス",
+          "item": "あつぞこブーツ",
+          "ability": "マルチタイプ",
+          "tera_type": "はがね",
+          "moves": [
+            "しんそく",
+            "ヘビーボンバー",
+            "バークアウト",
+            "じこさいせい"
+          ],
+          "nature": "なまいき"
+        },
+        {
+          "name": "ホウオウ",
+          "item": "ゴツゴツメット",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "せいなるほのお",
+            "リフレクター",
+            "ひかりのかべ",
+            "じこさいせい"
+          ],
+          "nature": "わんぱく"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ギラティナ(アナザー)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ラウドボーン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "キョジオーン",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ドオー",
+        "hp_percent": 32,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 12,
+        "status": "bench"
+      },
+      {
+        "name": "ホウオウ",
+        "hp_percent": 89,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ギラティナ(アナザー), ラウドボーン, キョジオーン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ドオー, アルセウス, ホウオウ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ギラティナ(アナザー)",
+      "rebel_action": "交代→ドオー",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+たたりめ",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 83
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "183/239",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp": "187/225",
+        "rebel_hp_pct": 83
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "183/239",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "183/239",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "183/239",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "183/239",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "183/239",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "183/239",
+        "dt_hp_pct": 76,
+        "rebel_active": "ドオー",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 55,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 84
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "133/239",
+        "dt_hp_pct": 55,
+        "rebel_active": "ドオー",
+        "rebel_hp": "191/225",
+        "rebel_hp_pct": 84
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 55,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 91
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "133/239",
+        "dt_hp_pct": 55,
+        "rebel_active": "ドオー",
+        "rebel_hp": "205/225",
+        "rebel_hp_pct": 91
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 32,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "77/239",
+        "dt_hp_pct": 32,
+        "rebel_active": "ドオー",
+        "rebel_hp": "170/225",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 32,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 81
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "77/239",
+        "dt_hp_pct": 32,
+        "rebel_active": "ドオー",
+        "rebel_hp": "184/225",
+        "rebel_hp_pct": 81
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp_pct": 9,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 66
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ギラティナ(アナザー)",
+        "dt_hp": "23/239",
+        "dt_hp_pct": 9,
+        "rebel_active": "ドオー",
+        "rebel_hp": "150/225",
+        "rebel_hp_pct": 66
+      },
+      "dt_action": "技: たたりめ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "113/225",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: フレアソング",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 62,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 27
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "131/211",
+        "dt_hp_pct": 62,
+        "rebel_active": "ドオー",
+        "rebel_hp": "61/225",
+        "rebel_hp_pct": 27
+      },
+      "dt_action": "技: フレアソング",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 62,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "131/211",
+        "dt_hp_pct": 62,
+        "rebel_active": "ドオー",
+        "rebel_hp": "75/225",
+        "rebel_hp_pct": 33
+      },
+      "dt_action": "技: フレアソング",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 62,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "131/211",
+        "dt_hp_pct": 62,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "176/227",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: フレアソング",
+      "rebel_action": "技: バークアウト",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 53,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 54
+      }
+    },
+    {
+      "turn": 22,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "113/211",
+        "dt_hp_pct": 53,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "124/227",
+        "rebel_hp_pct": 54
+      },
+      "dt_action": "技: フレアソング",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 53,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 68
+      }
+    },
+    {
+      "turn": 23,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "113/211",
+        "dt_hp_pct": 53,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "155/227",
+        "rebel_hp_pct": 68
+      },
+      "dt_action": "技: フレアソング",
+      "rebel_action": "技: バークアウト",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 20,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 40
+      }
+    },
+    {
+      "turn": 24,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "43/211",
+        "dt_hp_pct": 20,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "92/227",
+        "rebel_hp_pct": 40
+      },
+      "dt_action": "技: フレアソング",
+      "rebel_action": "技: バークアウト",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 40
+      }
+    },
+    {
+      "turn": 25,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "92/227",
+        "rebel_hp_pct": 40
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: ヘビーボンバー",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 92,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 26,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "191/207",
+        "dt_hp_pct": 92,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "42/227",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 98,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 46
+      }
+    },
+    {
+      "turn": 27,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "203/207",
+        "dt_hp_pct": 98,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "105/227",
+        "rebel_hp_pct": 46
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 28,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "168/227",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 29,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "177/227",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: しんそく",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 91,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 30,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "190/207",
+        "dt_hp_pct": 91,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "128/227",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 97,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 31,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "202/207",
+        "dt_hp_pct": 97,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "175/227",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 32,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "175/227",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 33,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "177/227",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 34,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "178/227",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: しんそく",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 96,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 35,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "200/207",
+        "dt_hp_pct": 96,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "129/227",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: しんそく",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 93,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 35
+      }
+    },
+    {
+      "turn": 36,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "193/207",
+        "dt_hp_pct": 93,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "80/227",
+        "rebel_hp_pct": 35
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "交代→ドオー",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 99,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 37,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "205/207",
+        "dt_hp_pct": 99,
+        "rebel_active": "ドオー",
+        "rebel_hp": "46/225",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 72,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 7
+      }
+    },
+    {
+      "turn": 38,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "151/207",
+        "dt_hp_pct": 72,
+        "rebel_active": "ドオー",
+        "rebel_hp": "16/225",
+        "rebel_hp_pct": 7
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "交代→ホウオウ",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 78,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 39,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "163/207",
+        "dt_hp_pct": 78,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "103/213",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 84,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 40,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "175/207",
+        "dt_hp_pct": 84,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "107/213",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "テラス+じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 90,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 79
+      }
+    },
+    {
+      "turn": 41,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "187/207",
+        "dt_hp_pct": 90,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "169/213",
+        "rebel_hp_pct": 79
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 96,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 42,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "199/207",
+        "dt_hp_pct": 96,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "166/213",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 43,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "168/213",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 44,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "168/213",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 45,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "168/213",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 46,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "168/213",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 47,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "165/213",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: せいなるほのお",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 94,
+        "rebel_active": "ホウオウ",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 48,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "195/207",
+        "dt_hp_pct": 94,
+        "rebel_active": "ホウオウ",
+        "rebel_hp": "120/213",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 49,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "28/227",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "交代→ドオー",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 13
+      }
+    },
+    {
+      "turn": 50,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "30/225",
+        "rebel_hp_pct": 13
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 75,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 19
+      }
+    },
+    {
+      "turn": 51,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "157/207",
+        "dt_hp_pct": 75,
+        "rebel_active": "ドオー",
+        "rebel_hp": "44/225",
+        "rebel_hp_pct": 19
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 51,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 25
+      }
+    },
+    {
+      "turn": 52,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "107/207",
+        "dt_hp_pct": 51,
+        "rebel_active": "ドオー",
+        "rebel_hp": "58/225",
+        "rebel_hp_pct": 25
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 13,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 53,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "27/207",
+        "dt_hp_pct": 13,
+        "rebel_active": "ドオー",
+        "rebel_hp": "72/225",
+        "rebel_hp_pct": 32
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 53,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "キョジオーン"
+    }
+  ]
+}

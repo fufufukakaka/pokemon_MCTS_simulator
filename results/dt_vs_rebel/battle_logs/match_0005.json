@@ -1,0 +1,290 @@
+{
+  "match_id": 5,
+  "timestamp": "2026-01-30T14:57:14.470400",
+  "result": {
+    "match_id": 5,
+    "winner": "dt",
+    "total_turns": 7,
+    "dt_team_name": "レン",
+    "rebel_team_name": "にちい",
+    "dt_remaining": 3,
+    "rebel_remaining": 0,
+    "dt_think_time": 0.4666402339935303,
+    "rebel_think_time": 3.690732002258301,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "レン",
+      "selection": [
+        3,
+        1,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "のろいのおふだ",
+          "ability": "じんばいったい",
+          "tera_type": "かくとう",
+          "moves": [
+            "アストラルビット",
+            "テラバースト",
+            "おにび",
+            "こうそくいどう"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ブラッキー",
+          "item": "たべのこし",
+          "ability": "せいしんりょく",
+          "tera_type": "みず",
+          "moves": [
+            "イカサマ",
+            "どくどく",
+            "まもる",
+            "ねがいごと"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "いかさまダイス",
+          "ability": "マルチタイプ",
+          "tera_type": "くさ",
+          "moves": [
+            "タネマシンガン",
+            "しんそく",
+            "みがわり",
+            "りゅうのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "にちい",
+      "selection": [
+        4,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "パンチグローブ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "じめん",
+          "moves": [
+            "すいりゅうれんだ",
+            "きあいパンチ",
+            "つるぎのまい",
+            "みがわり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "だいちのプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "みず",
+          "moves": [
+            "しんそく",
+            "じしん",
+            "たきのぼり",
+            "りゅうのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ミライドン",
+          "item": "エレキシード",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "パラボラチャージ",
+            "マジカルシャイン",
+            "こうそくいどう"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ブラッキー",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: バドレックス(こくば), ブラッキー, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), アルセウス, ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→バドレックス(こくば)",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "195/195",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+アストラルビット",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 46
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "98/213",
+        "rebel_hp_pct": 46
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 37
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "72/193",
+        "rebel_hp_pct": 37
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 37
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "72/193",
+        "rebel_hp_pct": 37
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "技: イナズマドライブ",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 46
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "98/213",
+        "rebel_hp_pct": 46
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 6,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "アルセウス"
+    }
+  ]
+}

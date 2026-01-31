@@ -1,0 +1,309 @@
+{
+  "match_id": 31,
+  "timestamp": "2026-01-30T15:04:07.340692",
+  "result": {
+    "match_id": 31,
+    "winner": "rebel",
+    "total_turns": 8,
+    "dt_team_name": "みすず",
+    "rebel_team_name": "グレープグミ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 6.089564561843872,
+    "rebel_think_time": 2.728442668914795,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "みすず",
+      "selection": [
+        3,
+        5,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ブリジュラス",
+          "item": "おんみつマント",
+          "ability": "じきゅうりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "りゅうせいぐん",
+            "ボディプレス",
+            "イカサマ",
+            "でんじは"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ドオー",
+          "item": "オボンのみ",
+          "ability": "てんねん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じしん",
+            "どくどく",
+            "じこさいせい",
+            "カウンター"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "マジカルシャイン",
+            "ボルトチェンジ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "グレープグミ",
+      "selection": [
+        0,
+        1,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりスカーフ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "ドレインキッス",
+            "トリック"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりハチマキ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "フレアドライブ",
+            "インファイト",
+            "スケイルショット",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "あく",
+          "moves": [
+            "じしん",
+            "どくびし",
+            "まもる",
+            "じこさいせい"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ブリジュラス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 52,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ブリジュラス, ドオー, ミライドン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(こくば), コライドン, ドオー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ドオー",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "193/193",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+りゅうせいぐん",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 4,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 52
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "9/193",
+        "dt_hp_pct": 4,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "100/191",
+        "rebel_hp_pct": 52
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 52
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "203/203",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "100/191",
+        "rebel_hp_pct": 52
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "交代→ドオー",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "203/203",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "237/237",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 49,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "101/203",
+        "dt_hp_pct": 49,
+        "rebel_active": "ドオー",
+        "rebel_hp": "237/237",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 5,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "11/203",
+        "dt_hp_pct": 5,
+        "rebel_active": "ドオー",
+        "rebel_hp": "237/237",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

@@ -1,0 +1,310 @@
+{
+  "match_id": 88,
+  "timestamp": "2026-01-30T15:30:45.841112",
+  "result": {
+    "match_id": 88,
+    "winner": "dt",
+    "total_turns": 8,
+    "dt_team_name": "おちゃ",
+    "rebel_team_name": "すい",
+    "dt_remaining": 3,
+    "rebel_remaining": 0,
+    "dt_think_time": 0.8018290996551514,
+    "rebel_think_time": 2.0650806427001953,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "おちゃ",
+      "selection": [
+        4,
+        5,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "はがね",
+          "moves": [
+            "とんぼがえり",
+            "どくどく",
+            "まもる",
+            "ちょうはつ"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "パオジアン",
+          "item": "きあいのタスキ",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "ゴースト",
+          "moves": [
+            "つららおとし",
+            "ふいうち",
+            "かわらわり",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりメガネ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "ドレインキッス",
+            "くさむすび"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "すい",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "テツノワダチ",
+          "item": "こだわりハチマキ",
+          "ability": "クォークチャージ",
+          "tera_type": "じめん",
+          "moves": [
+            "じしん",
+            "アイアンヘッド",
+            "ストーンエッジ",
+            "アイススピナー"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "ボルトチェンジ",
+            "マジカルシャイン"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ルナアーラ",
+          "item": "こだわりメガネ",
+          "ability": "ファントムガード",
+          "tera_type": "フェアリー",
+          "moves": [
+            "シャドーレイ",
+            "サイコキネシス",
+            "ムーンフォース",
+            "トリック"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "グライオン",
+        "hp_percent": 56,
+        "status": "bench"
+      },
+      {
+        "name": "パオジアン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ルナアーラ",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: グライオン, パオジアン, バドレックス(こくば)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: テツノワダチ, ミライドン, ルナアーラ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→パオジアン",
+      "rebel_action": "交代→テツノワダチ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "181/181",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+とんぼがえり",
+      "rebel_action": "技: アイアンヘッド",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 78,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "142/181",
+        "dt_hp_pct": 78,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: とんぼがえり",
+      "rebel_action": "テラス+アイアンヘッド",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 84
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "191/191",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "152/179",
+        "rebel_hp_pct": 84
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 29
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "191/191",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "52/175",
+        "rebel_hp_pct": 29
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "技: ボルトチェンジ",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "191/191",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "212/212",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "交代→テツノワダチ",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp": "191/191",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "212/212",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: アストラルビット",
+      "rebel_action": "技: シャドーレイ",
+      "after": {
+        "dt_active": "バドレックス(こくば)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 7,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "ルナアーラ"
+    }
+  ]
+}

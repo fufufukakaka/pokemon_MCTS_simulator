@@ -1,0 +1,470 @@
+{
+  "match_id": 36,
+  "timestamp": "2026-01-30T15:11:17.177062",
+  "result": {
+    "match_id": 36,
+    "winner": "rebel",
+    "total_turns": 16,
+    "dt_team_name": "征け",
+    "rebel_team_name": "H.I.",
+    "dt_remaining": 0,
+    "rebel_remaining": 2,
+    "dt_think_time": 6.461398124694824,
+    "rebel_think_time": 11.135777711868286,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "征け",
+      "selection": [
+        2,
+        0,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "ステルスロック",
+            "ちょうはつ"
+          ],
+          "nature": "のんき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "ゴースト",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "テラバースト",
+            "ボルトチェンジ"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "パオジアン",
+          "item": "ラムのみ",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "でんき",
+          "moves": [
+            "つららおとし",
+            "テラバースト",
+            "ふいうち",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "H.I.",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "はがね",
+          "moves": [
+            "まもる",
+            "みがわり",
+            "どくどく",
+            "じしん"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "ラムのみ",
+          "ability": "マルチタイプ",
+          "tera_type": "ほのお",
+          "moves": [
+            "つるぎのまい",
+            "しんそく",
+            "くさむすび",
+            "じしん"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "コライドン",
+          "item": "いかさまダイス",
+          "ability": "ひひいろのこどう",
+          "tera_type": "はがね",
+          "moves": [
+            "スケイルショット",
+            "アクセルブレイク",
+            "つるぎのまい",
+            "アイアンヘッド"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "パオジアン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "グライオン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 48,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ランドロス(れいじゅう), ミライドン, パオジアン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: グライオン, アルセウス, コライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→パオジアン",
+      "rebel_action": "交代→グライオン",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "196/196",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "196/196",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 85,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "168/196",
+        "dt_hp_pct": 85,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 71,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "141/196",
+        "dt_hp_pct": 71,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 57,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "113/196",
+        "dt_hp_pct": 57,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 42,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "83/196",
+        "dt_hp_pct": 42,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 27,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "53/196",
+        "dt_hp_pct": 27,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 12,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "25/196",
+        "dt_hp_pct": 12,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "テラス+じしん",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 72,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 94
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "112/155",
+        "dt_hp_pct": 72,
+        "rebel_active": "グライオン",
+        "rebel_hp": "171/181",
+        "rebel_hp_pct": 94
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 43,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 88
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "67/155",
+        "dt_hp_pct": 43,
+        "rebel_active": "グライオン",
+        "rebel_hp": "160/181",
+        "rebel_hp_pct": 88
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 17,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "27/155",
+        "dt_hp_pct": 17,
+        "rebel_active": "グライオン",
+        "rebel_hp": "181/181",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp_pct": 95
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "205/205",
+        "dt_hp_pct": 100,
+        "rebel_active": "グライオン",
+        "rebel_hp": "173/181",
+        "rebel_hp_pct": 95
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "205/205",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 0,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 15,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "ミライドン"
+    }
+  ]
+}

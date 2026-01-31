@@ -1,0 +1,309 @@
+{
+  "match_id": 72,
+  "timestamp": "2026-01-30T15:22:47.868982",
+  "result": {
+    "match_id": 72,
+    "winner": "rebel",
+    "total_turns": 8,
+    "dt_team_name": "メモリア",
+    "rebel_team_name": "かずりょ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 9.581895112991333,
+    "rebel_think_time": 4.471343755722046,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "メモリア",
+      "selection": [
+        2,
+        5,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "ママンボウ",
+          "item": "とつげきチョッキ",
+          "ability": "さいせいりょく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "クイックターン",
+            "アクアジェット",
+            "こごえるかぜ",
+            "ミラーコート"
+          ],
+          "nature": "なまいき"
+        },
+        {
+          "name": "オオニューラ",
+          "item": "きあいのタスキ",
+          "ability": "どくしゅ",
+          "tera_type": "ステラ",
+          "moves": [
+            "フェイタルクロー",
+            "インファイト",
+            "ねこだまし",
+            "どくびし"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "チオンジェン",
+          "item": "たべのこし",
+          "ability": "わざわいのおふだ",
+          "tera_type": "みず",
+          "moves": [
+            "イカサマ",
+            "やどりぎのタネ",
+            "まもる",
+            "みがわり"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "かずりょ",
+      "selection": [
+        1,
+        0,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "コライドン",
+          "item": "こだわりハチマキ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "フェアリー",
+          "moves": [
+            "フレアドライブ",
+            "げきりん",
+            "インファイト",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ルナアーラ",
+          "item": "パワフルハーブ",
+          "ability": "ファントムガード",
+          "tera_type": "ノーマル",
+          "moves": [
+            "シャドーレイ",
+            "れいとうビーム",
+            "メテオビーム",
+            "トリックルーム"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "とつげきチョッキ",
+          "ability": "いかく",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "がんせきふうじ",
+            "じわれ"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ママンボウ",
+        "hp_percent": 33,
+        "status": "active"
+      },
+      {
+        "name": "オオニューラ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "チオンジェン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "コライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ルナアーラ",
+        "hp_percent": 91,
+        "status": "bench"
+      },
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 33,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ママンボウ, オオニューラ, チオンジェン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: コライドン, ルナアーラ, ランドロス(れいじゅう)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ママンボウ",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ママンボウ",
+        "dt_hp": "272/272",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "203/203",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+クイックターン",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "チオンジェン",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "チオンジェン",
+        "dt_hp": "192/192",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "203/203",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: イカサマ",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "203/203",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: フェイタルクロー",
+      "rebel_action": "交代→ルナアーラ",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 91
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "222/243",
+        "rebel_hp_pct": 91
+      },
+      "dt_action": "技: フェイタルクロー",
+      "rebel_action": "交代→ランドロス(れいじゅう)",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 66
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "129/195",
+        "rebel_hp_pct": 66
+      },
+      "dt_action": "技: フェイタルクロー",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 0,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "96/195",
+        "rebel_hp_pct": 49
+      },
+      "dt_action": "技: フェイタルクロー",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 33,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 8,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}
