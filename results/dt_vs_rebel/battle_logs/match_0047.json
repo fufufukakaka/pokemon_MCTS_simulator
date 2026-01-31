@@ -1,0 +1,449 @@
+{
+  "match_id": 47,
+  "timestamp": "2026-01-30T15:17:09.599190",
+  "result": {
+    "match_id": 47,
+    "winner": "rebel",
+    "total_turns": 15,
+    "dt_team_name": "こしのん",
+    "rebel_team_name": "ignite",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 19.233185052871704,
+    "rebel_think_time": 10.622868299484253,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "こしのん",
+      "selection": [
+        3,
+        5,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ハバタクカミ",
+          "item": "こだわりメガネ",
+          "ability": "こだいかっせい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "ムーンフォース",
+            "シャドーボール",
+            "パワージェム",
+            "ほろびのうた"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "テツノワダチ",
+          "item": "とつげきチョッキ",
+          "ability": "クォークチャージ",
+          "tera_type": "くさ",
+          "moves": [
+            "じしん",
+            "アイアンヘッド",
+            "はたきおとす",
+            "こうそくスピン"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "しんぴのしずく",
+          "ability": "マルチタイプ",
+          "tera_type": "でんき",
+          "moves": [
+            "ステルスロック",
+            "おにび",
+            "さばきのつぶて",
+            "じこさいせい"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "ignite",
+      "selection": [
+        1,
+        0,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "もののけプレート",
+          "ability": "じんばいったい",
+          "tera_type": "かくとう",
+          "moves": [
+            "アストラルビット",
+            "やどりぎのタネ",
+            "みがわり",
+            "テラバースト"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "アシッドボム",
+            "でんじは",
+            "じこさいせい"
+          ],
+          "nature": "おだやか"
+        },
+        {
+          "name": "ドオー",
+          "item": "オボンのみ",
+          "ability": "ちょすい",
+          "tera_type": "ゴースト",
+          "moves": [
+            "じしん",
+            "じこさいせい",
+            "どくどく",
+            "どくびし"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ハバタクカミ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 53,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 50,
+        "status": "active"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 66,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ハバタクカミ, テツノワダチ, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(こくば), アルセウス, ドオー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アルセウス",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "197/197",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+ムーンフォース",
+      "rebel_action": "交代→ドオー",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "185/237",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: ムーンフォース",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "237/237",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ムーンフォース",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 36,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "48/130",
+        "dt_hp_pct": 36,
+        "rebel_active": "ドオー",
+        "rebel_hp": "180/237",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: ムーンフォース",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 36,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "48/130",
+        "dt_hp_pct": 36,
+        "rebel_active": "ドオー",
+        "rebel_hp": "237/237",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ムーンフォース",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp_pct": 66
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "165/165",
+        "dt_hp_pct": 100,
+        "rebel_active": "ドオー",
+        "rebel_hp": "158/237",
+        "rebel_hp_pct": 66
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 73
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "165/165",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "166/227",
+        "rebel_hp_pct": 73
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "テラス+さばきのつぶて",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 72,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 47
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "119/165",
+        "dt_hp_pct": 72,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "108/227",
+        "rebel_hp_pct": 47
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 72,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "119/165",
+        "dt_hp_pct": 72,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "164/227",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 45,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "75/165",
+        "dt_hp_pct": 45,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "110/227",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 45,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "75/165",
+        "dt_hp_pct": 45,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "169/227",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 21,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノワダチ",
+        "dt_hp": "35/165",
+        "dt_hp_pct": 21,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "115/227",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "115/227",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 53,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 15,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

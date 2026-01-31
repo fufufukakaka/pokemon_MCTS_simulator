@@ -1,0 +1,669 @@
+{
+  "match_id": 39,
+  "timestamp": "2026-01-30T15:13:50.555331",
+  "result": {
+    "match_id": 39,
+    "winner": "rebel",
+    "total_turns": 26,
+    "dt_team_name": "都会の鼠",
+    "rebel_team_name": "藍二乘",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 43.95685052871704,
+    "rebel_think_time": 15.919750452041626,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "都会の鼠",
+      "selection": [
+        4,
+        3,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "カタストロフィ",
+            "がんせきふうじ",
+            "ヘビーボンバー"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ヒードラン",
+          "item": "ふうせん",
+          "ability": "もらいび",
+          "tera_type": "ひこう",
+          "moves": [
+            "マグマストーム",
+            "だいちのちから",
+            "まもる",
+            "ちょうはつ"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ひこう",
+          "moves": [
+            "さばきのつぶて",
+            "コスモパワー",
+            "ちょうはつ",
+            "じこさいせい"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "藍二乘",
+      "selection": [
+        3,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "キラフロル",
+          "item": "レッドカード",
+          "ability": "どくげしょう",
+          "tera_type": "じめん",
+          "moves": [
+            "キラースピン",
+            "だいちのちから",
+            "こらえる",
+            "ステルスロック"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "あおぞらプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ほのお",
+          "moves": [
+            "さばきのつぶて",
+            "めいそう",
+            "ちょうはつ",
+            "じこさいせい"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ザシアン(けんのおう)",
+          "item": "くちたけん",
+          "ability": "ふとうのけん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "きょじゅうざん",
+            "インファイト",
+            "くさわけ",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 39,
+        "status": "active"
+      },
+      {
+        "name": "ヒードラン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "キラフロル",
+        "hp_percent": 67,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 15,
+        "status": "active"
+      },
+      {
+        "name": "ザシアン(けんのおう)",
+        "hp_percent": 16,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, ヒードラン, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: キラフロル, アルセウス, ザシアン(けんのおう)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ヒードラン",
+      "rebel_action": "交代→キラフロル",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "251/251",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "189/189",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+だいちのちから",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 67
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "128/189",
+        "rebel_hp_pct": 67
+      },
+      "dt_action": "技: マグマストーム",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "130/223",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: マグマストーム",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "126/223",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: マグマストーム",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "126/223",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: マグマストーム",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 59
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "133/223",
+        "rebel_hp_pct": 59
+      },
+      "dt_action": "技: マグマストーム",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "126/223",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: マグマストーム",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 57
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "129/223",
+        "rebel_hp_pct": 57
+      },
+      "dt_action": "技: マグマストーム",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "124/223",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: マグマストーム",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "196/223",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: だいちのちから",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 79,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "157/197",
+        "dt_hp_pct": 79,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "169/223",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: だいちのちから",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 79,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "157/197",
+        "dt_hp_pct": 79,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "196/223",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: だいちのちから",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 61,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "121/197",
+        "dt_hp_pct": 61,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "196/223",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: だいちのちから",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 41,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "82/197",
+        "dt_hp_pct": 41,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "196/223",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: だいちのちから",
+      "rebel_action": "交代→ザシアン(けんのおう)",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 41,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒードラン",
+        "dt_hp": "82/197",
+        "dt_hp_pct": 41,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp": "109/187",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: ちょうはつ",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "223/223",
+        "dt_hp_pct": 100,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp": "109/187",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 65,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 16
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "145/223",
+        "dt_hp_pct": 65,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp": "31/187",
+        "rebel_hp_pct": 16
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 52,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 53
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "118/223",
+        "dt_hp_pct": 52,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "120/223",
+        "rebel_hp_pct": 53
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 5,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 15
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "13/223",
+        "dt_hp_pct": 5,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "35/223",
+        "rebel_hp_pct": 15
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 76,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 15
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "191/251",
+        "dt_hp_pct": 76,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "35/223",
+        "rebel_hp_pct": 15
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 68,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 15
+      }
+    },
+    {
+      "turn": 22,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "171/251",
+        "dt_hp_pct": 68,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "35/223",
+        "rebel_hp_pct": 15
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 60,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 15
+      }
+    },
+    {
+      "turn": 23,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "153/251",
+        "dt_hp_pct": 60,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "35/223",
+        "rebel_hp_pct": 15
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 52,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 15
+      }
+    },
+    {
+      "turn": 24,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "133/251",
+        "dt_hp_pct": 52,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "35/223",
+        "rebel_hp_pct": 15
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: めいそう",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 52,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 15
+      }
+    },
+    {
+      "turn": 25,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "133/251",
+        "dt_hp_pct": 52,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "35/223",
+        "rebel_hp_pct": 15
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 39,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 15
+      }
+    },
+    {
+      "turn": 26,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

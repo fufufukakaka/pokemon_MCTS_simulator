@@ -1,0 +1,470 @@
+{
+  "match_id": 46,
+  "timestamp": "2026-01-30T15:16:37.490029",
+  "result": {
+    "match_id": 46,
+    "winner": "dt",
+    "total_turns": 16,
+    "dt_team_name": "れんたん♪",
+    "rebel_team_name": "シンフォニア",
+    "dt_remaining": 1,
+    "rebel_remaining": 0,
+    "dt_think_time": 8.551816701889038,
+    "rebel_think_time": 8.685028314590454,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "れんたん♪",
+      "selection": [
+        3,
+        2,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "オオニューラ",
+          "item": "きあいのタスキ",
+          "ability": "かるわざ",
+          "tera_type": "ゴースト",
+          "moves": [
+            "フェイタルクロー",
+            "インファイト",
+            "じごくづき",
+            "どくびし"
+          ],
+          "nature": "やんちゃ"
+        },
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "カタストロフィ",
+            "ステルスロック",
+            "ふきとばし",
+            "ちょうはつ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ミミッキュ",
+          "item": "こだわりスカーフ",
+          "ability": "ばけのかわ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じゃれつく",
+            "のろい",
+            "トリック",
+            "みちづれ"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "シンフォニア",
+      "selection": [
+        1,
+        0,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりメガネ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "ドレインキッス",
+            "くさむすび"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "フレアドライブ",
+            "とんぼがえり",
+            "げきりん",
+            "インファイト"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "オボンのみ",
+          "ability": "いかく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "ちょうはつ",
+            "ステルスロック"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "オオニューラ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミミッキュ",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: オオニューラ, ディンルー, ミミッキュ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(こくば), コライドン, ランドロス(れいじゅう)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→オオニューラ",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+フェイタルクロー",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 0,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 62
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "120/191",
+        "rebel_hp_pct": 62
+      },
+      "dt_action": "技: フェイタルクロー",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 24
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "46/191",
+        "rebel_hp_pct": 24
+      },
+      "dt_action": "技: カタストロフィ",
+      "rebel_action": "交代→ランドロス(れいじゅう)",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "195/195",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: カタストロフィ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 76,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "200/261",
+        "dt_hp_pct": 76,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "98/195",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: カタストロフィ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 52,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "137/261",
+        "dt_hp_pct": 52,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "97/195",
+        "rebel_hp_pct": 49
+      },
+      "dt_action": "技: カタストロフィ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 54,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 25
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "142/261",
+        "dt_hp_pct": 54,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "49/195",
+        "rebel_hp_pct": 25
+      },
+      "dt_action": "技: カタストロフィ",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 54,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "142/261",
+        "dt_hp_pct": 54,
+        "rebel_active": "コライドン",
+        "rebel_hp": "88/175",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: カタストロフィ",
+      "rebel_action": "技: フレアドライブ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 4,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 14
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "13/261",
+        "dt_hp_pct": 4,
+        "rebel_active": "コライドン",
+        "rebel_hp": "26/175",
+        "rebel_hp_pct": 14
+      },
+      "dt_action": "技: カタストロフィ",
+      "rebel_action": "技: フレアドライブ",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "22/175",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "交代→ランドロス(れいじゅう)",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "1/195",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "22/175",
+        "rebel_hp_pct": 12
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "テラス+げきりん",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "1/175",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "SKIP",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 24
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "130/130",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "46/191",
+        "rebel_hp_pct": 24
+      },
+      "dt_action": "技: じゃれつく",
+      "rebel_action": "技: サイコキネシス",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 15,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "バドレックス(こくば)"
+    }
+  ]
+}

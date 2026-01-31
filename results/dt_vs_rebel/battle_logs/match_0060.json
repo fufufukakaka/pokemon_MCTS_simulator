@@ -1,0 +1,229 @@
+{
+  "match_id": 60,
+  "timestamp": "2026-01-30T15:19:46.027112",
+  "result": {
+    "match_id": 60,
+    "winner": "rebel",
+    "total_turns": 4,
+    "dt_team_name": "こばちぇ",
+    "rebel_team_name": "SCR",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 3.188697099685669,
+    "rebel_think_time": 1.3295302391052246,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "こばちぇ",
+      "selection": [
+        0,
+        5,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "グラードン",
+          "item": "とつげきチョッキ",
+          "ability": "ひでり",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "テラバースト",
+            "かみくだく",
+            "じわれ"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ボーマンダ",
+          "item": "するどいくちばし",
+          "ability": "いかく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ダブルウイング",
+            "じしん",
+            "ストーンエッジ",
+            "りゅうのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "チオンジェン",
+          "item": "ゴツゴツメット",
+          "ability": "わざわいのおふだ",
+          "tera_type": "あく",
+          "moves": [
+            "イカサマ",
+            "カタストロフィ",
+            "ちょうはつ",
+            "やどりぎのタネ"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "SCR",
+      "selection": [
+        0,
+        1,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(はくば)",
+          "item": "こだわりハチマキ",
+          "ability": "じんばいったい",
+          "tera_type": "こおり",
+          "moves": [
+            "ブリザードランス",
+            "つららばり",
+            "しねんのずつき",
+            "10まんばりき"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "いかずちプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "トリックルーム",
+            "いやしのねがい"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ミミッキュ",
+          "item": "こだわりスカーフ",
+          "ability": "ばけのかわ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "トリック",
+            "かげうち",
+            "のろい",
+            "みちづれ"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "グラードン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ボーマンダ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "チオンジェン",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(はくば)",
+        "hp_percent": 41,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ミミッキュ",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: グラードン, ボーマンダ, チオンジェン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(はくば), アルセウス, ミミッキュ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→グラードン",
+      "rebel_action": "交代→バドレックス(はくば)",
+      "after": {
+        "dt_active": "グラードン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グラードン",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+ブリザードランス",
+      "after": {
+        "dt_active": "ボーマンダ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 68
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ボーマンダ",
+        "dt_hp": "170/170",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "141/207",
+        "rebel_hp_pct": 68
+      },
+      "dt_action": "技: ダブルウイング",
+      "rebel_action": "技: ブリザードランス",
+      "after": {
+        "dt_active": "チオンジェン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 41
+      }
+    },
+    {
+      "turn": 4,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

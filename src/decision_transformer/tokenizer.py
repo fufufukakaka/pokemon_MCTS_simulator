@@ -380,7 +380,9 @@ class BattleSequenceTokenizer:
 
         # 選出した Pokemon（先発を最初に）
         # lead_index を先頭に移動
-        ordered_selection = [lead_index] + [i for i in selected_indices if i != lead_index]
+        ordered_selection = [lead_index] + [
+            i for i in selected_indices if i != lead_index
+        ]
 
         for idx in ordered_selection[:3]:
             # Pokemon ID は preview で既にエンコード済みなので、
@@ -495,7 +497,9 @@ class BattleSequenceTokenizer:
 
         # Terastallized flag
         # Pokemon: terastal, PokemonState/ObservedPokemonState: terastallized
-        terastallized = getattr(pokemon, "terastallized", None) or getattr(pokemon, "terastal", None)
+        terastallized = getattr(pokemon, "terastallized", None) or getattr(
+            pokemon, "terastal", None
+        )
         if terastallized:
             features.append(1.0)
         else:
@@ -503,7 +507,9 @@ class BattleSequenceTokenizer:
 
         # Tera type (index, normalized)
         # Pokemon: Ttype, PokemonState/ObservedPokemonState: tera_type
-        tera_type = getattr(pokemon, "tera_type", None) or getattr(pokemon, "Ttype", None)
+        tera_type = getattr(pokemon, "tera_type", None) or getattr(
+            pokemon, "Ttype", None
+        )
         if tera_type:
             tera_idx = TYPE_TO_IDX.get(tera_type, 0)
             features.append(tera_idx / 19.0)  # Normalize
@@ -608,7 +614,12 @@ class BattleSequenceTokenizer:
         else:
             # 自分: 全技を使用
             # 属性名: move (Pokemon), moves (PokemonState), revealed_moves (ObservedPokemonState)
-            moves = getattr(pokemon, "moves", None) or getattr(pokemon, "move", None) or getattr(pokemon, "revealed_moves", None) or []
+            moves = (
+                getattr(pokemon, "moves", None)
+                or getattr(pokemon, "move", None)
+                or getattr(pokemon, "revealed_moves", None)
+                or []
+            )
 
         # Move IDs (4 slots * 2 = 8 dims)
         for i in range(4):
@@ -649,7 +660,9 @@ class BattleSequenceTokenizer:
         if is_opponent and revealed_item is not None:
             item = revealed_item if revealed_item else None
         else:
-            item = getattr(pokemon, "item", None) or getattr(pokemon, "revealed_item", None)
+            item = getattr(pokemon, "item", None) or getattr(
+                pokemon, "revealed_item", None
+            )
 
         if item:
             item_id = self.battle_vocab.get_item_id(item)
@@ -664,7 +677,9 @@ class BattleSequenceTokenizer:
         if is_opponent and revealed_ability is not None:
             ability = revealed_ability if revealed_ability else None
         else:
-            ability = getattr(pokemon, "ability", None) or getattr(pokemon, "revealed_ability", None)
+            ability = getattr(pokemon, "ability", None) or getattr(
+                pokemon, "revealed_ability", None
+            )
 
         if ability:
             ability_id = self.battle_vocab.get_ability_id(ability)
@@ -685,6 +700,7 @@ class BattleSequenceTokenizer:
         """
         try:
             from src.pokemon_battle_sim.pokemon import Pokemon
+
             if move_name and move_name in Pokemon.all_moves:
                 return Pokemon.all_moves[move_name]
         except (ImportError, AttributeError):
@@ -878,19 +894,27 @@ class BattleSequenceTokenizer:
         opp_pokemon = battle.pokemon[1 - player]
 
         # 自分のポケモン: 全情報を使用
-        my_state = self.encode_pokemon_state(
-            my_pokemon,
-            is_opponent=False,
-        ) if my_pokemon else torch.zeros(config.pokemon_state_dim)
+        my_state = (
+            self.encode_pokemon_state(
+                my_pokemon,
+                is_opponent=False,
+            )
+            if my_pokemon
+            else torch.zeros(config.pokemon_state_dim)
+        )
 
         # 相手のポケモン: 観測情報のみ使用
-        opp_state = self.encode_pokemon_state(
-            opp_pokemon,
-            revealed_moves=opp_revealed_moves,
-            revealed_item=opp_revealed_item,
-            revealed_ability=opp_revealed_ability,
-            is_opponent=True,
-        ) if opp_pokemon else torch.zeros(config.pokemon_state_dim)
+        opp_state = (
+            self.encode_pokemon_state(
+                opp_pokemon,
+                revealed_moves=opp_revealed_moves,
+                revealed_item=opp_revealed_item,
+                revealed_ability=opp_revealed_ability,
+                is_opponent=True,
+            )
+            if opp_pokemon
+            else torch.zeros(config.pokemon_state_dim)
+        )
 
         field_state = self.encode_field_state(battle)
 
@@ -910,7 +934,9 @@ class BattleSequenceTokenizer:
         pos += 1
 
         # action_token_positions を更新
-        action_positions = context.get("action_token_positions", torch.tensor([], dtype=torch.long)).tolist()
+        action_positions = context.get(
+            "action_token_positions", torch.tensor([], dtype=torch.long)
+        ).tolist()
         action_positions.append(action_position)
 
         result = {
@@ -962,7 +988,7 @@ class BattleSequenceTokenizer:
             state_features_list = context["state_features"].tolist()
 
         pos = len(tokens)
-        turn = turn_state.turn
+        turn = max(0, turn_state.turn)  # 負のターン番号は0にクランプ
 
         # [TURN] トークン
         tokens.append(config.turn_token_id)
@@ -981,15 +1007,23 @@ class BattleSequenceTokenizer:
         rtg_values_list.append(rtg)
 
         # 状態特徴量を構築（TurnState から）
-        my_state = self.encode_pokemon_state(
-            turn_state.my_active,
-            is_opponent=False,
-        ) if turn_state.my_active else torch.zeros(config.pokemon_state_dim)
+        my_state = (
+            self.encode_pokemon_state(
+                turn_state.my_active,
+                is_opponent=False,
+            )
+            if turn_state.my_active
+            else torch.zeros(config.pokemon_state_dim)
+        )
 
-        opp_state = self.encode_pokemon_state(
-            turn_state.opp_active,
-            is_opponent=True,
-        ) if turn_state.opp_active else torch.zeros(config.pokemon_state_dim)
+        opp_state = (
+            self.encode_pokemon_state(
+                turn_state.opp_active,
+                is_opponent=True,
+            )
+            if turn_state.opp_active
+            else torch.zeros(config.pokemon_state_dim)
+        )
 
         # フィールド状態
         field_features = self._encode_field_state_from_data(turn_state.field_state)
@@ -1010,7 +1044,9 @@ class BattleSequenceTokenizer:
         pos += 1
 
         # action_token_positions を更新
-        action_positions = context.get("action_token_positions", torch.tensor([], dtype=torch.long)).tolist()
+        action_positions = context.get(
+            "action_token_positions", torch.tensor([], dtype=torch.long)
+        ).tolist()
         action_positions.append(action_position)
 
         return {
@@ -1051,25 +1087,71 @@ class BattleSequenceTokenizer:
         features.append(field_state.gravity / 5.0 if field_state.gravity else 0.0)
 
         # Screens for both players (4): reflector, light_screen
-        features.append(field_state.reflector[0] / 5.0 if field_state.reflector else 0.0)
-        features.append(field_state.reflector[1] / 5.0 if field_state.reflector and len(field_state.reflector) > 1 else 0.0)
-        features.append(field_state.light_screen[0] / 5.0 if field_state.light_screen else 0.0)
-        features.append(field_state.light_screen[1] / 5.0 if field_state.light_screen and len(field_state.light_screen) > 1 else 0.0)
+        features.append(
+            field_state.reflector[0] / 5.0 if field_state.reflector else 0.0
+        )
+        features.append(
+            field_state.reflector[1] / 5.0
+            if field_state.reflector and len(field_state.reflector) > 1
+            else 0.0
+        )
+        features.append(
+            field_state.light_screen[0] / 5.0 if field_state.light_screen else 0.0
+        )
+        features.append(
+            field_state.light_screen[1] / 5.0
+            if field_state.light_screen and len(field_state.light_screen) > 1
+            else 0.0
+        )
 
         # Tailwind (2)
-        features.append(1.0 if field_state.tailwind and field_state.tailwind[0] > 0 else 0.0)
-        features.append(1.0 if field_state.tailwind and len(field_state.tailwind) > 1 and field_state.tailwind[1] > 0 else 0.0)
+        features.append(
+            1.0 if field_state.tailwind and field_state.tailwind[0] > 0 else 0.0
+        )
+        features.append(
+            1.0
+            if field_state.tailwind
+            and len(field_state.tailwind) > 1
+            and field_state.tailwind[1] > 0
+            else 0.0
+        )
 
         # Entry hazards (8)
-        features.append(1.0 if field_state.stealth_rock and field_state.stealth_rock[0] else 0.0)
+        features.append(
+            1.0 if field_state.stealth_rock and field_state.stealth_rock[0] else 0.0
+        )
         features.append(field_state.spikes[0] / 3.0 if field_state.spikes else 0.0)
-        features.append(field_state.toxic_spikes[0] / 2.0 if field_state.toxic_spikes else 0.0)
-        features.append(1.0 if field_state.sticky_web and field_state.sticky_web[0] else 0.0)
+        features.append(
+            field_state.toxic_spikes[0] / 2.0 if field_state.toxic_spikes else 0.0
+        )
+        features.append(
+            1.0 if field_state.sticky_web and field_state.sticky_web[0] else 0.0
+        )
 
-        features.append(1.0 if field_state.stealth_rock and len(field_state.stealth_rock) > 1 and field_state.stealth_rock[1] else 0.0)
-        features.append(field_state.spikes[1] / 3.0 if field_state.spikes and len(field_state.spikes) > 1 else 0.0)
-        features.append(field_state.toxic_spikes[1] / 2.0 if field_state.toxic_spikes and len(field_state.toxic_spikes) > 1 else 0.0)
-        features.append(1.0 if field_state.sticky_web and len(field_state.sticky_web) > 1 and field_state.sticky_web[1] else 0.0)
+        features.append(
+            1.0
+            if field_state.stealth_rock
+            and len(field_state.stealth_rock) > 1
+            and field_state.stealth_rock[1]
+            else 0.0
+        )
+        features.append(
+            field_state.spikes[1] / 3.0
+            if field_state.spikes and len(field_state.spikes) > 1
+            else 0.0
+        )
+        features.append(
+            field_state.toxic_spikes[1] / 2.0
+            if field_state.toxic_spikes and len(field_state.toxic_spikes) > 1
+            else 0.0
+        )
+        features.append(
+            1.0
+            if field_state.sticky_web
+            and len(field_state.sticky_web) > 1
+            and field_state.sticky_web[1]
+            else 0.0
+        )
 
         return torch.tensor(features, dtype=torch.float)
 
@@ -1097,7 +1179,9 @@ class BattleSequenceTokenizer:
         timesteps = context["timestep_ids"].tolist()
         segments = context["segment_ids"].tolist()
         rtg_values_list = context["rtg_values"].tolist()
-        state_features_list = context["state_features"].tolist() if "state_features" in context else []
+        state_features_list = (
+            context["state_features"].tolist() if "state_features" in context else []
+        )
 
         pos = len(tokens)
 
@@ -1127,7 +1211,9 @@ class BattleSequenceTokenizer:
         }
 
         if state_features_list:
-            result["state_features"] = torch.tensor(state_features_list, dtype=torch.float)
+            result["state_features"] = torch.tensor(
+                state_features_list, dtype=torch.float
+            )
 
         return result
 
@@ -1163,7 +1249,9 @@ class BattleSequenceTokenizer:
         # Config は別途保存（config.py で管理）
 
     @classmethod
-    def load(cls, path: Path, config: Optional[PokemonBattleTransformerConfig] = None) -> "BattleSequenceTokenizer":
+    def load(
+        cls, path: Path, config: Optional[PokemonBattleTransformerConfig] = None
+    ) -> "BattleSequenceTokenizer":
         """トークナイザをロード"""
         path = Path(path)
         config = config or PokemonBattleTransformerConfig()
@@ -1171,4 +1259,6 @@ class BattleSequenceTokenizer:
         pokemon_vocab = PokemonVocab.load(path / "pokemon_vocab.json")
         battle_vocab = BattleVocab.load(path / "battle_vocab.json")
 
-        return cls(config=config, pokemon_vocab=pokemon_vocab, battle_vocab=battle_vocab)
+        return cls(
+            config=config, pokemon_vocab=pokemon_vocab, battle_vocab=battle_vocab
+        )

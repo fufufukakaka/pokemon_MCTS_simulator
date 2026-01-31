@@ -1,0 +1,330 @@
+{
+  "match_id": 41,
+  "timestamp": "2026-01-30T15:14:45.623277",
+  "result": {
+    "match_id": 41,
+    "winner": "rebel",
+    "total_turns": 9,
+    "dt_team_name": "Meteorstream",
+    "rebel_team_name": "Bαrön",
+    "dt_remaining": 0,
+    "rebel_remaining": 3,
+    "dt_think_time": 14.705865859985352,
+    "rebel_think_time": 4.948519468307495,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "Meteorstream",
+      "selection": [
+        3,
+        4,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "キノガッサ",
+          "item": "きあいのタスキ",
+          "ability": "テクニシャン",
+          "tera_type": "ゴースト",
+          "moves": [
+            "タネマシンガン",
+            "マッハパンチ",
+            "キノコのほうし",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ディンルー",
+          "item": "メンタルハーブ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "ひこう",
+          "moves": [
+            "ねむる",
+            "ちょうはつ",
+            "うらみ",
+            "くろいまなざし"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ひこう",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "トリックルーム",
+            "いやしのねがい"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "Bαrön",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "ほのお",
+          "moves": [
+            "じしん",
+            "がんせきふうじ",
+            "テラバースト",
+            "カタストロフィ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(はくば)",
+          "item": "たべのこし",
+          "ability": "じんばいったい",
+          "tera_type": "どく",
+          "moves": [
+            "ブリザードランス",
+            "やどりぎのタネ",
+            "みがわり",
+            "トリックルーム"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ミライドン",
+          "item": "きあいのタスキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "でんき",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "ちょうはつ",
+            "ミラーコート"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "キノガッサ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 32,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(はくば)",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: キノガッサ, ディンルー, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, バドレックス(はくば), ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→キノガッサ",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "キノガッサ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キノガッサ",
+        "dt_hp": "135/135",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "256/256",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+タネマシンガン",
+      "rebel_action": "テラス+テラバースト",
+      "after": {
+        "dt_active": "キノガッサ",
+        "dt_hp_pct": 41,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 81
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キノガッサ",
+        "dt_hp": "56/135",
+        "dt_hp_pct": 41,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "208/256",
+        "rebel_hp_pct": 81
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 68
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "176/256",
+        "rebel_hp_pct": 68
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "114/227",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "149/256",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 25,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 47
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "57/227",
+        "dt_hp_pct": 25,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "122/256",
+        "rebel_hp_pct": 47
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "84/256",
+        "rebel_hp_pct": 32
+      },
+      "dt_action": "技: ねむる",
+      "rebel_action": "交代→バドレックス(はくば)",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ねむる",
+      "rebel_action": "技: ブリザードランス",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 0,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "ディンルー"
+    }
+  ]
+}

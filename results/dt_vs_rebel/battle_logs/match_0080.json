@@ -1,0 +1,229 @@
+{
+  "match_id": 80,
+  "timestamp": "2026-01-30T15:25:03.756466",
+  "result": {
+    "match_id": 80,
+    "winner": "rebel",
+    "total_turns": 4,
+    "dt_team_name": "エム",
+    "rebel_team_name": "シンシア",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 1.8531849384307861,
+    "rebel_think_time": 1.8974175453186035,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "エム",
+      "selection": [
+        3,
+        4,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "セグレイブ",
+          "item": "いかさまダイス",
+          "ability": "ねつこうかん",
+          "tera_type": "はがね",
+          "moves": [
+            "スケイルショット",
+            "つららばり",
+            "こおりのつぶて",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "テツノワダチ",
+          "item": "ブーストエナジー",
+          "ability": "クォークチャージ",
+          "tera_type": "くさ",
+          "moves": [
+            "じしん",
+            "はたきおとす",
+            "がむしゃら",
+            "ステルスロック"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ラウドボーン",
+          "item": "あつぞこブーツ",
+          "ability": "てんねん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "フレアソング",
+            "シャドーボール",
+            "なまける",
+            "アンコール"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "シンシア",
+      "selection": [
+        5,
+        0,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ノーマル",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "からげんき",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "パワフルハーブ",
+          "ability": "プレッシャー",
+          "tera_type": "ほのお",
+          "moves": [
+            "ダイマックスほう",
+            "メテオビーム",
+            "かえんほうしゃ",
+            "こうそくいどう"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "くさ",
+          "moves": [
+            "じしん",
+            "カタストロフィ",
+            "テラバースト",
+            "ヘビーボンバー"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "セグレイブ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ラウドボーン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 38,
+        "status": "active"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: セグレイブ, テツノワダチ, ラウドボーン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), ムゲンダイナ, ディンルー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→セグレイブ",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "セグレイブ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "セグレイブ",
+        "dt_hp": "191/191",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "195/195",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+スケイルショット",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 38
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "75/195",
+        "rebel_hp_pct": 38
+      },
+      "dt_action": "技: フレアソング",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "テツノワダチ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 38
+      }
+    },
+    {
+      "turn": 4,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

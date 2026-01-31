@@ -1,0 +1,269 @@
+{
+  "match_id": 93,
+  "timestamp": "2026-01-30T15:31:32.866335",
+  "result": {
+    "match_id": 93,
+    "winner": "rebel",
+    "total_turns": 6,
+    "dt_team_name": "あめみや",
+    "rebel_team_name": "コトキ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 1.5944468975067139,
+    "rebel_think_time": 2.7691779136657715,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "あめみや",
+      "selection": [
+        2,
+        4,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ヘイラッシャ",
+          "item": "たべのこし",
+          "ability": "てんねん",
+          "tera_type": "はがね",
+          "moves": [
+            "ウェーブタックル",
+            "じわれ",
+            "ねむる",
+            "まもる"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ベトベトン",
+          "item": "くろいヘドロ",
+          "ability": "どくしゅ",
+          "tera_type": "どく",
+          "moves": [
+            "どくどくのキバ",
+            "はたきおとす",
+            "かげうち",
+            "まもる"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ドオー",
+          "item": "オボンのみ",
+          "ability": "ちょすい",
+          "tera_type": "ゴースト",
+          "moves": [
+            "じしん",
+            "どくどく",
+            "じこさいせい",
+            "まもる"
+          ],
+          "nature": "なまいき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "コトキ",
+      "selection": [
+        4,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "ひかりのこな",
+          "ability": "じんばいったい",
+          "tera_type": "かくとう",
+          "moves": [
+            "アストラルビット",
+            "テラバースト",
+            "やどりぎのタネ",
+            "みがわり"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ラビフット",
+          "item": "きあいのタスキ",
+          "ability": "もうか",
+          "tera_type": "かくとう",
+          "moves": [
+            "ローキック",
+            "カウンター",
+            "きしかいせい",
+            "とんぼがえり"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "カイリュー",
+          "item": "こだわりハチマキ",
+          "ability": "せいしんりょく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "げきりん",
+            "じしん",
+            "からげんき"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ヘイラッシャ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ベトベトン",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 17,
+        "status": "active"
+      },
+      {
+        "name": "ラビフット",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "カイリュー",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ヘイラッシャ, ベトベトン, ドオー"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(こくば), ラビフット, カイリュー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ドオー",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+ウェーブタックル",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 16,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "43/257",
+        "dt_hp_pct": 16,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "88/175",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: ウェーブタックル",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "88/175",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 42,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 17
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "101/237",
+        "dt_hp_pct": 42,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "30/175",
+        "rebel_hp_pct": 17
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ベトベトン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 17
+      }
+    },
+    {
+      "turn": 6,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

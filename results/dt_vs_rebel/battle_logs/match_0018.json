@@ -1,0 +1,329 @@
+{
+  "match_id": 18,
+  "timestamp": "2026-01-30T15:00:46.317721",
+  "result": {
+    "match_id": 18,
+    "winner": "rebel",
+    "total_turns": 9,
+    "dt_team_name": "無人島",
+    "rebel_team_name": "あたか",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 10.856171369552612,
+    "rebel_think_time": 5.333495855331421,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "無人島",
+      "selection": [
+        3,
+        4,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "アローラベトベトン",
+          "item": "くろいヘドロ",
+          "ability": "どくしゅ",
+          "tera_type": "どく",
+          "moves": [
+            "はたきおとす",
+            "まもる",
+            "どくどくのキバ",
+            "クリアスモッグ"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "ステルスロック",
+            "まきびし",
+            "ふきとばし",
+            "じしん"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ルギア",
+          "item": "たべのこし",
+          "ability": "プレッシャー",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ふきとばし",
+            "じこさいせい",
+            "みがわり",
+            "サイコノイズ"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "あたか",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "こだわりハチマキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "じしん",
+            "ヘビーボンバー",
+            "ストーンエッジ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "くさ",
+          "moves": [
+            "アストラルビット",
+            "アンコール",
+            "くさむすび",
+            "わるだくみ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "シルクのスカーフ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "つるぎのまい",
+            "しんそく",
+            "すてみタックル",
+            "シャドークロー"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "アローラベトベトン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ルギア",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 37,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 51,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: アローラベトベトン, ディンルー, ルギア"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, バドレックス(こくば), アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アローラベトベトン",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp": "212/212",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "231/231",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+はたきおとす",
+      "rebel_action": "技: ヘビーボンバー",
+      "after": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp_pct": 41,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 88
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp": "89/212",
+        "dt_hp_pct": 41,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "204/231",
+        "rebel_hp_pct": 88
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: ストーンエッジ",
+      "after": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp_pct": 14,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 69
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp": "31/212",
+        "dt_hp_pct": 14,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "160/231",
+        "rebel_hp_pct": 69
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: ヘビーボンバー",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "114/231",
+        "rebel_hp_pct": 49
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 70,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 37
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "181/257",
+        "dt_hp_pct": 70,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "86/231",
+        "rebel_hp_pct": 37
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "181/257",
+        "dt_hp_pct": 70,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "196/223",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "テラス+すてみタックル",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 38,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 66
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "99/257",
+        "dt_hp_pct": 38,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "148/223",
+        "rebel_hp_pct": 66
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: すてみタックル",
+      "after": {
+        "dt_active": "ルギア",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 51
+      }
+    },
+    {
+      "turn": 9,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

@@ -1,0 +1,289 @@
+{
+  "match_id": 85,
+  "timestamp": "2026-01-30T15:26:43.931644",
+  "result": {
+    "match_id": 85,
+    "winner": "rebel",
+    "total_turns": 7,
+    "dt_team_name": "みすず",
+    "rebel_team_name": "ヘウォン",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 5.799214839935303,
+    "rebel_think_time": 3.1914830207824707,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "みすず",
+      "selection": [
+        3,
+        5,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ブリジュラス",
+          "item": "おんみつマント",
+          "ability": "じきゅうりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "りゅうせいぐん",
+            "ボディプレス",
+            "イカサマ",
+            "でんじは"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ドオー",
+          "item": "オボンのみ",
+          "ability": "てんねん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じしん",
+            "どくどく",
+            "じこさいせい",
+            "カウンター"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "マジカルシャイン",
+            "ボルトチェンジ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "ヘウォン",
+      "selection": [
+        4,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "カタストロフィ",
+            "しっぺがえし",
+            "ヘビーボンバー"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ルナアーラ",
+          "item": "パワフルハーブ",
+          "ability": "ファントムガード",
+          "tera_type": "ノーマル",
+          "moves": [
+            "メテオビーム",
+            "トリックルーム",
+            "シャドーレイ",
+            "れいとうビーム"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりハチマキ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "フェアリー",
+          "moves": [
+            "フレアドライブ",
+            "インファイト",
+            "げきりん",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ブリジュラス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 7,
+        "status": "active"
+      },
+      {
+        "name": "ルナアーラ",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ブリジュラス, ドオー, ミライドン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, ルナアーラ, コライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ブリジュラス",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "193/193",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "251/251",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+りゅうせいぐん",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 83
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "97/193",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "209/251",
+        "rebel_hp_pct": 83
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "テラス+ヘビーボンバー",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 11,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "23/193",
+        "dt_hp_pct": 11,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "198/251",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "203/203",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "190/251",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ミライドン",
+        "dt_hp_pct": 19,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 43
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミライドン",
+        "dt_hp": "39/203",
+        "dt_hp_pct": 19,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "108/251",
+        "rebel_hp_pct": 43
+      },
+      "dt_action": "技: イナズマドライブ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 7
+      }
+    },
+    {
+      "turn": 7,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

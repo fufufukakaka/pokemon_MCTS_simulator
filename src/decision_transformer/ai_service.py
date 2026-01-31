@@ -174,9 +174,14 @@ class DecisionTransformerAI:
             )
 
             # 先発を先頭にして返す
-            result = [selected[lead_idx]] + [
-                s for i, s in enumerate(selected) if i != lead_idx
-            ]
+            # lead_idx はチーム全体（6匹）のインデックス
+            # selected は選出した3匹のチームインデックスのリスト
+            if lead_idx in selected:
+                # lead_idx が選出に含まれている場合、先頭に移動
+                result = [lead_idx] + [s for s in selected if s != lead_idx]
+            else:
+                # lead_idx が選出に含まれていない場合（異常ケース）、そのまま返す
+                result = selected
 
             # コンテキストを初期化
             for player in [0, 1]:
@@ -210,14 +215,10 @@ class DecisionTransformerAI:
         try:
             # 簡易チェック：残りポケモン
             my_remaining = sum(
-                1
-                for p in battle.selected[player]
-                if p is not None and p.hp > 0
+                1 for p in battle.selected[player] if p is not None and p.hp > 0
             )
             opp_remaining = sum(
-                1
-                for p in battle.selected[1 - player]
-                if p is not None and p.hp > 0
+                1 for p in battle.selected[1 - player] if p is not None and p.hp > 0
             )
 
             if my_remaining == 0:
@@ -226,7 +227,10 @@ class DecisionTransformerAI:
             if my_remaining == 1 and opp_remaining >= 3:
                 # 1匹 vs 3匹以上、勝率推定してみる
                 analysis = self.get_analysis(battle, player)
-                if analysis["available"] and analysis["value"] < self.config.surrender_threshold:
+                if (
+                    analysis["available"]
+                    and analysis["value"] < self.config.surrender_threshold
+                ):
                     return True
 
             return False
@@ -347,9 +351,7 @@ class DecisionTransformerAI:
             )
             return random.choice(available)
 
-    def _create_mcts_context(
-        self, battle: Battle, player: int
-    ) -> BattleContext:
+    def _create_mcts_context(self, battle: Battle, player: int) -> BattleContext:
         """MCTS用のコンテキストを作成"""
         local_ctx = self._get_or_create_context(battle, player)
 
@@ -522,9 +524,7 @@ class DecisionTransformerAI:
 
         return analysis
 
-    def _get_or_create_context(
-        self, battle: Battle, player: int
-    ) -> LocalBattleContext:
+    def _get_or_create_context(self, battle: Battle, player: int) -> LocalBattleContext:
         """コンテキストを取得または作成"""
         opponent = 1 - player
 
@@ -568,11 +568,27 @@ class DecisionTransformerAI:
     ) -> None:
         """場に出た時に発動する特性を検出"""
         instant_abilities = {
-            "いかく", "ひでり", "あめふらし", "すなおこし", "ゆきふらし",
-            "エレキメイカー", "グラスメイカー", "ミストメイカー", "サイコメイカー",
-            "おみとおし", "かたやぶり", "ダウンロード", "トレース", "よちむ",
-            "こだいかっせい", "クォークチャージ", "ひひいろのこどう",
-            "わざわいのうつわ", "わざわいのつるぎ", "わざわいのおふだ", "わざわいのたま",
+            "いかく",
+            "ひでり",
+            "あめふらし",
+            "すなおこし",
+            "ゆきふらし",
+            "エレキメイカー",
+            "グラスメイカー",
+            "ミストメイカー",
+            "サイコメイカー",
+            "おみとおし",
+            "かたやぶり",
+            "ダウンロード",
+            "トレース",
+            "よちむ",
+            "こだいかっせい",
+            "クォークチャージ",
+            "ひひいろのこどう",
+            "わざわいのうつわ",
+            "わざわいのつるぎ",
+            "わざわいのおふだ",
+            "わざわいのたま",
         }
         ability = pokemon.ability or ""
         if ability in instant_abilities:
@@ -606,10 +622,12 @@ class DecisionTransformerAI:
         # 選出があれば追加
         if context.selection:
             selection_encoded = self.tokenizer.encode_selection(
-                selection=context.selection,
-                lead_idx=context.lead_idx,
+                selected_indices=context.selection,
+                lead_index=context.lead_idx,
+                context=encoded,
+                rtg=self.config.target_return,
             )
-            encoded = self._concat_encoded(encoded, selection_encoded)
+            encoded = selection_encoded
 
         # 過去のターン履歴を追加
         for turn_state, action in zip(context.turns, context.actions):

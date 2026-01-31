@@ -1,0 +1,269 @@
+{
+  "match_id": 87,
+  "timestamp": "2026-01-30T15:30:42.950115",
+  "result": {
+    "match_id": 87,
+    "winner": "rebel",
+    "total_turns": 6,
+    "dt_team_name": "あいす",
+    "rebel_team_name": "らい",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 3.1761181354522705,
+    "rebel_think_time": 2.303518295288086,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "あいす",
+      "selection": [
+        2,
+        5,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(けしん)",
+          "item": "とつげきチョッキ",
+          "ability": "すなのちから",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "じわれ",
+            "とんぼがえり",
+            "がんせきふうじ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "サザンドラ",
+          "item": "きあいのタスキ",
+          "ability": "ふゆう",
+          "tera_type": "フェアリー",
+          "moves": [
+            "あくのはどう",
+            "テラバースト",
+            "わるだくみ",
+            "ちょうはつ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりスカーフ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "ローキック",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "らい",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アクアジェット",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス",
+          "item": "きあいのタスキ",
+          "ability": "きんちょうかん",
+          "tera_type": "じめん",
+          "moves": [
+            "アストラルビット",
+            "テラバースト",
+            "おにび",
+            "アンコール"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "コライドン",
+          "item": "いかさまダイス",
+          "ability": "ひひいろのこどう",
+          "tera_type": "はがね",
+          "moves": [
+            "スケイルショット",
+            "アイアンヘッド",
+            "みがわり",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ランドロス(けしん)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "サザンドラ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 53,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 58,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ランドロス(けしん), サザンドラ, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), バドレックス, コライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→サザンドラ",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+アクアジェット",
+      "after": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp_pct": 76,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 53
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp": "149/195",
+        "dt_hp_pct": 76,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "93/175",
+        "rebel_hp_pct": 53
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp_pct": 76,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(けしん)",
+        "dt_hp": "149/195",
+        "dt_hp_pct": 76,
+        "rebel_active": "コライドン",
+        "rebel_hp": "103/175",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "サザンドラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "サザンドラ",
+        "dt_hp": "167/167",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "103/175",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: あくのはどう",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 6,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

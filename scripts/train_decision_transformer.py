@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Train Pokemon Battle Decision Transformer
 

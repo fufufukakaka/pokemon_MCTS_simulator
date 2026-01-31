@@ -1,0 +1,869 @@
+{
+  "match_id": 17,
+  "timestamp": "2026-01-30T15:00:29.919098",
+  "result": {
+    "match_id": 17,
+    "winner": "rebel",
+    "total_turns": 36,
+    "dt_team_name": "あめみや",
+    "rebel_team_name": "こしのん",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 47.29389572143555,
+    "rebel_think_time": 33.92801833152771,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "あめみや",
+      "selection": [
+        5,
+        4,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "みず",
+          "moves": [
+            "だいちのちから",
+            "どくどく",
+            "じこさいせい",
+            "まもる"
+          ],
+          "nature": "なまいき"
+        },
+        {
+          "name": "ラッキー",
+          "item": "しんかのきせき",
+          "ability": "しぜんかいふく",
+          "tera_type": "あく",
+          "moves": [
+            "ちきゅうなげ",
+            "シャドーボール",
+            "タマゴうみ",
+            "でんじは"
+          ],
+          "nature": "おだやか"
+        },
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "フェアリー",
+          "moves": [
+            "はたきおとす",
+            "ちょうはつ",
+            "どくどく",
+            "まもる"
+          ],
+          "nature": "わんぱく"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "こしのん",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "テツノワダチ",
+          "item": "とつげきチョッキ",
+          "ability": "クォークチャージ",
+          "tera_type": "くさ",
+          "moves": [
+            "じしん",
+            "アイアンヘッド",
+            "はたきおとす",
+            "こうそくスピン"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ブラッキー",
+          "item": "たべのこし",
+          "ability": "シンクロ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イカサマ",
+            "あくび",
+            "ねがいごと",
+            "まもる"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "アルセウス",
+          "item": "しんぴのしずく",
+          "ability": "マルチタイプ",
+          "tera_type": "でんき",
+          "moves": [
+            "ステルスロック",
+            "おにび",
+            "さばきのつぶて",
+            "じこさいせい"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ドオー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ラッキー",
+        "hp_percent": 65,
+        "status": "active"
+      },
+      {
+        "name": "グライオン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 19,
+        "status": "bench"
+      },
+      {
+        "name": "ブラッキー",
+        "hp_percent": 2,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 23,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ドオー, ラッキー, グライオン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: テツノワダチ, ブラッキー, アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ラッキー",
+      "rebel_action": "交代→テツノワダチ",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "165/165",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+だいちのちから",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 46,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 66
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "111/237",
+        "dt_hp_pct": 46,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "109/165",
+        "rebel_hp_pct": 66
+      },
+      "dt_action": "技: だいちのちから",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 66
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "182/182",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "109/165",
+        "rebel_hp_pct": 66
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "テラス+アイアンヘッド",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 76,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 47
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "140/182",
+        "dt_hp_pct": 76,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "78/165",
+        "rebel_hp_pct": 47
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: アイアンヘッド",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 69,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 47
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "126/182",
+        "dt_hp_pct": 69,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "78/165",
+        "rebel_hp_pct": 47
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: アイアンヘッド",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 59,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 33
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "108/182",
+        "dt_hp_pct": 59,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "56/165",
+        "rebel_hp_pct": 33
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: アイアンヘッド",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 49,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 19
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "90/182",
+        "dt_hp_pct": 49,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "32/165",
+        "rebel_hp_pct": 19
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "交代→ブラッキー",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 61,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 90
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "112/182",
+        "dt_hp_pct": 61,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "154/170",
+        "rebel_hp_pct": 90
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 60,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 83
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "110/182",
+        "dt_hp_pct": 60,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "142/170",
+        "rebel_hp_pct": 83
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 72,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 83
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "132/182",
+        "dt_hp_pct": 72,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "142/170",
+        "rebel_hp_pct": 83
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 71,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "131/182",
+        "dt_hp_pct": 71,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "131/170",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 64,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 70
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "118/182",
+        "dt_hp_pct": 64,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "119/170",
+        "rebel_hp_pct": 70
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 63,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 62
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "116/182",
+        "dt_hp_pct": 63,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "107/170",
+        "rebel_hp_pct": 62
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 63,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 56
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "116/182",
+        "dt_hp_pct": 63,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "96/170",
+        "rebel_hp_pct": 56
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 63,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "115/182",
+        "dt_hp_pct": 63,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "86/170",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 61,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 44
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "112/182",
+        "dt_hp_pct": 61,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "76/170",
+        "rebel_hp_pct": 44
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 60,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 38
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "110/182",
+        "dt_hp_pct": 60,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "65/170",
+        "rebel_hp_pct": 38
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: イカサマ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 59,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "108/182",
+        "dt_hp_pct": 59,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "55/170",
+        "rebel_hp_pct": 32
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 71,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "130/182",
+        "dt_hp_pct": 71,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "55/170",
+        "rebel_hp_pct": 32
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 83,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 84
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "152/182",
+        "dt_hp_pct": 83,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "164/195",
+        "rebel_hp_pct": 84
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 47,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 22,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "87/182",
+        "dt_hp_pct": 47,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "141/195",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 23,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "327/327",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "141/195",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 24,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "327/327",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "145/195",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: さばきのつぶて",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 25,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "294/327",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "95/195",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 26,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "294/327",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "142/195",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 27,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "294/327",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "145/195",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 28,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "294/327",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "145/195",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 29,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "294/327",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "145/195",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 30,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "294/327",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "145/195",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 31,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "294/327",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "145/195",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: じこさいせい",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 32,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "294/327",
+        "dt_hp_pct": 89,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "145/195",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: おにび",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 83,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 33,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "274/327",
+        "dt_hp_pct": 83,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "95/195",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: ステルスロック",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 77,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 23
+      }
+    },
+    {
+      "turn": 34,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "254/327",
+        "dt_hp_pct": 77,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "45/195",
+        "rebel_hp_pct": 23
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "交代→ブラッキー",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 71,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 35,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラッキー",
+        "dt_hp": "234/327",
+        "dt_hp_pct": 71,
+        "rebel_active": "ブラッキー",
+        "rebel_hp": "5/170",
+        "rebel_hp_pct": 2
+      },
+      "dt_action": "技: ちきゅうなげ",
+      "rebel_action": "技: まもる",
+      "after": {
+        "dt_active": "ラッキー",
+        "dt_hp_pct": 65,
+        "rebel_active": "ブラッキー",
+        "rebel_hp_pct": 2
+      }
+    },
+    {
+      "turn": 36,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

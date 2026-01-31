@@ -1,0 +1,449 @@
+{
+  "match_id": 69,
+  "timestamp": "2026-01-30T15:22:13.008529",
+  "result": {
+    "match_id": 69,
+    "winner": "rebel",
+    "total_turns": 15,
+    "dt_team_name": "無人島",
+    "rebel_team_name": "和栗薰子",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 19.846840143203735,
+    "rebel_think_time": 6.7253735065460205,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "無人島",
+      "selection": [
+        3,
+        4,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "アローラベトベトン",
+          "item": "くろいヘドロ",
+          "ability": "どくしゅ",
+          "tera_type": "どく",
+          "moves": [
+            "はたきおとす",
+            "まもる",
+            "どくどくのキバ",
+            "クリアスモッグ"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "ステルスロック",
+            "まきびし",
+            "ふきとばし",
+            "じしん"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ルギア",
+          "item": "たべのこし",
+          "ability": "プレッシャー",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ふきとばし",
+            "じこさいせい",
+            "みがわり",
+            "サイコノイズ"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "和栗薰子",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "どく",
+          "moves": [
+            "じわれ",
+            "カタストロフィ",
+            "まきびし",
+            "ふきとばし"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ルナアーラ",
+          "item": "ゴツゴツメット",
+          "ability": "ファントムガード",
+          "tera_type": "みず",
+          "moves": [
+            "シャドーレイ",
+            "おにび",
+            "トリックルーム",
+            "つきのひかり"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "でんき",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "パラボラチャージ",
+            "とんぼがえり"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "アローラベトベトン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ディンルー",
+        "hp_percent": 25,
+        "status": "active"
+      },
+      {
+        "name": "ルギア",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 59,
+        "status": "active"
+      },
+      {
+        "name": "ルナアーラ",
+        "hp_percent": 87,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 87,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: アローラベトベトン, ディンルー, ルギア"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, ルナアーラ, ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ディンルー",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp": "212/212",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "261/261",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+はたきおとす",
+      "rebel_action": "テラス+カタストロフィ",
+      "after": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp_pct": 56,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 82
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp": "119/212",
+        "dt_hp_pct": 56,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "215/261",
+        "rebel_hp_pct": 82
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 71
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "187/261",
+        "rebel_hp_pct": 71
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 71
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "187/261",
+        "rebel_hp_pct": 71
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 71
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "187/261",
+        "rebel_hp_pct": 71
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: ふきとばし",
+      "after": {
+        "dt_active": "ルギア",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 71
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ルギア",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "187/261",
+        "rebel_hp_pct": 71
+      },
+      "dt_action": "技: ふきとばし",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "ルギア",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ルギア",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "214/244",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: ふきとばし",
+      "rebel_action": "技: シャドーレイ",
+      "after": {
+        "dt_active": "ルギア",
+        "dt_hp_pct": 54,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ルギア",
+        "dt_hp": "116/211",
+        "dt_hp_pct": 54,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "178/203",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: ふきとばし",
+      "rebel_action": "技: イナズマドライブ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "178/203",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: りゅうせいぐん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 63,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "163/257",
+        "dt_hp_pct": 63,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "178/203",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: りゅうせいぐん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 70,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "182/257",
+        "dt_hp_pct": 70,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "178/203",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: とんぼがえり",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 59
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "130/257",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "155/261",
+        "rebel_hp_pct": 59
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 59
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "130/257",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "155/261",
+        "rebel_hp_pct": 59
+      },
+      "dt_action": "技: ステルスロック",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 25,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 59
+      }
+    },
+    {
+      "turn": 15,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

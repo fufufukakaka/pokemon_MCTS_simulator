@@ -1,0 +1,409 @@
+{
+  "match_id": 76,
+  "timestamp": "2026-01-30T15:23:35.102492",
+  "result": {
+    "match_id": 76,
+    "winner": "rebel",
+    "total_turns": 13,
+    "dt_team_name": "かに",
+    "rebel_team_name": "リチャード",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 18.642476558685303,
+    "rebel_think_time": 6.240208625793457,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "かに",
+      "selection": [
+        3,
+        1,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "アローラベトベトン",
+          "item": "くろいヘドロ",
+          "ability": "どくしゅ",
+          "tera_type": "どく",
+          "moves": [
+            "まもる",
+            "はたきおとす",
+            "どくづき",
+            "かげうち"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "おんみつマント",
+          "ability": "プレッシャー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じこさいせい",
+            "ダイマックスほう",
+            "ヘドロばくだん",
+            "どくびし"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "クレベース",
+          "item": "あつぞこブーツ",
+          "ability": "がんじょう",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じこさいせい",
+            "つららばり",
+            "こうそくスピン",
+            "ボディプレス"
+          ],
+          "nature": "わんぱく"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "リチャード",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりスカーフ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アイススピナー",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ザシアン(けんのおう)",
+          "item": "くちたけん",
+          "ability": "ふとうのけん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "きょじゅうざん",
+            "インファイト",
+            "ワイルドボルト",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "じめん",
+          "moves": [
+            "アストラルビット",
+            "くさむすび",
+            "テラバースト",
+            "わるだくみ"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "アローラベトベトン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "クレベース",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ザシアン(けんのおう)",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: アローラベトベトン, ムゲンダイナ, クレベース"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), ザシアン(けんのおう), バドレックス(こくば)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アローラベトベトン",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp": "212/212",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+まもる",
+      "rebel_action": "テラス+すいりゅうれんだ",
+      "after": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp_pct": 12,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アローラベトベトン",
+        "dt_hp": "27/212",
+        "dt_hp_pct": 12,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "202/202",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じこさいせい",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "202/202",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じこさいせい",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "202/202",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じこさいせい",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "202/202",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じこさいせい",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "202/202",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じこさいせい",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "202/202",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じこさいせい",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "202/202",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じこさいせい",
+      "rebel_action": "交代→ザシアン(けんのおう)",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 100,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "202/202",
+        "dt_hp_pct": 100,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp": "189/189",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じこさいせい",
+      "rebel_action": "技: きょじゅうざん",
+      "after": {
+        "dt_active": "クレベース",
+        "dt_hp_pct": 68,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "クレベース",
+        "dt_hp": "139/202",
+        "dt_hp_pct": 68,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp": "189/189",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: つららばり",
+      "rebel_action": "技: きょじゅうざん",
+      "after": {
+        "dt_active": "ムゲンダイナ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 13,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

@@ -1,0 +1,329 @@
+{
+  "match_id": 67,
+  "timestamp": "2026-01-30T15:21:30.359401",
+  "result": {
+    "match_id": 67,
+    "winner": "rebel",
+    "total_turns": 9,
+    "dt_team_name": "チホ",
+    "rebel_team_name": "コトキ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 12.860675573348999,
+    "rebel_think_time": 4.571983337402344,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "チホ",
+      "selection": [
+        2,
+        4,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "グライオン",
+          "item": "どくどくだま",
+          "ability": "ポイズンヒール",
+          "tera_type": "みず",
+          "moves": [
+            "まもる",
+            "ちょうはつ",
+            "どくどく",
+            "とんぼがえり"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "オーロンゲ",
+          "item": "たべのこし",
+          "ability": "いたずらごころ",
+          "tera_type": "じめん",
+          "moves": [
+            "ソウルクラッシュ",
+            "ふいうち",
+            "でんじは",
+            "すてゼリフ"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりスカーフ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "とんぼがえり",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "コトキ",
+      "selection": [
+        4,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(こくば)",
+          "item": "ひかりのこな",
+          "ability": "じんばいったい",
+          "tera_type": "かくとう",
+          "moves": [
+            "アストラルビット",
+            "テラバースト",
+            "やどりぎのタネ",
+            "みがわり"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ラビフット",
+          "item": "きあいのタスキ",
+          "ability": "もうか",
+          "tera_type": "かくとう",
+          "moves": [
+            "ローキック",
+            "カウンター",
+            "きしかいせい",
+            "とんぼがえり"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "カイリュー",
+          "item": "こだわりハチマキ",
+          "ability": "せいしんりょく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "げきりん",
+            "じしん",
+            "からげんき"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "グライオン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "オーロンゲ",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ラビフット",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "カイリュー",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: グライオン, オーロンゲ, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(こくば), ラビフット, カイリュー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→グライオン",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+まもる",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "179/179",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 39,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "71/179",
+        "dt_hp_pct": 39,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 51,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "93/179",
+        "dt_hp_pct": 51,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "テラス+テラバースト",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 18,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "34/179",
+        "dt_hp_pct": 18,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 31,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "56/179",
+        "dt_hp_pct": 31,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: テラバースト",
+      "after": {
+        "dt_active": "オーロンゲ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

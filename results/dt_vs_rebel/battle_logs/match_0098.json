@@ -1,0 +1,330 @@
+{
+  "match_id": 98,
+  "timestamp": "2026-01-30T15:32:12.549606",
+  "result": {
+    "match_id": 98,
+    "winner": "dt",
+    "total_turns": 9,
+    "dt_team_name": "カオル",
+    "rebel_team_name": "バイオレット",
+    "dt_remaining": 2,
+    "rebel_remaining": 0,
+    "dt_think_time": 0.9510390758514404,
+    "rebel_think_time": 7.256611347198486,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "カオル",
+      "selection": [
+        2,
+        0,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "アラブルタケ",
+          "item": "いかさまダイス",
+          "ability": "こだいかっせい",
+          "tera_type": "ほのお",
+          "moves": [
+            "タネマシンガン",
+            "ふいうち",
+            "キノコのほうし",
+            "こうごうせい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "だいちのプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "みず",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "アシッドボム",
+            "じこさいせい"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "きあいのタスキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ステラ",
+          "moves": [
+            "すいりゅうれんだ",
+            "アクアジェット",
+            "インファイト",
+            "きしかいせい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "バイオレット",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "カタストロフィ",
+            "ステルスロック",
+            "ふきとばし"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "かくとう",
+          "moves": [
+            "アストラルビット",
+            "テラバースト",
+            "くさむすび",
+            "わるだくみ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ザシアン(けんのおう)",
+          "item": "くちたけん",
+          "ability": "ふとうのけん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "きょじゅうざん",
+            "インファイト",
+            "くさわけ",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "アラブルタケ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ザシアン(けんのおう)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: アラブルタケ, アルセウス, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, バドレックス(こくば), ザシアン(けんのおう)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アルセウス",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "217/217",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "261/261",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+タネマシンガン",
+      "rebel_action": "技: カタストロフィ",
+      "after": {
+        "dt_active": "アラブルタケ",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アラブルタケ",
+        "dt_hp": "109/217",
+        "dt_hp_pct": 50,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "190/261",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: タネマシンガン",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "54/261",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "交代→ザシアン(けんのおう)",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp_pct": 41
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ザシアン(けんのおう)",
+        "rebel_hp": "78/187",
+        "rebel_hp_pct": 41
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 24
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "42/175",
+        "rebel_hp_pct": 24
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 0,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "1/175",
+        "dt_hp_pct": 0,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "54/261",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "交代→ザシアン(けんのおう)",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 0,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "1/175",
+        "dt_hp_pct": 0,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "54/261",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 0,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 8,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "ディンルー"
+    }
+  ]
+}

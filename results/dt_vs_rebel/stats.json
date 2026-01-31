@@ -1,0 +1,16 @@
+{
+  "total_matches": 100,
+  "dt_wins": 23,
+  "dt_win_rate": 0.23,
+  "rebel_wins": 77,
+  "rebel_win_rate": 0.77,
+  "draws": 0,
+  "draw_rate": 0.0,
+  "dt_surrenders": 57,
+  "rebel_surrenders": 0,
+  "avg_turns": 12.44,
+  "avg_dt_remaining": 1.0,
+  "avg_rebel_remaining": 2.11,
+  "avg_dt_think_time_sec": 12.019475121498107,
+  "avg_rebel_think_time_sec": 8.2344961476326
+}

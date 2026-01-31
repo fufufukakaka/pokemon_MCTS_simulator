@@ -1,0 +1,249 @@
+{
+  "match_id": 15,
+  "timestamp": "2026-01-30T14:58:57.802843",
+  "result": {
+    "match_id": 15,
+    "winner": "rebel",
+    "total_turns": 5,
+    "dt_team_name": "ユーライザ",
+    "rebel_team_name": "カオル",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 2.8739559650421143,
+    "rebel_think_time": 1.893524169921875,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "ユーライザ",
+      "selection": [
+        2,
+        5,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ストリンダー(ハイ)",
+          "item": "きあいのタスキ",
+          "ability": "パンクロック",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ばくおんぱ",
+            "がむしゃら",
+            "どくびし",
+            "ほっぺすりすり"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "テツノカイナ",
+          "item": "とつげきチョッキ",
+          "ability": "クォークチャージ",
+          "tera_type": "ほのお",
+          "moves": [
+            "サンダーダイブ",
+            "ドレインパンチ",
+            "じしん",
+            "ねこだまし"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ほのお",
+          "moves": [
+            "さばきのつぶて",
+            "ちょうはつ",
+            "めいそう",
+            "じこさいせい"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "カオル",
+      "selection": [
+        3,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "きあいのタスキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ステラ",
+          "moves": [
+            "すいりゅうれんだ",
+            "アクアジェット",
+            "インファイト",
+            "きしかいせい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "だいちのプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "みず",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "アシッドボム",
+            "じこさいせい"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "こだわりメガネ",
+          "ability": "プレッシャー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "ダイマックスほう",
+            "りゅうせいぐん",
+            "ヘドロばくだん",
+            "かえんほうしゃ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ストリンダー(ハイ)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "テツノカイナ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 4,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ストリンダー(ハイ), テツノカイナ, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), アルセウス, ムゲンダイナ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→テツノカイナ",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "ストリンダー(ハイ)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ストリンダー(ハイ)",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+ばくおんぱ",
+      "rebel_action": "テラス+すいりゅうれんだ",
+      "after": {
+        "dt_active": "テツノカイナ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノカイナ",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: サンダーダイブ",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "テツノカイナ",
+        "dt_hp_pct": 54,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 4
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "テツノカイナ",
+        "dt_hp": "131/239",
+        "dt_hp_pct": 54,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "7/175",
+        "rebel_hp_pct": 4
+      },
+      "dt_action": "技: サンダーダイブ",
+      "rebel_action": "技: きしかいせい",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 4
+      }
+    },
+    {
+      "turn": 5,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

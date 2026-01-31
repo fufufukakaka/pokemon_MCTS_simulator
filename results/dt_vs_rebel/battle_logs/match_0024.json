@@ -1,0 +1,429 @@
+{
+  "match_id": 24,
+  "timestamp": "2026-01-30T15:02:25.869109",
+  "result": {
+    "match_id": 24,
+    "winner": "rebel",
+    "total_turns": 14,
+    "dt_team_name": "だいすけ",
+    "rebel_team_name": "daa",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 10.607350587844849,
+    "rebel_think_time": 7.03787899017334,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "だいすけ",
+      "selection": [
+        4,
+        3,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ガオガエン",
+          "item": "たべのこし",
+          "ability": "いかく",
+          "tera_type": "ひこう",
+          "moves": [
+            "はたきおとす",
+            "すてゼリフ",
+            "おにび",
+            "ちょうはつ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "フシギバナ",
+          "item": "みどりのプレート",
+          "ability": "ようりょくそ",
+          "tera_type": "ゴースト",
+          "moves": [
+            "ソーラービーム",
+            "ヘドロばくだん",
+            "アシッドボム",
+            "だいちのちから"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ヒードラン",
+          "item": "ふうせん",
+          "ability": "もらいび",
+          "tera_type": "ひこう",
+          "moves": [
+            "マグマストーム",
+            "ラスターカノン",
+            "パワージェム",
+            "ちょうはつ"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "daa",
+      "selection": [
+        0,
+        1,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "テラパゴス(テラスタル)",
+          "item": "ゴツゴツメット",
+          "ability": "テラスシェル",
+          "tera_type": "ステラ",
+          "moves": [
+            "どくどく",
+            "ほえる",
+            "ステルスロック",
+            "こうそくスピン"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ミライドン",
+          "item": "エレキシード",
+          "ability": "ハドロンエンジン",
+          "tera_type": "みず",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうのはどう",
+            "テラバースト",
+            "こうそくいどう"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ミミッキュ",
+          "item": "メンタルハーブ",
+          "ability": "ばけのかわ",
+          "tera_type": "ドラゴン",
+          "moves": [
+            "じゃれつく",
+            "かげうち",
+            "のろい",
+            "こらえる"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ガオガエン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "フシギバナ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ヒードラン",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "テラパゴス(ステラ)",
+        "hp_percent": 14,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ミミッキュ",
+        "hp_percent": 29,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ガオガエン, フシギバナ, ヒードラン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: テラパゴス(テラスタル), ミライドン, ミミッキュ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→フシギバナ",
+      "rebel_action": "交代→テラパゴス(テラスタル)",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "201/201",
+        "dt_hp_pct": 100,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp": "202/202",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+はたきおとす",
+      "rebel_action": "テラス+こうそくスピン",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 82,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp_pct": 76
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "166/201",
+        "dt_hp_pct": 82,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp": "203/267",
+        "rebel_hp_pct": 76
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: こうそくスピン",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 76,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp_pct": 61
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "154/201",
+        "dt_hp_pct": 76,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp": "164/267",
+        "rebel_hp_pct": 61
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: こうそくスピン",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 71,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp_pct": 45
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "144/201",
+        "dt_hp_pct": 71,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp": "121/267",
+        "rebel_hp_pct": 45
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: こうそくスピン",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 66,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp_pct": 30
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "134/201",
+        "dt_hp_pct": 66,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp": "81/267",
+        "rebel_hp_pct": 30
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: どくどく",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 66,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp_pct": 14
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "134/201",
+        "dt_hp_pct": 66,
+        "rebel_active": "テラパゴス(ステラ)",
+        "rebel_hp": "39/267",
+        "rebel_hp_pct": 14
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "交代→ミミッキュ",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 60,
+        "rebel_active": "ミミッキュ",
+        "rebel_hp_pct": 87
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "121/201",
+        "dt_hp_pct": 60,
+        "rebel_active": "ミミッキュ",
+        "rebel_hp": "131/149",
+        "rebel_hp_pct": 87
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: じゃれつく",
+      "after": {
+        "dt_active": "ガオガエン",
+        "dt_hp_pct": 23,
+        "rebel_active": "ミミッキュ",
+        "rebel_hp_pct": 59
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ガオガエン",
+        "dt_hp": "47/201",
+        "dt_hp_pct": 23,
+        "rebel_active": "ミミッキュ",
+        "rebel_hp": "89/149",
+        "rebel_hp_pct": 59
+      },
+      "dt_action": "技: はたきおとす",
+      "rebel_action": "技: かげうち",
+      "after": {
+        "dt_active": "フシギバナ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミミッキュ",
+        "rebel_hp_pct": 29
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "フシギバナ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミミッキュ",
+        "rebel_hp": "44/149",
+        "rebel_hp_pct": 29
+      },
+      "dt_action": "技: ソーラービーム",
+      "rebel_action": "技: こらえる",
+      "after": {
+        "dt_active": "フシギバナ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミミッキュ",
+        "rebel_hp_pct": 29
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "フシギバナ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミミッキュ",
+        "rebel_hp": "44/149",
+        "rebel_hp_pct": 29
+      },
+      "dt_action": "SKIP",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "フシギバナ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "フシギバナ",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "SKIP",
+      "rebel_action": "技: りゅうのはどう",
+      "after": {
+        "dt_active": "フシギバナ",
+        "dt_hp_pct": 18,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "フシギバナ",
+        "dt_hp": "29/155",
+        "dt_hp_pct": 18,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "191/191",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "SKIP",
+      "rebel_action": "技: イナズマドライブ",
+      "after": {
+        "dt_active": "ヒードラン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 14,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

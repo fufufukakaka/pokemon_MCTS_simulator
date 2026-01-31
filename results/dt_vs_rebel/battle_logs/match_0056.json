@@ -1,0 +1,289 @@
+{
+  "match_id": 56,
+  "timestamp": "2026-01-30T15:18:45.555543",
+  "result": {
+    "match_id": 56,
+    "winner": "rebel",
+    "total_turns": 7,
+    "dt_team_name": "こばちぇ",
+    "rebel_team_name": "パンチョ",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 1.2505311965942383,
+    "rebel_think_time": 2.7608115673065186,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "こばちぇ",
+      "selection": [
+        0,
+        5,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "グラードン",
+          "item": "とつげきチョッキ",
+          "ability": "ひでり",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "テラバースト",
+            "かみくだく",
+            "じわれ"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ボーマンダ",
+          "item": "するどいくちばし",
+          "ability": "いかく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ダブルウイング",
+            "じしん",
+            "ストーンエッジ",
+            "りゅうのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "チオンジェン",
+          "item": "ゴツゴツメット",
+          "ability": "わざわいのおふだ",
+          "tera_type": "あく",
+          "moves": [
+            "イカサマ",
+            "カタストロフィ",
+            "ちょうはつ",
+            "やどりぎのタネ"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "パンチョ",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "とんぼがえり",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ドドゲザン",
+          "item": "こわもてプレート",
+          "ability": "そうだいしょう",
+          "tera_type": "あく",
+          "moves": [
+            "ドゲザン",
+            "ふいうち",
+            "アイアンヘッド",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "ボルトチェンジ",
+            "マジカルシャイン"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "グラードン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ボーマンダ",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "チオンジェン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 10,
+        "status": "active"
+      },
+      {
+        "name": "ドドゲザン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 19,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: グラードン, ボーマンダ, チオンジェン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), ドドゲザン, ミライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→グラードン",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "グラードン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グラードン",
+        "dt_hp": "175/175",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "183/183",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+アクアジェット",
+      "after": {
+        "dt_active": "グラードン",
+        "dt_hp_pct": 81,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 60
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グラードン",
+        "dt_hp": "143/175",
+        "dt_hp_pct": 81,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "110/183",
+        "rebel_hp_pct": 60
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "グラードン",
+        "dt_hp_pct": 81,
+        "rebel_active": "ミライドン",
+        "rebel_hp_pct": 19
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グラードン",
+        "dt_hp": "143/175",
+        "dt_hp_pct": 81,
+        "rebel_active": "ミライドン",
+        "rebel_hp": "39/203",
+        "rebel_hp_pct": 19
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ボルトチェンジ",
+      "after": {
+        "dt_active": "グラードン",
+        "dt_hp_pct": 28,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 22
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グラードン",
+        "dt_hp": "50/175",
+        "dt_hp_pct": 28,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "41/183",
+        "rebel_hp_pct": 22
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "チオンジェン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 22
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "チオンジェン",
+        "dt_hp": "160/160",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "41/183",
+        "rebel_hp_pct": 22
+      },
+      "dt_action": "技: イカサマ",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "ボーマンダ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 10
+      }
+    },
+    {
+      "turn": 7,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

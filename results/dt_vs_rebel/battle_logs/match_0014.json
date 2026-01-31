@@ -1,0 +1,269 @@
+{
+  "match_id": 14,
+  "timestamp": "2026-01-30T14:58:52.910173",
+  "result": {
+    "match_id": 14,
+    "winner": "rebel",
+    "total_turns": 6,
+    "dt_team_name": "ピカチュウ",
+    "rebel_team_name": "あたか",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 4.252769947052002,
+    "rebel_think_time": 1.42930006980896,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "ピカチュウ",
+      "selection": [
+        0,
+        4,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ベラカス",
+          "item": "きあいのタスキ",
+          "ability": "シンクロ",
+          "tera_type": "ドラゴン",
+          "moves": [
+            "トリックルーム",
+            "さいきのいのり",
+            "おきみやげ",
+            "サイコノイズ"
+          ],
+          "nature": "のんき"
+        },
+        {
+          "name": "ガチグマ(アカツキ)",
+          "item": "いのちのたま",
+          "ability": "しんがん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ブラッドムーン",
+            "だいちのちから",
+            "ハイパーボイス",
+            "しんくうは"
+          ],
+          "nature": "れいせい"
+        },
+        {
+          "name": "ゴチルゼル",
+          "item": "こだわりスカーフ",
+          "ability": "おみとおし",
+          "tera_type": "ひこう",
+          "moves": [
+            "トリック",
+            "ねむる",
+            "あまえる",
+            "トリックルーム"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "あたか",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "こだわりハチマキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じしん",
+            "ストーンエッジ",
+            "テラバースト",
+            "じごくづき"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "くさ",
+          "moves": [
+            "アストラルビット",
+            "わるだくみ",
+            "くさむすび",
+            "アンコール"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "アルセウス",
+          "item": "シルクのスカーフ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "シャドークロー",
+            "すてみタックル",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ベラカス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ガチグマ(アカツキ)",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ゴチルゼル",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ベラカス, ガチグマ(アカツキ), ゴチルゼル"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ディンルー, バドレックス(こくば), アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ゴチルゼル",
+      "rebel_action": "交代→ディンルー",
+      "after": {
+        "dt_active": "ベラカス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ベラカス",
+        "dt_hp": "182/182",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "231/231",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+トリックルーム",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ベラカス",
+        "dt_hp_pct": 53,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ベラカス",
+        "dt_hp": "98/182",
+        "dt_hp_pct": 53,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "231/231",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: トリックルーム",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ゴチルゼル",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ゴチルゼル",
+        "dt_hp": "177/177",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "231/231",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: トリック",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ゴチルゼル",
+        "dt_hp_pct": 1,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ゴチルゼル",
+        "dt_hp": "3/177",
+        "dt_hp_pct": 1,
+        "rebel_active": "ディンルー",
+        "rebel_hp": "231/231",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: トリック",
+      "rebel_action": "技: じごくづき",
+      "after": {
+        "dt_active": "ガチグマ(アカツキ)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ディンルー",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

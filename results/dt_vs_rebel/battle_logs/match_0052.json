@@ -1,0 +1,270 @@
+{
+  "match_id": 52,
+  "timestamp": "2026-01-30T15:17:53.954448",
+  "result": {
+    "match_id": 52,
+    "winner": "rebel",
+    "total_turns": 6,
+    "dt_team_name": "ジントニック",
+    "rebel_team_name": "SCR",
+    "dt_remaining": 0,
+    "rebel_remaining": 3,
+    "dt_think_time": 6.586712598800659,
+    "rebel_think_time": 1.6093099117279053,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "ジントニック",
+      "selection": [
+        3,
+        2,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ラウドボーン",
+          "item": "ゴツゴツメット",
+          "ability": "てんねん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "フレアソング",
+            "たたりめ",
+            "おにび",
+            "なまける"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ヒスイヌメルゴン",
+          "item": "とつげきチョッキ",
+          "ability": "シェルアーマー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アイアンヘッド",
+            "はたきおとす",
+            "れいとうビーム",
+            "10まんボルト"
+          ],
+          "nature": "なまいき"
+        },
+        {
+          "name": "ミミッキュ",
+          "item": "こだわりスカーフ",
+          "ability": "ばけのかわ",
+          "tera_type": "フェアリー",
+          "moves": [
+            "かげうち",
+            "じゃれつく",
+            "トリック",
+            "みちづれ"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "SCR",
+      "selection": [
+        0,
+        1,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "バドレックス(はくば)",
+          "item": "こだわりハチマキ",
+          "ability": "じんばいったい",
+          "tera_type": "こおり",
+          "moves": [
+            "ブリザードランス",
+            "つららばり",
+            "しねんのずつき",
+            "10まんばりき"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "アルセウス",
+          "item": "いかずちプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "トリックルーム",
+            "いやしのねがい"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ミミッキュ",
+          "item": "こだわりスカーフ",
+          "ability": "ばけのかわ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "トリック",
+            "かげうち",
+            "のろい",
+            "みちづれ"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ラウドボーン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ヒスイヌメルゴン",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "ミミッキュ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "バドレックス(はくば)",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ミミッキュ",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ラウドボーン, ヒスイヌメルゴン, ミミッキュ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: バドレックス(はくば), アルセウス, ミミッキュ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ヒスイヌメルゴン",
+      "rebel_action": "交代→バドレックス(はくば)",
+      "after": {
+        "dt_active": "ラウドボーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ラウドボーン",
+        "dt_hp": "211/211",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "207/207",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+フレアソング",
+      "rebel_action": "テラス+ブリザードランス",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 59
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "131/131",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "123/207",
+        "rebel_hp_pct": 59
+      },
+      "dt_action": "技: かげうち",
+      "rebel_action": "技: ブリザードランス",
+      "after": {
+        "dt_active": "ミミッキュ",
+        "dt_hp_pct": 87,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 48
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ミミッキュ",
+        "dt_hp": "115/131",
+        "dt_hp_pct": 87,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "101/207",
+        "rebel_hp_pct": 48
+      },
+      "dt_action": "技: かげうち",
+      "rebel_action": "技: ブリザードランス",
+      "after": {
+        "dt_active": "ヒスイヌメルゴン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヒスイヌメルゴン",
+        "dt_hp": "187/187",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp": "67/207",
+        "rebel_hp_pct": 32
+      },
+      "dt_action": "技: アイアンヘッド",
+      "rebel_action": "技: ブリザードランス",
+      "after": {
+        "dt_active": "ヒスイヌメルゴン",
+        "dt_hp_pct": 0,
+        "rebel_active": "バドレックス(はくば)",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 5,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "ヒスイヌメルゴン"
+    }
+  ]
+}

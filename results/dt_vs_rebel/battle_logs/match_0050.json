@@ -1,0 +1,289 @@
+{
+  "match_id": 50,
+  "timestamp": "2026-01-30T15:17:40.287821",
+  "result": {
+    "match_id": 50,
+    "winner": "rebel",
+    "total_turns": 7,
+    "dt_team_name": "ラメロボーロ",
+    "rebel_team_name": "Yona!",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 3.8017547130584717,
+    "rebel_think_time": 3.0251007080078125,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "ラメロボーロ",
+      "selection": [
+        3,
+        0,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "ほのお",
+          "moves": [
+            "じしん",
+            "ちょうはつ",
+            "ステルスロック",
+            "とんぼがえり"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "れいとうビーム",
+            "めいそう",
+            "じこさいせい"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "パオジアン",
+          "item": "きあいのタスキ",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "あく",
+          "moves": [
+            "つららおとし",
+            "せいなるつるぎ",
+            "こおりのつぶて",
+            "ふいうち"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "Yona!",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "パンチグローブ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "きあいパンチ",
+            "アクアジェット",
+            "みがわり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "でんき",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "オーバーヒート",
+            "ボルトチェンジ"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ザシアン(けんのおう)",
+          "item": "くちたけん",
+          "ability": "ふとうのけん",
+          "tera_type": "ノーマル",
+          "moves": [
+            "きょじゅうざん",
+            "インファイト",
+            "くさわけ",
+            "つるぎのまい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "パオジアン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 12,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ザシアン(けんのおう)",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ランドロス(れいじゅう), アルセウス, パオジアン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), ミライドン, ザシアン(けんのおう)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アルセウス",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "196/196",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "183/183",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+すいりゅうれんだ",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "183/183",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: きあいパンチ",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "132/183",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: きあいパンチ",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 53
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "97/183",
+        "rebel_hp_pct": 53
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "1/155",
+        "dt_hp_pct": 0,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "63/183",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 12
+      }
+    },
+    {
+      "turn": 7,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

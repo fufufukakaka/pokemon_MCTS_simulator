@@ -1,0 +1,309 @@
+{
+  "match_id": 27,
+  "timestamp": "2026-01-30T15:03:13.700255",
+  "result": {
+    "match_id": 27,
+    "winner": "rebel",
+    "total_turns": 8,
+    "dt_team_name": "いろはす",
+    "rebel_team_name": "バイオレット",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 4.285961627960205,
+    "rebel_think_time": 3.3763792514801025,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "いろはす",
+      "selection": [
+        2,
+        4,
+        3
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "まきびし",
+            "ステルスロック",
+            "ふきとばし"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "こわいかお",
+            "ちょうはつ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ノーマル",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "とんぼがえり",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "バイオレット",
+      "selection": [
+        4,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "テツノワダチ",
+          "item": "きあいのタスキ",
+          "ability": "クォークチャージ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じならし",
+            "はたきおとす",
+            "がむしゃら",
+            "ステルスロック"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "インファイト",
+            "フレアドライブ",
+            "げきりん",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりメガネ",
+          "ability": "じんばいったい",
+          "tera_type": "じめん",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "くさむすび",
+            "テラバースト"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 32,
+        "status": "bench"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 9,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, ランドロス(れいじゅう), ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: テツノワダチ, コライドン, バドレックス(こくば)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ディンルー",
+      "rebel_action": "交代→テツノワダチ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "261/261",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "165/165",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+がむしゃら",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 63,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 64
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "165/261",
+        "dt_hp_pct": 63,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "107/165",
+        "rebel_hp_pct": 64
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じならし",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 55,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "144/261",
+        "dt_hp_pct": 55,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "53/165",
+        "rebel_hp_pct": 32
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 55,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 57
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "144/261",
+        "dt_hp_pct": 55,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "100/175",
+        "rebel_hp_pct": 57
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 3,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 9
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "9/261",
+        "dt_hp_pct": 3,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "16/175",
+        "rebel_hp_pct": 9
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 9
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "196/196",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "16/175",
+        "rebel_hp_pct": 9
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 9
+      }
+    },
+    {
+      "turn": 8,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

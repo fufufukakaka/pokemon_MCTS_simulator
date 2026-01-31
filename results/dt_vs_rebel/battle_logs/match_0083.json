@@ -1,0 +1,630 @@
+{
+  "match_id": 83,
+  "timestamp": "2026-01-30T15:26:30.266888",
+  "result": {
+    "match_id": 83,
+    "winner": "rebel",
+    "total_turns": 24,
+    "dt_team_name": "グレープグミ",
+    "rebel_team_name": "捕食公爵",
+    "dt_remaining": 0,
+    "rebel_remaining": 3,
+    "dt_think_time": 38.427186489105225,
+    "rebel_think_time": 24.135255336761475,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "グレープグミ",
+      "selection": [
+        3,
+        5,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "しっぺがえし",
+            "ヘビーボンバー",
+            "じわれ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "あく",
+          "moves": [
+            "じしん",
+            "どくびし",
+            "まもる",
+            "じこさいせい"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "グライオン",
+          "item": "きあいのタスキ",
+          "ability": "ポイズンヒール",
+          "tera_type": "ステラ",
+          "moves": [
+            "じしん",
+            "ダブルウイング",
+            "はたきおとす",
+            "ストーンエッジ"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "捕食公爵",
+      "selection": [
+        0,
+        3,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ヘイラッシャ",
+          "item": "たべのこし",
+          "ability": "てんねん",
+          "tera_type": "ゴースト",
+          "moves": [
+            "じわれ",
+            "ウェーブタックル",
+            "まもる",
+            "ねむる"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "こだわりメガネ",
+          "ability": "プレッシャー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "ダイマックスほう",
+            "りゅうせいぐん",
+            "かえんほうしゃ",
+            "ヘドロばくだん"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ドオー",
+          "item": "オボンのみ",
+          "ability": "ちょすい",
+          "tera_type": "でんき",
+          "moves": [
+            "じしん",
+            "どくどく",
+            "どくびし",
+            "じこさいせい"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "グライオン",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ヘイラッシャ",
+        "hp_percent": 55,
+        "status": "active"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, ドオー, グライオン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ヘイラッシャ, ムゲンダイナ, ドオー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ドオー",
+      "rebel_action": "交代→ヘイラッシャ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "175/225",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ねむる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "169/225",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "111/225",
+        "rebel_hp_pct": 49
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ねむる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "167/225",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "112/225",
+        "rebel_hp_pct": 49
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ねむる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "170/225",
+        "rebel_hp_pct": 75
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 52
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "117/225",
+        "rebel_hp_pct": 52
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ねむる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "176/225",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "124/225",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ねむる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 74
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "167/225",
+        "rebel_hp_pct": 74
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 52
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "117/225",
+        "rebel_hp_pct": 52
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ねむる",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "225/225",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: ストーンエッジ",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 84
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "191/225",
+        "rebel_hp_pct": 84
+      },
+      "dt_action": "交代→ドオー",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 91
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "205/225",
+        "rebel_hp_pct": 91
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じわれ",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 97
+      }
+    },
+    {
+      "turn": 22,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "151/151",
+        "dt_hp_pct": 100,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "219/225",
+        "rebel_hp_pct": 97
+      },
+      "dt_action": "技: ストーンエッジ",
+      "rebel_action": "技: ウェーブタックル",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 19,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 23,
+      "phase": "battle",
+      "before": {
+        "dt_active": "グライオン",
+        "dt_hp": "29/151",
+        "dt_hp_pct": 19,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp": "125/225",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: ストーンエッジ",
+      "rebel_action": "技: ウェーブタックル",
+      "after": {
+        "dt_active": "グライオン",
+        "dt_hp_pct": 0,
+        "rebel_active": "ヘイラッシャ",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 23,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "グライオン"
+    }
+  ]
+}

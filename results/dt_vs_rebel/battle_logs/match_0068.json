@@ -1,0 +1,249 @@
+{
+  "match_id": 68,
+  "timestamp": "2026-01-30T15:21:37.735738",
+  "result": {
+    "match_id": 68,
+    "winner": "rebel",
+    "total_turns": 5,
+    "dt_team_name": "スカーレット",
+    "rebel_team_name": "Tea",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 5.353606224060059,
+    "rebel_think_time": 1.88920259475708,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "スカーレット",
+      "selection": [
+        2,
+        4,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ハバタクカミ",
+          "item": "きあいのタスキ",
+          "ability": "こだいかっせい",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ムーンフォース",
+            "たたりめ",
+            "ちょうはつ",
+            "でんじは"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ママンボウ",
+          "item": "おんみつマント",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "クイックターン",
+            "ねがいごと",
+            "いやしのねがい",
+            "くすぐる"
+          ],
+          "nature": "のんき"
+        },
+        {
+          "name": "ホウオウ",
+          "item": "こだわりスカーフ",
+          "ability": "プレッシャー",
+          "tera_type": "あく",
+          "moves": [
+            "せいなるほのお",
+            "ブレイブバード",
+            "テラバースト",
+            "じしん"
+          ],
+          "nature": "ようき"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "Tea",
+      "selection": [
+        3,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "きあいのタスキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "とんぼがえり",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりメガネ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "テラバースト",
+            "くさむすび"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "カイオーガ",
+          "item": "こだわりスカーフ",
+          "ability": "あめふらし",
+          "tera_type": "みず",
+          "moves": [
+            "しおふき",
+            "なみのり",
+            "れいとうビーム",
+            "かみなり"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ハバタクカミ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ママンボウ",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "ホウオウ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 34,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "カイオーガ",
+        "hp_percent": 75,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ハバタクカミ, ママンボウ, ホウオウ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), バドレックス(こくば), カイオーガ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ママンボウ",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "131/131",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+ムーンフォース",
+      "rebel_action": "テラス+すいりゅうれんだ",
+      "after": {
+        "dt_active": "ホウオウ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ホウオウ",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "61/175",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: せいなるほのお",
+      "rebel_action": "交代→カイオーガ",
+      "after": {
+        "dt_active": "ホウオウ",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 81
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ホウオウ",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "142/175",
+        "rebel_hp_pct": 81
+      },
+      "dt_action": "技: せいなるほのお",
+      "rebel_action": "技: しおふき",
+      "after": {
+        "dt_active": "ママンボウ",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 75
+      }
+    },
+    {
+      "turn": 5,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

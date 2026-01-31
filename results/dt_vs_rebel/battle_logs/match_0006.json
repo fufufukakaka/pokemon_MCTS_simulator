@@ -1,0 +1,349 @@
+{
+  "match_id": 6,
+  "timestamp": "2026-01-30T14:57:30.673026",
+  "result": {
+    "match_id": 6,
+    "winner": "rebel",
+    "total_turns": 10,
+    "dt_team_name": "捕食公爵",
+    "rebel_team_name": "∞",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 10.13004755973816,
+    "rebel_think_time": 5.899136066436768,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "捕食公爵",
+      "selection": [
+        5,
+        1,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ドオー",
+          "item": "オボンのみ",
+          "ability": "ちょすい",
+          "tera_type": "でんき",
+          "moves": [
+            "じしん",
+            "どくどく",
+            "どくびし",
+            "じこさいせい"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "カビゴン",
+          "item": "とつげきチョッキ",
+          "ability": "めんえき",
+          "tera_type": "ひこう",
+          "moves": [
+            "じわれ",
+            "ヘビーボンバー",
+            "テラバースト",
+            "かみくだく"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ヘイラッシャ",
+          "item": "たべのこし",
+          "ability": "てんねん",
+          "tera_type": "ゴースト",
+          "moves": [
+            "じわれ",
+            "ウェーブタックル",
+            "まもる",
+            "ねむる"
+          ],
+          "nature": "わんぱく"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "∞",
+      "selection": [
+        3,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ガチグマ(アカツキ)",
+          "item": "とつげきチョッキ",
+          "ability": "しんがん",
+          "tera_type": "はがね",
+          "moves": [
+            "しんくうは",
+            "だいちのちから",
+            "ハイパーボイス",
+            "ブラッドムーン"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "ホウオウ",
+          "item": "あつぞこブーツ",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "まもる",
+            "ふきとばし",
+            "じこさいせい",
+            "せいなるほのお"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "おんみつマント",
+          "ability": "プレッシャー",
+          "tera_type": "ノーマル",
+          "moves": [
+            "まもる",
+            "どくどく",
+            "じこさいせい",
+            "ダイマックスほう"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ドオー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "カビゴン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ヘイラッシャ",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ガチグマ(アカツキ)",
+        "hp_percent": 55,
+        "status": "active"
+      },
+      {
+        "name": "ホウオウ",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ドオー, カビゴン, ヘイラッシャ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ガチグマ(アカツキ), ホウオウ, ムゲンダイナ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→カビゴン",
+      "rebel_action": "交代→ガチグマ(アカツキ)",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "237/237",
+        "dt_hp_pct": 100,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "189/189",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "技: ブラッドムーン",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 59,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 78
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "142/237",
+        "dt_hp_pct": 59,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "149/189",
+        "rebel_hp_pct": 78
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "ドオー",
+        "dt_hp_pct": 1,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ドオー",
+        "dt_hp": "4/237",
+        "dt_hp_pct": 1,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "104/189",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: ブラッドムーン",
+      "after": {
+        "dt_active": "カビゴン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カビゴン",
+        "dt_hp": "235/235",
+        "dt_hp_pct": 100,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "104/189",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: じわれ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "カビゴン",
+        "dt_hp_pct": 77,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カビゴン",
+        "dt_hp": "183/235",
+        "dt_hp_pct": 77,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "104/189",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: じわれ",
+      "rebel_action": "技: しんくうは",
+      "after": {
+        "dt_active": "カビゴン",
+        "dt_hp_pct": 65,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カビゴン",
+        "dt_hp": "153/235",
+        "dt_hp_pct": 65,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "104/189",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: じわれ",
+      "rebel_action": "技: ブラッドムーン",
+      "after": {
+        "dt_active": "カビゴン",
+        "dt_hp_pct": 29,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カビゴン",
+        "dt_hp": "69/235",
+        "dt_hp_pct": 29,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "104/189",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: じわれ",
+      "rebel_action": "技: だいちのちから",
+      "after": {
+        "dt_active": "カビゴン",
+        "dt_hp_pct": 5,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カビゴン",
+        "dt_hp": "14/235",
+        "dt_hp_pct": 5,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp": "104/189",
+        "rebel_hp_pct": 55
+      },
+      "dt_action": "技: じわれ",
+      "rebel_action": "技: ブラッドムーン",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ガチグマ(アカツキ)",
+        "rebel_hp_pct": 55
+      }
+    },
+    {
+      "turn": 10,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

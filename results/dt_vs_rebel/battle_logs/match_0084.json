@@ -1,0 +1,309 @@
+{
+  "match_id": 84,
+  "timestamp": "2026-01-30T15:26:34.760856",
+  "result": {
+    "match_id": 84,
+    "winner": "rebel",
+    "total_turns": 8,
+    "dt_team_name": "リチャード",
+    "rebel_team_name": "すい",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 2.469752550125122,
+    "rebel_think_time": 1.8213040828704834,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "リチャード",
+      "selection": [
+        2,
+        4,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "オボンのみ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "でんき",
+          "moves": [
+            "じしん",
+            "カタストロフィ",
+            "ステルスロック",
+            "ふきとばし"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "カイリュー",
+          "item": "こだわりハチマキ",
+          "ability": "マルチスケイル",
+          "tera_type": "ひこう",
+          "moves": [
+            "げきりん",
+            "テラバースト",
+            "しんそく",
+            "ほのおのパンチ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりスカーフ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アイススピナー",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "すい",
+      "selection": [
+        2,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "テツノワダチ",
+          "item": "こだわりハチマキ",
+          "ability": "クォークチャージ",
+          "tera_type": "じめん",
+          "moves": [
+            "じしん",
+            "アイアンヘッド",
+            "ストーンエッジ",
+            "アイススピナー"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "とつげきチョッキ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "フェアリー",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "ボルトチェンジ",
+            "マジカルシャイン"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ルナアーラ",
+          "item": "こだわりメガネ",
+          "ability": "ファントムガード",
+          "tera_type": "フェアリー",
+          "moves": [
+            "シャドーレイ",
+            "サイコキネシス",
+            "ムーンフォース",
+            "トリック"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "カイリュー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 100,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "テツノワダチ",
+        "hp_percent": 69,
+        "status": "active"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ルナアーラ",
+        "hp_percent": 50,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, カイリュー, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: テツノワダチ, ミライドン, ルナアーラ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ディンルー",
+      "rebel_action": "交代→テツノワダチ",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "179/179",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+じしん",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 39,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 69
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "101/257",
+        "dt_hp_pct": 39,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "124/179",
+        "rebel_hp_pct": 69
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "カイリュー",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 69
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイリュー",
+        "dt_hp": "166/166",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "124/179",
+        "rebel_hp_pct": 69
+      },
+      "dt_action": "技: げきりん",
+      "rebel_action": "交代→ルナアーラ",
+      "after": {
+        "dt_active": "カイリュー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp_pct": 50
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイリュー",
+        "dt_hp": "166/166",
+        "dt_hp_pct": 100,
+        "rebel_active": "ルナアーラ",
+        "rebel_hp": "107/212",
+        "rebel_hp_pct": 50
+      },
+      "dt_action": "SKIP",
+      "rebel_action": "交代→テツノワダチ",
+      "after": {
+        "dt_active": "カイリュー",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 69
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイリュー",
+        "dt_hp": "166/166",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "124/179",
+        "rebel_hp_pct": 69
+      },
+      "dt_action": "SKIP",
+      "rebel_action": "技: アイススピナー",
+      "after": {
+        "dt_active": "カイリュー",
+        "dt_hp_pct": 20,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 69
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイリュー",
+        "dt_hp": "34/166",
+        "dt_hp_pct": 20,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp": "124/179",
+        "rebel_hp_pct": 69
+      },
+      "dt_action": "SKIP",
+      "rebel_action": "技: アイススピナー",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "テツノワダチ",
+        "rebel_hp_pct": 69
+      }
+    },
+    {
+      "turn": 8,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

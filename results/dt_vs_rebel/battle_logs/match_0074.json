@@ -1,0 +1,330 @@
+{
+  "match_id": 74,
+  "timestamp": "2026-01-30T15:23:00.900635",
+  "result": {
+    "match_id": 74,
+    "winner": "rebel",
+    "total_turns": 9,
+    "dt_team_name": "にちい",
+    "rebel_team_name": "22.6",
+    "dt_remaining": 0,
+    "rebel_remaining": 2,
+    "dt_think_time": 3.4780216217041016,
+    "rebel_think_time": 3.810960292816162,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "にちい",
+      "selection": [
+        2,
+        0,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ハバタクカミ",
+          "item": "ブーストエナジー",
+          "ability": "こだいかっせい",
+          "tera_type": "ノーマル",
+          "moves": [
+            "ムーンフォース",
+            "たたりめ",
+            "でんじは",
+            "ちょうはつ"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "だいちのプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "みず",
+          "moves": [
+            "しんそく",
+            "じしん",
+            "たきのぼり",
+            "りゅうのまい"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "カイリュー",
+          "item": "いかさまダイス",
+          "ability": "マルチスケイル",
+          "tera_type": "はがね",
+          "moves": [
+            "スケイルショット",
+            "アイアンヘッド",
+            "アクアジェット",
+            "れいとうビーム"
+          ],
+          "nature": "やんちゃ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "22.6",
+      "selection": [
+        1,
+        0,
+        2
+      ],
+      "pokemon": [
+        {
+          "name": "カイオーガ",
+          "item": "こだわりスカーフ",
+          "ability": "あめふらし",
+          "tera_type": "みず",
+          "moves": [
+            "しおふき",
+            "かみなり",
+            "なみのり",
+            "テラバースト"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "コライドン",
+          "item": "こだわりハチマキ",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "フレアドライブ",
+            "けたぐり",
+            "ニトロチャージ",
+            "スケイルショット"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "とつげきチョッキ",
+          "ability": "いかく",
+          "tera_type": "ノーマル",
+          "moves": [
+            "じしん",
+            "がんせきふうじ",
+            "くさむすび",
+            "とんぼがえり"
+          ],
+          "nature": "ゆうかん"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ハバタクカミ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "カイリュー",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "カイオーガ",
+        "hp_percent": 1,
+        "status": "active"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ハバタクカミ, アルセウス, カイリュー"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: カイオーガ, コライドン, ランドロス(れいじゅう)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アルセウス",
+      "rebel_action": "交代→カイオーガ",
+      "after": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ハバタクカミ",
+        "dt_hp": "159/159",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+ムーンフォース",
+      "rebel_action": "テラス+しおふき",
+      "after": {
+        "dt_active": "カイリュー",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 64
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイリュー",
+        "dt_hp": "167/167",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "112/175",
+        "rebel_hp_pct": 64
+      },
+      "dt_action": "技: スケイルショット",
+      "rebel_action": "交代→ランドロス(れいじゅう)",
+      "after": {
+        "dt_active": "カイリュー",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 62
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイリュー",
+        "dt_hp": "167/167",
+        "dt_hp_pct": 100,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "121/195",
+        "rebel_hp_pct": 62
+      },
+      "dt_action": "技: スケイルショット",
+      "rebel_action": "技: がんせきふうじ",
+      "after": {
+        "dt_active": "カイリュー",
+        "dt_hp_pct": 51,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp_pct": 24
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイリュー",
+        "dt_hp": "86/167",
+        "dt_hp_pct": 51,
+        "rebel_active": "ランドロス(れいじゅう)",
+        "rebel_hp": "48/195",
+        "rebel_hp_pct": 24
+      },
+      "dt_action": "技: スケイルショット",
+      "rebel_action": "技: がんせきふうじ",
+      "after": {
+        "dt_active": "カイリュー",
+        "dt_hp_pct": 51,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 64
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "カイリュー",
+        "dt_hp": "86/167",
+        "dt_hp_pct": 51,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "112/175",
+        "rebel_hp_pct": 64
+      },
+      "dt_action": "技: スケイルショット",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 64
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "213/213",
+        "dt_hp_pct": 100,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "112/175",
+        "rebel_hp_pct": 64
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 0,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 30
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "1/213",
+        "dt_hp_pct": 0,
+        "rebel_active": "カイオーガ",
+        "rebel_hp": "53/175",
+        "rebel_hp_pct": 30
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: なみのり",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 0,
+        "rebel_active": "カイオーガ",
+        "rebel_hp_pct": 1
+      }
+    },
+    {
+      "turn": 8,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "アルセウス"
+    }
+  ]
+}

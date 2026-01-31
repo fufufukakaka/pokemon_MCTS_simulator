@@ -1,0 +1,610 @@
+{
+  "match_id": 58,
+  "timestamp": "2026-01-30T15:19:37.125263",
+  "result": {
+    "match_id": 58,
+    "winner": "dt",
+    "total_turns": 23,
+    "dt_team_name": "かに",
+    "rebel_team_name": "かに",
+    "dt_remaining": 2,
+    "rebel_remaining": 0,
+    "dt_think_time": 28.88178038597107,
+    "rebel_think_time": 9.779732704162598,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "かに",
+      "selection": [
+        2,
+        5,
+        0
+      ],
+      "pokemon": [
+        {
+          "name": "ヘイラッシャ",
+          "item": "たべのこし",
+          "ability": "てんねん",
+          "tera_type": "はがね",
+          "moves": [
+            "まもる",
+            "ねむる",
+            "ウェーブタックル",
+            "じわれ"
+          ],
+          "nature": "わんぱく"
+        },
+        {
+          "name": "ブリムオン",
+          "item": "おんみつマント",
+          "ability": "マジックミラー",
+          "tera_type": "ひこう",
+          "moves": [
+            "ドレインキッス",
+            "サイコノイズ",
+            "ほっぺすりすり",
+            "めいそう"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "こだわりハチマキ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "すてみタックル",
+            "じしん",
+            "シャドークロー"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "かに",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ブリムオン",
+          "item": "おんみつマント",
+          "ability": "マジックミラー",
+          "tera_type": "ひこう",
+          "moves": [
+            "ドレインキッス",
+            "サイコノイズ",
+            "ほっぺすりすり",
+            "めいそう"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "アルセウス",
+          "item": "こだわりハチマキ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "すてみタックル",
+            "じしん",
+            "シャドークロー"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ムゲンダイナ",
+          "item": "きあいのタスキ",
+          "ability": "プレッシャー",
+          "tera_type": "フェアリー",
+          "moves": [
+            "じこさいせい",
+            "ダイマックスほう",
+            "ヘドロばくだん",
+            "どくびし"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ヘイラッシャ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ブリムオン",
+        "hp_percent": 100,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 28,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ブリムオン",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ムゲンダイナ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ヘイラッシャ, ブリムオン, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ブリムオン, アルセウス, ムゲンダイナ"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→アルセウス",
+      "rebel_action": "交代→ブリムオン",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "257/257",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 82,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "212/257",
+        "dt_hp_pct": 82,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: ドレインキッス",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 82,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "212/257",
+        "dt_hp_pct": 82,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "テラス+サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 67,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "173/257",
+        "dt_hp_pct": 67,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: ドレインキッス",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 67,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "173/257",
+        "dt_hp_pct": 67,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "130/257",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: ドレインキッス",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "130/257",
+        "dt_hp_pct": 50,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 34,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "88/257",
+        "dt_hp_pct": 34,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: ドレインキッス",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 34,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "88/257",
+        "dt_hp_pct": 34,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 17,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "46/257",
+        "dt_hp_pct": 17,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 17,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 13,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "46/257",
+        "dt_hp_pct": 17,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 0,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 14,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "1/257",
+        "dt_hp_pct": 0,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp_pct": 0,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 15,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヘイラッシャ",
+        "dt_hp": "1/257",
+        "dt_hp_pct": 0,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: まもる",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 16,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "164/164",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: ドレインキッス",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 84,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 59
+      }
+    },
+    {
+      "turn": 17,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "191/227",
+        "dt_hp_pct": 84,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "98/164",
+        "rebel_hp_pct": 59
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: ドレインキッス",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 61,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 31
+      }
+    },
+    {
+      "turn": 18,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "140/227",
+        "dt_hp_pct": 61,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "52/164",
+        "rebel_hp_pct": 31
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 61,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 36
+      }
+    },
+    {
+      "turn": 19,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "140/227",
+        "dt_hp_pct": 61,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "83/227",
+        "rebel_hp_pct": 36
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: すてみタックル",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 61,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 20,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "140/227",
+        "dt_hp_pct": 61,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "215/215",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 28,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp_pct": 43
+      }
+    },
+    {
+      "turn": 21,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "65/227",
+        "dt_hp_pct": 28,
+        "rebel_active": "ムゲンダイナ",
+        "rebel_hp": "94/215",
+        "rebel_hp_pct": 43
+      },
+      "dt_action": "技: しんそく",
+      "rebel_action": "技: ヘドロばくだん",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 28,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 31
+      }
+    },
+    {
+      "turn": 22,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "65/227",
+        "dt_hp_pct": 28,
+        "rebel_active": "ブリムオン",
+        "rebel_hp": "52/164",
+        "rebel_hp_pct": 31
+      },
+      "dt_action": "わるあがき",
+      "rebel_action": "技: サイコノイズ",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 28,
+        "rebel_active": "ブリムオン",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 22,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "ブリムオン"
+    }
+  ]
+}

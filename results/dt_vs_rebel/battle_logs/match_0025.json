@@ -1,0 +1,289 @@
+{
+  "match_id": 25,
+  "timestamp": "2026-01-30T15:02:33.497745",
+  "result": {
+    "match_id": 25,
+    "winner": "rebel",
+    "total_turns": 7,
+    "dt_team_name": "もぶ",
+    "rebel_team_name": "やとる",
+    "dt_remaining": 1,
+    "rebel_remaining": 3,
+    "dt_think_time": 4.265106201171875,
+    "rebel_think_time": 3.2875428199768066,
+    "surrendered_by": "dt"
+  },
+  "teams": {
+    "dt": {
+      "name": "もぶ",
+      "selection": [
+        4,
+        3,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ディンルー",
+          "item": "とつげきチョッキ",
+          "ability": "わざわいのうつわ",
+          "tera_type": "はがね",
+          "moves": [
+            "じしん",
+            "ヘビーボンバー",
+            "しっぺがえし",
+            "カタストロフィ"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "オオニューラ",
+          "item": "レッドカード",
+          "ability": "かるわざ",
+          "tera_type": "ゴースト",
+          "moves": [
+            "インファイト",
+            "フェイタルクロー",
+            "シャドークロー",
+            "こらえる"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりハチマキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ほのお",
+          "moves": [
+            "すいりゅうれんだ",
+            "アクアジェット",
+            "インファイト",
+            "とんぼがえり"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "やとる",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "キラフロル",
+          "item": "レッドカード",
+          "ability": "どくげしょう",
+          "tera_type": "ノーマル",
+          "moves": [
+            "パワージェム",
+            "キラースピン",
+            "ステルスロック",
+            "こらえる"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "こだわりメガネ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "サイコキネシス",
+            "エナジーボール",
+            "テラバースト"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "コライドン",
+          "item": "いかさまダイス",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ノーマル",
+          "moves": [
+            "スケイルショット",
+            "アクセルブレイク",
+            "ちょうはつ",
+            "みがわり"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ディンルー",
+        "hp_percent": 94,
+        "status": "active"
+      },
+      {
+        "name": "オオニューラ",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "キラフロル",
+        "hp_percent": 67,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 49,
+        "status": "active"
+      },
+      {
+        "name": "コライドン",
+        "hp_percent": 34,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ディンルー, オオニューラ, ウーラオス(れんげき)"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: キラフロル, バドレックス(こくば), コライドン"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→オオニューラ",
+      "rebel_action": "交代→キラフロル",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ディンルー",
+        "dt_hp": "239/239",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "185/185",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+パワージェム",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp_pct": 67
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "159/159",
+        "dt_hp_pct": 100,
+        "rebel_active": "キラフロル",
+        "rebel_hp": "124/185",
+        "rebel_hp_pct": 67
+      },
+      "dt_action": "技: インファイト",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "オオニューラ",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "オオニューラ",
+        "dt_hp": "159/159",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "61/175",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: インファイト",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "183/183",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "61/175",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ウーラオス(れんげき)",
+        "dt_hp": "183/183",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "87/175",
+        "rebel_hp_pct": 49
+      },
+      "dt_action": "技: すいりゅうれんだ",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ディンルー",
+        "dt_hp_pct": 94,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 49
+      }
+    },
+    {
+      "turn": 7,
+      "player": "dt",
+      "message": "Decision Transformer が降参した！"
+    }
+  ]
+}

@@ -1,0 +1,350 @@
+{
+  "match_id": 81,
+  "timestamp": "2026-01-30T15:25:12.045438",
+  "result": {
+    "match_id": 81,
+    "winner": "dt",
+    "total_turns": 10,
+    "dt_team_name": "リザドラナ",
+    "rebel_team_name": "かに",
+    "dt_remaining": 1,
+    "rebel_remaining": 0,
+    "dt_think_time": 2.911734104156494,
+    "rebel_think_time": 4.78951358795166,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "リザドラナ",
+      "selection": [
+        2,
+        5,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "パオジアン",
+          "item": "きあいのタスキ",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "ゴースト",
+          "moves": [
+            "つららおとし",
+            "ふいうち",
+            "せいなるつるぎ",
+            "ぜったいれいど"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ブリジュラス",
+          "item": "パワフルハーブ",
+          "ability": "じきゅうりょく",
+          "tera_type": "ステラ",
+          "moves": [
+            "りゅうせいぐん",
+            "ラスターカノン",
+            "エレクトロビーム",
+            "あくのはどう"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "アルセウス",
+          "item": "せいれいプレート",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "さばきのつぶて",
+            "だいちのちから",
+            "アシッドボム",
+            "しんそく"
+          ],
+          "nature": "ひかえめ"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "かに",
+      "selection": [
+        5,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "きあいのタスキ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "ステラ",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "アクアジェット",
+            "つるぎのまい"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "ミライドン",
+          "item": "こだわりスカーフ",
+          "ability": "ハドロンエンジン",
+          "tera_type": "みず",
+          "moves": [
+            "イナズマドライブ",
+            "りゅうせいぐん",
+            "テラバースト",
+            "ボルトチェンジ"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "アルセウス",
+          "item": "メンタルハーブ",
+          "ability": "マルチタイプ",
+          "tera_type": "ノーマル",
+          "moves": [
+            "しんそく",
+            "じしん",
+            "つるぎのまい",
+            "じこさいせい"
+          ],
+          "nature": "いじっぱり"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "パオジアン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ブリジュラス",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 46,
+        "status": "active"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ミライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "アルセウス",
+        "hp_percent": 0,
+        "status": "active"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: パオジアン, ブリジュラス, アルセウス"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), ミライドン, アルセウス"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ブリジュラス",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+つららおとし",
+      "rebel_action": "テラス+インファイト",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "126/175",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: すいりゅうれんだ",
+      "after": {
+        "dt_active": "ブリジュラス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ブリジュラス",
+        "dt_hp": "165/165",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "126/175",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: りゅうせいぐん",
+      "rebel_action": "技: インファイト",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 72
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "126/175",
+        "rebel_hp_pct": 72
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→アルセウス",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 58
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "227/227",
+        "dt_hp_pct": 100,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "132/226",
+        "rebel_hp_pct": 58
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: じしん",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 76,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 16
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "174/227",
+        "dt_hp_pct": 76,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "38/226",
+        "rebel_hp_pct": 16
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 76,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 16
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "174/227",
+        "dt_hp_pct": 76,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "38/226",
+        "rebel_hp_pct": 16
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "交代→ミライドン",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 76,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 16
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "アルセウス",
+        "dt_hp": "174/227",
+        "dt_hp_pct": 76,
+        "rebel_active": "アルセウス",
+        "rebel_hp": "38/226",
+        "rebel_hp_pct": 16
+      },
+      "dt_action": "技: さばきのつぶて",
+      "rebel_action": "技: しんそく",
+      "after": {
+        "dt_active": "アルセウス",
+        "dt_hp_pct": 46,
+        "rebel_active": "アルセウス",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 9,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "アルセウス"
+    }
+  ]
+}

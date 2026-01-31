@@ -228,9 +228,7 @@ class DTGuidedMCTS:
             context = self._get_or_create_context(battle, player)
 
         # ルートノード作成
-        root = DTGuidedMCTSNode(
-            state=deepcopy(battle), player=player, depth=0
-        )
+        root = DTGuidedMCTSNode(state=deepcopy(battle), player=player, depth=0)
 
         # ルートノードを展開
         self._expand(root, context, target_return)
@@ -277,7 +275,13 @@ class DTGuidedMCTS:
             node.is_expanded = True
             return
 
-        available = node.state.available_commands(node.player)
+        # pokemon が None の場合は交代フェーズ
+        if node.state.pokemon[node.player] is None:
+            phase = "change"
+        else:
+            phase = "battle"
+
+        available = node.state.available_commands(node.player, phase=phase)
         if not available:
             node.is_expanded = True
             return
@@ -325,8 +329,20 @@ class DTGuidedMCTS:
 
         # 相手の行動をランダムに選択
         opp = 1 - player
-        opp_actions = child_state.available_commands(opp)
-        opp_action = random.choice(opp_actions) if opp_actions else Battle.SKIP
+
+        # 相手の行動を決定
+        # available_commands は両方の pokemon が必要な場合があるため、
+        # 安全にフォールバックを用意
+        try:
+            if child_state.pokemon[opp] is None:
+                opp_phase = "change"
+            else:
+                opp_phase = "battle"
+            opp_actions = child_state.available_commands(opp, phase=opp_phase)
+            opp_action = random.choice(opp_actions) if opp_actions else Battle.SKIP
+        except (AttributeError, TypeError):
+            # pokemon が None で available_commands が失敗した場合
+            opp_action = Battle.SKIP
 
         # コマンド実行
         if player == 0:
@@ -346,7 +362,12 @@ class DTGuidedMCTS:
         target_return: float,
     ) -> dict[int, float]:
         """NNからPolicy分布を取得"""
-        available = state.available_commands(player)
+        # pokemon が None の場合は交代フェーズ
+        if state.pokemon[player] is None:
+            phase = "change"
+        else:
+            phase = "battle"
+        available = state.available_commands(player, phase=phase)
         if not available:
             return {}
 
@@ -510,8 +531,11 @@ class DTGuidedMCTS:
             if sim_state.winner() is not None:
                 break
 
-            moves0 = sim_state.available_commands(0)
-            moves1 = sim_state.available_commands(1)
+            # pokemon が None の場合は交代フェーズ
+            phase0 = "change" if sim_state.pokemon[0] is None else "battle"
+            phase1 = "change" if sim_state.pokemon[1] is None else "battle"
+            moves0 = sim_state.available_commands(0, phase=phase0)
+            moves1 = sim_state.available_commands(1, phase=phase1)
             cmd0 = random.choice(moves0) if moves0 else Battle.SKIP
             cmd1 = random.choice(moves1) if moves1 else Battle.SKIP
             sim_state.proceed(commands=[cmd0, cmd1])
@@ -559,9 +583,7 @@ class DTGuidedMCTS:
             node_value = value if node.player == root_player else 1 - value
             node.total_value += node_value
 
-    def _get_or_create_context(
-        self, battle: Battle, player: int
-    ) -> BattleContext:
+    def _get_or_create_context(self, battle: Battle, player: int) -> BattleContext:
         """コンテキストを取得または作成"""
         opponent = 1 - player
 
@@ -587,9 +609,7 @@ class DTGuidedMCTS:
 
         return self._context_cache[player]
 
-    def _update_observation(
-        self, state: Battle, player: int, context: BattleContext
-    ):
+    def _update_observation(self, state: Battle, player: int, context: BattleContext):
         """観測情報を更新"""
         opponent = 1 - player
         opp_active = state.pokemon[opponent]
@@ -675,7 +695,9 @@ class DTGuidedMCTS:
                 obs = context.opp_observation.pokemon_observations[opp_name]
                 opp_revealed_moves = obs.revealed_moves if obs.revealed_moves else None
                 opp_revealed_item = obs.revealed_item if obs.revealed_item else None
-                opp_revealed_ability = obs.revealed_ability if obs.revealed_ability else None
+                opp_revealed_ability = (
+                    obs.revealed_ability if obs.revealed_ability else None
+                )
 
         encoded = self.tokenizer.encode_turn_state(
             battle=battle,
@@ -715,7 +737,8 @@ class DTGuidedMCTS:
         policy, _, _ = self.search(battle, player, context, target_return)
 
         if not policy:
-            available = battle.available_commands(player)
+            phase = "change" if battle.pokemon[player] is None else "battle"
+            available = battle.available_commands(player, phase=phase)
             return random.choice(available) if available else Battle.SKIP
 
         return max(policy.items(), key=lambda x: x[1])[0]

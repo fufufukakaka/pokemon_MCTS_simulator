@@ -1,0 +1,290 @@
+{
+  "match_id": 1,
+  "timestamp": "2026-01-30T14:56:19.139961",
+  "result": {
+    "match_id": 1,
+    "winner": "rebel",
+    "total_turns": 7,
+    "dt_team_name": "ワシノロスw",
+    "rebel_team_name": "やさしい王樣",
+    "dt_remaining": 0,
+    "rebel_remaining": 2,
+    "dt_think_time": 3.8336637020111084,
+    "rebel_think_time": 2.250905752182007,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "ワシノロスw",
+      "selection": [
+        4,
+        1,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "サンダー",
+          "item": "ゴツゴツメット",
+          "ability": "せいでんき",
+          "tera_type": "フェアリー",
+          "moves": [
+            "ほうでん",
+            "ボルトチェンジ",
+            "とんぼがえり",
+            "はねやすめ"
+          ],
+          "nature": "ずぶとい"
+        },
+        {
+          "name": "ホウオウ",
+          "item": "あつぞこブーツ",
+          "ability": "さいせいりょく",
+          "tera_type": "フェアリー",
+          "moves": [
+            "せいなるほのお",
+            "じこさいせい",
+            "ふきとばし",
+            "まもる"
+          ],
+          "nature": "しんちょう"
+        },
+        {
+          "name": "ヤバソチャ",
+          "item": "たべのこし",
+          "ability": "たいねつ",
+          "tera_type": "あく",
+          "moves": [
+            "シャカシャカほう",
+            "イカサマ",
+            "ちからをすいとる",
+            "めいそう"
+          ],
+          "nature": "ずぶとい"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "やさしい王樣",
+      "selection": [
+        1,
+        0,
+        4
+      ],
+      "pokemon": [
+        {
+          "name": "コライドン",
+          "item": "いかさまダイス",
+          "ability": "ひひいろのこどう",
+          "tera_type": "ほのお",
+          "moves": [
+            "フレアドライブ",
+            "スケイルショット",
+            "つるぎのまい",
+            "ニトロチャージ"
+          ],
+          "nature": "ようき"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "ステラ",
+          "moves": [
+            "アストラルビット",
+            "くさむすび",
+            "サイコショック",
+            "アンコール"
+          ],
+          "nature": "おくびょう"
+        },
+        {
+          "name": "ドオー",
+          "item": "くろいヘドロ",
+          "ability": "ちょすい",
+          "tera_type": "あく",
+          "moves": [
+            "どくづき",
+            "じしん",
+            "じこさいせい",
+            "どくびし"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "サンダー",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "ホウオウ",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "ヤバソチャ",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "コライドン",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 20,
+        "status": "active"
+      },
+      {
+        "name": "ドオー",
+        "hp_percent": 100,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: サンダー, ホウオウ, ヤバソチャ"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: コライドン, バドレックス(こくば), ドオー"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→ホウオウ",
+      "rebel_action": "交代→コライドン",
+      "after": {
+        "dt_active": "サンダー",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "サンダー",
+        "dt_hp": "197/197",
+        "dt_hp_pct": 100,
+        "rebel_active": "コライドン",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+ほうでん",
+      "rebel_action": "テラス+フレアドライブ",
+      "after": {
+        "dt_active": "サンダー",
+        "dt_hp_pct": 1,
+        "rebel_active": "コライドン",
+        "rebel_hp_pct": 18
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "サンダー",
+        "dt_hp": "2/197",
+        "dt_hp_pct": 1,
+        "rebel_active": "コライドン",
+        "rebel_hp": "33/175",
+        "rebel_hp_pct": 18
+      },
+      "dt_action": "技: ほうでん",
+      "rebel_action": "技: スケイルショット",
+      "after": {
+        "dt_active": "ヤバソチャ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ヤバソチャ",
+        "dt_hp": "178/178",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: シャカシャカほう",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ホウオウ",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ホウオウ",
+        "dt_hp": "213/213",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "技: せいなるほのお",
+      "rebel_action": "技: サイコショック",
+      "after": {
+        "dt_active": "ホウオウ",
+        "dt_hp_pct": 46,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ホウオウ",
+        "dt_hp": "98/213",
+        "dt_hp_pct": 46,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "35/175",
+        "rebel_hp_pct": 20
+      },
+      "dt_action": "技: せいなるほのお",
+      "rebel_action": "技: アストラルビット",
+      "after": {
+        "dt_active": "ホウオウ",
+        "dt_hp_pct": 0,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 20
+      }
+    },
+    {
+      "turn": 6,
+      "event": "faint",
+      "player": "dt",
+      "pokemon": "ホウオウ"
+    }
+  ]
+}

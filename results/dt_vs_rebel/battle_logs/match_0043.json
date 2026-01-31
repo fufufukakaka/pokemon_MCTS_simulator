@@ -1,0 +1,370 @@
+{
+  "match_id": 43,
+  "timestamp": "2026-01-30T15:15:32.194613",
+  "result": {
+    "match_id": 43,
+    "winner": "dt",
+    "total_turns": 11,
+    "dt_team_name": "スカーレット",
+    "rebel_team_name": "あじのもと",
+    "dt_remaining": 1,
+    "rebel_remaining": 0,
+    "dt_think_time": 1.95743727684021,
+    "rebel_think_time": 6.465084075927734,
+    "surrendered_by": null
+  },
+  "teams": {
+    "dt": {
+      "name": "スカーレット",
+      "selection": [
+        3,
+        2,
+        5
+      ],
+      "pokemon": [
+        {
+          "name": "ランドロス(れいじゅう)",
+          "item": "ゴツゴツメット",
+          "ability": "いかく",
+          "tera_type": "みず",
+          "moves": [
+            "じしん",
+            "とんぼがえり",
+            "ステルスロック",
+            "ちょうはつ"
+          ],
+          "nature": "のんき"
+        },
+        {
+          "name": "パオジアン",
+          "item": "きあいのタスキ",
+          "ability": "わざわいのつるぎ",
+          "tera_type": "でんき",
+          "moves": [
+            "つららおとし",
+            "ふいうち",
+            "こおりのつぶて",
+            "テラバースト"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "キョジオーン",
+          "item": "たべのこし",
+          "ability": "きよめのしお",
+          "tera_type": "くさ",
+          "moves": [
+            "しおづけ",
+            "まもる",
+            "みがわり",
+            "じこさいせい"
+          ],
+          "nature": "しんちょう"
+        }
+      ]
+    },
+    "rebel": {
+      "name": "あじのもと",
+      "selection": [
+        3,
+        0,
+        1
+      ],
+      "pokemon": [
+        {
+          "name": "ウーラオス(れんげき)",
+          "item": "こだわりスカーフ",
+          "ability": "ふかしのこぶし",
+          "tera_type": "みず",
+          "moves": [
+            "すいりゅうれんだ",
+            "インファイト",
+            "とんぼがえり",
+            "アクアジェット"
+          ],
+          "nature": "いじっぱり"
+        },
+        {
+          "name": "テラパゴス(テラスタル)",
+          "item": "パワフルハーブ",
+          "ability": "テラスシェル",
+          "tera_type": "ステラ",
+          "moves": [
+            "テラクラスター",
+            "れいとうビーム",
+            "メテオビーム",
+            "こうそくスピン"
+          ],
+          "nature": "ひかえめ"
+        },
+        {
+          "name": "バドレックス(こくば)",
+          "item": "きあいのタスキ",
+          "ability": "じんばいったい",
+          "tera_type": "フェアリー",
+          "moves": [
+            "アストラルビット",
+            "くさむすび",
+            "アンコール",
+            "わるだくみ"
+          ],
+          "nature": "おくびょう"
+        }
+      ]
+    }
+  },
+  "final_state": {
+    "dt_pokemon": [
+      {
+        "name": "ランドロス(れいじゅう)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "パオジアン",
+        "hp_percent": 100,
+        "status": "active"
+      },
+      {
+        "name": "キョジオーン",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ],
+    "rebel_pokemon": [
+      {
+        "name": "ウーラオス(れんげき)",
+        "hp_percent": 0,
+        "status": "bench"
+      },
+      {
+        "name": "テラパゴス(テラスタル)",
+        "hp_percent": 0,
+        "status": "active"
+      },
+      {
+        "name": "バドレックス(こくば)",
+        "hp_percent": 0,
+        "status": "bench"
+      }
+    ]
+  },
+  "battle_log": [
+    {
+      "turn": 0,
+      "player": "dt",
+      "message": "選出: ランドロス(れいじゅう), パオジアン, キョジオーン"
+    },
+    {
+      "turn": 0,
+      "player": "rebel",
+      "message": "選出: ウーラオス(れんげき), テラパゴス(テラスタル), バドレックス(こくば)"
+    },
+    {
+      "turn": 1,
+      "phase": "change",
+      "before": {
+        "dt_active": null,
+        "dt_hp": "N/A",
+        "dt_hp_pct": 0,
+        "rebel_active": null,
+        "rebel_hp": "N/A",
+        "rebel_hp_pct": 0
+      },
+      "dt_action": "交代→パオジアン",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 100
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "195/195",
+        "dt_hp_pct": 100,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "175/175",
+        "rebel_hp_pct": 100
+      },
+      "dt_action": "テラス+じしん",
+      "rebel_action": "テラス+すいりゅうれんだ",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 68,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp_pct": 17
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "133/195",
+        "dt_hp_pct": 68,
+        "rebel_active": "ウーラオス(れんげき)",
+        "rebel_hp": "31/175",
+        "rebel_hp_pct": 17
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→テラパゴス(テラスタル)",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 68,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp_pct": 77
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "133/195",
+        "dt_hp_pct": 68,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp": "132/170",
+        "rebel_hp_pct": 77
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: メテオビーム",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 6,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "12/195",
+        "dt_hp_pct": 6,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp": "59/170",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "交代→バドレックス(こくば)",
+      "after": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp_pct": 6,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 44
+      }
+    },
+    {
+      "turn": 6,
+      "phase": "battle",
+      "before": {
+        "dt_active": "ランドロス(れいじゅう)",
+        "dt_hp": "12/195",
+        "dt_hp_pct": 6,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "78/175",
+        "rebel_hp_pct": 44
+      },
+      "dt_action": "技: じしん",
+      "rebel_action": "技: くさむすび",
+      "after": {
+        "dt_active": "キョジオーン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "battle",
+      "before": {
+        "dt_active": "キョジオーン",
+        "dt_hp": "207/207",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "57/175",
+        "rebel_hp_pct": 32
+      },
+      "dt_action": "技: しおづけ",
+      "rebel_action": "技: くさむすび",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp_pct": 32
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "バドレックス(こくば)",
+        "rebel_hp": "57/175",
+        "rebel_hp_pct": 32
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: アンコール",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 9,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp": "59/170",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "交代→ウーラオス(れんげき)",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp_pct": 34
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "battle",
+      "before": {
+        "dt_active": "パオジアン",
+        "dt_hp": "155/155",
+        "dt_hp_pct": 100,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp": "59/170",
+        "rebel_hp_pct": 34
+      },
+      "dt_action": "技: つららおとし",
+      "rebel_action": "技: テラクラスター",
+      "after": {
+        "dt_active": "パオジアン",
+        "dt_hp_pct": 100,
+        "rebel_active": "テラパゴス(テラスタル)",
+        "rebel_hp_pct": 0
+      }
+    },
+    {
+      "turn": 10,
+      "event": "faint",
+      "player": "rebel",
+      "pokemon": "テラパゴス(テラスタル)"
+    }
+  ]
+}

@@ -49,6 +49,10 @@ class RebelAIConfig:
     selection_bert_hidden_size: int = 256
     selection_bert_num_layers: int = 4
     selection_bert_num_heads: int = 4
+    # Value Network settings
+    use_move_effectiveness: Optional[bool] = (
+        None  # None = チェックポイント名から自動判定
+    )
 
 
 class RebelAI:
@@ -96,9 +100,35 @@ class RebelAI:
 
     def _load_value_network(self) -> ReBeLValueNetwork:
         """Value Networkをロード"""
+        # エンコーダーの辞書を先に読み込み（モデル初期化前に必要）
+        encoder_path = self.checkpoint_path / "encoder_vocab.json"
+        encoder_config = {}
+        if encoder_path.exists():
+            with open(encoder_path, "r", encoding="utf-8") as f:
+                encoder_state = json.load(f)
+            encoder_config = {
+                "pokemon_to_id": encoder_state.get("pokemon_to_id", {}),
+                "move_to_id": encoder_state.get("move_to_id", {}),
+                "item_to_id": encoder_state.get("item_to_id", {}),
+            }
+            logger.info(f"Loaded encoder vocab from {encoder_path}")
+
+        # use_move_effectiveness の判定
+        use_move_effectiveness = self.config.use_move_effectiveness
+        if use_move_effectiveness is None:
+            # チェックポイント名から自動判定
+            checkpoint_name = str(self.checkpoint_path).lower()
+            use_move_effectiveness = "move_effective" in checkpoint_name
+            logger.info(
+                f"Auto-detected use_move_effectiveness={use_move_effectiveness} "
+                f"from checkpoint path"
+            )
+
         value_network = ReBeLValueNetwork(
             hidden_dim=256,
             num_res_blocks=4,
+            encoder_config=encoder_config,
+            use_move_effectiveness=use_move_effectiveness,
         )
 
         model_path = self.checkpoint_path / "value_network.pt"
@@ -107,16 +137,6 @@ class RebelAI:
                 torch.load(model_path, map_location=self.device, weights_only=True)
             )
             logger.info(f"Loaded value network from {model_path}")
-
-        # エンコーダーの辞書を読み込み
-        encoder_path = self.checkpoint_path / "encoder_vocab.json"
-        if encoder_path.exists():
-            with open(encoder_path, "r", encoding="utf-8") as f:
-                encoder_state = json.load(f)
-            value_network.encoder.pokemon_to_id = encoder_state.get("pokemon_to_id", {})
-            value_network.encoder.move_to_id = encoder_state.get("move_to_id", {})
-            value_network.encoder.item_to_id = encoder_state.get("item_to_id", {})
-            logger.info(f"Loaded encoder vocab from {encoder_path}")
 
         value_network.to(self.device)
         value_network.eval()
@@ -328,7 +348,9 @@ class RebelAI:
         self.observed_items[pokemon_name] = item_name
         logger.info(f"AI observed item: {pokemon_name} has {item_name}")
 
-    def observe_ability(self, player: int, pokemon_name: str, ability_name: str) -> None:
+    def observe_ability(
+        self, player: int, pokemon_name: str, ability_name: str
+    ) -> None:
         """特性を観測（重複観測を防ぐ）"""
         if self.observed_abilities.get(pokemon_name) == ability_name:
             return

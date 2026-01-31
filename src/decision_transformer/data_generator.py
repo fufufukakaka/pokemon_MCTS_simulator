@@ -74,7 +74,9 @@ def _parallel_game_worker(args: tuple) -> dict | None:
 
                 tokenizer_path = checkpoint_path / "tokenizer"
                 if tokenizer_path.exists():
-                    tokenizer = BattleSequenceTokenizer.load(tokenizer_path, model.config)
+                    tokenizer = BattleSequenceTokenizer.load(
+                        tokenizer_path, model.config
+                    )
                 else:
                     tokenizer = BattleSequenceTokenizer(model.config)
 
@@ -83,7 +85,9 @@ def _parallel_game_worker(args: tuple) -> dict | None:
 
                 logger.debug(f"Worker {game_id}: Loaded model from {checkpoint_path}")
             else:
-                logger.warning(f"Worker {game_id}: Checkpoint not found at {checkpoint_path}, using RandomPolicy")
+                logger.warning(
+                    f"Worker {game_id}: Checkpoint not found at {checkpoint_path}, using RandomPolicy"
+                )
 
         gen = TrajectoryGenerator(
             trainer_data=trainer_data,
@@ -96,6 +100,7 @@ def _parallel_game_worker(args: tuple) -> dict | None:
     except Exception as e:
         logger.error(f"Worker failed for {game_id}: {e}")
         import traceback
+
         traceback.print_exc()
         return None
 
@@ -115,7 +120,9 @@ class GeneratorConfig:
     num_workers: int = 1
 
     # 統計データ
-    usage_data_path: str | None = None  # 統計データのパス（None なら Pokemon.init のデフォルト）
+    usage_data_path: str | None = (
+        None  # 統計データのパス（None なら Pokemon.init のデフォルト）
+    )
 
     # MCTS設定 (Expert Iteration)
     use_mcts: bool = False  # MCTSを使用するか
@@ -285,7 +292,9 @@ def _battle_to_field_state(battle: Battle) -> FieldState:
         # 追加の盤面状態
         safeguard=tuple(condition.get("safeguard", [0, 0])),
         white_mist=tuple(condition.get("whitemist", [0, 0])),
-        wish=tuple(int(x) for x in condition.get("wish", [0, 0])),  # wish は小数の場合があるので int に
+        wish=tuple(
+            int(x) for x in condition.get("wish", [0, 0])
+        ),  # wish は小数の場合があるので int に
     )
 
 
@@ -331,7 +340,11 @@ def _get_turn_state(
     field = _battle_to_field_state(battle)
 
     # 利用可能な行動
-    available_actions = battle.available_commands(player, phase="battle")
+    # battle.pokemon[player]がNoneの場合は交代フェーズなので空リストを返す
+    if battle.pokemon[player] is None:
+        available_actions = []
+    else:
+        available_actions = battle.available_commands(player, phase="battle")
 
     return TurnState(
         turn=battle.turn,
@@ -617,12 +630,8 @@ class TrajectoryGenerator:
         battle.reset_game()
 
         # ポケモンを設定
-        battle.selected[0] = [
-            self._create_pokemon(team0_data[i]) for i in selection0
-        ]
-        battle.selected[1] = [
-            self._create_pokemon(team1_data[i]) for i in selection1
-        ]
+        battle.selected[0] = [self._create_pokemon(team0_data[i]) for i in selection0]
+        battle.selected[1] = [self._create_pokemon(team1_data[i]) for i in selection1]
 
         # 観測トラッカーを初期化
         # player0 は player1 の情報を追跡、player1 は player0 の情報を追跡
@@ -664,8 +673,16 @@ class TrajectoryGenerator:
 
             if isinstance(self.policy, MCTSPolicy):
                 # MCTSベースの行動選択
-                action0 = self.policy.get_action(battle, 0, available0) if available0 else Battle.SKIP
-                action1 = self.policy.get_action(battle, 1, available1) if available1 else Battle.SKIP
+                action0 = (
+                    self.policy.get_action(battle, 0, available0)
+                    if available0
+                    else Battle.SKIP
+                )
+                action1 = (
+                    self.policy.get_action(battle, 1, available1)
+                    if available1
+                    else Battle.SKIP
+                )
             elif isinstance(self.policy, EpsilonGreedyPolicy):
                 # モデルベースの行動選択
                 # NOTE: 本来はコンテキストをエンコードすべきだが、簡略化のためランダム
@@ -677,18 +694,22 @@ class TrajectoryGenerator:
                 action1 = self.policy.get_action(available1)
 
             # 記録
-            player0_turns.append(TurnRecord(
-                state=state0,
-                action=action0,
-                action_name=self._action_to_name(battle, 0, action0),
-                reward=0.0,
-            ))
-            player1_turns.append(TurnRecord(
-                state=state1,
-                action=action1,
-                action_name=self._action_to_name(battle, 1, action1),
-                reward=0.0,
-            ))
+            player0_turns.append(
+                TurnRecord(
+                    state=state0,
+                    action=action0,
+                    action_name=self._action_to_name(battle, 0, action0),
+                    reward=0.0,
+                )
+            )
+            player1_turns.append(
+                TurnRecord(
+                    state=state1,
+                    action=action1,
+                    action_name=self._action_to_name(battle, 1, action1),
+                    reward=0.0,
+                )
+            )
 
             # 技使用を記録（行動前に記録）
             self._record_move_usage(action0, prev_pokemon0, tracker1)
@@ -706,7 +727,9 @@ class TrajectoryGenerator:
                 break
 
             # ターン後の情報更新
-            self._update_observations_after_turn(battle, tracker0, tracker1, prev_pokemon0, prev_pokemon1)
+            self._update_observations_after_turn(
+                battle, tracker0, tracker1, prev_pokemon0, prev_pokemon1
+            )
 
             # 次のターン用に現在のポケモンを記録
             prev_pokemon0 = battle.pokemon[0]
@@ -806,11 +829,27 @@ class TrajectoryGenerator:
 
         # 場に出た時に即座に発動する特性
         instant_abilities = {
-            "いかく", "ひでり", "あめふらし", "すなおこし", "ゆきふらし",
-            "エレキメイカー", "グラスメイカー", "ミストメイカー", "サイコメイカー",
-            "おみとおし", "かたやぶり", "ダウンロード", "トレース", "よちむ",
-            "こだいかっせい", "クォークチャージ", "ひひいろのこどう",
-            "わざわいのうつわ", "わざわいのつるぎ", "わざわいのおふだ", "わざわいのたま",
+            "いかく",
+            "ひでり",
+            "あめふらし",
+            "すなおこし",
+            "ゆきふらし",
+            "エレキメイカー",
+            "グラスメイカー",
+            "ミストメイカー",
+            "サイコメイカー",
+            "おみとおし",
+            "かたやぶり",
+            "ダウンロード",
+            "トレース",
+            "よちむ",
+            "こだいかっせい",
+            "クォークチャージ",
+            "ひひいろのこどう",
+            "わざわいのうつわ",
+            "わざわいのつるぎ",
+            "わざわいのおふだ",
+            "わざわいのたま",
         }
 
         ability = pokemon.ability or ""
@@ -835,10 +874,18 @@ class TrajectoryGenerator:
         self._detect_end_turn_ability(battle.pokemon[1], tracker0)
 
         # 新しいポケモンが場に出ていれば記録
-        if battle.pokemon[0] and prev_pokemon0 and battle.pokemon[0].name != prev_pokemon0.name:
+        if (
+            battle.pokemon[0]
+            and prev_pokemon0
+            and battle.pokemon[0].name != prev_pokemon0.name
+        ):
             tracker1.reveal_pokemon(battle.pokemon[0].name)
             self._detect_ability_reveal(battle.pokemon[0], tracker1)
-        if battle.pokemon[1] and prev_pokemon1 and battle.pokemon[1].name != prev_pokemon1.name:
+        if (
+            battle.pokemon[1]
+            and prev_pokemon1
+            and battle.pokemon[1].name != prev_pokemon1.name
+        ):
             tracker0.reveal_pokemon(battle.pokemon[1].name)
             self._detect_ability_reveal(battle.pokemon[1], tracker0)
 
@@ -853,7 +900,11 @@ class TrajectoryGenerator:
             return
 
         # 持ち物が消費された場合
-        prev_item = getattr(prev_pokemon, "item", "") if prev_pokemon and prev_pokemon.name == pokemon.name else ""
+        prev_item = (
+            getattr(prev_pokemon, "item", "")
+            if prev_pokemon and prev_pokemon.name == pokemon.name
+            else ""
+        )
         current_item = pokemon.item or ""
 
         # 消費されて判明
@@ -862,11 +913,27 @@ class TrajectoryGenerator:
 
         # 特定の持ち物は効果発動時に判明
         detectable_items = {
-            "きあいのタスキ", "たべのこし", "くろいヘドロ", "いのちのたま",
-            "ゴツゴツメット", "とつげきチョッキ", "ブーストエナジー", "ふうせん",
-            "オボンのみ", "ラムのみ", "カゴのみ", "ヤチェのみ", "シュカのみ",
-            "ハバンのみ", "ホズのみ", "リンドのみ", "ソクノのみ", "ヨプのみ",
-            "こだわりハチマキ", "こだわりメガネ", "こだわりスカーフ",
+            "きあいのタスキ",
+            "たべのこし",
+            "くろいヘドロ",
+            "いのちのたま",
+            "ゴツゴツメット",
+            "とつげきチョッキ",
+            "ブーストエナジー",
+            "ふうせん",
+            "オボンのみ",
+            "ラムのみ",
+            "カゴのみ",
+            "ヤチェのみ",
+            "シュカのみ",
+            "ハバンのみ",
+            "ホズのみ",
+            "リンドのみ",
+            "ソクノのみ",
+            "ヨプのみ",
+            "こだわりハチマキ",
+            "こだわりメガネ",
+            "こだわりスカーフ",
         }
         if current_item in detectable_items:
             # 持ち物が変化したか、HP変動があった場合に発動とみなす
@@ -883,8 +950,13 @@ class TrajectoryGenerator:
             return
 
         end_turn_abilities = {
-            "かそく", "ポイズンヒール", "ムラっけ", "サンパワー",
-            "あめうけざら", "かんそうはだ", "スロースタート",
+            "かそく",
+            "ポイズンヒール",
+            "ムラっけ",
+            "サンパワー",
+            "あめうけざら",
+            "かんそうはだ",
+            "スロースタート",
         }
 
         ability = pokemon.ability or ""
@@ -984,8 +1056,7 @@ class TrajectoryGenerator:
 
         # 引数リストを作成
         args_list = [
-            (f"game_{i}", self.trainer_data, config_dict)
-            for i in range(num_games)
+            (f"game_{i}", self.trainer_data, config_dict) for i in range(num_games)
         ]
 
         with ProcessPoolExecutor(max_workers=num_workers) as executor:
@@ -1002,7 +1073,9 @@ class TrajectoryGenerator:
                         trajectories.append(traj)
 
                         if len(trajectories) % 10 == 0:
-                            logger.info(f"Generated {len(trajectories)}/{num_games} games")
+                            logger.info(
+                                f"Generated {len(trajectories)}/{num_games} games"
+                            )
                 except Exception as e:
                     logger.error(f"Game generation failed: {e}")
 
